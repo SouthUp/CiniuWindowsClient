@@ -3,3 +3,24 @@
 ################################################################################
 
 /WPFWordAndImgOperationServer/WPFClientService
+/WPFWordAndImgOperationServer/WPFClientCheckWordUtil
+/WPFWordAndImgOperationServer/WPFClientCheckWordModel
+/WPFWordAndImgOperationServer/WordAndImgOperationApp
+/WPFWordAndImgOperationServer/MaterialDesignThemes.Wpf/obj/Debug
+/WPFWordAndImgOperationServer/MaterialDesignColors.Wpf/obj/Debug
+/WPFWordAndImgOperationServer/IWPFClientService
+/WPFWordAndImgOperationServer/ConsoleWPFClientServer/obj/Debug
+/WPFWordAndImgOperationServer/CheckWordUtil/obj/Debug
+/WPFWordAndImgOperationServer/CheckWordStyle/obj/Debug
+/WPFWordAndImgOperationServer/CheckWordModel/obj/Debug
+/WPFWordAndImgOperationServer/CheckWordEvent/obj/Debug
+/WPFWordAndImgOperationServer/CheckWordControl/obj/Debug
+/WPFWordAndImgOperationServer/BrowseSearchTXT/obj/Debug
+/WPFWordAndImgOperationServer/bin
+/WPFWordAndImgOperationServer/.vs/WordAndImgOperationApp/v15
+/WPFWordAndImgOperationServer/MyWordAddIn/MyWordAddIn
+/WPFWordAndImgOperationServer/MyWordAddIn/CheckWordUtil
+/WPFWordAndImgOperationServer/MyWordAddIn/CheckWordModel
+/WPFWordAndImgOperationServer/MyWordAddIn/CheckWordEvent
+/WPFWordAndImgOperationServer/MyWordAddIn/CheckWordControl
+/WPFWordAndImgOperationServer/MyWordAddIn/.vs/MyWordAddIn/v15
