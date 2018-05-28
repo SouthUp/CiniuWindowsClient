@@ -169,7 +169,12 @@ namespace MyWordAddIn
             {
                 lock (lockObject)
                 {
-                    DateTime typeDequeue = queue.Dequeue();
+                    try
+                    {
+                        DateTime typeDequeue = queue.Dequeue();
+                    }
+                    catch
+                    { }
                     IsChecking = false;
                 }
             }
