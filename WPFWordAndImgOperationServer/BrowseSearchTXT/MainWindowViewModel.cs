@@ -1,0 +1,138 @@
+﻿using CheckWordModel;
+using CheckWordModel.Communication;
+using Microsoft.Practices.Prism.ViewModel;
+using System;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.IO;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using System.Windows;
+
+namespace BrowseSearchTXT
+{
+    public class MainWindowViewModel : NotificationObject
+    {
+        private Visibility _titleLogoVisibility = Visibility.Visible;
+        public Visibility TitleLogoVisibility
+        {
+            get { return _titleLogoVisibility; }
+            set
+            {
+                _titleLogoVisibility = value;
+                RaisePropertyChanged("TitleLogoVisibility");
+            }
+        }
+        private Visibility _returnBtnVisibility = Visibility.Collapsed;
+        public Visibility ReturnBtnVisibility
+        {
+            get { return _returnBtnVisibility; }
+            set
+            {
+                _returnBtnVisibility = value;
+                RaisePropertyChanged("ReturnBtnVisibility");
+            }
+        }
+        private Visibility _inputCheckGridVisibility = Visibility.Visible;
+        public Visibility InputCheckGridVisibility
+        {
+            get { return _inputCheckGridVisibility; }
+            set
+            {
+                _inputCheckGridVisibility = value;
+                RaisePropertyChanged("InputCheckGridVisibility");
+            }
+        }
+        private Visibility _dataProcessGridVisibility = Visibility.Collapsed;
+        public Visibility DataProcessGridVisibility
+        {
+            get { return _dataProcessGridVisibility; }
+            set
+            {
+                _dataProcessGridVisibility = value;
+                RaisePropertyChanged("DataProcessGridVisibility");
+            }
+        }
+        private Visibility _dataProcessResultGridVisibility = Visibility.Collapsed;
+        public Visibility DataProcessResultGridVisibility
+        {
+            get { return _dataProcessResultGridVisibility; }
+            set
+            {
+                _dataProcessResultGridVisibility = value;
+                RaisePropertyChanged("DataProcessResultGridVisibility");
+            }
+        }
+        private string _checkResultText = "";
+        public string CheckResultText
+        {
+            get { return _checkResultText; }
+            set
+            {
+                _checkResultText = value;
+                RaisePropertyChanged("CheckResultText");
+            }
+        }
+        private Visibility _commonCheckResultVisibility = Visibility.Collapsed;
+        public Visibility CommonCheckResultVisibility
+        {
+            get { return _commonCheckResultVisibility; }
+            set
+            {
+                _commonCheckResultVisibility = value;
+                RaisePropertyChanged("CommonCheckResultVisibility");
+            }
+        }
+        private Visibility _tongJiCheckResultVisibility = Visibility.Collapsed;
+        public Visibility TongJiCheckResultVisibility
+        {
+            get { return _tongJiCheckResultVisibility; }
+            set
+            {
+                _tongJiCheckResultVisibility = value;
+                RaisePropertyChanged("TongJiCheckResultVisibility");
+            }
+        }
+        private Visibility _singgleWordCheckResultVisibility = Visibility.Collapsed;
+        public Visibility SinggleWordCheckResultVisibility
+        {
+            get { return _singgleWordCheckResultVisibility; }
+            set
+            {
+                _singgleWordCheckResultVisibility = value;
+                RaisePropertyChanged("SinggleWordCheckResultVisibility");
+            }
+        }
+        private Visibility _singgleWordCheckResultNoUncheckVisibility = Visibility.Collapsed;
+        public Visibility SinggleWordCheckResultNoUncheckVisibility
+        {
+            get { return _singgleWordCheckResultNoUncheckVisibility; }
+            set
+            {
+                _singgleWordCheckResultNoUncheckVisibility = value;
+                RaisePropertyChanged("SinggleWordCheckResultNoUncheckVisibility");
+            }
+        }
+        private UnChekedDetailWordInfo _currentWordInfo = new UnChekedDetailWordInfo();
+        public UnChekedDetailWordInfo CurrentWordInfo
+        {
+            get { return _currentWordInfo; }
+            set
+            {
+                _currentWordInfo = value;
+                RaisePropertyChanged("CurrentWordInfo");
+            }
+        }
+        private ExchangeBrowseTxTProcessingInfo _currentCurrentProcessingInfo = new ExchangeBrowseTxTProcessingInfo();
+        public ExchangeBrowseTxTProcessingInfo CurrentProcessingInfo
+        {
+            get { return _currentCurrentProcessingInfo; }
+            set
+            {
+                _currentCurrentProcessingInfo = value;
+                RaisePropertyChanged("CurrentProcessingInfo");
+            }
+        }
+    }
+}

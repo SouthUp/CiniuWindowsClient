@@ -1,0 +1,29 @@
+﻿using System;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Data;
+using System.Drawing;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using System.Windows.Forms;
+using System.Windows.Forms.Integration;
+using Word = Microsoft.Office.Interop.Word;
+
+namespace MyWordAddIn
+{
+    public partial class FloatingPanel : Form
+    {
+        public FloatingPanel()
+        {
+            InitializeComponent();
+        }
+        public ElementHost MyWordTipsWPFHost
+        {
+            get
+            {
+                return this.MyWordTipsElementHost;
+            }
+        }
+    }
+}

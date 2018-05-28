@@ -1,0 +1,90 @@
+﻿<UserControl x:Class="WordAndImgOperationApp.MainResult"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:WordAndImgOperationApp"
+             xmlns:control="clr-namespace:CheckWordControl;assembly=CheckWordControl"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="800" Loaded="UserControl_Loaded">
+    <UserControl.Resources>
+        <control:BoolToVisibilityConvert x:Key="BoolToVisibilityConvert"></control:BoolToVisibilityConvert>
+        <control:BoolToVisibilityOppositeConvert x:Key="BoolToVisibilityOppositeConvert"></control:BoolToVisibilityOppositeConvert>
+    </UserControl.Resources>
+    <Grid Height="436" Width="800" Background="#fafafa">
+        <ListBox x:Name="listBox" ItemsSource="{Binding DealDataResultList}" 
+                 BorderThickness="0" Background="Transparent"
+                 ScrollViewer.HorizontalScrollBarVisibility="Disabled" 
+                 ScrollViewer.VerticalScrollBarVisibility="Auto" SelectedIndex="-1"
+                 ItemContainerStyle="{StaticResource ListBoxItemContainerStyle}" 
+                 VerticalAlignment="Top" HorizontalAlignment="Stretch">
+            <ListBox.ItemTemplate>
+                <DataTemplate>
+                    <Grid Width="376" Height="338" Margin="17,17,0,0">
+                        <Border Background="White" CornerRadius="2" 
+                                BorderThickness="1" BorderBrush="LightGray">
+                            <Grid>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="64"></RowDefinition>
+                                    <RowDefinition Height="48"></RowDefinition>
+                                    <RowDefinition Height="*"></RowDefinition>
+                                </Grid.RowDefinitions>
+                                <Grid Grid.Row="0" Margin="0,8,0,0">
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition></RowDefinition>
+                                        <RowDefinition></RowDefinition>
+                                    </Grid.RowDefinitions>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="56"></ColumnDefinition>
+                                        <ColumnDefinition Width="*"></ColumnDefinition>
+                                    </Grid.ColumnDefinitions>
+                                    <Grid Grid.Row="0" Grid.RowSpan="2" Grid.Column="0" 
+                                          Width="32" Height="32" Background="{StaticResource CircleWordTitleLogoBGLogo}"
+                                          Margin="16,0,0,0" VerticalAlignment="Center" HorizontalAlignment="Left"></Grid>
+                                    <Grid Grid.Row="0" Grid.RowSpan="2" Grid.Column="0" 
+                                          Width="32" Height="32" Background="{StaticResource CircleImgTitleLogoBGLogo}"
+                                          Margin="16,0,0,0" VerticalAlignment="Center" HorizontalAlignment="Left"
+                                          Visibility="{Binding ShowImgTitleLogo,Converter={StaticResource BoolToVisibilityConvert}}"></Grid>
+                                    <StackPanel Grid.Row="0" Grid.Column="1" 
+                                                Orientation="Horizontal" HorizontalAlignment="Left" VerticalAlignment="Bottom">
+                                        <TextBlock Text="{Binding FileName}" 
+                                               Style="{StaticResource CommonLeftTextBlock}" VerticalAlignment="Top"
+                                               FontSize="14" Opacity="0.87"
+                                               MaxWidth="290" TextTrimming="CharacterEllipsis"></TextBlock>
+                                        <Button Width="18" Height="18" Style="{StaticResource EditBlueRoundButtonStyle}"
+                                                Tag="{Binding}" Click="EditButton_Click" Margin="3,0,0,0"
+                                                Visibility="{Binding ShowImgTitleLogo,Converter={StaticResource BoolToVisibilityOppositeConvert}}">
+                                        </Button>
+                                    </StackPanel>
+                                    <TextBlock Grid.Row="1" Grid.Column="1" Text="{Binding DirectoryName}" 
+                                               Style="{StaticResource CommonLeftTextBlock}" VerticalAlignment="Top"
+                                               FontSize="10" Opacity="0.26" Margin="0,8,0,0"
+                                               MaxWidth="290" TextTrimming="CharacterEllipsis"></TextBlock>
+                                </Grid>
+                                <Border Grid.Row="1" Height="1" VerticalAlignment="Top" HorizontalAlignment="Stretch"
+                                        BorderThickness="1" BorderBrush="Black" Opacity="0.06">
+                                </Border>
+                                <Grid Grid.Row="1" Height="40" VerticalAlignment="Bottom" Background="Transparent">
+                                    <Button Style="{StaticResource ErrorWordsInfoTextButtonStyle}"
+                                            HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
+                                            Content="{Binding ErrorWordsInfos}" Tag="{Binding}"
+                                            Click="DetailButton_Click"></Button>
+                                </Grid>
+                                <Grid Grid.Row="2" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+                                    <Image control:ImageDecoder.Source="{Binding FileImgShowPath}" Stretch="Uniform"
+                                           Width="376" Height="210" 
+                                           HorizontalAlignment="Center" VerticalAlignment="Center"></Image>
+                                </Grid>
+                            </Grid>
+                        </Border>
+                    </Grid>
+                </DataTemplate>
+            </ListBox.ItemTemplate>
+            <ListBox.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <WrapPanel Orientation="Horizontal" MaxWidth="{Binding ElementName=listBox,Path=ActualWidth}"/>
+                </ItemsPanelTemplate>
+            </ListBox.ItemsPanel>
+        </ListBox>
+    </Grid>
+</UserControl>

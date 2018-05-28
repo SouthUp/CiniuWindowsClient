@@ -1,0 +1,214 @@
+﻿<ResourceDictionary
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:input="clr-namespace:System.Windows.Input;assembly=PresentationCore"
+    xmlns:Microsoft_Windows_Themes="clr-namespace:Microsoft.Windows.Themes;assembly=PresentationFramework.Aero"
+    xmlns:local="clr-namespace:CheckWordControl;assembly=CheckWordControl">
+    <local:NullOrEmptyStringToVisibilityConverter
+        x:Key="NullOrEmptyStringtoVisibilityConverter"
+        NotNullOrEmpty="Collapsed"
+        NullOrEmpty="Visible" />
+    <LinearGradientBrush x:Key="TextBoxBorder" MappingMode="Absolute" StartPoint="0,0" EndPoint="0,20">
+        <GradientStop Offset="0.05" Color="#ABADB3" />
+        <GradientStop Offset="0.07" Color="#E2E3EA" />
+        <GradientStop Offset="1" Color="#E3E9EF" />
+    </LinearGradientBrush>
+    <Style TargetType="{x:Type TextBlock}" x:Key="CommonLeftTextBlock">
+        <Setter Property="Foreground" Value="Black" />
+        <Setter Property="FontSize" Value="18" />
+        <Setter Property="HorizontalAlignment" Value="Left" />
+        <Setter Property="VerticalAlignment" Value="Center" />
+        <Setter Property="FontFamily" Value="Microsoft YaHei" />
+    </Style>
+    <Style TargetType="{x:Type TextBlock}" x:Key="CommonCenterTextBlock">
+        <Setter Property="Foreground" Value="White" />
+        <Setter Property="FontSize" Value="14" />
+        <Setter Property="HorizontalAlignment" Value="Center" />
+        <Setter Property="VerticalAlignment" Value="Center" />
+        <Setter Property="FontFamily" Value="Microsoft YaHei" />
+    </Style>
+    <Style x:Key="WatermarkTextBox" TargetType="{x:Type local:WatermarkTextBox}">
+        <Setter Property="Foreground" Value="White" />
+        <Setter Property="FontSize" Value="12" />
+        <Setter Property="Margin" Value="3,0,0,0" />
+        <Setter Property="HorizontalAlignment" Value="Left" />
+        <Setter Property="VerticalAlignment" Value="Center" />
+        <Setter Property="Background" Value="{DynamicResource {x:Static SystemColors.WindowBrushKey}}" />
+        <Setter Property="BorderBrush" Value="{DynamicResource TextBoxBorder}" />
+        <Setter Property="BorderThickness" Value="0" />
+        <Setter Property="AllowDrop" Value="true" />
+        <Setter Property="FocusVisualStyle" Value="{x:Null}" />
+        <Setter Property="ScrollViewer.PanningMode" Value="VerticalFirst" />
+        <Setter Property="Stylus.IsFlicksEnabled" Value="False" />
+        <Setter Property="VerticalContentAlignment" Value="Center" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type local:WatermarkTextBox}">
+                    <Microsoft_Windows_Themes:ListBoxChrome
+                        x:Name="Bd"
+                        Background="{TemplateBinding Background}"
+                        BorderBrush="{TemplateBinding BorderBrush}"
+                        BorderThickness="{TemplateBinding BorderThickness}"
+                        SnapsToDevicePixels="true">
+                        <Grid>
+                            <TextBlock
+                                Margin="{TemplateBinding Padding}"
+                                Padding="0,0,0,0"
+                                HorizontalAlignment="Left"
+                                VerticalAlignment="Center"
+                                FontStyle="Normal"
+                                Foreground="White"
+                                IsHitTestVisible="False"
+                                Opacity="0.38"
+                                Style="{TemplateBinding WatermarkStyle}"
+                                Text="{TemplateBinding Watermark}"
+                                Visibility="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=Text, Converter={StaticResource NullOrEmptyStringtoVisibilityConverter}}" />
+                            <ScrollViewer x:Name="PART_ContentHost" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" VerticalAlignment="Center"/>
+                        </Grid>
+                    </Microsoft_Windows_Themes:ListBoxChrome>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsEnabled" Value="false">
+                            <Setter TargetName="Bd" Property="Background" Value="{DynamicResource {x:Static SystemColors.ControlBrushKey}}" />
+                            <Setter Property="Foreground" Value="{DynamicResource {x:Static SystemColors.GrayTextBrushKey}}" />
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+    <Style x:Key="ButtonFocusVisual">
+        <Setter Property="Control.Template">
+            <Setter.Value>
+                <ControlTemplate>
+                    <Rectangle StrokeDashArray="1 2" StrokeThickness="1"
+                                   Stroke="{DynamicResource {x:Static SystemColors.ControlTextBrushKey}}"
+                                   SnapsToDevicePixels="true" Margin="2" />
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+    <Style x:Key="EyePswToggleButtonStyle" TargetType="{x:Type ToggleButton}">
+        <Setter Property="FocusVisualStyle" Value="{StaticResource ButtonFocusVisual}" />
+        <Setter Property="HorizontalContentAlignment" Value="Center" />
+        <Setter Property="VerticalContentAlignment" Value="Center" />
+        <Setter Property="BorderThickness" Value="0" />
+        <Setter Property="Background" Value="Transparent" />
+        <Setter Property="Foreground" Value="Transparent" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type ToggleButton}">
+                    <Grid>
+                        <Border Background="{TemplateBinding Background}"
+                                    BorderBrush="{TemplateBinding BorderBrush}"
+                                    BorderThickness="{TemplateBinding BorderThickness}" />
+                        <ContentPresenter HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                              Margin="{TemplateBinding Padding}" RecognizesAccessKey="True"
+                                              SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"
+                                              VerticalAlignment="{TemplateBinding VerticalContentAlignment}" />
+                    </Grid>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsChecked" Value="true">
+                            <Setter Property="Background" Value="{StaticResource EyePswLogo}"/>
+                        </Trigger>
+                        <Trigger Property="IsChecked" Value="false">
+                            <Setter Property="Background" Value="{StaticResource EyeOpenPswLogo}"/>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+    <Style x:Key="WatermarkPasswordBox" TargetType="{x:Type PasswordBox}">
+        <Setter Property="Background" Value="{DynamicResource {x:Static SystemColors.WindowBrushKey}}" />
+        <Setter Property="BorderBrush" Value="{StaticResource TextBoxBorder}" />
+        <Setter Property="OverridesDefaultStyle" Value="True" />
+        <Setter Property="PasswordChar" Value="●" />
+        <Setter Property="Foreground" Value="{DynamicResource {x:Static SystemColors.ControlTextBrushKey}}" />
+        <Setter Property="KeyboardNavigation.TabNavigation" Value="None" />
+        <Setter Property="VerticalContentAlignment" Value="Center" />
+        <Setter Property="BorderThickness" Value="1" />
+        <Setter Property="HorizontalContentAlignment" Value="Left" />
+        <Setter Property="FocusVisualStyle" Value="{x:Null}" />
+        <Setter Property="AllowDrop" Value="true" />
+        <Setter Property="ScrollViewer.PanningMode" Value="VerticalFirst" />
+        <Setter Property="Stylus.IsFlicksEnabled" Value="False" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type PasswordBox}">
+                    <Microsoft_Windows_Themes:ListBoxChrome
+                        x:Name="Bd"
+                        Background="{TemplateBinding Background}"
+                        BorderBrush="{TemplateBinding BorderBrush}"
+                        BorderThickness="{TemplateBinding BorderThickness}"
+                        RenderFocused="{TemplateBinding IsKeyboardFocusWithin}"
+                        RenderMouseOver="{TemplateBinding IsMouseOver}"
+                        SnapsToDevicePixels="true">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition  Width="Auto"/>
+                            </Grid.ColumnDefinitions>
+                            <TextBlock
+                                x:Name="PART_PlaceHolder"
+                                Grid.Column="0" 
+                                Margin="{TemplateBinding Padding}"
+                                Padding="0,0,0,0"
+                                HorizontalAlignment="Left"
+                                VerticalAlignment="Center"
+                                FontStyle="Normal"
+                                Foreground="White"
+                                Visibility="Collapsed"
+                                IsHitTestVisible="False"
+                                Opacity="0.38"
+                                Style="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(local:WatermarkTextBox.WatermarkStyle)}"
+                                Text="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(local:WatermarkTextBox.Watermark)}" />
+                            <ScrollViewer x:Name="PART_ContentHost" Grid.Column="0" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" VerticalAlignment="Center"/>
+                            <!--显示密码明文-->
+                            <TextBox x:Name="PART_PasswordShower" input:InputMethod.IsInputMethodEnabled="False"
+                                Grid.Column="0" 
+                                Margin="{TemplateBinding Padding}"
+                                Padding="0,0,0,0" 
+                                Foreground="White"
+                                IsTabStop="True" 
+                                Focusable="False"   
+                                HorizontalAlignment="Stretch" 
+                                VerticalAlignment="Center"  
+                                BorderThickness="0" 
+                                Background="Transparent"
+                                Visibility="Collapsed" 
+                                IsHitTestVisible="False"  
+                                FontSize="{TemplateBinding FontSize}" 
+                                Text="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(local:PasswordHelper.Password)}"/>
+                            <ToggleButton x:Name="PART_EyeToggle" 
+                                          Grid.Column="1" 
+                                          Width="24" 
+                                          Height="24" 
+                                          Cursor="Hand" 
+                                          IsChecked="False"
+                                          Style="{StaticResource EyePswToggleButtonStyle}">
+                            </ToggleButton>
+                        </Grid>
+                    </Microsoft_Windows_Themes:ListBoxChrome>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="local:PasswordHelper.Password" Value="">
+                            <Setter TargetName="PART_PlaceHolder" Property="Visibility" Value="Visible"/>
+                        </Trigger>
+                        <Trigger Property="local:PasswordHelper.Password" Value="{x:Null}">
+                            <Setter TargetName="PART_PlaceHolder" Property="Visibility" Value="Visible"/>
+                        </Trigger>
+                        <DataTrigger Binding="{Binding IsChecked, ElementName=PART_EyeToggle}" Value="True">
+                            <Setter TargetName="PART_ContentHost" Property="Visibility" Value="Collapsed"/>
+                            <Setter TargetName="PART_PasswordShower" Property="Visibility" Value="Visible"/>
+                            <Setter TargetName="PART_PasswordShower" Property="IsHitTestVisible" Value="True"/>
+                            <Setter TargetName="PART_PasswordShower" Property="CaretBrush" Value="Black"/>
+                            <Setter TargetName="PART_PasswordShower" Property="Focusable" Value="True"/>
+                        </DataTrigger>
+                        <DataTrigger Binding="{Binding Text, ElementName=PART_PasswordShower,Converter={StaticResource NullOrEmptyStringtoVisibilityConverter}}" Value="Collapsed">
+                            <Setter TargetName="PART_PlaceHolder" Property="Visibility" Value="Collapsed"/>
+                        </DataTrigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+</ResourceDictionary>

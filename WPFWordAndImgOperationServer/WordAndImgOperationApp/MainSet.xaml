@@ -1,0 +1,196 @@
+﻿<UserControl x:Class="WordAndImgOperationApp.MainSet"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:WordAndImgOperationApp"
+             xmlns:control="clr-namespace:CheckWordControl;assembly=CheckWordControl"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="800">
+    <UserControl.Resources>
+        <control:BoolToVisibilityConvert x:Key="BoolToVisibilityConvert"></control:BoolToVisibilityConvert>
+        <control:BoolToVisibilityOppositeConvert x:Key="BoolToVisibilityOppositeConvert"></control:BoolToVisibilityOppositeConvert>
+        <LinearGradientBrush x:Key="ProgressBarBackground"
+                     EndPoint="1,0"
+                     StartPoint="0,0" Opacity="0.8">
+            <LinearGradientBrush.GradientStops>
+                <GradientStop Color="#ffa800"
+                      Offset="0"/>
+                <GradientStop Color="#ffa800"
+                      Offset="0.5"/>
+                <GradientStop Color="#ffa800"
+                      Offset="1"/>
+            </LinearGradientBrush.GradientStops>
+        </LinearGradientBrush>
+        <Style x:Key="MyProgressBar" TargetType="{x:Type ProgressBar}">
+            <Setter Property="Foreground" Value="#1BA1E2"/>
+            <Setter Property="Background" Value="{StaticResource ProgressBarBackground}"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type ProgressBar}">
+                        <Grid Name="TemplateRoot" SnapsToDevicePixels="true">
+                            <Rectangle Fill="{TemplateBinding Background}"/>
+                            <Rectangle Name="PART_Track" Margin="0"/>
+                            <Decorator x:Name="PART_Indicator" HorizontalAlignment="Left" Margin="0">
+                                <Grid Name="Foreground">
+                                    <Rectangle Fill="#ff6e02" Name="Indicator" />
+                                    <Grid x:Name="Animation" ClipToBounds="true" Visibility="Hidden">
+                                        <Rectangle Fill="{TemplateBinding Background}" Name="HiderPre" Margin="0,0,100,0">
+                                            <Rectangle.RenderTransform>
+                                                <ScaleTransform x:Name="HiderPreTransform" ScaleX="0"/>
+                                            </Rectangle.RenderTransform>
+                                        </Rectangle>
+                                        <Rectangle Fill="{TemplateBinding Background}" Name="HiderPost" RenderTransformOrigin="1, 0" Margin="100,0,0,0">
+                                            <Rectangle.RenderTransform>
+                                                <ScaleTransform x:Name="HiderPostTransform" ScaleX="1"  />
+                                            </Rectangle.RenderTransform>
+                                        </Rectangle>
+                                    </Grid>
+                                    <Grid Name="Overlay">
+                                    </Grid>
+                                </Grid>
+                            </Decorator>
+
+                            <Border BorderThickness="{TemplateBinding BorderThickness}"
+                            BorderBrush="{TemplateBinding BorderBrush}"/>
+                        </Grid>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsIndeterminate" Value="true">
+                                <Setter TargetName="Animation" Property="Visibility" Value="Visible" />
+                                <Trigger.EnterActions>
+                                    <BeginStoryboard>
+                                        <Storyboard RepeatBehavior="Forever">
+                                            <DoubleAnimation
+                                                Storyboard.TargetName="HiderPreTransform"
+                                                Storyboard.TargetProperty="(ScaleTransform.ScaleX)"
+                                                To="1"
+                                                Duration="0:00:2" AutoReverse="True"/>
+                                            <DoubleAnimation
+                                                Storyboard.TargetName="HiderPostTransform"
+                                                Storyboard.TargetProperty="(ScaleTransform.ScaleX)"
+                                                To="0"
+                                                Duration="0:00:2" AutoReverse="True"/>
+                                        </Storyboard>
+                                    </BeginStoryboard>
+                                </Trigger.EnterActions>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </UserControl.Resources>
+    <Grid Height="436" Width="800" Loaded="Grid_Loaded">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"></RowDefinition>
+            <RowDefinition Height="250"></RowDefinition>
+        </Grid.RowDefinitions>
+        <Grid Grid.Row="0">
+            <Button Width="142" Height="142" 
+                    Visibility="{Binding CheckBtnVisibility}"
+                    IsEnabled="{Binding IsCircleCheckBtnEnabled}"
+                    Style="{StaticResource CircleCheckButtonStyle}"
+                    Click="CircleCheckBtn_Click"></Button>
+            <Button Width="142" Height="142" 
+                    Visibility="{Binding CancelBtnVisibility}"
+                    Style="{StaticResource CircleCancelCheckButtonStyle}"
+                    Click="CircleCancelCheckBtn_Click"></Button>
+            <StackPanel Orientation="Horizontal" Margin="496,0,0,0" Visibility="Collapsed"
+                        HorizontalAlignment="Left" VerticalAlignment="Center">
+                <Button Width="40" Height="40" ToolTip="词库"
+                        Style="{StaticResource CiKuButtonStyle}"></Button>
+                <Button Width="40" Height="40" ToolTip="设置"
+                        Style="{StaticResource SettingButtonStyle}"></Button>
+            </StackPanel>
+            <ProgressBar Width="800" Height="4" Visibility="{Binding CancelBtnVisibility}"
+                         HorizontalAlignment="Center" VerticalAlignment="Bottom"
+                         IsIndeterminate="True" Style="{StaticResource MyProgressBar}"/>
+        </Grid>
+        <Grid Grid.Row="1" Background="White">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*"></RowDefinition>
+                <RowDefinition Height="202"></RowDefinition>
+            </Grid.RowDefinitions>
+            <Grid Grid.Row="0" Height="40" VerticalAlignment="Bottom">
+                <StackPanel Orientation="Horizontal" Margin="24,0,0,0"
+                            HorizontalAlignment="Left" VerticalAlignment="Center">
+                    <TextBlock Style="{StaticResource CommonLeftTextBlock}"
+                               FontSize="14" Text="检查任务"></TextBlock>
+                    <Button Width="60" Height="28" Margin="10,0,0,0"
+                            Style="{StaticResource AddTaskButtonStyle}"
+                            IsEnabled="{Binding AddTaskBtnIsEnabled}" Click="AddTaskBtn_Click"></Button>
+                </StackPanel>
+            </Grid>
+            <Grid Grid.Row="1" Background="White" 
+                  Visibility="{Binding IsCircleCheckBtnEnabled,Converter={StaticResource BoolToVisibilityOppositeConvert}}">
+                <Grid Width="234" Height="127"
+                      HorizontalAlignment="Center" VerticalAlignment="Top"
+                      Background="{StaticResource EmptyTaskGridBGLogo}">
+                </Grid>
+            </Grid>
+            <Grid Grid.Row="1" Background="White" 
+                  Visibility="{Binding IsCircleCheckBtnEnabled,Converter={StaticResource BoolToVisibilityConvert}}">
+                <ListBox ItemsSource="{Binding ChekedWordSettingsInfos}" BorderThickness="0" Background="Transparent"
+                         ScrollViewer.HorizontalScrollBarVisibility="Disabled" ScrollViewer.VerticalScrollBarVisibility="Auto" SelectedIndex="-1"
+                         ItemContainerStyle="{StaticResource ListBoxItemContainerStyle}" VerticalAlignment="Top" HorizontalAlignment="Center">
+                    <ListBox.ItemTemplate>
+                        <DataTemplate>
+                            <Grid Width="800" Height="40" Background="Transparent" 
+                                  Tag="{Binding}" MouseEnter="Grid_MouseEnter" MouseLeave="Grid_MouseLeave">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="24"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="24"/>
+                                </Grid.ColumnDefinitions>
+                                <Grid Grid.Column="1" Width="41" Visibility="{Binding IsChecking,Converter={StaticResource BoolToVisibilityOppositeConvert}}">
+                                    <ToggleButton Width="24" Height="24" IsChecked="{Binding IsChecked}" HorizontalAlignment="Left"
+                                                  Style="{StaticResource CheckSelectPathToggleButtonStyle}"></ToggleButton>
+                                </Grid>
+                                <Grid Grid.Column="2">
+                                    <TextBlock Text="{Binding FileFullPath}" Style="{StaticResource CommonLeftTextBlock}" 
+                                               FontSize="14" Opacity="0.54"></TextBlock>
+                                </Grid>
+                                <Grid Grid.Column="3" Width="41" Visibility="{Binding IsCanDelete,Converter={StaticResource BoolToVisibilityConvert}}">
+                                    <Button Width="20" Height="20" HorizontalAlignment="Right" Tag="{Binding}"
+                                            Style="{StaticResource DeletePathButtonStyle}"
+                                            Click="DeletePathButton_Click"></Button>
+                                </Grid>
+                                <Grid Grid.Column="3" HorizontalAlignment="Right" VerticalAlignment="Center"
+                                      Visibility="{Binding IsChecking,Converter={StaticResource BoolToVisibilityConvert}}">
+                                    <Grid Visibility="{Binding IsCheckedFinished,Converter={StaticResource BoolToVisibilityOppositeConvert}}">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="20"></ColumnDefinition>
+                                            <ColumnDefinition Width="15"></ColumnDefinition>
+                                            <ColumnDefinition Width="20"></ColumnDefinition>
+                                        </Grid.ColumnDefinitions>
+                                        <TextBlock Grid.Column="0" Text="{Binding CurrentIndex}" Style="{StaticResource CommonLeftTextBlock}" 
+                                               HorizontalAlignment="Right"
+                                               FontSize="12" Opacity="0.54"></TextBlock>
+                                        <TextBlock Grid.Column="1" Text=" / " Style="{StaticResource CommonLeftTextBlock}"
+                                               HorizontalAlignment="Center"
+                                               FontSize="12" Opacity="0.54"></TextBlock>
+                                        <TextBlock Grid.Column="2" Text="{Binding TotalCount}" Style="{StaticResource CommonLeftTextBlock}" 
+                                               FontSize="12" Opacity="0.54"></TextBlock>
+                                    </Grid>
+                                    <Grid Width="50" Background="Transparent"
+                                          Visibility="{Binding IsCheckedFinished,Converter={StaticResource BoolToVisibilityConvert}}">
+                                        <Grid Width="20" Height="20" Background="{StaticResource CheckFinishedBGLogo}"
+                                              HorizontalAlignment="Right" VerticalAlignment="Center"/>
+                                    </Grid>
+                                </Grid>
+                            </Grid>
+                        </DataTemplate>
+                    </ListBox.ItemTemplate>
+                    <ListBox.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <WrapPanel Orientation="Vertical"/>
+                        </ItemsPanelTemplate>
+                    </ListBox.ItemsPanel>
+                </ListBox>
+            </Grid>
+        </Grid>
+    </Grid>
+</UserControl>
