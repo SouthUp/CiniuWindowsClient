@@ -12,5 +12,7 @@ namespace WPFClientCheckWordModel
         public string Name { get; set; }
         public string SourceDB { get; set; }
         public string NameType { get; set; }
+        public List<CommonNameModel> SourceDBs { get; set; }
+        public List<CommonNameModel> NameTypes { get; set; }
     }
 }

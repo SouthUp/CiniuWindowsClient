@@ -8,6 +8,7 @@ using System.Xml.Linq;
 using System.Configuration;
 using System.Net;
 using System.IO;
+using Newtonsoft.Json;
 
 namespace WPFClientCheckWordUtil
 {
@@ -26,7 +27,29 @@ namespace WPFClientCheckWordUtil
             try
             {
                 string apiName = "word";
-                string resultStr = HttpHelper.HttpUrlSend(apiName, "POST", token);
+                string resultStr = HttpHelper.HttpUrlSend(apiName, "GET", token);
+                GetAllWordsInfoResponse resultInfo = JsonConvert.DeserializeObject<GetAllWordsInfoResponse>(resultStr);
+                var listDBWords = resultInfo.data;
+                if (listDBWords != null)
+                {
+                    foreach (var item in listDBWords)
+                    {
+                        WordModel word = new WordModel();
+                        word.ID = item.code;
+                        word.Name = item.name;
+                        word.SourceDBs = item.type;
+                        if (word.SourceDBs != null && word.SourceDBs.Count > 0)
+                        {
+                            word.SourceDB = word.SourceDBs.First().name;
+                        }
+                        word.NameTypes = item.category;
+                        if (word.NameTypes != null && word.NameTypes.Count > 0)
+                        {
+                            word.NameType = word.NameTypes.First().name;
+                        }
+                        WordModels.Add(word);
+                    }
+                }
             }
             catch (Exception ex)
             {

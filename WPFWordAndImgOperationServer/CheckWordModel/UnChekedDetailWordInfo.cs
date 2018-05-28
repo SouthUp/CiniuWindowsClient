@@ -9,6 +9,16 @@ namespace CheckWordModel
 {
     public class UnChekedDetailWordInfo : ViewModelBase
     {
+        private string sourceDBID = "";
+        public string SourceDBID
+        {
+            get { return sourceDBID; }
+            set
+            {
+                sourceDBID = value;
+                RaisePropertyChanged("SourceDBID");
+            }
+        }
         private bool isUnCheckWord;
         public bool IsUnCheckWord
         {

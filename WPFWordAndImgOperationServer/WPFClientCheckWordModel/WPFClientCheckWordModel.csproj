@@ -50,6 +50,9 @@
     <Compile Include="CheckOnlyWordResponseResult.cs" />
     <Compile Include="CheckWordRequestInfo.cs" />
     <Compile Include="CheckWordResponseResult.cs" />
+    <Compile Include="CommonNameModel.cs" />
+    <Compile Include="DBWordModel.cs" />
+    <Compile Include="GetAllWordsInfoResponse.cs" />
     <Compile Include="LoginInOutInfo.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>

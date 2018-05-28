@@ -73,15 +73,19 @@ namespace WordAndImgOperationApp
         public void SetMyFolderDataViewModel(MyFolderDataViewModel myFolderData)
         {
             viewModel.CurrentMyFolderData = myFolderData;
-            ////造假数据
             foreach (var item in viewModel.CurrentMyFolderData.UnChekedWordInfos)
             {
-                item.UnChekedWordDetailInfos.Add(new UnChekedDetailWordInfo() {SourceDB ="2018词库",NameType="女装精品" ,SourceDBImgPath=
-                    AppDomain.CurrentDomain.BaseDirectory + "Resources/TaoBao.png"
-                });
-                item.UnChekedWordDetailInfos.Add(new UnChekedDetailWordInfo() { SourceDB = "2017词库", NameType = "美妆" ,SourceDBImgPath =
-                    AppDomain.CurrentDomain.BaseDirectory + "Resources/JingDong.png"
-                });
+                foreach (var infoDetail in item.UnChekedWordDetailInfos)
+                {
+                    if (!string.IsNullOrEmpty(infoDetail.SourceDBID))
+                    {
+                        infoDetail.SourceDBImgPath = AppDomain.CurrentDomain.BaseDirectory + "Resources/DBTypeLogo/" + infoDetail.SourceDBID + ".png";
+                    }
+                    else
+                    {
+                        infoDetail.SourceDBImgPath = AppDomain.CurrentDomain.BaseDirectory + "Resources/DBTypeLogo/Default.png";
+                    }
+                }
             }
             LoadData();
         }
