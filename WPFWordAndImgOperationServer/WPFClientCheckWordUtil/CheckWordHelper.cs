@@ -5,6 +5,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Xml.Linq;
+using System.Configuration;
+using System.Net;
+using System.IO;
 
 namespace WPFClientCheckWordUtil
 {
@@ -12,6 +15,25 @@ namespace WPFClientCheckWordUtil
     {
         public static List<WordModel> WordModels = new List<WordModel>();
         public static List<ReplaceWordModel> ReplaceWordModels = new List<ReplaceWordModel>();
+        /// <summary>
+        /// 获取所有校验数据
+        /// </summary>
+        /// <param name="token"></param>
+        /// <returns></returns>
+        public static List<WordModel> GetAllCheckWordByToken(string token)
+        {
+            WordModels = new List<WordModel>();
+            try
+            {
+                string apiName = "word";
+                string resultStr = HttpHelper.HttpUrlSend(apiName, "POST", token);
+            }
+            catch (Exception ex)
+            {
+                return new List<WordModel>();
+            }
+            return WordModels;
+        }
         /// <summary>
         /// 获取所有校验数据
         /// </summary>
@@ -123,6 +145,35 @@ namespace WPFClientCheckWordUtil
             catch (Exception ex)
             { }
             return result;
+        }
+    }
+    public class HttpHelper
+    {
+        public static string HttpUrlSend(string apiName, string method, string token = "")
+        {
+            string urlStr = SystemVar.UrlStr + apiName;
+            HttpWebRequest req = (HttpWebRequest)WebRequest.Create(urlStr);
+            req.Method = method;
+            if (!string.IsNullOrEmpty(token))
+            {
+                req.Headers.Add("X-LC-Session", token);
+            }
+            req.ContentType = "application/json;charset=UTF-8";
+            try
+            {
+                using (WebResponse res = req.GetResponse())
+                {
+                    using (StreamReader sr = new StreamReader(res.GetResponseStream(), Encoding.GetEncoding("UTF-8")))
+                    {
+                        string strResult = sr.ReadToEnd();
+                        return strResult;
+                    }
+                }
+            }
+            catch (WebException ex)
+            {
+                return ex.Message;
+            }
         }
     }
 }

@@ -24,26 +24,6 @@ namespace ConsoleWPFClientServer
                 hostHeart.Open();
                 ServiceHost hostMessage = new ServiceHost(typeof(MessageService));
                 hostMessage.Open();
-                try
-                {
-                    string pathDir = SystemVar.FolderPath;
-                    if (!Directory.Exists(pathDir))
-                    {
-                        Directory.CreateDirectory(pathDir);
-                    }
-                    string xmlPath = pathDir + "Resources/CheckWordDataSet.xml";
-                    if (File.Exists(xmlPath))
-                    {
-                        WPFClientCheckWordUtil.CheckWordHelper.WordModels = WPFClientCheckWordUtil.CheckWordHelper.GetAllCheckWord(xmlPath);
-                    }
-                    string xmlPathReplace = pathDir + "Resources/ReplaceWordDataSet.xml";
-                    if (File.Exists(xmlPathReplace))
-                    {
-                        WPFClientCheckWordUtil.CheckWordHelper.ReplaceWordModels = WPFClientCheckWordUtil.CheckWordHelper.GetReplaceWords(xmlPathReplace);
-                    }
-                }
-                catch (Exception ex)
-                { }
                 Console.WriteLine("---------------------------------------------------------------------------");
                 Console.WriteLine("服务开始运行");
                 Console.WriteLine("---------------------------------------------------------------------------");

@@ -10,5 +10,6 @@ namespace WPFClientCheckWordModel
     {
         public string Type { get; set; }
         public string Token { get; set; }
+        public string UrlStr { get; set; }
     }
 }

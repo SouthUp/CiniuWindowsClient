@@ -855,6 +855,7 @@ namespace WordAndImgOperationApp
             {
                 LoginInOutInfo loginInOutInfo = new LoginInOutInfo();
                 loginInOutInfo.Type = typeInfo;
+                loginInOutInfo.UrlStr = ConfigurationManager.AppSettings["UrlStr"].ToString();
                 loginInOutInfo.Token = UtilSystemVar.UserToken;
                 string json = JsonConvert.SerializeObject(loginInOutInfo);
                 mService.ClientSendMessage(json);

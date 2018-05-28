@@ -71,6 +71,11 @@ namespace WPFClientService
                 LoginInOutInfo loginInOutInfo = JsonConvert.DeserializeObject<LoginInOutInfo>(message);
                 if (loginInOutInfo.Type == "LoginIn")
                 {
+                    SystemVar.UrlStr = loginInOutInfo.UrlStr;
+                    if (CheckWordHelper.WordModels.Count == 0)
+                    {
+                        CheckWordHelper.WordModels = CheckWordHelper.GetAllCheckWordByToken(loginInOutInfo.Token);
+                    }
                     SystemVar.IsLoginIn = true;
                 }
                 else
