@@ -49,5 +49,25 @@ namespace CheckWordModel
                 RaisePropertyChanged("UnChekedWordDetailInfos");
             }
         }
+        private ObservableCollection<UnChekedInLineDetailWordInfo> _unChekedWordInLineDetailInfos = new ObservableCollection<UnChekedInLineDetailWordInfo>();
+        public ObservableCollection<UnChekedInLineDetailWordInfo> UnChekedWordInLineDetailInfos
+        {
+            get { return _unChekedWordInLineDetailInfos; }
+            set
+            {
+                _unChekedWordInLineDetailInfos = value;
+                RaisePropertyChanged("UnChekedWordInLineDetailInfos");
+            }
+        }
+        private int errorCount = 0;
+        public int ErrorTotalCount
+        {
+            get { return errorCount; }
+            set
+            {
+                errorCount = value;
+                RaisePropertyChanged("ErrorTotalCount");
+            }
+        }
     }
 }

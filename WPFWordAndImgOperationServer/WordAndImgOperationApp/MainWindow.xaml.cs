@@ -155,14 +155,13 @@ namespace WordAndImgOperationApp
                     {
                         Directory.CreateDirectory(pathDir);
                     }
-                    string textResult = "";
                     Document document = new Document(_documentName);
                     int index = 1;
                     foreach (Spire.Doc.Section section in document.Sections)
                     {
                         foreach (Paragraph paragraph in section.Paragraphs)
                         {
-                            System.Windows.Documents.Paragraph paragraphNew = new System.Windows.Documents.Paragraph();
+                            string textResult = "";
                             foreach (DocumentObject docObject in paragraph.ChildObjects)
                             {
                                 if (docObject.DocumentObjectType == DocumentObjectType.Picture)
@@ -178,14 +177,24 @@ namespace WordAndImgOperationApp
                                     textResult += textRange.Text;
                                 }
                             }
+                            var list = CheckWordUtil.CheckWordHelper.GetUnChekedWordInfoList(textResult).ToList();
+                            foreach (var item in list)
+                            {
+                                var infoResult = listResult.FirstOrDefault(x => x.Name == item.Name);
+                                if (infoResult == null)
+                                {
+                                    item.UnChekedWordInLineDetailInfos.Add(new UnChekedInLineDetailWordInfo() { InLineText = textResult });
+                                    item.ErrorTotalCount++;
+                                    listResult.Add(item);
+                                }
+                                else
+                                {
+                                    infoResult.UnChekedWordInLineDetailInfos.Add(new UnChekedInLineDetailWordInfo() { InLineText = textResult });
+                                    infoResult.ErrorTotalCount++;
+                                }
+                            }
                         }
                     }
-                    listResult = CheckWordUtil.CheckWordHelper.GetUnChekedWordInfoList(textResult).ToList();
-                    //////string txtResultName = pathDir + "UnCheckedResult.txt";
-                    //////foreach (var item in listResult)
-                    //////{
-                    //////    FileOperateHelper.WriteTxt(txtResultName, item.Name);
-                    //////}
                 }
                 catch (Exception ex)
                 { }
@@ -612,7 +621,10 @@ namespace WordAndImgOperationApp
                                 MyFolderDataViewModel modelPic = new MyFolderDataViewModel(System.IO.Path.GetFileName(picInfo.FullName), picInfo.FullName);
                                 modelPic.TypeSelectFile = SelectFileType.Img;
                                 var listResult = AutoExcutePicOCR(picInfo.FullName);
-                                modelPic.CountError = listResult.Count;
+                                foreach (var item in listResult)
+                                {
+                                    modelPic.CountError += item.ErrorTotalCount;
+                                }
                                 if (modelPic.CountError > 0)
                                 {
                                     modelPic.UnChekedWordInfos = new ObservableCollection<UnChekedWordInfo>(listResult);
@@ -625,14 +637,25 @@ namespace WordAndImgOperationApp
                     {
                         foreach (var item in child.UnChekedWordInfos)
                         {
-                            if (model.UnChekedWordInfos.FirstOrDefault(x => x.Name == item.Name) == null)
+                            var unChekedWordInfoExsit = model.UnChekedWordInfos.FirstOrDefault(x => x.Name == item.Name);
+                            if (unChekedWordInfoExsit == null)
                             {
                                 model.UnChekedWordInfos.Add(item);
-                                model.CountError += 1;
+                            }
+                            else
+                            {
+                                foreach (var itemInfo in item.UnChekedWordInLineDetailInfos)
+                                {
+                                    unChekedWordInfoExsit.UnChekedWordInLineDetailInfos.Add(itemInfo);
+                                    unChekedWordInfoExsit.ErrorTotalCount++;
+                                }
                             }
                         }
                     }
-                    model.CountError += listUncheckWordInfos.Count;
+                    foreach (var item in model.UnChekedWordInfos)
+                    {
+                        model.CountError += item.ErrorTotalCount;
+                    }
                     if (model.CountError > 0)
                     {
                         model.ErrorWordsInfos = string.Join("   ", model.UnChekedWordInfos.Select(x => x.Name).Distinct().ToList());
@@ -644,7 +667,10 @@ namespace WordAndImgOperationApp
                     MyFolderDataViewModel model = new MyFolderDataViewModel(System.IO.Path.GetFileName(dealFilePath), dealFilePath);
                     model.TypeSelectFile = SelectFileType.Img;
                     var listResult = AutoExcutePicOCR(dealFilePath);
-                    model.CountError = listResult.Count;
+                    foreach (var item in listResult)
+                    {
+                        model.CountError += item.ErrorTotalCount;
+                    }
                     if(model.CountError > 0)
                     {
                         string errorImgPath = CheckWordTempPath + " \\" + System.IO.Path.GetFileNameWithoutExtension(dealFilePath) + System.IO.Path.GetExtension(dealFilePath).Replace(".", "") + "-Img\\" + System.IO.Path.GetFileName(dealFilePath);
@@ -722,9 +748,17 @@ namespace WordAndImgOperationApp
                         foreach (var itemInfo in listUnChekedWordInfo)
                         {
                             listUnValidInfos.Add(new WordInfo() { UnValidText = itemInfo.Name, AllText = lineWord, Rects = rects });
-                            if (listResult.FirstOrDefault(x => x.Name == itemInfo.Name) == null)
+                            var infoResult = listResult.FirstOrDefault(x => x.Name == itemInfo.Name);
+                            if (infoResult == null)
                             {
+                                itemInfo.UnChekedWordInLineDetailInfos.Add(new UnChekedInLineDetailWordInfo() { TypeTextFrom = "Img", InLineText = lineWord });
+                                itemInfo.ErrorTotalCount++;
                                 listResult.Add(itemInfo);
+                            }
+                            else
+                            {
+                                infoResult.UnChekedWordInLineDetailInfos.Add(new UnChekedInLineDetailWordInfo() { TypeTextFrom = "Img", InLineText = lineWord });
+                                infoResult.ErrorTotalCount++;
                             }
                         }
                     }
