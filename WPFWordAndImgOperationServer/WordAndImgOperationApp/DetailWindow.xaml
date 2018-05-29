@@ -148,10 +148,83 @@
                                                       Tag="{Binding}" MouseLeftButtonDown="DetailGrid_MouseLeftButtonDown">
                                                     <StackPanel Orientation="Horizontal" Margin="24,0,0,0"
                                                                 VerticalAlignment="Center" HorizontalAlignment="Left">
-                                                        <TextBlock Text="{Binding Name}" FontSize="18" Opacity="0.87"
-                                                                   Style="{StaticResource CommonLeftTextBlock}"
-                                                                   MaxWidth="120" TextTrimming="CharacterEllipsis">
-                                                        </TextBlock>
+                                                        <Button Style="{StaticResource ErrorWordsDetailInfoTextButtonStyle}"
+                                                                HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
+                                                                Content="{Binding Name}">
+                                                            <Button.ToolTip>
+                                                                <ToolTip>
+                                                                    <Grid Width="280">
+                                                                        <Grid.RowDefinitions>
+                                                                            <RowDefinition Height="32"></RowDefinition>
+                                                                            <RowDefinition Height="Auto"></RowDefinition>
+                                                                            <RowDefinition Height="32"></RowDefinition>
+                                                                            <RowDefinition Height="Auto"></RowDefinition>
+                                                                        </Grid.RowDefinitions>
+                                                                        <StackPanel Grid.Row="0" Orientation="Horizontal" Margin="24,0,0,0"
+                                                                HorizontalAlignment="Left" VerticalAlignment="Center">
+                                                                            <Grid Width="18" Height="18" VerticalAlignment="Center"
+                                                              Background="{StaticResource SuoZaiCiKuTitleLogo}"></Grid>
+                                                                            <TextBlock Text="所在违禁词词库" FontSize="12" Opacity="0.54" Margin="8,0,0,0"
+                                                                   Style="{StaticResource CommonLeftTextBlock}"></TextBlock>
+                                                                        </StackPanel>
+                                                                        <Grid Grid.Row="1" Margin="42,0,0,0">
+                                                                            <ListBox x:Name="listBox2" BorderThickness="0" Background="Transparent" 
+                                                                 ItemsSource="{Binding UnChekedWordDetailInfos}"
+                                                                 ScrollViewer.HorizontalScrollBarVisibility="Disabled" 
+                                                                 ScrollViewer.VerticalScrollBarVisibility="Auto" SelectedIndex="-1"
+                                                                 ItemContainerStyle="{StaticResource ListBoxItemContainerStyle}" 
+                                                                 VerticalAlignment="Top" HorizontalAlignment="Stretch"
+                                                                 ScrollViewer.CanContentScroll="False">
+                                                                                <ListBox.ItemTemplate>
+                                                                                    <DataTemplate>
+                                                                                        <Grid Height="40" Width="{Binding ElementName=listBox2,Path=ActualWidth}">
+                                                                                            <Grid.ColumnDefinitions>
+                                                                                                <ColumnDefinition Width="40"></ColumnDefinition>
+                                                                                                <ColumnDefinition Width="*"></ColumnDefinition>
+                                                                                                <ColumnDefinition Width="*"></ColumnDefinition>
+                                                                                            </Grid.ColumnDefinitions>
+                                                                                            <Grid Grid.Column="0">
+                                                                                                <Image Width="24" Height="24" Stretch="Fill"
+                                                                                   HorizontalAlignment="Center" VerticalAlignment="Center"
+                                                                                   control:ImageDecoder.Source="{Binding SourceDBImgPath}">
+                                                                                                </Image>
+                                                                                            </Grid>
+                                                                                            <Grid Grid.Column="1">
+                                                                                                <TextBlock Text="{Binding SourceDB}" FontSize="14" Opacity="0.87"
+                                                                                       Style="{StaticResource CommonLeftTextBlock}">
+                                                                                                </TextBlock>
+                                                                                            </Grid>
+                                                                                            <Grid Grid.Column="2">
+                                                                                                <TextBlock Text="{Binding NameType}" FontSize="14" Opacity="0.87"
+                                                                                       Style="{StaticResource CommonLeftTextBlock}">
+                                                                                                </TextBlock>
+                                                                                            </Grid>
+                                                                                        </Grid>
+                                                                                    </DataTemplate>
+                                                                                </ListBox.ItemTemplate>
+                                                                                <ListBox.ItemsPanel>
+                                                                                    <ItemsPanelTemplate>
+                                                                                        <WrapPanel Orientation="Vertical"/>
+                                                                                    </ItemsPanelTemplate>
+                                                                                </ListBox.ItemsPanel>
+                                                                            </ListBox>
+                                                                        </Grid>
+                                                                        <StackPanel Grid.Row="2" Orientation="Horizontal" Margin="24,0,0,0"
+                                                                HorizontalAlignment="Left" VerticalAlignment="Center">
+                                                                            <Grid Width="18" Height="18" VerticalAlignment="Center"
+                                                              Background="{StaticResource TiHuanCiTitleLogo}"></Grid>
+                                                                            <TextBlock Text="推荐词" FontSize="12" Opacity="0.54" Margin="8,0,0,0"
+                                                                   Style="{StaticResource CommonLeftTextBlock}"></TextBlock>
+                                                                        </StackPanel>
+                                                                        <Grid Grid.Row="3" MinHeight="20" Background="Transparent" Margin="50,8,0,0">
+                                                                            <TextBlock Text="暂无" FontSize="14" Opacity="0.87"
+                                                                   Style="{StaticResource CommonLeftTextBlock}" VerticalAlignment="Top">
+                                                                            </TextBlock>
+                                                                        </Grid>
+                                                                    </Grid>
+                                                                </ToolTip>
+                                                            </Button.ToolTip>
+                                                        </Button>
                                                         <Border Width="18" Height="18" Margin="6,0,0,0" Background="Red"
                                                                 CornerRadius="9">
                                                             <TextBlock Text="0" FontSize="12" Opacity="0.87"
@@ -167,73 +240,6 @@
                                                                   Style="{StaticResource ExpandCollapseToggleStyle}"/>
                                                 </Grid>
                                                 <Grid Grid.Row="1" Visibility="{Binding IsChecked,Converter={StaticResource BoolToVisibilityConvert}}">
-                                                    <Grid.RowDefinitions>
-                                                        <RowDefinition Height="32"></RowDefinition>
-                                                        <RowDefinition Height="Auto"></RowDefinition>
-                                                        <RowDefinition Height="32"></RowDefinition>
-                                                        <RowDefinition Height="Auto"></RowDefinition>
-                                                    </Grid.RowDefinitions>
-                                                    <StackPanel Grid.Row="0" Orientation="Horizontal" Margin="24,0,0,0"
-                                                                HorizontalAlignment="Left" VerticalAlignment="Center">
-                                                        <Grid Width="18" Height="18" VerticalAlignment="Center"
-                                                              Background="{StaticResource SuoZaiCiKuTitleLogo}"></Grid>
-                                                        <TextBlock Text="所在违禁词词库" FontSize="12" Opacity="0.54" Margin="8,0,0,0"
-                                                                   Style="{StaticResource CommonLeftTextBlock}"></TextBlock>
-                                                    </StackPanel>
-                                                    <Grid Grid.Row="1" Margin="42,0,0,0">
-                                                        <ListBox x:Name="listBox2" BorderThickness="0" Background="Transparent" 
-                                                                 ItemsSource="{Binding UnChekedWordDetailInfos}"
-                                                                 ScrollViewer.HorizontalScrollBarVisibility="Disabled" 
-                                                                 ScrollViewer.VerticalScrollBarVisibility="Auto" SelectedIndex="-1"
-                                                                 ItemContainerStyle="{StaticResource ListBoxItemContainerStyle}" 
-                                                                 VerticalAlignment="Top" HorizontalAlignment="Stretch"
-                                                                 ScrollViewer.CanContentScroll="False">
-                                                            <ListBox.ItemTemplate>
-                                                                <DataTemplate>
-                                                                    <Grid Height="40" Width="{Binding ElementName=listBox2,Path=ActualWidth}">
-                                                                        <Grid.ColumnDefinitions>
-                                                                            <ColumnDefinition Width="40"></ColumnDefinition>
-                                                                            <ColumnDefinition Width="*"></ColumnDefinition>
-                                                                            <ColumnDefinition Width="*"></ColumnDefinition>
-                                                                        </Grid.ColumnDefinitions>
-                                                                        <Grid Grid.Column="0">
-                                                                            <Image Width="24" Height="24" Stretch="Fill"
-                                                                                   HorizontalAlignment="Center" VerticalAlignment="Center"
-                                                                                   control:ImageDecoder.Source="{Binding SourceDBImgPath}">
-                                                                            </Image>
-                                                                        </Grid>
-                                                                        <Grid Grid.Column="1">
-                                                                            <TextBlock Text="{Binding SourceDB}" FontSize="14" Opacity="0.87"
-                                                                                       Style="{StaticResource CommonLeftTextBlock}">
-                                                                            </TextBlock>
-                                                                        </Grid>
-                                                                        <Grid Grid.Column="2">
-                                                                            <TextBlock Text="{Binding NameType}" FontSize="14" Opacity="0.87"
-                                                                                       Style="{StaticResource CommonLeftTextBlock}">
-                                                                            </TextBlock>
-                                                                        </Grid>
-                                                                    </Grid>
-                                                                </DataTemplate>
-                                                            </ListBox.ItemTemplate>
-                                                            <ListBox.ItemsPanel>
-                                                                <ItemsPanelTemplate>
-                                                                    <WrapPanel Orientation="Vertical"/>
-                                                                </ItemsPanelTemplate>
-                                                            </ListBox.ItemsPanel>
-                                                        </ListBox>
-                                                    </Grid>
-                                                    <StackPanel Grid.Row="2" Orientation="Horizontal" Margin="24,0,0,0"
-                                                                HorizontalAlignment="Left" VerticalAlignment="Center">
-                                                        <Grid Width="18" Height="18" VerticalAlignment="Center"
-                                                              Background="{StaticResource TiHuanCiTitleLogo}"></Grid>
-                                                        <TextBlock Text="推荐词" FontSize="12" Opacity="0.54" Margin="8,0,0,0"
-                                                                   Style="{StaticResource CommonLeftTextBlock}"></TextBlock>
-                                                    </StackPanel>
-                                                    <Grid Grid.Row="3" MinHeight="20" Background="Transparent" Margin="50,8,0,0">
-                                                        <TextBlock Text="暂无" FontSize="14" Opacity="0.87"
-                                                                   Style="{StaticResource CommonLeftTextBlock}" VerticalAlignment="Top">
-                                                        </TextBlock>
-                                                    </Grid>
                                                 </Grid>
                                             </Grid>
                                         </Grid>
