@@ -39,7 +39,15 @@ namespace CheckWordModel
                 RaisePropertyChanged("InLineKeyText");
             }
         }
-        public int InLineKeyTextRangeStart { get; set; }
-        public int InLineKeyTextRangeEnd { get; set; }
+        private int inLineKeyTextRangeStart = -1;
+        public int InLineKeyTextRangeStart
+        {
+            get { return inLineKeyTextRangeStart; }
+            set
+            {
+                inLineKeyTextRangeStart = value;
+                RaisePropertyChanged("InLineKeyTextRangeStart");
+            }
+        }
     }
 }

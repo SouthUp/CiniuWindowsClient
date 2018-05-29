@@ -86,6 +86,10 @@ namespace WordAndImgOperationApp
                         infoDetail.SourceDBImgPath = AppDomain.CurrentDomain.BaseDirectory + "Resources/DBTypeLogo/Default.png";
                     }
                 }
+                foreach (var infoDetail in item.UnChekedWordInLineDetailInfos)
+                {
+                    infoDetail.InLineKeyTextRangeStart = -1;
+                }
             }
             LoadData();
         }
@@ -123,13 +127,25 @@ namespace WordAndImgOperationApp
                         docViewer.ReadOnly = false;
                         docViewer.HorizontalRuler.Visibility = System.Windows.Visibility.Hidden;
                         docViewer.VerticalRuler.Visibility = System.Windows.Visibility.Hidden;
-                        string searchStr = string.Join("|", viewModel.CurrentMyFolderData.UnChekedWordInfos.Select(y => y.Name).ToList());
-                        DocumentRange[] list = docViewer.Document.FindAll(new Regex(@searchStr));
-                        for (int i = 0; i < list.Length; i++)
+                        foreach (var searchStr in viewModel.CurrentMyFolderData.UnChekedWordInfos.Select(y => y.Name).ToList())
                         {
-                            CharacterProperties cp = docViewer.Document.BeginUpdateCharacters(list[i]);
-                            cp.BackColor = System.Drawing.ColorTranslator.FromHtml("#ffff00");
-                            this.docViewer.Document.EndUpdateCharacters(cp);
+                            //string searchStr = string.Join("|", viewModel.CurrentMyFolderData.UnChekedWordInfos.Select(y => y.Name).ToList());
+                            DocumentRange[] list = docViewer.Document.FindAll(new Regex(@searchStr));
+                            for (int i = 0; i < list.Length; i++)
+                            {
+                                try
+                                {
+                                    CharacterProperties cp = docViewer.Document.BeginUpdateCharacters(list[i]);
+                                    cp.BackColor = System.Drawing.ColorTranslator.FromHtml("#ffff00");
+                                    this.docViewer.Document.EndUpdateCharacters(cp);
+                                }
+                                catch (Exception ex)
+                                { }
+                                //赋值range
+                                var itemDetailInfo = viewModel.CurrentMyFolderData.UnChekedWordInfos.FirstOrDefault(y => y.Name == searchStr).UnChekedWordInLineDetailInfos.Where(z => z.TypeTextFrom == "Text" && z.InLineKeyTextRangeStart == -1).FirstOrDefault();
+                                if (itemDetailInfo != null)
+                                    itemDetailInfo.InLineKeyTextRangeStart = list[i].Start.ToInt();
+                            }
                         }
                         docViewer.ReadOnly = true;
                     }
@@ -287,14 +303,9 @@ namespace WordAndImgOperationApp
                 {
                     try
                     {
-                        string searchStr = info.InLineText;
-                        DocumentRange[] list = docViewer.Document.FindAll(new Regex(@searchStr));
-                        if (list != null && list.Count() > 0)
-                        {
-                            var range = list[0];
-                            ScrollToPosition(range.Start);
-                            docViewer.Document.Selection = docViewer.Document.CreateRange(range.Start.ToInt(), range.Length);
-                        }
+                        string searchStr = info.InLineKeyText;
+                        ScrollToPosition(info.InLineKeyTextRangeStart);
+                        docViewer.Document.Selection = docViewer.Document.CreateRange(info.InLineKeyTextRangeStart, searchStr.Length);
                     }
                     catch (Exception ex)
                     { }

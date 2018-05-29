@@ -252,7 +252,8 @@
                                                         <ListBox.ItemTemplate>
                                                             <DataTemplate>
                                                                 <Grid Height="40" Width="{Binding ElementName=listBox3,Path=ActualWidth}"
-                                                                      Cursor="Hand" Tag="{Binding}" MouseLeftButtonDown="InLineGrid_MouseLeftButtonDown">
+                                                                      Background="Transparent" Cursor="Hand" 
+                                                                      Tag="{Binding}" MouseLeftButtonDown="InLineGrid_MouseLeftButtonDown">
                                                                     <StackPanel Orientation="Horizontal" Margin="24,0,0,0"
                                                                                 HorizontalAlignment="Left" VerticalAlignment="Center">
                                                                         <Grid Width="18" Height="18" Background="{StaticResource InLineTextDocLogo}"
@@ -263,7 +264,7 @@
                                                                         </Grid>
                                                                         <TextBlock Text="{Binding InLineText}" FontSize="14" Opacity="0.54"
                                                                                    Style="{StaticResource CommonLeftTextBlock}" Margin="8,0,0,0"
-                                                                                   MaxWidth="210" TextTrimming="CharacterEllipsis">
+                                                                                   Width="210" TextTrimming="CharacterEllipsis">
                                                                         </TextBlock>
                                                                     </StackPanel>
                                                                 </Grid>
