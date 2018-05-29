@@ -151,22 +151,13 @@ namespace MyWordAddIn
         {
             try
             {
+                List<Microsoft.Office.Interop.Word.Paragraph> ParagraphDataList = new List<Microsoft.Office.Interop.Word.Paragraph>();
                 //检测整个文档
-                string textResult = "";
-                if (document.Words.Count > 0)
+                foreach (Microsoft.Office.Interop.Word.Paragraph paragraph in document.Paragraphs)
                 {
-                    for (int i = 1; i < document.Words.Count; i++)
-                    {
-                        textResult += document.Words[i].Text;
-                    }
+                    ParagraphDataList.Add(paragraph);
                 }
-                var listUnChekedWord = CheckWordHelper.GetUnChekedWordInfoList(textResult).ToList();
-                List<string> listStrs = new List<string>();
-                foreach (var item in listUnChekedWord)
-                {
-                    listStrs.Add(item.Name);
-                }
-                FindTextAndHightLight(listStrs);
+                FindTextAndHightLight(ParagraphDataList);
             }
             catch (Exception ex)
             { }
@@ -175,84 +166,71 @@ namespace MyWordAddIn
         {
             e.Handled = true;
         }
-        //////private void ListBox2_OnManipulationBoundaryFeedback(object sender, ManipulationBoundaryFeedbackEventArgs e)
-        //////{
-        //////    e.Handled = true;
-        //////}
         /// <summary>
         /// 查找文本并高亮显示
         /// </summary>
         /// <param name="strFind"></param>
-        private void FindTextAndHightLight(List<string> listStrs)
+        private void FindTextAndHightLight(List<Microsoft.Office.Interop.Word.Paragraph> ParagraphDataList)
         {
-            //////ObservableCollection<UnChekedDetailWordInfo> listUnCheckDetailWords = new ObservableCollection<UnChekedDetailWordInfo>();
             ObservableCollection<UnChekedWordInfo> listUnCheckWords = new ObservableCollection<UnChekedWordInfo>();
-            // 清楚文档中的高亮显示
+            // 清除文档中的高亮显示
             ClearMark();
             rangeSelectLists = new List<Range>();
             rangeBackColorSelectLists = new List<WdColorIndex>();
-            foreach (var strFind in listStrs)
+            //处理段落违禁词查找
+            try
             {
-                UnChekedWordInfo SelectUnCheckWord = new UnChekedWordInfo() {Name = strFind };
-                // 按段落检索
-                Document currentDocument = Globals.ThisAddIn.Application.ActiveDocument;
-                if (currentDocument.Paragraphs != null &&
-                    currentDocument.Paragraphs.Count != 0)
+                int ParagraphCount = document.Paragraphs.Count;
+                System.Threading.Tasks.Parallel.For(0, ParagraphCount, new System.Threading.Tasks.ParallelOptions { MaxDegreeOfParallelism = 10 }, (i, state) =>
                 {
-                    foreach (Microsoft.Office.Interop.Word.Paragraph paragraph in currentDocument.Paragraphs)
+                    var paragraph = ParagraphDataList.Skip(i).Take(1).ToList().First();
+                    if (paragraph != null)
                     {
-                        MatchCollection mc = Regex.Matches(paragraph.Range.Text, strFind, RegexOptions.IgnoreCase);
-                        if (mc.Count > 0)
+                        var listUnChekedWord = CheckWordHelper.GetUnChekedWordInfoList(paragraph.Range.Text).ToList();
+                        if (listUnChekedWord != null && listUnChekedWord.Count > 0)
                         {
-                            foreach (Match m in mc)
+                            foreach (var strFind in listUnChekedWord.Select(x => x.Name).ToList())
                             {
-                                try
+                                UnChekedWordInfo SelectUnCheckWord = new UnChekedWordInfo() { Name = strFind };
+                                MatchCollection mc = Regex.Matches(paragraph.Range.Text, strFind, RegexOptions.IgnoreCase);
+                                if (mc.Count > 0)
                                 {
-                                    int startIndex = paragraph.Range.Start + m.Index;
-                                    int endIndex = paragraph.Range.Start + m.Index + m.Length;
-                                    Range keywordRange = currentDocument.Range(startIndex, endIndex);
-                                    rangeSelectLists.Add(keywordRange);
-                                    rangeBackColorSelectLists.Add(keywordRange.HighlightColorIndex);
-                                    keywordRange.HighlightColorIndex = WdColorIndex.wdYellow;
-                                    //////keywordRange.Font.Underline = WdUnderline.wdUnderlineWavyDouble;
-                                    //////document.Comments.Add(range, "违禁词");
-                                    SelectUnCheckWord.Children.Add(new UnChekedWordInfo() { Name = paragraph.Range.Text, Range = paragraph.Range, UnCheckWordRange= keywordRange });
-                                    SelectUnCheckWord.Initialize();
-                                    //////UnChekedDetailWordInfo SelectUnCheckDetailWord = new UnChekedDetailWordInfo() { Name = strFind, UnCheckWordRange = keywordRange};
-                                    //////if (listUnCheckDetailWords.FirstOrDefault(x => x.Name == SelectUnCheckDetailWord.Name && x.UnCheckWordRange.Start == SelectUnCheckDetailWord.UnCheckWordRange.Start) == null)
-                                    //////{
-                                    //////    listUnCheckDetailWords.Add(SelectUnCheckDetailWord);
-                                    //////}
+                                    foreach (Match m in mc)
+                                    {
+                                        try
+                                        {
+                                            int startIndex = paragraph.Range.Start + m.Index;
+                                            int endIndex = paragraph.Range.Start + m.Index + m.Length;
+                                            Range keywordRange = document.Range(startIndex, endIndex);
+                                            rangeSelectLists.Add(keywordRange);
+                                            rangeBackColorSelectLists.Add(keywordRange.HighlightColorIndex);
+                                            keywordRange.HighlightColorIndex = WdColorIndex.wdYellow;
+                                            SelectUnCheckWord.Children.Add(new UnChekedWordInfo() { Name = paragraph.Range.Text, Range = paragraph.Range, UnCheckWordRange = keywordRange });
+                                            SelectUnCheckWord.Initialize();
+                                        }
+                                        catch (Exception ex)
+                                        { }
+                                    }
+                                    var infoExist = listUnCheckWords.FirstOrDefault(x => x.Name == SelectUnCheckWord.Name);
+                                    if (infoExist == null)
+                                    {
+                                        listUnCheckWords.Add(SelectUnCheckWord);
+                                    }
+                                    else
+                                    {
+                                        foreach (var item in SelectUnCheckWord.Children)
+                                        {
+                                            infoExist.Children.Add(item);
+                                        }
+                                    }
                                 }
-                                catch (Exception ex)
-                                { }
                             }
                         }
                     }
-                    if (listUnCheckWords.FirstOrDefault(x => x.Name == SelectUnCheckWord.Name) == null)
-                    {
-                        listUnCheckWords.Add(SelectUnCheckWord);
-                    }
-                }
+                });
             }
-            //////foreach (var SelectUnCheckDetailWord in listUnCheckDetailWords)
-            //////{
-            //////    var itemInfo = viewModel.UncheckedWordDetailLists.FirstOrDefault(x => x.Name == SelectUnCheckDetailWord.Name && x.UnCheckWordRange.Start == SelectUnCheckDetailWord.UnCheckWordRange.Start);
-            //////    if (itemInfo == null)
-            //////    {
-            //////        viewModel.UncheckedWordDetailLists.Add(SelectUnCheckDetailWord);
-            //////    }
-            //////}
-            //////for (int i = 0; i < viewModel.UncheckedWordDetailLists.Count; i++)
-            //////{
-            //////    var itemInfo = listUnCheckDetailWords.FirstOrDefault(x => x.Name == viewModel.UncheckedWordDetailLists[i].Name && x.UnCheckWordRange.Start == viewModel.UncheckedWordDetailLists[i].UnCheckWordRange.Start);
-            //////    if (itemInfo == null)
-            //////    {
-            //////        viewModel.UncheckedWordDetailLists.RemoveAt(i);
-            //////        i--;
-            //////    }
-            //////}
-            //////viewModel.WarningDetailCount = viewModel.UncheckedWordDetailLists.Count;
+            catch (Exception ex)
+            { }
             foreach (var SelectUnCheckWord in listUnCheckWords)
             {
                 var itemInfo = viewModel.UncheckedWordLists.FirstOrDefault(x => x.Name == SelectUnCheckWord.Name);
@@ -330,8 +308,6 @@ namespace MyWordAddIn
                         {
                             GetOtherHighlightColorLists(paragraph.Range);
                         }
-                        ////////paragraph.Range.HighlightColorIndex = WdColorIndex.wdNoHighlight;
-                        ////////paragraph.Range.Font.Underline = WdUnderline.wdUnderlineNone;
                     }
                 }
             }
@@ -378,99 +354,6 @@ namespace MyWordAddIn
             catch (Exception ex)
             { }
         }
-        #region 其他方法
-        private void CallGetPositionForViewDemo()
-        {
-            //////// 获取上下文信息
-            //////// 获取前两个单词的位置（如果有）
-            //////startIndex = GetStartPositionForView(paragraph, m, startIndex);
-            //////// 获取后两个单词的位置（如果有）
-            //////endIndex = GetEndPositionForView(paragraph, m, endIndex);
-            //////// 在ListView中展示检索的关键字以及其上下文
-            //////Range range = currentDocument.Range(startIndex, endIndex);
-            //////string searchResultInText = range.Text;
-        }
-        private static int GetEndPositionForView(Microsoft.Office.Interop.Word.Paragraph paragraph, Match m, int endIndex)
-        {
-            string suffixPart = paragraph.Range.Text.Substring(m.Index + m.Length);
-            MatchCollection suffixMC = Regex.Matches(suffixPart, "\\s");
-            if (suffixMC.Count >= 3)
-            {
-                endIndex = endIndex + suffixMC[2].Index;
-            }
-            else
-            {
-                if (suffixMC.Count >= 2)
-                {
-                    endIndex = endIndex + suffixMC[1].Index;
-                }
-                else if (suffixMC.Count >= 1)
-                {
-                    endIndex = endIndex + suffixMC[0].Index;
-                }
-            }
-            return endIndex;
-        }
-
-        private static int GetStartPositionForView(Microsoft.Office.Interop.Word.Paragraph paragraph, Match m, int startIndex)
-        {
-            string prefixPart = paragraph.Range.Text.Substring(0, m.Index);
-            MatchCollection preficMC = Regex.Matches(prefixPart, "\\s");
-            if (preficMC.Count >= 3)
-            {
-                startIndex = paragraph.Range.Start + preficMC[preficMC.Count - 3].Index;
-            }
-            else
-            {
-                if (preficMC.Count >= 2)
-                {
-                    startIndex = paragraph.Range.Start + preficMC[preficMC.Count - 2].Index;
-                }
-                else if (preficMC.Count >= 1)
-                {
-                    startIndex = paragraph.Range.Start + preficMC[preficMC.Count - 1].Index;
-                }
-            }
-            return startIndex;
-        }
-        //private void FindText(string strFind)
-        //{
-        //    int intFound = 0;
-        //    object missing = Type.Missing;
-        //    ////高亮查询显示
-        //    Microsoft.Office.Interop.Word.Selection currentselect = document.Content.Sections.Application.Selection;
-        //    currentselect.Find.ClearFormatting();
-        //    currentselect.Find.Text = strFind;//查询的文字
-        //    currentselect.Find.Wrap = Microsoft.Office.Interop.Word.WdFindWrap.wdFindContinue;
-        //    bool findover = currentselect.Find.Execute(ref missing, ref missing,
-        //    ref missing, ref missing,
-        //                   ref missing, ref missing,
-        //                   ref missing, ref missing,
-        //                   ref missing, ref missing,
-        //                   ref missing, ref missing,
-        //                   ref missing, ref missing,
-        //                   ref missing);
-        //    ////查找总个数
-        //    Microsoft.Office.Interop.Word.Range rng = document.Content;
-        //    rng.Find.ClearFormatting();
-        //    rng.Find.Forward = true;
-        //    rng.Find.Text = strFind;
-        //    rng.Find.Execute(
-        //        ref missing, ref missing, ref missing, ref missing, ref missing,
-        //        ref missing, ref missing, ref missing, ref missing, ref missing,
-        //        ref missing, ref missing, ref missing, ref missing, ref missing);
-
-        //    while (rng.Find.Found)
-        //    {
-        //        intFound++;
-        //        rng.Find.Execute(
-        //            ref missing, ref missing, ref missing, ref missing, ref missing,
-        //            ref missing, ref missing, ref missing, ref missing, ref missing,
-        //            ref missing, ref missing, ref missing, ref missing, ref missing);
-        //    }
-        //    //MessageBox.Show("找到的词共有: " + intFound.ToString());
-        //}
-        #endregion
         private void UnCheckWordGrid_MouseDown(object sender, MouseButtonEventArgs e)
         {
             Grid grid = sender as Grid;
@@ -491,30 +374,5 @@ namespace MyWordAddIn
             unChekedWordInfo.IsSelected = false;
             unChekedWordInfo.UnCheckWordRange.Select();
         }
-        //////private void UnCheckDetailWordGrid_MouseDown(object sender, MouseButtonEventArgs e)
-        //////{
-        //////    Grid grid = sender as Grid;
-        //////    UnChekedDetailWordInfo unChekedDetailWordInfo = grid.Tag as UnChekedDetailWordInfo;
-        //////    unChekedDetailWordInfo.IsSelected = true;
-        //////    unChekedDetailWordInfo.UnCheckWordRange.Select();
-        //////    foreach (var item in viewModel.UncheckedWordDetailLists)
-        //////    {
-        //////        if (item.Name != unChekedDetailWordInfo.Name || unChekedDetailWordInfo.UnCheckWordRange.Start != item.UnCheckWordRange.Start)
-        //////        {
-        //////            item.IsSelected = false;
-        //////        }
-        //////    }
-        //////}
-        //////private void DetailBtn_Checked(object sender, RoutedEventArgs e)
-        //////{
-        //////    viewModel.DetailVisibility = Visibility.Visible;
-        //////    viewModel.SummaryVisibility = Visibility.Collapsed;
-        //////}
-
-        //////private void SummaryBtn_Checked(object sender, RoutedEventArgs e)
-        //////{
-        //////    viewModel.SummaryVisibility = Visibility.Visible;
-        //////    viewModel.DetailVisibility = Visibility.Collapsed;
-        //////}
     }
 }

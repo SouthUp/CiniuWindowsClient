@@ -12,16 +12,6 @@ namespace MyWordAddIn
 {
     public class MyControlViewModel : NotificationObject
     {
-        //////private ObservableCollection<UnChekedDetailWordInfo> uncheckedDetailWordLists = new ObservableCollection<UnChekedDetailWordInfo>();
-        //////public ObservableCollection<UnChekedDetailWordInfo> UncheckedWordDetailLists
-        //////{
-        //////    get { return uncheckedDetailWordLists; }
-        //////    set
-        //////    {
-        //////        uncheckedDetailWordLists = value;
-        //////        RaisePropertyChanged("UncheckedWordDetailLists");
-        //////    }
-        //////}
         private ObservableCollection<UnChekedWordInfo> uncheckedWordLists = new ObservableCollection<UnChekedWordInfo>();
         public ObservableCollection<UnChekedWordInfo> UncheckedWordLists
         {
@@ -42,26 +32,6 @@ namespace MyWordAddIn
                 RaisePropertyChanged("WarningCount");
             }
         }
-        //////private int warningDetailCount = 0;
-        //////public int WarningDetailCount
-        //////{
-        //////    get { return warningDetailCount; }
-        //////    set
-        //////    {
-        //////        warningDetailCount = value;
-        //////        RaisePropertyChanged("WarningDetailCount");
-        //////    }
-        //////}
-        //////private Visibility detailVisibility = Visibility.Collapsed;
-        //////public Visibility DetailVisibility
-        //////{
-        //////    get { return detailVisibility; }
-        //////    set
-        //////    {
-        //////        detailVisibility = value;
-        //////        RaisePropertyChanged("DetailVisibility");
-        //////    }
-        //////}
         private Visibility summaryVisibility = Visibility.Visible;
         public Visibility SummaryVisibility
         {

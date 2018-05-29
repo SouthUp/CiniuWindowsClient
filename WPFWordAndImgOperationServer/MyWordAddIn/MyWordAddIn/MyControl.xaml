@@ -699,89 +699,9 @@
             <RowDefinition Height="30"></RowDefinition>
             <RowDefinition Height="*"></RowDefinition>
         </Grid.RowDefinitions>
-        <!--<Grid Grid.Row="0">
-            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
-                <RadioButton x:Name="DetailBtn" GroupName="ListType" IsChecked="True"
-                             Style="{StaticResource DetailRadioButtonStyle}"
-                             Width="30" Height="25"
-                             Checked="DetailBtn_Checked"></RadioButton>
-                <RadioButton x:Name="SummaryBtn" GroupName="ListType"
-                             Style="{StaticResource SummaryRadioButtonStyle}"
-                             Width="30" Height="25"
-                             Checked="SummaryBtn_Checked"></RadioButton>
-            </StackPanel>
-        </Grid>-->
         <TextBlock Grid.Row="1" FontSize="16" HorizontalAlignment="Center" VerticalAlignment="Center"
                    Text="检索到的违禁词列表" FontFamily="Microsoft YaHei" TextWrapping="Wrap">
         </TextBlock>
-        <!--<Grid Grid.Row="2" Visibility="{Binding DetailVisibility}">
-            <Grid.RowDefinitions>
-                <RowDefinition Height="25"></RowDefinition>
-                <RowDefinition Height="*"></RowDefinition>
-            </Grid.RowDefinitions>
-            <Grid Grid.Row="0">
-                <StackPanel Orientation="Horizontal" Margin="0,0,5,0" HorizontalAlignment="Right" VerticalAlignment="Center">
-                    <TextBlock Text="共包含 " 
-                               Style="{StaticResource CommonLeftTextBlock}"></TextBlock>
-                    <TextBlock Text="{Binding WarningDetailCount}" Foreground="Red" FontWeight="Bold"
-                               Style="{StaticResource CommonLeftTextBlock}"></TextBlock>
-                    <TextBlock Text=" 个违禁字" 
-                               Style="{StaticResource CommonLeftTextBlock}"></TextBlock>
-                </StackPanel>
-            </Grid>
-            <Grid Grid.Row="1" x:Name="UnCheckWordDetailGrid" Background="Transparent" Margin="5,0,5,0"></Grid>
-            <ListBox Grid.Row="1" x:Name="listBox2" BorderThickness="0" Background="Transparent" ItemsSource="{Binding UncheckedWordDetailLists}"
-                             ScrollViewer.HorizontalScrollBarVisibility="Disabled" ScrollViewer.VerticalScrollBarVisibility="Auto" SelectedIndex="-1"
-                             ItemContainerStyle="{StaticResource ListBoxItemContainerStyle}" VerticalAlignment="Top" HorizontalAlignment="Stretch"
-                             ScrollViewer.CanContentScroll="True" ManipulationBoundaryFeedback="ListBox2_OnManipulationBoundaryFeedback">
-                <ListBox.ItemTemplate>
-                    <DataTemplate>
-                        <Grid>
-                            <Grid Width="{Binding ElementName=UnCheckWordDetailGrid,Path=ActualWidth}"
-                              Tag="{Binding}" Cursor="Hand" MouseDown="UnCheckDetailWordGrid_MouseDown"
-                              Margin="5,0,0,5">
-                                <Grid Background="LightGray" Opacity="0.5"></Grid>
-                                <Grid Background="#999999" Opacity="0.8" Visibility="{Binding IsSelected,Converter={StaticResource ConverterIsSelectBackground}}"></Grid>
-                                <Grid Background="Transparent" MinHeight="90" Margin="5,0,0,0">
-                                    <Grid.RowDefinitions>
-                                        <RowDefinition Height="30"></RowDefinition>
-                                        <RowDefinition Height="30"></RowDefinition>
-                                        <RowDefinition Height="30"></RowDefinition>
-                                        <RowDefinition Height="Auto"></RowDefinition>
-                                    </Grid.RowDefinitions>
-                                    <TextBlock Text="{Binding Name}" FontSize="16" FontFamily="Microsoft YaHei"></TextBlock>
-                                    <StackPanel Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Left" VerticalAlignment="Center">
-                                        <TextBlock Text="来源：" FontWeight="Bold" FontSize="16" FontFamily="Microsoft YaHei"></TextBlock>
-                                        <TextBlock Text="{Binding SourceDB}" FontSize="16" FontFamily="Microsoft YaHei"></TextBlock>
-                                    </StackPanel>
-                                    <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Left" VerticalAlignment="Center">
-                                        <TextBlock Text="类型：" FontWeight="Bold" FontSize="16" FontFamily="Microsoft YaHei"></TextBlock>
-                                        <TextBlock Text="{Binding NameType}" FontSize="16" FontFamily="Microsoft YaHei"></TextBlock>
-                                    </StackPanel>
-                                    <Grid Grid.Row="3" Height="30" Visibility="{Binding IsExpand,Converter={StaticResource ConverterIsSelectBackground}}">
-                                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" VerticalAlignment="Center">
-                                            <TextBlock Text="替换词：" FontWeight="Bold" FontSize="16" FontFamily="Microsoft YaHei"></TextBlock>
-                                        </StackPanel>
-                                    </Grid>
-                                </Grid>
-                            </Grid>
-                            <Grid Margin="5,0,0,5"
-                                  Width="{Binding ElementName=UnCheckWordDetailGrid,Path=ActualWidth}">
-                                <ToggleButton x:Name="Expander" Margin="0,45,5,0" Cursor="Hand"
-                                                  IsChecked="{Binding IsExpand}" Width="15" Height="10"
-                                                  HorizontalAlignment="Right" VerticalAlignment="Top" 
-                                                  Style="{StaticResource ExpandCollapseToggleStyle}"/>
-                            </Grid>
-                        </Grid>
-                    </DataTemplate>
-                </ListBox.ItemTemplate>
-                <ListBox.ItemsPanel>
-                    <ItemsPanelTemplate>
-                        <WrapPanel Orientation="Vertical"/>
-                    </ItemsPanelTemplate>
-                </ListBox.ItemsPanel>
-            </ListBox>
-        </Grid>-->
         <Grid Grid.Row="2" Visibility="{Binding SummaryVisibility}">
             <Grid.RowDefinitions>
                 <RowDefinition Height="25"></RowDefinition>
