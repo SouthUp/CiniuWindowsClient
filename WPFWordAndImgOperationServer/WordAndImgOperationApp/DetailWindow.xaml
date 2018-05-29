@@ -193,7 +193,7 @@
                                                                                             <Grid.ColumnDefinitions>
                                                                                                 <ColumnDefinition Width="40"></ColumnDefinition>
                                                                                                 <ColumnDefinition Width="100"></ColumnDefinition>
-                                                                                                <ColumnDefinition Width="100"></ColumnDefinition>
+                                                                                                <ColumnDefinition Width="85"></ColumnDefinition>
                                                                                             </Grid.ColumnDefinitions>
                                                                                             <Grid Grid.Column="0">
                                                                                                 <Image Width="24" Height="24" Stretch="Fill"
@@ -204,14 +204,13 @@
                                                                                             <Grid Grid.Column="1">
                                                                                                 <TextBlock Text="{Binding SourceDB}" FontSize="14" Opacity="0.87"
                                                                                                            Style="{StaticResource CommonLeftTextBlock}"
-                                                                                                           MaxWidth="90" TextTrimming="CharacterEllipsis">
+                                                                                                           MaxWidth="100" TextTrimming="CharacterEllipsis">
                                                                                                 </TextBlock>
                                                                                             </Grid>
                                                                                             <Grid Grid.Column="2">
                                                                                                 <TextBlock Text="{Binding NameType}" FontSize="14" Opacity="0.87"
                                                                                                            Style="{StaticResource CommonLeftTextBlock}"
-                                                                                                           HorizontalAlignment="Center"
-                                                                                                           MaxWidth="90" TextTrimming="CharacterEllipsis">
+                                                                                                           MaxWidth="80" TextTrimming="CharacterEllipsis">
                                                                                                 </TextBlock>
                                                                                             </Grid>
                                                                                         </Grid>
