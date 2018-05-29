@@ -276,5 +276,50 @@ namespace WordAndImgOperationApp
             catch (Exception ex)
             { }
         }
+
+        private void InLineGrid_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            var grid = sender as Grid;
+            if (grid != null)
+            {
+                var info = grid.Tag as UnChekedInLineDetailWordInfo;
+                if (info.TypeTextFrom == "Text")
+                {
+                    try
+                    {
+                        string searchStr = info.InLineText;
+                        DocumentRange[] list = docViewer.Document.FindAll(new Regex(@searchStr));
+                        if (list != null && list.Count() > 0)
+                        {
+                            var range = list[0];
+                            ScrollToPosition(range.Start);
+                            docViewer.Document.Selection = docViewer.Document.CreateRange(range.Start.ToInt(), range.Length);
+                        }
+                    }
+                    catch (Exception ex)
+                    { }
+                }
+            }
+        }
+        private void ScrollToPosition(int position)
+        {
+            try
+            {
+                docViewer.Document.CaretPosition = docViewer.Document.CreatePosition(position);
+                docViewer.ScrollToCaret(0.5f);
+            }
+            catch (Exception ex)
+            { }
+        }
+        private void ScrollToPosition(DocumentPosition position)
+        {
+            try
+            {
+                docViewer.Document.CaretPosition = position;
+                docViewer.ScrollToCaret(0.5f);
+            }
+            catch (Exception ex)
+            { }
+        }
     }
 }

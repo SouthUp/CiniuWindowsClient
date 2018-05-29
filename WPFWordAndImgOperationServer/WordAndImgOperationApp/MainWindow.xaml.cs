@@ -183,13 +183,13 @@ namespace WordAndImgOperationApp
                                 var infoResult = listResult.FirstOrDefault(x => x.Name == item.Name);
                                 if (infoResult == null)
                                 {
-                                    item.UnChekedWordInLineDetailInfos.Add(new UnChekedInLineDetailWordInfo() { InLineText = textResult });
+                                    item.UnChekedWordInLineDetailInfos.Add(new UnChekedInLineDetailWordInfo() { InLineKeyText = item.Name, InLineText = textResult });
                                     item.ErrorTotalCount++;
                                     listResult.Add(item);
                                 }
                                 else
                                 {
-                                    infoResult.UnChekedWordInLineDetailInfos.Add(new UnChekedInLineDetailWordInfo() { InLineText = textResult });
+                                    infoResult.UnChekedWordInLineDetailInfos.Add(new UnChekedInLineDetailWordInfo() { InLineKeyText = item.Name, InLineText = textResult });
                                     infoResult.ErrorTotalCount++;
                                 }
                             }

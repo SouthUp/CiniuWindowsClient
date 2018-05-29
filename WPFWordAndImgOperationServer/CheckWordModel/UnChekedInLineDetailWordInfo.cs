@@ -29,5 +29,17 @@ namespace CheckWordModel
                 RaisePropertyChanged("InLineText");
             }
         }
+        private string inLineKeyText = "";
+        public string InLineKeyText
+        {
+            get { return inLineKeyText; }
+            set
+            {
+                inLineKeyText = value;
+                RaisePropertyChanged("InLineKeyText");
+            }
+        }
+        public int InLineKeyTextRangeStart { get; set; }
+        public int InLineKeyTextRangeEnd { get; set; }
     }
 }
