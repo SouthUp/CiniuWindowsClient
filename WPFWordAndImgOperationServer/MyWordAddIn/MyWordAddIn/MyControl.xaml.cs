@@ -183,44 +183,47 @@ namespace MyWordAddIn
                 int ParagraphCount = document.Paragraphs.Count;
                 System.Threading.Tasks.Parallel.For(0, ParagraphCount, new System.Threading.Tasks.ParallelOptions { MaxDegreeOfParallelism = 10 }, (i, state) =>
                 {
-                    var paragraph = ParagraphDataList.Skip(i).Take(1).ToList().First();
-                    if (paragraph != null)
+                    if (ParagraphDataList.Skip(i).Take(1).ToList().Count > 0)
                     {
-                        var listUnChekedWord = CheckWordHelper.GetUnChekedWordInfoList(paragraph.Range.Text).ToList();
-                        if (listUnChekedWord != null && listUnChekedWord.Count > 0)
+                        var paragraph = ParagraphDataList.Skip(i).Take(1).ToList().First();
+                        if (paragraph != null)
                         {
-                            foreach (var strFind in listUnChekedWord.Select(x => x.Name).ToList())
+                            var listUnChekedWord = CheckWordHelper.GetUnChekedWordInfoList(paragraph.Range.Text).ToList();
+                            if (listUnChekedWord != null && listUnChekedWord.Count > 0)
                             {
-                                UnChekedWordInfo SelectUnCheckWord = new UnChekedWordInfo() { Name = strFind };
-                                MatchCollection mc = Regex.Matches(paragraph.Range.Text, strFind, RegexOptions.IgnoreCase);
-                                if (mc.Count > 0)
+                                foreach (var strFind in listUnChekedWord.Select(x => x.Name).ToList())
                                 {
-                                    foreach (Match m in mc)
+                                    UnChekedWordInfo SelectUnCheckWord = new UnChekedWordInfo() { Name = strFind };
+                                    MatchCollection mc = Regex.Matches(paragraph.Range.Text, strFind, RegexOptions.IgnoreCase);
+                                    if (mc.Count > 0)
                                     {
-                                        try
+                                        foreach (Match m in mc)
                                         {
-                                            int startIndex = paragraph.Range.Start + m.Index;
-                                            int endIndex = paragraph.Range.Start + m.Index + m.Length;
-                                            Range keywordRange = document.Range(startIndex, endIndex);
-                                            rangeSelectLists.Add(keywordRange);
-                                            rangeBackColorSelectLists.Add(keywordRange.HighlightColorIndex);
-                                            keywordRange.HighlightColorIndex = WdColorIndex.wdYellow;
-                                            SelectUnCheckWord.Children.Add(new UnChekedWordInfo() { Name = paragraph.Range.Text, Range = paragraph.Range, UnCheckWordRange = keywordRange });
-                                            SelectUnCheckWord.Initialize();
+                                            try
+                                            {
+                                                int startIndex = paragraph.Range.Start + m.Index;
+                                                int endIndex = paragraph.Range.Start + m.Index + m.Length;
+                                                Range keywordRange = document.Range(startIndex, endIndex);
+                                                rangeSelectLists.Add(keywordRange);
+                                                rangeBackColorSelectLists.Add(keywordRange.HighlightColorIndex);
+                                                keywordRange.HighlightColorIndex = WdColorIndex.wdYellow;
+                                                SelectUnCheckWord.Children.Add(new UnChekedWordInfo() { Name = paragraph.Range.Text, Range = paragraph.Range, UnCheckWordRange = keywordRange });
+                                                SelectUnCheckWord.Initialize();
+                                            }
+                                            catch (Exception ex)
+                                            { }
                                         }
-                                        catch (Exception ex)
-                                        { }
-                                    }
-                                    var infoExist = listUnCheckWords.FirstOrDefault(x => x.Name == SelectUnCheckWord.Name);
-                                    if (infoExist == null)
-                                    {
-                                        listUnCheckWords.Add(SelectUnCheckWord);
-                                    }
-                                    else
-                                    {
-                                        foreach (var item in SelectUnCheckWord.Children)
+                                        var infoExist = listUnCheckWords.FirstOrDefault(x => x.Name == SelectUnCheckWord.Name);
+                                        if (infoExist == null)
                                         {
-                                            infoExist.Children.Add(item);
+                                            listUnCheckWords.Add(SelectUnCheckWord);
+                                        }
+                                        else
+                                        {
+                                            foreach (var item in SelectUnCheckWord.Children)
+                                            {
+                                                infoExist.Children.Add(item);
+                                            }
                                         }
                                     }
                                 }
