@@ -80,12 +80,29 @@ namespace MyWordAddIn
                 {
                     try
                     {
-                        System.Threading.Thread tGetUncheckedWord = new System.Threading.Thread(GetUncheckedWordLists);
-                        tGetUncheckedWord.IsBackground = true;
-                        tGetUncheckedWord.Start();
+                        lock (lockObject)
+                        {
+                            IsChecking = true;
+                        }
+                        GetUncheckedWordLists();
+                        lock (lockObject)
+                        {
+                            try
+                            {
+                                DateTime typeDequeue = queue.Dequeue();
+                            }
+                            catch
+                            { }
+                            IsChecking = false;
+                        }
                     }
                     catch (Exception ex)
-                    { }
+                    {
+                        lock (lockObject)
+                        {
+                            IsChecking = false;
+                        }
+                    }
                 }
                 else
                 {
@@ -134,7 +151,6 @@ namespace MyWordAddIn
         {
             try
             {
-                IsChecking = true;
                 //检测整个文档
                 string textResult = "";
                 if (document.Words.Count > 0)
@@ -150,34 +166,10 @@ namespace MyWordAddIn
                 {
                     listStrs.Add(item.Name);
                 }
-                Dispatcher.BeginInvoke(new Action(() =>
-                {
-                    FindTextAndHightLight(listStrs);
-                    lock (lockObject)
-                    {
-                        try
-                        {
-                            DateTime typeDequeue = queue.Dequeue();
-                        }
-                        catch
-                        { }
-                        IsChecking = false;
-                    }
-                }));
+                FindTextAndHightLight(listStrs);
             }
             catch (Exception ex)
-            {
-                lock (lockObject)
-                {
-                    try
-                    {
-                        DateTime typeDequeue = queue.Dequeue();
-                    }
-                    catch
-                    { }
-                    IsChecking = false;
-                }
-            }
+            { }
         }
         private void ListBox_OnManipulationBoundaryFeedback(object sender, ManipulationBoundaryFeedbackEventArgs e)
         {
@@ -266,14 +258,23 @@ namespace MyWordAddIn
                 var itemInfo = viewModel.UncheckedWordLists.FirstOrDefault(x => x.Name == SelectUnCheckWord.Name);
                 if (itemInfo == null)
                 {
-                    viewModel.UncheckedWordLists.Add(SelectUnCheckWord);
+                    Dispatcher.Invoke(new Action(() =>
+                    {
+                        viewModel.UncheckedWordLists.Add(SelectUnCheckWord);
+                    }));
                 }
                 else
                 {
-                    itemInfo.Children.Clear();
+                    Dispatcher.Invoke(new Action(() =>
+                    {
+                        itemInfo.Children.Clear();
+                    }));
                     foreach (var item in SelectUnCheckWord.Children)
                     {
-                        itemInfo.Children.Add(item);
+                        Dispatcher.Invoke(new Action(() =>
+                        {
+                            itemInfo.Children.Add(item);
+                        }));
                     }
                     itemInfo.WarningCount = itemInfo.Children.Count;
                 }
@@ -283,7 +284,10 @@ namespace MyWordAddIn
                 var itemInfo = listUnCheckWords.FirstOrDefault(x => x.Name == viewModel.UncheckedWordLists[i].Name);
                 if (itemInfo == null)
                 {
-                    viewModel.UncheckedWordLists.RemoveAt(i);
+                    Dispatcher.Invoke(new Action(() =>
+                    {
+                        viewModel.UncheckedWordLists.RemoveAt(i);
+                    }));
                     i--;
                 }
             }
