@@ -50,6 +50,8 @@
     <Compile Include="Convert\BoolToVisibilityConvert.cs" />
     <Compile Include="Convert\BoolToVisibilityOppositeConvert.cs" />
     <Compile Include="Convert\ConverterLoginMarginLeft .cs" />
+    <Compile Include="Convert\InLineImgToVisibilityConvert.cs" />
+    <Compile Include="Convert\InLineTextToVisibilityConvert.cs" />
     <Compile Include="Convert\NullOrEmptyStringToVisibilityConverter .cs" />
     <Compile Include="Convert\ValueToVisibilityConvert.cs" />
     <Compile Include="ImageDecoder\ImageDecoder.cs" />

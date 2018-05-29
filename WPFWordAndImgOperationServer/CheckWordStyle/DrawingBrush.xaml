@@ -813,4 +813,38 @@
             </DrawingGroup>
         </DrawingBrush.Drawing>
     </DrawingBrush>
+    <DrawingBrush x:Key="InLineTextDocLogo" Stretch="None">
+        <DrawingBrush.Drawing>
+            <DrawingGroup>
+                <DrawingGroup.ClipGeometry>
+                    <RectangleGeometry Rect="0,0,18,18" />
+                </DrawingGroup.ClipGeometry>
+                <GeometryDrawing>
+                    <GeometryDrawing.Brush>
+                        <SolidColorBrush Color="#FF000000" Opacity="0.541" />
+                    </GeometryDrawing.Brush>
+                    <GeometryDrawing.Geometry>
+                        <PathGeometry FillRule="EvenOdd" Figures="M11.009,2L5.004,2C4.179,2,3.003,3.175,3.003,4L3.003,15C3.003,15.825,4.179,17,5.004,17L13.011,17C13.837,17,15.013,15.825,15.013,15L15.013,6 11.009,2z M12.01,14L6.005,14 6.005,12 12.01,12 12.01,14z M12.01,11L6.005,11 6.005,9 12.01,9 12.01,11z M10.008,7L10.008,3 14.012,7 10.008,7z" />
+                    </GeometryDrawing.Geometry>
+                </GeometryDrawing>
+            </DrawingGroup>
+        </DrawingBrush.Drawing>
+    </DrawingBrush>
+    <DrawingBrush x:Key="InLineTextImgLogo" Stretch="None">
+        <DrawingBrush.Drawing>
+            <DrawingGroup>
+                <DrawingGroup.ClipGeometry>
+                    <RectangleGeometry Rect="0,0,18,18" />
+                </DrawingGroup.ClipGeometry>
+                <GeometryDrawing>
+                    <GeometryDrawing.Brush>
+                        <SolidColorBrush Color="#FF000000" Opacity="0.541" />
+                    </GeometryDrawing.Brush>
+                    <GeometryDrawing.Geometry>
+                        <PathGeometry FillRule="EvenOdd" Figures="M16.257,14.009L16.257,3.171C16.257,2.319,15.56,1.622,14.709,1.622L3.87,1.622C3.018,1.622,2.322,2.319,2.322,3.171L2.322,14.009C2.322,14.861,3.018,15.558,3.87,15.558L14.709,15.558C15.56,15.558,16.257,14.861,16.257,14.009z M6.58,9.751L8.515,12.082 11.225,8.59 14.709,13.235 3.87,13.235 6.58,9.751z" />
+                    </GeometryDrawing.Geometry>
+                </GeometryDrawing>
+            </DrawingGroup>
+        </DrawingBrush.Drawing>
+    </DrawingBrush>
 </ResourceDictionary>
