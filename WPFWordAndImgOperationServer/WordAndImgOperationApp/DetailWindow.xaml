@@ -146,9 +146,20 @@
                                                 </Grid.RowDefinitions>
                                                 <Grid Grid.Row="0" Cursor="Hand" Background="Transparent" 
                                                       Tag="{Binding}" MouseLeftButtonDown="DetailGrid_MouseLeftButtonDown">
-                                                    <TextBlock Text="{Binding Name}" FontSize="18" Opacity="0.87"
-                                                               Style="{StaticResource CommonLeftTextBlock}"
-                                                               Margin="24,0,0,0"></TextBlock>
+                                                    <StackPanel Orientation="Horizontal" Margin="24,0,0,0"
+                                                                VerticalAlignment="Center" HorizontalAlignment="Left">
+                                                        <TextBlock Text="{Binding Name}" FontSize="18" Opacity="0.87"
+                                                                   Style="{StaticResource CommonLeftTextBlock}"
+                                                                   MaxWidth="120" TextTrimming="CharacterEllipsis">
+                                                        </TextBlock>
+                                                        <Border Width="18" Height="18" Margin="6,0,0,0" Background="Red"
+                                                                CornerRadius="9">
+                                                            <TextBlock Text="0" FontSize="12" Opacity="0.87"
+                                                                       Style="{StaticResource CommonLeftTextBlock}"
+                                                                       Foreground="White" HorizontalAlignment="Center">
+                                                            </TextBlock>
+                                                        </Border>
+                                                    </StackPanel>
                                                     <ToggleButton Margin="0,0,24,0" Cursor="Hand" 
                                                                   IsChecked="{Binding IsChecked}" 
                                                                   Width="24" Height="24"
@@ -166,7 +177,7 @@
                                                                 HorizontalAlignment="Left" VerticalAlignment="Center">
                                                         <Grid Width="18" Height="18" VerticalAlignment="Center"
                                                               Background="{StaticResource SuoZaiCiKuTitleLogo}"></Grid>
-                                                        <TextBlock Text="所在词库" FontSize="12" Opacity="0.54" Margin="8,0,0,0"
+                                                        <TextBlock Text="所在违禁词词库" FontSize="12" Opacity="0.54" Margin="8,0,0,0"
                                                                    Style="{StaticResource CommonLeftTextBlock}"></TextBlock>
                                                     </StackPanel>
                                                     <Grid Grid.Row="1" Margin="42,0,0,0">

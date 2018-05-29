@@ -50,6 +50,7 @@
     <Compile Include="CheckOnlyWordResponseResult.cs" />
     <Compile Include="CheckWordRequestInfo.cs" />
     <Compile Include="CheckWordResponseResult.cs" />
+    <Compile Include="CommonNameAndYearModel.cs" />
     <Compile Include="CommonNameModel.cs" />
     <Compile Include="DBWordModel.cs" />
     <Compile Include="GetAllWordsInfoResponse.cs" />

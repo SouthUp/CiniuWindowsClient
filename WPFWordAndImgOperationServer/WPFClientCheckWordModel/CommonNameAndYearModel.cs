@@ -10,5 +10,6 @@ namespace WPFClientCheckWordModel
     {
         public string code { get; set; }
         public string name { get; set; }
+        public string publishtime { get; set; }
     }
 }

@@ -44,6 +44,7 @@ namespace CheckWordUtil
                                     unChekedDetailWordInfo.SourceDB = dbInfo.name;
                                     unChekedDetailWordInfo.NameType = typeInfo.name;
                                     unChekedDetailWordInfo.SourceDBID = dbInfo.code;
+                                    unChekedDetailWordInfo.SourceDBPublishtime = dbInfo.publishtime;
                                     unChekedWordInfo.UnChekedWordDetailInfos.Add(unChekedDetailWordInfo);
                                 }
                             }
