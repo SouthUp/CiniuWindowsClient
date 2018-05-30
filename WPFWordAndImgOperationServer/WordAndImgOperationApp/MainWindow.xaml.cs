@@ -16,6 +16,7 @@ using System.IO;
 using System.Linq;
 using System.ServiceModel;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -180,17 +181,24 @@ namespace WordAndImgOperationApp
                             var list = CheckWordUtil.CheckWordHelper.GetUnChekedWordInfoList(textResult).ToList();
                             foreach (var item in list)
                             {
-                                var infoResult = listResult.FirstOrDefault(x => x.Name == item.Name);
-                                if (infoResult == null)
+                                MatchCollection mc = Regex.Matches(textResult, item.Name, RegexOptions.IgnoreCase);
+                                if (mc.Count > 0)
                                 {
-                                    item.UnChekedWordInLineDetailInfos.Add(new UnChekedInLineDetailWordInfo() { InLineKeyText = item.Name, InLineText = textResult });
-                                    item.ErrorTotalCount++;
-                                    listResult.Add(item);
-                                }
-                                else
-                                {
-                                    infoResult.UnChekedWordInLineDetailInfos.Add(new UnChekedInLineDetailWordInfo() { InLineKeyText = item.Name, InLineText = textResult });
-                                    infoResult.ErrorTotalCount++;
+                                    foreach (Match m in mc)
+                                    {
+                                        var infoResult = listResult.FirstOrDefault(x => x.Name == item.Name);
+                                        if (infoResult == null)
+                                        {
+                                            item.UnChekedWordInLineDetailInfos.Add(new UnChekedInLineDetailWordInfo() { InLineKeyText = item.Name, InLineText = textResult });
+                                            item.ErrorTotalCount++;
+                                            listResult.Add(item);
+                                        }
+                                        else
+                                        {
+                                            infoResult.UnChekedWordInLineDetailInfos.Add(new UnChekedInLineDetailWordInfo() { InLineKeyText = item.Name, InLineText = textResult });
+                                            infoResult.ErrorTotalCount++;
+                                        }
+                                    }
                                 }
                             }
                         }
