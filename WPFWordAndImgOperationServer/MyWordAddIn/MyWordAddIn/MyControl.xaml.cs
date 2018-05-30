@@ -249,15 +249,12 @@ namespace MyWordAddIn
                     Dispatcher.Invoke(new Action(() =>
                     {
                         itemInfo.Children.Clear();
-                    }));
-                    foreach (var item in SelectUnCheckWord.Children)
-                    {
-                        Dispatcher.Invoke(new Action(() =>
+                        foreach (var item in SelectUnCheckWord.Children)
                         {
                             itemInfo.Children.Add(item);
-                        }));
-                    }
-                    itemInfo.WarningCount = itemInfo.Children.Count;
+                        }
+                        itemInfo.WarningCount = itemInfo.Children.Count;
+                    }));
                 }
             }
             for (int i = 0; i < viewModel.UncheckedWordLists.Count; i++)
@@ -272,7 +269,15 @@ namespace MyWordAddIn
                     i--;
                 }
             }
-            viewModel.WarningCount = viewModel.UncheckedWordLists.Count;
+            int countTotal = 0;
+            foreach (var item in viewModel.UncheckedWordLists)
+            {
+                countTotal += item.WarningCount;
+            }
+            Dispatcher.Invoke(new Action(() =>
+            {
+                viewModel.WarningTotalCount = countTotal;
+            }));
             //回复非违禁词背景色
             for (int i = 0; i < rangeOtherHighlightColorLists.Count; i++)
             {

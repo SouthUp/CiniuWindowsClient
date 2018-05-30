@@ -22,24 +22,14 @@ namespace MyWordAddIn
                 RaisePropertyChanged("UncheckedWordLists");
             }
         }
-        private int warningCount = 0;
-        public int WarningCount
+        private int warningTotalCount = 0;
+        public int WarningTotalCount
         {
-            get { return warningCount; }
+            get { return warningTotalCount; }
             set
             {
-                warningCount = value;
-                RaisePropertyChanged("WarningCount");
-            }
-        }
-        private Visibility summaryVisibility = Visibility.Visible;
-        public Visibility SummaryVisibility
-        {
-            get { return summaryVisibility; }
-            set
-            {
-                summaryVisibility = value;
-                RaisePropertyChanged("SummaryVisibility");
+                warningTotalCount = value;
+                RaisePropertyChanged("WarningTotalCount");
             }
         }
     }

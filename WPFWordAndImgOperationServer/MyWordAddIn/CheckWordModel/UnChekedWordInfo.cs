@@ -66,6 +66,16 @@ namespace CheckWordModel
                 RaisePropertyChanged("WarningCount");
             }
         }
+        private string typeTextFrom = "Text";
+        public string TypeTextFrom
+        {
+            get { return typeTextFrom; }
+            set
+            {
+                typeTextFrom = value;
+                RaisePropertyChanged("TypeTextFrom");
+            }
+        }
         public void Initialize()
         {
             foreach (UnChekedWordInfo child in this.Children)

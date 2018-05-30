@@ -10,8 +10,10 @@
     <UserControl.Resources>
         <control:ConverterIsSelectBackground x:Key="ConverterIsSelectBackground" />
         <control:ConverterIsNoSelectBackground x:Key="ConverterIsNoSelectBackground" />
+        <control:InLineImgToVisibilityConvert x:Key="InLineImgToVisibilityConvert"></control:InLineImgToVisibilityConvert>
+        <control:InLineTextToVisibilityConvert x:Key="InLineTextToVisibilityConvert"></control:InLineTextToVisibilityConvert>
         <Style TargetType="{x:Type TextBlock}" x:Key="CommonLeftTextBlock">
-            <Setter Property="Foreground" Value="#777777" />
+            <Setter Property="Foreground" Value="Black" />
             <Setter Property="FontSize" Value="14" />
             <Setter Property="HorizontalAlignment" Value="Left" />
             <Setter Property="VerticalAlignment" Value="Center" />
@@ -49,8 +51,8 @@
         <Style x:Key="ExpandCollapseToggleStyle" TargetType="{x:Type ToggleButton}">
             <Setter Property="Focusable" Value="False" />
             <Setter Property="ToolTip" Value="向下展开"/>
-            <Setter Property="Width" Value="10" />
-            <Setter Property="Height" Value="7" />
+            <Setter Property="Width" Value="24" />
+            <Setter Property="Height" Value="24" />
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="{x:Type ToggleButton}">
@@ -81,706 +83,138 @@
                 </Setter.Value>
             </Setter>
         </Style>
-        <DrawingBrush x:Key="DetailSelectLogo" Stretch="Uniform">
+        <DrawingBrush x:Key="InLineTextDocLogo" Stretch="None">
             <DrawingBrush.Drawing>
                 <DrawingGroup>
-                    <DrawingGroup.Children>
-                        <GeometryDrawing Brush="#FF52A898" Geometry="F1 M 0,1066.33L 1066.17,1066.33L 1066.17,-3.05176e-005L 0,-3.05176e-005L 0,1066.33 Z "/>
-                        <GeometryDrawing Brush="#4D565654" Geometry="F1 M 782.645,967.663L 170.389,967.663L 170.389,117.143L 792.698,117.143C 792.698,117.143 818.739,116.043 818.739,150.282L 818.739,930.57C 818.739,930.57 819.395,967.663 782.645,967.663 Z "/>
-                        <GeometryDrawing Brush="#FF505051" Geometry="F1 M 762.306,944.681L 150.05,944.681L 150.05,94.1612L 772.359,94.1612C 772.359,94.1612 798.401,93.0612 798.401,127.3L 798.401,907.588C 798.401,907.588 799.057,944.681 762.306,944.681 Z "/>
-                        <GeometryDrawing Brush="#FFED64B0" Geometry="F1 M 778.194,276.614C 778.194,284.73 771.613,291.31 763.498,291.31L 750.639,291.31C 742.522,291.31 735.943,284.73 735.943,276.614L 735.943,205.602C 735.943,197.486 742.522,190.906 750.639,190.906L 763.498,190.906C 771.613,190.906 778.194,197.486 778.194,205.602L 778.194,276.614 Z "/>
-                        <GeometryDrawing Brush="#FFFFCB08" Geometry="F1 M 778.194,385.213C 778.194,393.329 771.613,399.909 763.498,399.909L 750.639,399.909C 742.522,399.909 735.943,393.329 735.943,385.213L 735.943,314.201C 735.943,306.084 742.522,299.505 750.639,299.505L 763.498,299.505C 771.613,299.505 778.194,306.084 778.194,314.201L 778.194,385.213 Z "/>
-                        <GeometryDrawing Brush="#FFFFFFFF" Geometry="F1 M 753.375,907.588L 150.05,907.588L 150.05,126.866L 753.375,126.866L 753.375,907.588 Z "/>
-                        <GeometryDrawing Geometry="F1 M 349.731,381.836C 349.731,388.601 344.403,394.087 337.834,394.087L 258.374,394.087C 251.802,394.087 246.475,388.601 246.475,381.836L 246.475,300.02C 246.475,293.255 251.802,287.769 258.374,287.769L 337.834,287.769C 344.403,287.769 349.731,293.255 349.731,300.02L 349.731,381.836 Z ">
-                            <GeometryDrawing.Pen>
-                                <Pen Thickness="9.33334" MiterLimit="2.75" Brush="#FF00A88C"/>
-                            </GeometryDrawing.Pen>
-                        </GeometryDrawing>
-                        <GeometryDrawing Geometry="F1 M 259.671,335.925L 290.212,379.959L 384.085,301.897">
-                            <GeometryDrawing.Pen>
-                                <Pen Thickness="12" MiterLimit="2.75" Brush="#FF8CC63E"/>
-                            </GeometryDrawing.Pen>
-                        </GeometryDrawing>
-                        <GeometryDrawing Brush="#FF9EDCF5" Geometry="F1 M 577.693,312.897L 397.189,312.897L 397.189,282.609L 577.693,282.609L 577.693,312.897 Z "/>
-                        <GeometryDrawing Brush="#FFDCDCDC" Geometry="F1 M 698.585,342.841L 397.189,342.841L 397.189,327.697L 698.585,327.697L 698.585,342.841 Z "/>
-                        <GeometryDrawing Brush="#FFDCDCDC" Geometry="F1 M 698.585,373.286L 397.189,373.286L 397.189,358.142L 698.585,358.142L 698.585,373.286 Z "/>
-                        <GeometryDrawing Brush="#FFDCDCDC" Geometry="F1 M 698.585,404.438L 397.189,404.438L 397.189,389.293L 698.585,389.293L 698.585,404.438 Z "/>
-                        <GeometryDrawing Geometry="F1 M 349.731,529.535C 349.731,536.301 344.403,541.786 337.834,541.786L 258.374,541.786C 251.802,541.786 246.475,536.301 246.475,529.535L 246.475,447.719C 246.475,440.954 251.802,435.47 258.374,435.47L 337.834,435.47C 344.403,435.47 349.731,440.954 349.731,447.719L 349.731,529.535 Z ">
-                            <GeometryDrawing.Pen>
-                                <Pen Thickness="9.33334" MiterLimit="2.75" Brush="#FF00A88C"/>
-                            </GeometryDrawing.Pen>
-                        </GeometryDrawing>
-                        <GeometryDrawing Geometry="F1 M 259.671,483.624L 290.212,527.659L 384.085,449.596">
-                            <GeometryDrawing.Pen>
-                                <Pen Thickness="12" MiterLimit="2.75" Brush="#FF8CC63E"/>
-                            </GeometryDrawing.Pen>
-                        </GeometryDrawing>
-                        <GeometryDrawing Brush="#FF9EDCF5" Geometry="F1 M 577.693,460.598L 397.189,460.598L 397.189,430.309L 577.693,430.309L 577.693,460.598 Z "/>
-                        <GeometryDrawing Brush="#FFDCDCDC" Geometry="F1 M 698.585,490.541L 397.189,490.541L 397.189,475.397L 698.585,475.397L 698.585,490.541 Z "/>
-                        <GeometryDrawing Brush="#FFDCDCDC" Geometry="F1 M 698.585,520.986L 397.189,520.986L 397.189,505.842L 698.585,505.842L 698.585,520.986 Z "/>
-                        <GeometryDrawing Brush="#FFDCDCDC" Geometry="F1 M 698.585,552.138L 397.189,552.138L 397.189,536.994L 698.585,536.994L 698.585,552.138 Z "/>
-                        <GeometryDrawing Geometry="F1 M 349.731,673.897C 349.731,680.663 344.403,686.148 337.834,686.148L 258.374,686.148C 251.802,686.148 246.475,680.663 246.475,673.897L 246.475,592.081C 246.475,585.313 251.802,579.831 258.374,579.831L 337.834,579.831C 344.403,579.831 349.731,585.313 349.731,592.081L 349.731,673.897 Z ">
-                            <GeometryDrawing.Pen>
-                                <Pen Thickness="9.33334" MiterLimit="2.75" Brush="#FF00A88C"/>
-                            </GeometryDrawing.Pen>
-                        </GeometryDrawing>
-                        <GeometryDrawing Geometry="F1 M 259.671,627.985L 290.212,672.019L 384.085,593.957">
-                            <GeometryDrawing.Pen>
-                                <Pen Thickness="12" MiterLimit="2.75" Brush="#FF8CC63E"/>
-                            </GeometryDrawing.Pen>
-                        </GeometryDrawing>
-                        <GeometryDrawing Brush="#FF9EDCF5" Geometry="F1 M 577.693,604.958L 397.189,604.958L 397.189,574.669L 577.693,574.669L 577.693,604.958 Z "/>
-                        <GeometryDrawing Brush="#FFDCDCDC" Geometry="F1 M 698.585,634.901L 397.189,634.901L 397.189,619.757L 698.585,619.757L 698.585,634.901 Z "/>
-                        <GeometryDrawing Brush="#FFDCDCDC" Geometry="F1 M 698.585,665.348L 397.189,665.348L 397.189,650.204L 698.585,650.204L 698.585,665.348 Z "/>
-                        <GeometryDrawing Brush="#FFDCDCDC" Geometry="F1 M 698.585,696.498L 397.189,696.498L 397.189,681.354L 698.585,681.354L 698.585,696.498 Z "/>
-                        <GeometryDrawing Geometry="F1 M 349.731,821.598C 349.731,828.361 344.403,833.847 337.834,833.847L 258.374,833.847C 251.802,833.847 246.475,828.361 246.475,821.598L 246.475,739.782C 246.475,733.014 251.802,727.53 258.374,727.53L 337.834,727.53C 344.403,727.53 349.731,733.014 349.731,739.782L 349.731,821.598 Z ">
-                            <GeometryDrawing.Pen>
-                                <Pen Thickness="9.33334" MiterLimit="2.75" Brush="#FF00A88C"/>
-                            </GeometryDrawing.Pen>
-                        </GeometryDrawing>
-                        <GeometryDrawing Geometry="F1 M 259.671,775.684L 290.212,819.72L 384.085,741.656">
-                            <GeometryDrawing.Pen>
-                                <Pen Thickness="12" MiterLimit="2.75" Brush="#FF8CC63E"/>
-                            </GeometryDrawing.Pen>
-                        </GeometryDrawing>
-                        <GeometryDrawing Brush="#FF9EDCF5" Geometry="F1 M 577.693,752.657L 397.189,752.657L 397.189,722.369L 577.693,722.369L 577.693,752.657 Z "/>
-                        <GeometryDrawing Brush="#FFDCDCDC" Geometry="F1 M 698.585,782.601L 397.189,782.601L 397.189,767.456L 698.585,767.456L 698.585,782.601 Z "/>
-                        <GeometryDrawing Brush="#FFDCDCDC" Geometry="F1 M 698.585,813.046L 397.189,813.046L 397.189,797.904L 698.585,797.904L 698.585,813.046 Z "/>
-                        <GeometryDrawing Brush="#FFDCDCDC" Geometry="F1 M 698.585,844.198L 397.189,844.198L 397.189,829.054L 698.585,829.054L 698.585,844.198 Z "/>
-                        <GeometryDrawing Brush="#FF565654" Geometry="F1 M 203.56,180.267C 203.56,190.76 195.055,199.266 184.561,199.266C 174.068,199.266 165.561,190.76 165.561,180.267C 165.561,169.774 174.068,161.267 184.561,161.267C 195.055,161.267 203.56,169.774 203.56,180.267 Z "/>
-                        <GeometryDrawing Brush="#FF565654" Geometry="F1 M 203.559,254.887C 203.559,265.381 195.054,273.886 184.561,273.886C 174.067,273.886 165.561,265.381 165.561,254.887C 165.561,244.394 174.067,235.887 184.561,235.887C 195.054,235.887 203.559,244.394 203.559,254.887 Z "/>
-                        <GeometryDrawing Brush="#FF565654" Geometry="F1 M 203.56,329.508C 203.56,340 195.055,348.507 184.561,348.507C 174.068,348.507 165.561,340 165.561,329.508C 165.561,319.015 174.068,310.508 184.561,310.508C 195.055,310.508 203.56,319.015 203.56,329.508 Z "/>
-                        <GeometryDrawing Brush="#FF565654" Geometry="F1 M 203.56,404.128C 203.56,414.621 195.053,423.126 184.561,423.126C 174.068,423.126 165.561,414.621 165.561,404.128C 165.561,393.634 174.068,385.129 184.561,385.129C 195.053,385.129 203.56,393.634 203.56,404.128 Z "/>
-                        <GeometryDrawing Brush="#FF565654" Geometry="F1 M 203.56,478.749C 203.56,489.241 195.053,497.746 184.561,497.746C 174.068,497.746 165.561,489.241 165.561,478.749C 165.561,468.254 174.068,459.749 184.561,459.749C 195.053,459.749 203.56,468.254 203.56,478.749 Z "/>
-                        <GeometryDrawing Brush="#FF565654" Geometry="F1 M 203.56,553.369C 203.56,563.861 195.053,572.367 184.561,572.367C 174.068,572.367 165.561,563.861 165.561,553.369C 165.561,542.875 174.068,534.369 184.561,534.369C 195.053,534.369 203.56,542.875 203.56,553.369 Z "/>
-                        <GeometryDrawing Brush="#FF565654" Geometry="F1 M 203.56,627.988C 203.56,638.482 195.053,646.987 184.561,646.987C 174.068,646.987 165.561,638.482 165.561,627.988C 165.561,617.495 174.068,608.99 184.561,608.99C 195.053,608.99 203.56,617.495 203.56,627.988 Z "/>
-                        <GeometryDrawing Brush="#FF565654" Geometry="F1 M 203.56,702.61C 203.56,713.102 195.055,721.608 184.561,721.608C 174.068,721.608 165.561,713.102 165.561,702.61C 165.561,692.115 174.068,683.611 184.561,683.611C 195.055,683.611 203.56,692.115 203.56,702.61 Z "/>
-                        <GeometryDrawing Brush="#FF565654" Geometry="F1 M 203.56,777.231C 203.56,787.721 195.055,796.228 184.561,796.228C 174.068,796.228 165.561,787.721 165.561,777.231C 165.561,766.736 174.068,758.231 184.561,758.231C 195.055,758.231 203.56,766.736 203.56,777.231 Z "/>
-                        <GeometryDrawing Brush="#FF565654" Geometry="F1 M 203.56,851.85C 203.56,862.342 195.055,870.848 184.561,870.848C 174.068,870.848 165.561,862.342 165.561,851.85C 165.561,841.356 174.068,832.85 184.561,832.85C 195.055,832.85 203.56,841.356 203.56,851.85 Z "/>
-                        <GeometryDrawing Geometry="F1 M 171.175,190.906L 128.925,190.906">
-                            <GeometryDrawing.Pen>
-                                <Pen Thickness="6.66667" MiterLimit="2.75" Brush="#FF313131"/>
-                            </GeometryDrawing.Pen>
-                        </GeometryDrawing>
-                        <GeometryDrawing Geometry="F1 M 128.925,171.799L 171.174,171.799">
-                            <GeometryDrawing.Pen>
-                                <Pen Thickness="6.66667" MiterLimit="2.75" Brush="#FF313131"/>
-                            </GeometryDrawing.Pen>
-                        </GeometryDrawing>
-                        <GeometryDrawing Geometry="F1 M 171.174,265.405L 128.925,265.405">
-                            <GeometryDrawing.Pen>
-                                <Pen Thickness="6.66667" MiterLimit="2.75" Brush="#FF313131"/>
-                            </GeometryDrawing.Pen>
-                        </GeometryDrawing>
-                        <GeometryDrawing Geometry="F1 M 128.925,246.298L 171.174,246.298">
-                            <GeometryDrawing.Pen>
-                                <Pen Thickness="6.66667" MiterLimit="2.75" Brush="#FF313131"/>
-                            </GeometryDrawing.Pen>
-                        </GeometryDrawing>
-                        <GeometryDrawing Geometry="F1 M 171.175,339.905L 128.925,339.905">
-                            <GeometryDrawing.Pen>
-                                <Pen Thickness="6.66667" MiterLimit="2.75" Brush="#FF313131"/>
-                            </GeometryDrawing.Pen>
-                        </GeometryDrawing>
-                        <GeometryDrawing Geometry="F1 M 128.925,320.798L 171.174,320.798">
-                            <GeometryDrawing.Pen>
-                                <Pen Thickness="6.66667" MiterLimit="2.75" Brush="#FF313131"/>
-                            </GeometryDrawing.Pen>
-                        </GeometryDrawing>
-                        <GeometryDrawing Geometry="F1 M 171.175,414.405L 128.925,414.405">
-                            <GeometryDrawing.Pen>
-                                <Pen Thickness="6.66667" MiterLimit="2.75" Brush="#FF313131"/>
-                            </GeometryDrawing.Pen>
-                        </GeometryDrawing>
-                        <GeometryDrawing Geometry="F1 M 128.925,395.298L 171.174,395.298">
-                            <GeometryDrawing.Pen>
-                                <Pen Thickness="6.66667" MiterLimit="2.75" Brush="#FF313131"/>
-                            </GeometryDrawing.Pen>
-                        </GeometryDrawing>
-                        <GeometryDrawing Geometry="F1 M 171.175,488.904L 128.925,488.904">
-                            <GeometryDrawing.Pen>
-                                <Pen Thickness="6.66667" MiterLimit="2.75" Brush="#FF313131"/>
-                            </GeometryDrawing.Pen>
-                        </GeometryDrawing>
-                        <GeometryDrawing Geometry="F1 M 128.925,469.798L 171.174,469.798">
-                            <GeometryDrawing.Pen>
-                                <Pen Thickness="6.66667" MiterLimit="2.75" Brush="#FF313131"/>
-                            </GeometryDrawing.Pen>
-                        </GeometryDrawing>
-                        <GeometryDrawing Geometry="F1 M 171.175,563.404L 128.925,563.404">
-                            <GeometryDrawing.Pen>
-                                <Pen Thickness="6.66667" MiterLimit="2.75" Brush="#FF313131"/>
-                            </GeometryDrawing.Pen>
-                        </GeometryDrawing>
-                        <GeometryDrawing Geometry="F1 M 128.925,544.297L 171.174,544.297">
-                            <GeometryDrawing.Pen>
-                                <Pen Thickness="6.66667" MiterLimit="2.75" Brush="#FF313131"/>
-                            </GeometryDrawing.Pen>
-                        </GeometryDrawing>
-                        <GeometryDrawing Geometry="F1 M 171.175,637.904L 128.925,637.904">
-                            <GeometryDrawing.Pen>
-                                <Pen Thickness="6.66667" MiterLimit="2.75" Brush="#FF313131"/>
-                            </GeometryDrawing.Pen>
-                        </GeometryDrawing>
-                        <GeometryDrawing Geometry="F1 M 128.925,618.797L 171.174,618.797">
-                            <GeometryDrawing.Pen>
-                                <Pen Thickness="6.66667" MiterLimit="2.75" Brush="#FF313131"/>
-                            </GeometryDrawing.Pen>
-                        </GeometryDrawing>
-                        <GeometryDrawing Geometry="F1 M 171.175,712.404L 128.925,712.404">
-                            <GeometryDrawing.Pen>
-                                <Pen Thickness="6.66667" MiterLimit="2.75" Brush="#FF313131"/>
-                            </GeometryDrawing.Pen>
-                        </GeometryDrawing>
-                        <GeometryDrawing Geometry="F1 M 128.925,693.297L 171.174,693.297">
-                            <GeometryDrawing.Pen>
-                                <Pen Thickness="6.66667" MiterLimit="2.75" Brush="#FF313131"/>
-                            </GeometryDrawing.Pen>
-                        </GeometryDrawing>
-                        <GeometryDrawing Geometry="F1 M 171.175,786.903L 128.925,786.903">
-                            <GeometryDrawing.Pen>
-                                <Pen Thickness="6.66667" MiterLimit="2.75" Brush="#FF313131"/>
-                            </GeometryDrawing.Pen>
-                        </GeometryDrawing>
-                        <GeometryDrawing Geometry="F1 M 128.925,767.796L 171.174,767.796">
-                            <GeometryDrawing.Pen>
-                                <Pen Thickness="6.66667" MiterLimit="2.75" Brush="#FF313131"/>
-                            </GeometryDrawing.Pen>
-                        </GeometryDrawing>
-                        <GeometryDrawing Geometry="F1 M 171.175,861.403L 128.925,861.403">
-                            <GeometryDrawing.Pen>
-                                <Pen Thickness="6.66667" MiterLimit="2.75" Brush="#FF313131"/>
-                            </GeometryDrawing.Pen>
-                        </GeometryDrawing>
-                        <GeometryDrawing Geometry="F1 M 128.925,842.296L 171.174,842.296">
-                            <GeometryDrawing.Pen>
-                                <Pen Thickness="6.66667" MiterLimit="2.75" Brush="#FF313131"/>
-                            </GeometryDrawing.Pen>
-                        </GeometryDrawing>
-                        <GeometryDrawing Brush="#803A3A3A" Geometry="F1 M 322.988,220.408C 319.238,220.408 316.03,219.2 313.405,216.763C 310.78,214.346 309.468,211.408 309.468,207.95L 309.468,179.45C 309.468,175.992 310.78,173.033 313.426,170.596C 316.072,168.179 319.259,166.95 322.988,166.95C 326.738,166.95 329.926,168.179 332.551,170.617C 335.176,173.075 336.488,176.013 336.488,179.45L 336.488,185.408L 327.634,185.408L 327.634,179.283C 327.634,178.033 327.155,176.971 326.197,176.075C 325.238,175.2 324.072,174.742 322.718,174.742C 321.363,174.742 320.218,175.2 319.28,176.075C 318.322,176.971 317.863,178.033 317.863,179.283L 317.863,207.867C 317.863,209.117 318.322,210.179 319.28,211.054C 320.218,211.929 321.363,212.367 322.718,212.367C 324.072,212.367 325.238,211.929 326.197,211.054C 327.155,210.179 327.634,209.117 327.634,207.867L 327.634,200.658L 336.488,200.658L 336.488,207.95C 336.488,211.429 335.155,214.367 332.509,216.783C 329.863,219.2 326.697,220.408 322.988,220.408 Z "/>
-                        <GeometryDrawing Brush="#803A3A3A" Geometry="F1 M 352.165,197.617L 352.165,219.742L 343.602,219.742L 343.602,167.533L 352.165,167.533L 352.165,189.7L 362.373,189.7L 362.373,167.533L 370.935,167.533L 370.935,219.742L 362.373,219.742L 362.373,197.617L 352.165,197.617 Z "/>
-                        <GeometryDrawing Brush="#803A3A3A" Geometry="F1 M 378.686,219.742L 378.686,167.492L 402.957,167.492L 402.957,175.367L 387.207,175.367L 387.207,189.658L 398.707,189.658L 398.707,197.575L 387.207,197.575L 387.207,211.867L 402.957,211.867L 402.957,219.742L 378.686,219.742 Z "/>
-                        <GeometryDrawing Brush="#803A3A3A" Geometry="F1 M 422.422,220.408C 418.672,220.408 415.463,219.2 412.838,216.763C 410.213,214.346 408.901,211.408 408.901,207.95L 408.901,179.45C 408.901,175.992 410.213,173.033 412.859,170.596C 415.505,168.179 418.692,166.95 422.422,166.95C 426.172,166.95 429.359,168.179 431.984,170.617C 434.609,173.075 435.922,176.013 435.922,179.45L 435.922,185.408L 427.067,185.408L 427.067,179.283C 427.067,178.033 426.588,176.971 425.63,176.075C 424.672,175.2 423.505,174.742 422.151,174.742C 420.797,174.742 419.651,175.2 418.713,176.075C 417.755,176.971 417.297,178.033 417.297,179.283L 417.297,207.867C 417.297,209.117 417.755,210.179 418.713,211.054C 419.651,211.929 420.797,212.367 422.151,212.367C 423.505,212.367 424.672,211.929 425.63,211.054C 426.588,210.179 427.067,209.117 427.067,207.867L 427.067,200.658L 435.922,200.658L 435.922,207.95C 435.922,211.429 434.588,214.367 431.942,216.783C 429.297,219.2 426.13,220.408 422.422,220.408 Z "/>
-                        <GeometryDrawing Brush="#803A3A3A" Geometry="F1 M 451.598,203.242L 451.598,219.742L 443.035,219.742L 443.035,167.492L 451.598,167.492L 451.598,186.117L 461.973,167.492L 471.098,167.492L 459.41,188.867L 473.077,219.742L 463.056,219.742L 454.118,198.575L 451.598,203.242 Z "/>
-                        <GeometryDrawing Brush="#803A3A3A" Geometry="F1 M 525.737,219.742L 502.508,219.742L 502.508,167.533L 511.028,167.533L 511.028,211.908L 525.737,211.908L 525.737,219.742 Z "/>
-                        <GeometryDrawing Brush="#803A3A3A" Geometry="F1 M 540.223,219.742L 531.702,219.742L 531.702,167.533L 540.223,167.533L 540.223,219.742 Z "/>
-                        <GeometryDrawing Brush="#803A3A3A" Geometry="F1 M 575.602,206.742C 575.665,210.388 574.644,213.492 572.54,216.075C 571.144,217.825 569.185,219.075 566.665,219.783C 565.31,220.158 563.727,220.367 561.935,220.367C 558.602,220.367 555.831,219.617 553.644,218.075C 551.81,216.825 550.352,215.138 549.29,212.971C 548.206,210.825 547.581,208.367 547.415,205.575L 555.54,205.033C 555.894,208.075 556.769,210.263 558.144,211.617C 559.165,212.658 560.331,213.138 561.665,213.075C 563.519,213.033 564.998,212.179 566.123,210.533C 566.706,209.742 566.998,208.575 566.998,207.075C 566.998,204.908 565.915,202.763 563.79,200.617C 562.102,199.158 559.581,196.95 556.206,193.992C 553.373,191.471 551.373,189.2 550.206,187.2C 548.935,184.95 548.31,182.513 548.31,179.867C 548.31,175.117 550.04,171.533 553.498,169.075C 555.623,167.617 558.269,166.867 561.435,166.867C 564.477,166.867 567.081,167.492 569.248,168.742C 570.915,169.721 572.29,171.075 573.331,172.825C 574.373,174.575 574.998,176.596 575.206,178.867L 567.04,180.242C 566.79,178.117 566.123,176.45 565.06,175.242C 564.269,174.388 563.123,173.95 561.665,173.95C 560.081,173.95 558.894,174.596 558.102,175.867C 557.435,176.908 557.102,178.179 557.102,179.7C 557.102,182.096 558.206,184.533 560.456,186.992C 561.29,187.95 562.54,189.054 564.248,190.325C 566.206,191.867 567.519,192.929 568.165,193.533C 570.269,195.492 571.894,197.408 573.04,199.283C 573.581,200.179 574.019,200.992 574.352,201.742C 575.144,203.617 575.56,205.283 575.602,206.742 Z "/>
-                        <GeometryDrawing Brush="#803A3A3A" Geometry="F1 M 590.643,175.408L 581.581,175.408L 581.581,167.533L 608.185,167.533L 608.185,175.408L 599.164,175.408L 599.164,219.742L 590.643,219.742L 590.643,175.408 Z "/>
-                        <GeometryDrawing Brush="#FF565654" Geometry="F1 M 923.923,435.224L 916.566,435.224L 916.566,415.979C 923.587,414.728 928.923,408.607 928.923,401.225C 928.923,392.941 922.209,386.227 913.925,386.227L 911.425,386.227L 911.425,337.231C 911.425,328.395 904.262,321.231 895.425,321.231L 892.427,321.231C 883.591,321.231 876.427,328.395 876.427,337.231L 876.427,386.227L 873.927,386.227C 865.643,386.227 858.927,392.941 858.927,401.225C 858.927,408.352 863.903,414.307 870.567,415.835L 870.567,861.114L 916.566,861.114L 916.566,450.224L 923.923,450.224L 923.923,655.124L 933.922,655.124L 933.922,450.224L 933.922,435.224L 923.923,435.224 Z "/>
-                        <GeometryDrawing Brush="#4D565654" Geometry="F1 M 870.568,861.115L 882.068,916.643L 893.568,972.172L 905.068,916.643L 916.568,861.115L 893.568,861.115L 870.568,861.115 Z "/>
-                        <GeometryDrawing Brush="#FFFFFFFF" Geometry="F1 M 909.616,412.242L 879.619,412.242L 879.619,427.242L 909.616,427.242L 909.616,632.142L 919.615,632.142L 919.615,427.242L 919.615,412.242L 909.616,412.242 Z "/>
-                        <DrawingGroup ClipGeometry="F1 M 878.119,298.249C 869.283,298.249 862.119,305.413 862.119,314.249L 862.119,314.249L 862.119,376.244C 862.119,385.08 869.283,392.244 878.119,392.244L 878.119,392.244L 881.117,392.244C 889.955,392.244 897.118,385.08 897.118,376.244L 897.118,376.244L 897.118,314.249C 897.118,305.413 889.955,298.249 881.117,298.249L 881.117,298.249L 878.119,298.249 Z ">
-                            <DrawingGroup.Children>
-                                <GeometryDrawing Brush="#FFFFFFFF" Geometry="F1 M 897.117,376.244C 897.117,385.08 889.955,392.244 881.117,392.244L 878.12,392.244C 869.284,392.244 862.12,385.08 862.12,376.244L 862.12,314.249C 862.12,305.413 869.284,298.249 878.12,298.249L 881.117,298.249C 889.955,298.249 897.117,305.413 897.117,314.249L 897.117,376.244 Z "/>
-                                <GeometryDrawing Brush="#FF902C21" Geometry="F1 M 929.285,329.248L 827.29,329.248L 827.29,298.249L 929.285,298.249L 929.285,329.248 Z "/>
-                            </DrawingGroup.Children>
-                        </DrawingGroup>
-                        <DrawingGroup ClipGeometry="F1 M 856.261,838.132L 902.259,838.132L 902.259,373.25L 856.261,373.25L 856.261,838.132 Z ">
-                            <DrawingGroup.Children>
-                                <GeometryDrawing Brush="#FFAC3226" Geometry="F1 M 902.259,838.132L 856.261,838.132L 856.261,373.25L 902.259,373.25L 902.259,838.132 Z "/>
-                                <GeometryDrawing Brush="#FFB3B3B3" Geometry="F1 M 921.258,707.56L 811.263,707.56L 811.263,688.374L 921.258,688.374L 921.258,707.56 Z "/>
-                                <GeometryDrawing Brush="#FFB3B3B3" Geometry="F1 M 921.258,753.124L 811.263,753.124L 811.263,733.94L 921.258,733.94L 921.258,753.124 Z "/>
-                            </DrawingGroup.Children>
-                        </DrawingGroup>
-                        <DrawingGroup ClipGeometry="F1 M 879.261,838.133L 856.261,838.133L 867.761,893.661L 879.261,949.19L 890.761,893.661L 902.261,838.133L 879.261,838.133 Z ">
-                            <DrawingGroup.Children>
-                                <GeometryDrawing Brush="#FFFFFFFF" Geometry="F1 M 879.261,949.19L 867.761,893.662L 856.261,838.133L 879.261,838.133L 902.261,838.133L 890.761,893.662L 879.261,949.19 Z "/>
-                                <GeometryDrawing Brush="#FF1A1A1A" Geometry="F1 M 937.242,926.237L 856.261,926.237L 856.261,972.144L 937.242,972.144L 937.242,926.237 Z "/>
-                            </DrawingGroup.Children>
-                        </DrawingGroup>
-                        <GeometryDrawing Brush="#FF902C21" Geometry="F1 M 914.616,378.244C 914.616,386.528 907.901,393.244 899.617,393.244L 859.62,393.244C 851.336,393.244 844.62,386.528 844.62,378.244C 844.62,369.96 851.336,363.245 859.62,363.245L 899.617,363.245C 907.901,363.245 914.616,369.96 914.616,378.244 Z "/>
-                        <GeometryDrawing Brush="#67565654" Geometry="F1 M 909.793,412.246L 902.436,412.246L 902.436,393.001C 909.457,391.75 914.793,385.629 914.793,378.248C 914.793,369.964 908.078,363.249 899.794,363.249L 897.294,363.249L 897.294,314.253C 897.294,305.417 890.132,298.253 881.294,298.253L 879.441,298.253L 879.441,949.174L 890.937,893.665L 902.437,838.137L 902.436,838.136L 902.436,427.246L 909.793,427.246L 909.793,632.146L 919.792,632.146L 919.792,427.246L 919.792,412.246L 909.793,412.246 Z "/>
-                    </DrawingGroup.Children>
+                    <DrawingGroup.ClipGeometry>
+                        <RectangleGeometry Rect="0,0,18,18" />
+                    </DrawingGroup.ClipGeometry>
+                    <GeometryDrawing>
+                        <GeometryDrawing.Brush>
+                            <SolidColorBrush Color="#FF000000" Opacity="0.541" />
+                        </GeometryDrawing.Brush>
+                        <GeometryDrawing.Geometry>
+                            <PathGeometry FillRule="EvenOdd" Figures="M11.009,2L5.004,2C4.179,2,3.003,3.175,3.003,4L3.003,15C3.003,15.825,4.179,17,5.004,17L13.011,17C13.837,17,15.013,15.825,15.013,15L15.013,6 11.009,2z M12.01,14L6.005,14 6.005,12 12.01,12 12.01,14z M12.01,11L6.005,11 6.005,9 12.01,9 12.01,11z M10.008,7L10.008,3 14.012,7 10.008,7z" />
+                        </GeometryDrawing.Geometry>
+                    </GeometryDrawing>
                 </DrawingGroup>
             </DrawingBrush.Drawing>
         </DrawingBrush>
-        <DrawingBrush x:Key="DetailNoSelectLogo" Stretch="Uniform">
+        <DrawingBrush x:Key="InLineTextImgLogo" Stretch="None">
             <DrawingBrush.Drawing>
                 <DrawingGroup>
-                    <DrawingGroup.Children>
-                        <GeometryDrawing Brush="Transparent" Geometry="F1 M 0,1066.33L 1066.17,1066.33L 1066.17,-3.05176e-005L 0,-3.05176e-005L 0,1066.33 Z "/>
-                        <GeometryDrawing Brush="#4D565654" Geometry="F1 M 782.645,967.663L 170.389,967.663L 170.389,117.143L 792.698,117.143C 792.698,117.143 818.739,116.043 818.739,150.282L 818.739,930.57C 818.739,930.57 819.395,967.663 782.645,967.663 Z "/>
-                        <GeometryDrawing Brush="#FF505051" Geometry="F1 M 762.306,944.681L 150.05,944.681L 150.05,94.1612L 772.359,94.1612C 772.359,94.1612 798.401,93.0612 798.401,127.3L 798.401,907.588C 798.401,907.588 799.057,944.681 762.306,944.681 Z "/>
-                        <GeometryDrawing Brush="#FFED64B0" Geometry="F1 M 778.194,276.614C 778.194,284.73 771.613,291.31 763.498,291.31L 750.639,291.31C 742.522,291.31 735.943,284.73 735.943,276.614L 735.943,205.602C 735.943,197.486 742.522,190.906 750.639,190.906L 763.498,190.906C 771.613,190.906 778.194,197.486 778.194,205.602L 778.194,276.614 Z "/>
-                        <GeometryDrawing Brush="#FFFFCB08" Geometry="F1 M 778.194,385.213C 778.194,393.329 771.613,399.909 763.498,399.909L 750.639,399.909C 742.522,399.909 735.943,393.329 735.943,385.213L 735.943,314.201C 735.943,306.084 742.522,299.505 750.639,299.505L 763.498,299.505C 771.613,299.505 778.194,306.084 778.194,314.201L 778.194,385.213 Z "/>
-                        <GeometryDrawing Brush="#FFFFFFFF" Geometry="F1 M 753.375,907.588L 150.05,907.588L 150.05,126.866L 753.375,126.866L 753.375,907.588 Z "/>
-                        <GeometryDrawing Geometry="F1 M 349.731,381.836C 349.731,388.601 344.403,394.087 337.834,394.087L 258.374,394.087C 251.802,394.087 246.475,388.601 246.475,381.836L 246.475,300.02C 246.475,293.255 251.802,287.769 258.374,287.769L 337.834,287.769C 344.403,287.769 349.731,293.255 349.731,300.02L 349.731,381.836 Z ">
-                            <GeometryDrawing.Pen>
-                                <Pen Thickness="9.33334" MiterLimit="2.75" Brush="#FF00A88C"/>
-                            </GeometryDrawing.Pen>
-                        </GeometryDrawing>
-                        <GeometryDrawing Geometry="F1 M 259.671,335.925L 290.212,379.959L 384.085,301.897">
-                            <GeometryDrawing.Pen>
-                                <Pen Thickness="12" MiterLimit="2.75" Brush="#FF8CC63E"/>
-                            </GeometryDrawing.Pen>
-                        </GeometryDrawing>
-                        <GeometryDrawing Brush="#FF9EDCF5" Geometry="F1 M 577.693,312.897L 397.189,312.897L 397.189,282.609L 577.693,282.609L 577.693,312.897 Z "/>
-                        <GeometryDrawing Brush="#FFDCDCDC" Geometry="F1 M 698.585,342.841L 397.189,342.841L 397.189,327.697L 698.585,327.697L 698.585,342.841 Z "/>
-                        <GeometryDrawing Brush="#FFDCDCDC" Geometry="F1 M 698.585,373.286L 397.189,373.286L 397.189,358.142L 698.585,358.142L 698.585,373.286 Z "/>
-                        <GeometryDrawing Brush="#FFDCDCDC" Geometry="F1 M 698.585,404.438L 397.189,404.438L 397.189,389.293L 698.585,389.293L 698.585,404.438 Z "/>
-                        <GeometryDrawing Geometry="F1 M 349.731,529.535C 349.731,536.301 344.403,541.786 337.834,541.786L 258.374,541.786C 251.802,541.786 246.475,536.301 246.475,529.535L 246.475,447.719C 246.475,440.954 251.802,435.47 258.374,435.47L 337.834,435.47C 344.403,435.47 349.731,440.954 349.731,447.719L 349.731,529.535 Z ">
-                            <GeometryDrawing.Pen>
-                                <Pen Thickness="9.33334" MiterLimit="2.75" Brush="#FF00A88C"/>
-                            </GeometryDrawing.Pen>
-                        </GeometryDrawing>
-                        <GeometryDrawing Geometry="F1 M 259.671,483.624L 290.212,527.659L 384.085,449.596">
-                            <GeometryDrawing.Pen>
-                                <Pen Thickness="12" MiterLimit="2.75" Brush="#FF8CC63E"/>
-                            </GeometryDrawing.Pen>
-                        </GeometryDrawing>
-                        <GeometryDrawing Brush="#FF9EDCF5" Geometry="F1 M 577.693,460.598L 397.189,460.598L 397.189,430.309L 577.693,430.309L 577.693,460.598 Z "/>
-                        <GeometryDrawing Brush="#FFDCDCDC" Geometry="F1 M 698.585,490.541L 397.189,490.541L 397.189,475.397L 698.585,475.397L 698.585,490.541 Z "/>
-                        <GeometryDrawing Brush="#FFDCDCDC" Geometry="F1 M 698.585,520.986L 397.189,520.986L 397.189,505.842L 698.585,505.842L 698.585,520.986 Z "/>
-                        <GeometryDrawing Brush="#FFDCDCDC" Geometry="F1 M 698.585,552.138L 397.189,552.138L 397.189,536.994L 698.585,536.994L 698.585,552.138 Z "/>
-                        <GeometryDrawing Geometry="F1 M 349.731,673.897C 349.731,680.663 344.403,686.148 337.834,686.148L 258.374,686.148C 251.802,686.148 246.475,680.663 246.475,673.897L 246.475,592.081C 246.475,585.313 251.802,579.831 258.374,579.831L 337.834,579.831C 344.403,579.831 349.731,585.313 349.731,592.081L 349.731,673.897 Z ">
-                            <GeometryDrawing.Pen>
-                                <Pen Thickness="9.33334" MiterLimit="2.75" Brush="#FF00A88C"/>
-                            </GeometryDrawing.Pen>
-                        </GeometryDrawing>
-                        <GeometryDrawing Geometry="F1 M 259.671,627.985L 290.212,672.019L 384.085,593.957">
-                            <GeometryDrawing.Pen>
-                                <Pen Thickness="12" MiterLimit="2.75" Brush="#FF8CC63E"/>
-                            </GeometryDrawing.Pen>
-                        </GeometryDrawing>
-                        <GeometryDrawing Brush="#FF9EDCF5" Geometry="F1 M 577.693,604.958L 397.189,604.958L 397.189,574.669L 577.693,574.669L 577.693,604.958 Z "/>
-                        <GeometryDrawing Brush="#FFDCDCDC" Geometry="F1 M 698.585,634.901L 397.189,634.901L 397.189,619.757L 698.585,619.757L 698.585,634.901 Z "/>
-                        <GeometryDrawing Brush="#FFDCDCDC" Geometry="F1 M 698.585,665.348L 397.189,665.348L 397.189,650.204L 698.585,650.204L 698.585,665.348 Z "/>
-                        <GeometryDrawing Brush="#FFDCDCDC" Geometry="F1 M 698.585,696.498L 397.189,696.498L 397.189,681.354L 698.585,681.354L 698.585,696.498 Z "/>
-                        <GeometryDrawing Geometry="F1 M 349.731,821.598C 349.731,828.361 344.403,833.847 337.834,833.847L 258.374,833.847C 251.802,833.847 246.475,828.361 246.475,821.598L 246.475,739.782C 246.475,733.014 251.802,727.53 258.374,727.53L 337.834,727.53C 344.403,727.53 349.731,733.014 349.731,739.782L 349.731,821.598 Z ">
-                            <GeometryDrawing.Pen>
-                                <Pen Thickness="9.33334" MiterLimit="2.75" Brush="#FF00A88C"/>
-                            </GeometryDrawing.Pen>
-                        </GeometryDrawing>
-                        <GeometryDrawing Geometry="F1 M 259.671,775.684L 290.212,819.72L 384.085,741.656">
-                            <GeometryDrawing.Pen>
-                                <Pen Thickness="12" MiterLimit="2.75" Brush="#FF8CC63E"/>
-                            </GeometryDrawing.Pen>
-                        </GeometryDrawing>
-                        <GeometryDrawing Brush="#FF9EDCF5" Geometry="F1 M 577.693,752.657L 397.189,752.657L 397.189,722.369L 577.693,722.369L 577.693,752.657 Z "/>
-                        <GeometryDrawing Brush="#FFDCDCDC" Geometry="F1 M 698.585,782.601L 397.189,782.601L 397.189,767.456L 698.585,767.456L 698.585,782.601 Z "/>
-                        <GeometryDrawing Brush="#FFDCDCDC" Geometry="F1 M 698.585,813.046L 397.189,813.046L 397.189,797.904L 698.585,797.904L 698.585,813.046 Z "/>
-                        <GeometryDrawing Brush="#FFDCDCDC" Geometry="F1 M 698.585,844.198L 397.189,844.198L 397.189,829.054L 698.585,829.054L 698.585,844.198 Z "/>
-                        <GeometryDrawing Brush="#FF565654" Geometry="F1 M 203.56,180.267C 203.56,190.76 195.055,199.266 184.561,199.266C 174.068,199.266 165.561,190.76 165.561,180.267C 165.561,169.774 174.068,161.267 184.561,161.267C 195.055,161.267 203.56,169.774 203.56,180.267 Z "/>
-                        <GeometryDrawing Brush="#FF565654" Geometry="F1 M 203.559,254.887C 203.559,265.381 195.054,273.886 184.561,273.886C 174.067,273.886 165.561,265.381 165.561,254.887C 165.561,244.394 174.067,235.887 184.561,235.887C 195.054,235.887 203.559,244.394 203.559,254.887 Z "/>
-                        <GeometryDrawing Brush="#FF565654" Geometry="F1 M 203.56,329.508C 203.56,340 195.055,348.507 184.561,348.507C 174.068,348.507 165.561,340 165.561,329.508C 165.561,319.015 174.068,310.508 184.561,310.508C 195.055,310.508 203.56,319.015 203.56,329.508 Z "/>
-                        <GeometryDrawing Brush="#FF565654" Geometry="F1 M 203.56,404.128C 203.56,414.621 195.053,423.126 184.561,423.126C 174.068,423.126 165.561,414.621 165.561,404.128C 165.561,393.634 174.068,385.129 184.561,385.129C 195.053,385.129 203.56,393.634 203.56,404.128 Z "/>
-                        <GeometryDrawing Brush="#FF565654" Geometry="F1 M 203.56,478.749C 203.56,489.241 195.053,497.746 184.561,497.746C 174.068,497.746 165.561,489.241 165.561,478.749C 165.561,468.254 174.068,459.749 184.561,459.749C 195.053,459.749 203.56,468.254 203.56,478.749 Z "/>
-                        <GeometryDrawing Brush="#FF565654" Geometry="F1 M 203.56,553.369C 203.56,563.861 195.053,572.367 184.561,572.367C 174.068,572.367 165.561,563.861 165.561,553.369C 165.561,542.875 174.068,534.369 184.561,534.369C 195.053,534.369 203.56,542.875 203.56,553.369 Z "/>
-                        <GeometryDrawing Brush="#FF565654" Geometry="F1 M 203.56,627.988C 203.56,638.482 195.053,646.987 184.561,646.987C 174.068,646.987 165.561,638.482 165.561,627.988C 165.561,617.495 174.068,608.99 184.561,608.99C 195.053,608.99 203.56,617.495 203.56,627.988 Z "/>
-                        <GeometryDrawing Brush="#FF565654" Geometry="F1 M 203.56,702.61C 203.56,713.102 195.055,721.608 184.561,721.608C 174.068,721.608 165.561,713.102 165.561,702.61C 165.561,692.115 174.068,683.611 184.561,683.611C 195.055,683.611 203.56,692.115 203.56,702.61 Z "/>
-                        <GeometryDrawing Brush="#FF565654" Geometry="F1 M 203.56,777.231C 203.56,787.721 195.055,796.228 184.561,796.228C 174.068,796.228 165.561,787.721 165.561,777.231C 165.561,766.736 174.068,758.231 184.561,758.231C 195.055,758.231 203.56,766.736 203.56,777.231 Z "/>
-                        <GeometryDrawing Brush="#FF565654" Geometry="F1 M 203.56,851.85C 203.56,862.342 195.055,870.848 184.561,870.848C 174.068,870.848 165.561,862.342 165.561,851.85C 165.561,841.356 174.068,832.85 184.561,832.85C 195.055,832.85 203.56,841.356 203.56,851.85 Z "/>
-                        <GeometryDrawing Geometry="F1 M 171.175,190.906L 128.925,190.906">
-                            <GeometryDrawing.Pen>
-                                <Pen Thickness="6.66667" MiterLimit="2.75" Brush="#FF313131"/>
-                            </GeometryDrawing.Pen>
-                        </GeometryDrawing>
-                        <GeometryDrawing Geometry="F1 M 128.925,171.799L 171.174,171.799">
-                            <GeometryDrawing.Pen>
-                                <Pen Thickness="6.66667" MiterLimit="2.75" Brush="#FF313131"/>
-                            </GeometryDrawing.Pen>
-                        </GeometryDrawing>
-                        <GeometryDrawing Geometry="F1 M 171.174,265.405L 128.925,265.405">
-                            <GeometryDrawing.Pen>
-                                <Pen Thickness="6.66667" MiterLimit="2.75" Brush="#FF313131"/>
-                            </GeometryDrawing.Pen>
-                        </GeometryDrawing>
-                        <GeometryDrawing Geometry="F1 M 128.925,246.298L 171.174,246.298">
-                            <GeometryDrawing.Pen>
-                                <Pen Thickness="6.66667" MiterLimit="2.75" Brush="#FF313131"/>
-                            </GeometryDrawing.Pen>
-                        </GeometryDrawing>
-                        <GeometryDrawing Geometry="F1 M 171.175,339.905L 128.925,339.905">
-                            <GeometryDrawing.Pen>
-                                <Pen Thickness="6.66667" MiterLimit="2.75" Brush="#FF313131"/>
-                            </GeometryDrawing.Pen>
-                        </GeometryDrawing>
-                        <GeometryDrawing Geometry="F1 M 128.925,320.798L 171.174,320.798">
-                            <GeometryDrawing.Pen>
-                                <Pen Thickness="6.66667" MiterLimit="2.75" Brush="#FF313131"/>
-                            </GeometryDrawing.Pen>
-                        </GeometryDrawing>
-                        <GeometryDrawing Geometry="F1 M 171.175,414.405L 128.925,414.405">
-                            <GeometryDrawing.Pen>
-                                <Pen Thickness="6.66667" MiterLimit="2.75" Brush="#FF313131"/>
-                            </GeometryDrawing.Pen>
-                        </GeometryDrawing>
-                        <GeometryDrawing Geometry="F1 M 128.925,395.298L 171.174,395.298">
-                            <GeometryDrawing.Pen>
-                                <Pen Thickness="6.66667" MiterLimit="2.75" Brush="#FF313131"/>
-                            </GeometryDrawing.Pen>
-                        </GeometryDrawing>
-                        <GeometryDrawing Geometry="F1 M 171.175,488.904L 128.925,488.904">
-                            <GeometryDrawing.Pen>
-                                <Pen Thickness="6.66667" MiterLimit="2.75" Brush="#FF313131"/>
-                            </GeometryDrawing.Pen>
-                        </GeometryDrawing>
-                        <GeometryDrawing Geometry="F1 M 128.925,469.798L 171.174,469.798">
-                            <GeometryDrawing.Pen>
-                                <Pen Thickness="6.66667" MiterLimit="2.75" Brush="#FF313131"/>
-                            </GeometryDrawing.Pen>
-                        </GeometryDrawing>
-                        <GeometryDrawing Geometry="F1 M 171.175,563.404L 128.925,563.404">
-                            <GeometryDrawing.Pen>
-                                <Pen Thickness="6.66667" MiterLimit="2.75" Brush="#FF313131"/>
-                            </GeometryDrawing.Pen>
-                        </GeometryDrawing>
-                        <GeometryDrawing Geometry="F1 M 128.925,544.297L 171.174,544.297">
-                            <GeometryDrawing.Pen>
-                                <Pen Thickness="6.66667" MiterLimit="2.75" Brush="#FF313131"/>
-                            </GeometryDrawing.Pen>
-                        </GeometryDrawing>
-                        <GeometryDrawing Geometry="F1 M 171.175,637.904L 128.925,637.904">
-                            <GeometryDrawing.Pen>
-                                <Pen Thickness="6.66667" MiterLimit="2.75" Brush="#FF313131"/>
-                            </GeometryDrawing.Pen>
-                        </GeometryDrawing>
-                        <GeometryDrawing Geometry="F1 M 128.925,618.797L 171.174,618.797">
-                            <GeometryDrawing.Pen>
-                                <Pen Thickness="6.66667" MiterLimit="2.75" Brush="#FF313131"/>
-                            </GeometryDrawing.Pen>
-                        </GeometryDrawing>
-                        <GeometryDrawing Geometry="F1 M 171.175,712.404L 128.925,712.404">
-                            <GeometryDrawing.Pen>
-                                <Pen Thickness="6.66667" MiterLimit="2.75" Brush="#FF313131"/>
-                            </GeometryDrawing.Pen>
-                        </GeometryDrawing>
-                        <GeometryDrawing Geometry="F1 M 128.925,693.297L 171.174,693.297">
-                            <GeometryDrawing.Pen>
-                                <Pen Thickness="6.66667" MiterLimit="2.75" Brush="#FF313131"/>
-                            </GeometryDrawing.Pen>
-                        </GeometryDrawing>
-                        <GeometryDrawing Geometry="F1 M 171.175,786.903L 128.925,786.903">
-                            <GeometryDrawing.Pen>
-                                <Pen Thickness="6.66667" MiterLimit="2.75" Brush="#FF313131"/>
-                            </GeometryDrawing.Pen>
-                        </GeometryDrawing>
-                        <GeometryDrawing Geometry="F1 M 128.925,767.796L 171.174,767.796">
-                            <GeometryDrawing.Pen>
-                                <Pen Thickness="6.66667" MiterLimit="2.75" Brush="#FF313131"/>
-                            </GeometryDrawing.Pen>
-                        </GeometryDrawing>
-                        <GeometryDrawing Geometry="F1 M 171.175,861.403L 128.925,861.403">
-                            <GeometryDrawing.Pen>
-                                <Pen Thickness="6.66667" MiterLimit="2.75" Brush="#FF313131"/>
-                            </GeometryDrawing.Pen>
-                        </GeometryDrawing>
-                        <GeometryDrawing Geometry="F1 M 128.925,842.296L 171.174,842.296">
-                            <GeometryDrawing.Pen>
-                                <Pen Thickness="6.66667" MiterLimit="2.75" Brush="#FF313131"/>
-                            </GeometryDrawing.Pen>
-                        </GeometryDrawing>
-                        <GeometryDrawing Brush="#803A3A3A" Geometry="F1 M 322.988,220.408C 319.238,220.408 316.03,219.2 313.405,216.763C 310.78,214.346 309.468,211.408 309.468,207.95L 309.468,179.45C 309.468,175.992 310.78,173.033 313.426,170.596C 316.072,168.179 319.259,166.95 322.988,166.95C 326.738,166.95 329.926,168.179 332.551,170.617C 335.176,173.075 336.488,176.013 336.488,179.45L 336.488,185.408L 327.634,185.408L 327.634,179.283C 327.634,178.033 327.155,176.971 326.197,176.075C 325.238,175.2 324.072,174.742 322.718,174.742C 321.363,174.742 320.218,175.2 319.28,176.075C 318.322,176.971 317.863,178.033 317.863,179.283L 317.863,207.867C 317.863,209.117 318.322,210.179 319.28,211.054C 320.218,211.929 321.363,212.367 322.718,212.367C 324.072,212.367 325.238,211.929 326.197,211.054C 327.155,210.179 327.634,209.117 327.634,207.867L 327.634,200.658L 336.488,200.658L 336.488,207.95C 336.488,211.429 335.155,214.367 332.509,216.783C 329.863,219.2 326.697,220.408 322.988,220.408 Z "/>
-                        <GeometryDrawing Brush="#803A3A3A" Geometry="F1 M 352.165,197.617L 352.165,219.742L 343.602,219.742L 343.602,167.533L 352.165,167.533L 352.165,189.7L 362.373,189.7L 362.373,167.533L 370.935,167.533L 370.935,219.742L 362.373,219.742L 362.373,197.617L 352.165,197.617 Z "/>
-                        <GeometryDrawing Brush="#803A3A3A" Geometry="F1 M 378.686,219.742L 378.686,167.492L 402.957,167.492L 402.957,175.367L 387.207,175.367L 387.207,189.658L 398.707,189.658L 398.707,197.575L 387.207,197.575L 387.207,211.867L 402.957,211.867L 402.957,219.742L 378.686,219.742 Z "/>
-                        <GeometryDrawing Brush="#803A3A3A" Geometry="F1 M 422.422,220.408C 418.672,220.408 415.463,219.2 412.838,216.763C 410.213,214.346 408.901,211.408 408.901,207.95L 408.901,179.45C 408.901,175.992 410.213,173.033 412.859,170.596C 415.505,168.179 418.692,166.95 422.422,166.95C 426.172,166.95 429.359,168.179 431.984,170.617C 434.609,173.075 435.922,176.013 435.922,179.45L 435.922,185.408L 427.067,185.408L 427.067,179.283C 427.067,178.033 426.588,176.971 425.63,176.075C 424.672,175.2 423.505,174.742 422.151,174.742C 420.797,174.742 419.651,175.2 418.713,176.075C 417.755,176.971 417.297,178.033 417.297,179.283L 417.297,207.867C 417.297,209.117 417.755,210.179 418.713,211.054C 419.651,211.929 420.797,212.367 422.151,212.367C 423.505,212.367 424.672,211.929 425.63,211.054C 426.588,210.179 427.067,209.117 427.067,207.867L 427.067,200.658L 435.922,200.658L 435.922,207.95C 435.922,211.429 434.588,214.367 431.942,216.783C 429.297,219.2 426.13,220.408 422.422,220.408 Z "/>
-                        <GeometryDrawing Brush="#803A3A3A" Geometry="F1 M 451.598,203.242L 451.598,219.742L 443.035,219.742L 443.035,167.492L 451.598,167.492L 451.598,186.117L 461.973,167.492L 471.098,167.492L 459.41,188.867L 473.077,219.742L 463.056,219.742L 454.118,198.575L 451.598,203.242 Z "/>
-                        <GeometryDrawing Brush="#803A3A3A" Geometry="F1 M 525.737,219.742L 502.508,219.742L 502.508,167.533L 511.028,167.533L 511.028,211.908L 525.737,211.908L 525.737,219.742 Z "/>
-                        <GeometryDrawing Brush="#803A3A3A" Geometry="F1 M 540.223,219.742L 531.702,219.742L 531.702,167.533L 540.223,167.533L 540.223,219.742 Z "/>
-                        <GeometryDrawing Brush="#803A3A3A" Geometry="F1 M 575.602,206.742C 575.665,210.388 574.644,213.492 572.54,216.075C 571.144,217.825 569.185,219.075 566.665,219.783C 565.31,220.158 563.727,220.367 561.935,220.367C 558.602,220.367 555.831,219.617 553.644,218.075C 551.81,216.825 550.352,215.138 549.29,212.971C 548.206,210.825 547.581,208.367 547.415,205.575L 555.54,205.033C 555.894,208.075 556.769,210.263 558.144,211.617C 559.165,212.658 560.331,213.138 561.665,213.075C 563.519,213.033 564.998,212.179 566.123,210.533C 566.706,209.742 566.998,208.575 566.998,207.075C 566.998,204.908 565.915,202.763 563.79,200.617C 562.102,199.158 559.581,196.95 556.206,193.992C 553.373,191.471 551.373,189.2 550.206,187.2C 548.935,184.95 548.31,182.513 548.31,179.867C 548.31,175.117 550.04,171.533 553.498,169.075C 555.623,167.617 558.269,166.867 561.435,166.867C 564.477,166.867 567.081,167.492 569.248,168.742C 570.915,169.721 572.29,171.075 573.331,172.825C 574.373,174.575 574.998,176.596 575.206,178.867L 567.04,180.242C 566.79,178.117 566.123,176.45 565.06,175.242C 564.269,174.388 563.123,173.95 561.665,173.95C 560.081,173.95 558.894,174.596 558.102,175.867C 557.435,176.908 557.102,178.179 557.102,179.7C 557.102,182.096 558.206,184.533 560.456,186.992C 561.29,187.95 562.54,189.054 564.248,190.325C 566.206,191.867 567.519,192.929 568.165,193.533C 570.269,195.492 571.894,197.408 573.04,199.283C 573.581,200.179 574.019,200.992 574.352,201.742C 575.144,203.617 575.56,205.283 575.602,206.742 Z "/>
-                        <GeometryDrawing Brush="#803A3A3A" Geometry="F1 M 590.643,175.408L 581.581,175.408L 581.581,167.533L 608.185,167.533L 608.185,175.408L 599.164,175.408L 599.164,219.742L 590.643,219.742L 590.643,175.408 Z "/>
-                        <GeometryDrawing Brush="#FF565654" Geometry="F1 M 923.923,435.224L 916.566,435.224L 916.566,415.979C 923.587,414.728 928.923,408.607 928.923,401.225C 928.923,392.941 922.209,386.227 913.925,386.227L 911.425,386.227L 911.425,337.231C 911.425,328.395 904.262,321.231 895.425,321.231L 892.427,321.231C 883.591,321.231 876.427,328.395 876.427,337.231L 876.427,386.227L 873.927,386.227C 865.643,386.227 858.927,392.941 858.927,401.225C 858.927,408.352 863.903,414.307 870.567,415.835L 870.567,861.114L 916.566,861.114L 916.566,450.224L 923.923,450.224L 923.923,655.124L 933.922,655.124L 933.922,450.224L 933.922,435.224L 923.923,435.224 Z "/>
-                        <GeometryDrawing Brush="#4D565654" Geometry="F1 M 870.568,861.115L 882.068,916.643L 893.568,972.172L 905.068,916.643L 916.568,861.115L 893.568,861.115L 870.568,861.115 Z "/>
-                        <GeometryDrawing Brush="#FFFFFFFF" Geometry="F1 M 909.616,412.242L 879.619,412.242L 879.619,427.242L 909.616,427.242L 909.616,632.142L 919.615,632.142L 919.615,427.242L 919.615,412.242L 909.616,412.242 Z "/>
-                        <DrawingGroup ClipGeometry="F1 M 878.119,298.249C 869.283,298.249 862.119,305.413 862.119,314.249L 862.119,314.249L 862.119,376.244C 862.119,385.08 869.283,392.244 878.119,392.244L 878.119,392.244L 881.117,392.244C 889.955,392.244 897.118,385.08 897.118,376.244L 897.118,376.244L 897.118,314.249C 897.118,305.413 889.955,298.249 881.117,298.249L 881.117,298.249L 878.119,298.249 Z ">
-                            <DrawingGroup.Children>
-                                <GeometryDrawing Brush="#FFFFFFFF" Geometry="F1 M 897.117,376.244C 897.117,385.08 889.955,392.244 881.117,392.244L 878.12,392.244C 869.284,392.244 862.12,385.08 862.12,376.244L 862.12,314.249C 862.12,305.413 869.284,298.249 878.12,298.249L 881.117,298.249C 889.955,298.249 897.117,305.413 897.117,314.249L 897.117,376.244 Z "/>
-                                <GeometryDrawing Brush="#FF902C21" Geometry="F1 M 929.285,329.248L 827.29,329.248L 827.29,298.249L 929.285,298.249L 929.285,329.248 Z "/>
-                            </DrawingGroup.Children>
-                        </DrawingGroup>
-                        <DrawingGroup ClipGeometry="F1 M 856.261,838.132L 902.259,838.132L 902.259,373.25L 856.261,373.25L 856.261,838.132 Z ">
-                            <DrawingGroup.Children>
-                                <GeometryDrawing Brush="#FFAC3226" Geometry="F1 M 902.259,838.132L 856.261,838.132L 856.261,373.25L 902.259,373.25L 902.259,838.132 Z "/>
-                                <GeometryDrawing Brush="#FFB3B3B3" Geometry="F1 M 921.258,707.56L 811.263,707.56L 811.263,688.374L 921.258,688.374L 921.258,707.56 Z "/>
-                                <GeometryDrawing Brush="#FFB3B3B3" Geometry="F1 M 921.258,753.124L 811.263,753.124L 811.263,733.94L 921.258,733.94L 921.258,753.124 Z "/>
-                            </DrawingGroup.Children>
-                        </DrawingGroup>
-                        <DrawingGroup ClipGeometry="F1 M 879.261,838.133L 856.261,838.133L 867.761,893.661L 879.261,949.19L 890.761,893.661L 902.261,838.133L 879.261,838.133 Z ">
-                            <DrawingGroup.Children>
-                                <GeometryDrawing Brush="#FFFFFFFF" Geometry="F1 M 879.261,949.19L 867.761,893.662L 856.261,838.133L 879.261,838.133L 902.261,838.133L 890.761,893.662L 879.261,949.19 Z "/>
-                                <GeometryDrawing Brush="#FF1A1A1A" Geometry="F1 M 937.242,926.237L 856.261,926.237L 856.261,972.144L 937.242,972.144L 937.242,926.237 Z "/>
-                            </DrawingGroup.Children>
-                        </DrawingGroup>
-                        <GeometryDrawing Brush="#FF902C21" Geometry="F1 M 914.616,378.244C 914.616,386.528 907.901,393.244 899.617,393.244L 859.62,393.244C 851.336,393.244 844.62,386.528 844.62,378.244C 844.62,369.96 851.336,363.245 859.62,363.245L 899.617,363.245C 907.901,363.245 914.616,369.96 914.616,378.244 Z "/>
-                        <GeometryDrawing Brush="#67565654" Geometry="F1 M 909.793,412.246L 902.436,412.246L 902.436,393.001C 909.457,391.75 914.793,385.629 914.793,378.248C 914.793,369.964 908.078,363.249 899.794,363.249L 897.294,363.249L 897.294,314.253C 897.294,305.417 890.132,298.253 881.294,298.253L 879.441,298.253L 879.441,949.174L 890.937,893.665L 902.437,838.137L 902.436,838.136L 902.436,427.246L 909.793,427.246L 909.793,632.146L 919.792,632.146L 919.792,427.246L 919.792,412.246L 909.793,412.246 Z "/>
-                    </DrawingGroup.Children>
+                    <DrawingGroup.ClipGeometry>
+                        <RectangleGeometry Rect="0,0,18,18" />
+                    </DrawingGroup.ClipGeometry>
+                    <GeometryDrawing>
+                        <GeometryDrawing.Brush>
+                            <SolidColorBrush Color="#FF000000" Opacity="0.541" />
+                        </GeometryDrawing.Brush>
+                        <GeometryDrawing.Geometry>
+                            <PathGeometry FillRule="EvenOdd" Figures="M16.257,14.009L16.257,3.171C16.257,2.319,15.56,1.622,14.709,1.622L3.87,1.622C3.018,1.622,2.322,2.319,2.322,3.171L2.322,14.009C2.322,14.861,3.018,15.558,3.87,15.558L14.709,15.558C15.56,15.558,16.257,14.861,16.257,14.009z M6.58,9.751L8.515,12.082 11.225,8.59 14.709,13.235 3.87,13.235 6.58,9.751z" />
+                        </GeometryDrawing.Geometry>
+                    </GeometryDrawing>
                 </DrawingGroup>
             </DrawingBrush.Drawing>
         </DrawingBrush>
-        <DrawingBrush x:Key="SummarySelectLogo" Stretch="Uniform">
-            <DrawingBrush.Drawing>
-                <DrawingGroup>
-                    <DrawingGroup.Children>
-                        <GeometryDrawing Brush="#FF52A898" Geometry="F1 M 0,1066.33L 1066.17,1066.33L 1066.17,-3.05176e-005L 0,-3.05176e-005L 0,1066.33 Z "/>
-                        <GeometryDrawing Brush="#FFCEA063" Geometry="F1 M 821.328,974.333L 249.437,974.333C 240.352,974.333 232.988,966.968 232.988,957.884L 232.988,164.595C 232.988,155.509 240.352,148.145 249.437,148.145L 821.328,148.145C 830.414,148.145 837.778,155.509 837.778,164.595L 837.778,957.884C 837.778,966.968 830.414,974.333 821.328,974.333 Z "/>
-                        <GeometryDrawing Brush="#FFFCCC86" Geometry="F1 M 819.229,970.729L 247.338,970.729C 238.253,970.729 230.889,963.363 230.889,954.279L 230.889,160.99C 230.889,151.905 238.253,144.541 247.338,144.541L 819.229,144.541C 828.314,144.541 835.678,151.905 835.678,160.99L 835.678,954.279C 835.678,963.363 828.314,970.729 819.229,970.729 Z "/>
-                        <GeometryDrawing Brush="#FFD3D1CF" Geometry="F1 M 806.807,938.725L 280.341,938.725L 280.341,194.159L 806.807,194.159L 806.807,938.725 Z "/>
-                        <GeometryDrawing Brush="#FFE2E0DE" Geometry="F1 M 798.287,928.868L 271.821,928.868L 271.821,184.301L 798.287,184.301L 798.287,928.868 Z "/>
-                        <GeometryDrawing Brush="#FFEFEFEF" Geometry="F1 M 660.642,886.417L 684.123,918.4L 788.158,842.601L 727.939,806.088L 660.642,886.417 Z "/>
-                        <GeometryDrawing Brush="#FFF7F7F7" Geometry="F1 M 706.031,846.253L 684.123,918.401L 261.693,918.401L 261.693,173.833L 788.159,173.833L 788.159,842.602L 706.031,846.253 Z "/>
-                        <GeometryDrawing Brush="#FFFFFFFF" Geometry="F1 M 261.693,657.114L 261.693,173.833L 788.158,173.833L 788.158,517.121L 261.693,657.114 Z "/>
-                        <GeometryDrawing Brush="#FFE2E0DE" Geometry="F1 M 581.778,180.556L 623.404,215.162L 633.667,173.861L 623.404,173.861L 581.778,180.556 Z "/>
-                        <GeometryDrawing Brush="#FF8E979C" Geometry="F1 M 623.404,184.495L 443.261,184.495L 443.261,123.161L 623.404,123.161L 623.404,184.495 Z "/>
-                        <GeometryDrawing Brush="#FFD9E1E8" Geometry="F1 M 510.887,56.7135C 508.251,56.7135 506.105,58.8588 506.105,61.4948L 506.105,87.5882C 506.105,90.2242 508.251,92.3695 510.887,92.3695C 514.409,92.3695 517.667,93.9668 519.821,96.7548C 521.977,99.5401 522.706,103.095 521.82,106.504L 501.536,184.603C 501.221,185.811 501.48,187.069 502.244,188.056C 503.007,189.044 504.16,189.609 505.408,189.609L 561.259,189.609C 562.507,189.609 563.66,189.044 564.423,188.056C 565.187,187.069 565.444,185.811 565.131,184.603L 544.847,106.504C 543.961,103.095 544.689,99.5401 546.844,96.7535C 549,93.9668 552.256,92.3695 555.779,92.3695C 558.416,92.3695 560.56,90.2242 560.56,87.5882L 560.56,61.4948C 560.56,58.8588 558.416,56.7135 555.779,56.7135M 561.259,197.389L 505.408,197.389C 501.735,197.389 498.337,195.723 496.091,192.816C 493.843,189.911 493.083,186.204 494.007,182.648L 514.291,104.548C 514.567,103.487 514.34,102.38 513.668,101.513C 512.997,100.645 511.984,100.148 510.887,100.148C 503.961,100.148 498.327,94.5135 498.327,87.5882L 498.327,61.4948C 498.327,54.5681 503.961,48.9348 510.887,48.9348L 555.779,48.9348C 562.706,48.9348 568.34,54.5681 568.34,61.4948L 568.34,87.5882C 568.34,94.5135 562.706,100.148 555.779,100.148C 554.683,100.148 553.669,100.645 552.997,101.513C 552.328,102.38 552.1,103.487 552.376,104.548L 572.66,182.648C 573.584,186.203 572.826,189.91 570.577,192.816C 568.329,195.723 564.932,197.389 561.259,197.389 Z "/>
-                        <GeometryDrawing Brush="#FF6D7578" Geometry="F1 M 443.262,173.861L 443.262,215.161L 486.431,215.161L 493.606,203.79C 495.302,201.102 499.221,201.102 500.917,203.79L 508.093,215.161L 558.565,215.161L 565.739,203.79C 567.435,201.102 571.355,201.102 573.051,203.79L 580.227,215.161L 623.405,215.161L 623.405,173.861L 443.262,173.861 Z "/>
-                        <GeometryDrawing Brush="#FFD3D1CF" Geometry="F1 M 313.555,446.556L 399.333,446.556L 399.333,360.779L 313.555,360.779M 408.667,455.889L 304.221,455.889L 304.221,351.445L 408.667,351.445L 408.667,455.889 Z "/>
-                        <GeometryDrawing Brush="#FFD3D1CF" Geometry="F1 M 313.555,609.332L 399.333,609.332L 399.333,523.553L 313.555,523.553M 408.667,618.665L 304.221,618.665L 304.221,514.22L 408.667,514.22L 408.667,618.665 Z "/>
-                        <GeometryDrawing Brush="#FFD3D1CF" Geometry="F1 M 313.555,772.107L 399.333,772.107L 399.333,686.329L 313.555,686.329M 408.667,781.44L 304.221,781.44L 304.221,676.996L 408.667,676.996L 408.667,781.44 Z "/>
-                        <GeometryDrawing Brush="#FFD3D1CF" Geometry="F1 M 761.333,357.667L 467.889,357.667L 467.889,351.444L 761.333,351.444L 761.333,357.667 Z "/>
-                        <GeometryDrawing Brush="#FFD3D1CF" Geometry="F1 M 761.333,382.223L 467.889,382.223L 467.889,376L 761.333,376L 761.333,382.223 Z "/>
-                        <GeometryDrawing Brush="#FFD3D1CF" Geometry="F1 M 761.333,406.777L 467.889,406.777L 467.889,400.555L 761.333,400.555L 761.333,406.777 Z "/>
-                        <GeometryDrawing Brush="#FFD3D1CF" Geometry="F1 M 761.333,431.333L 467.889,431.333L 467.889,425.111L 761.333,425.111L 761.333,431.333 Z "/>
-                        <GeometryDrawing Brush="#FFD3D1CF" Geometry="F1 M 715.167,455.889L 467.889,455.889L 467.889,449.667L 715.167,449.667L 715.167,455.889 Z "/>
-                        <GeometryDrawing Brush="#FFD3D1CF" Geometry="F1 M 761.333,520.443L 467.889,520.443L 467.889,514.22L 761.333,514.22L 761.333,520.443 Z "/>
-                        <GeometryDrawing Brush="#FFD3D1CF" Geometry="F1 M 761.333,544.999L 467.889,544.999L 467.889,538.777L 761.333,538.777L 761.333,544.999 Z "/>
-                        <GeometryDrawing Brush="#FFD3D1CF" Geometry="F1 M 761.333,569.553L 467.889,569.553L 467.889,563.331L 761.333,563.331L 761.333,569.553 Z "/>
-                        <GeometryDrawing Brush="#FFD3D1CF" Geometry="F1 M 761.333,594.109L 467.889,594.109L 467.889,587.887L 761.333,587.887L 761.333,594.109 Z "/>
-                        <GeometryDrawing Brush="#FFD3D1CF" Geometry="F1 M 715.167,618.665L 467.889,618.665L 467.889,612.443L 715.167,612.443L 715.167,618.665 Z "/>
-                        <GeometryDrawing Brush="#FFD3D1CF" Geometry="F1 M 761.333,683.219L 467.889,683.219L 467.889,676.996L 761.333,676.996L 761.333,683.219 Z "/>
-                        <GeometryDrawing Brush="#FFD3D1CF" Geometry="F1 M 761.333,707.775L 467.889,707.775L 467.889,701.553L 761.333,701.553L 761.333,707.775 Z "/>
-                        <GeometryDrawing Brush="#FFD3D1CF" Geometry="F1 M 761.333,732.329L 467.889,732.329L 467.889,726.107L 761.333,726.107L 761.333,732.329 Z "/>
-                        <GeometryDrawing Brush="#FFD3D1CF" Geometry="F1 M 761.333,756.885L 467.889,756.885L 467.889,750.664L 761.333,750.664L 761.333,756.885 Z "/>
-                        <GeometryDrawing Brush="#FFD3D1CF" Geometry="F1 M 715.167,781.441L 467.889,781.441L 467.889,775.219L 715.167,775.219L 715.167,781.441 Z "/>
-                        <GeometryDrawing Brush="#FF52A898" Geometry="F1 M 352.46,431.004L 322.909,397.884L 330.869,390.783L 352.856,415.425L 408.745,358.847L 416.333,366.343L 352.46,431.004 Z "/>
-                        <GeometryDrawing Brush="#FFF27D75" Geometry="F1 M 913.667,738.333L 875,738.333L 875,342.333L 913.667,342.333L 913.667,738.333 Z "/>
-                        <GeometryDrawing Brush="#FFE06F63" Geometry="F1 M 894.333,738.333L 875,738.333L 875,342.333L 894.333,342.333L 894.333,738.333 Z "/>
-                        <GeometryDrawing Brush="#FFE2E0DE" Geometry="F1 M 899.667,783.333L 890.556,783.333L 875,738.333L 913.667,738.333L 899.667,783.333 Z "/>
-                        <GeometryDrawing Brush="#FFE06F63" Geometry="F1 M 905,333L 883.667,333L 883.667,330.333C 883.667,324.443 888.443,319.667 894.333,319.667C 900.224,319.667 905,324.443 905,330.333L 905,333 Z "/>
-                        <GeometryDrawing Brush="#FFE2E0DE" Geometry="F1 M 913.667,342.333L 875,342.333C 875,336.443 879.776,331.667 885.667,331.667L 903,331.667C 908.891,331.667 913.667,336.443 913.667,342.333 Z "/>
-                        <GeometryDrawing Brush="#FF8E979C" Geometry="F1 M 919.167,379L 913.667,379L 913.667,342.333L 919.167,342.333L 919.167,379 Z "/>
-                        <GeometryDrawing Brush="#FFC4C3C2" Geometry="F1 M 919.167,342.333L 919.167,448.175L 917.296,449.412C 915.499,450.6 914.765,452.876 915.531,454.891L 919.167,464.472C 919.167,465.991 920.397,467.223 921.917,467.223C 923.436,467.223 924.667,465.991 924.667,464.472L 924.667,347.833C 924.667,344.796 922.204,342.333 919.167,342.333 Z "/>
-                        <GeometryDrawing Brush="#FF7C8689" Geometry="F1 M 163.333,772.222L 159.556,783.333L 162.568,791.28C 163.136,792.781 165.268,792.761 165.807,791.249L 168.905,782.568L 163.333,772.222 Z "/>
-                        <GeometryDrawing Brush="#FF7996BA" Geometry="F1 M 182.667,738.333L 144,738.333L 144,342.333L 182.667,342.333L 182.667,738.333 Z "/>
-                        <GeometryDrawing Brush="#FF677C93" Geometry="F1 M 163.333,738.333L 144,738.333L 144,342.333L 163.333,342.333L 163.333,738.333 Z "/>
-                        <GeometryDrawing Brush="#FFE06F63" Geometry="F1 M 182.667,333L 144,333L 144,327.333C 144,321.443 148.776,316.667 154.667,316.667L 172,316.667C 177.891,316.667 182.667,321.443 182.667,327.333L 182.667,333 Z "/>
-                        <GeometryDrawing Brush="#FFE2E0DE" Geometry="F1 M 182.667,342.333L 144,342.333L 144,331.667L 182.667,331.667L 182.667,342.333 Z "/>
-                        <GeometryDrawing Brush="#FFE8B877" Geometry="F1 M 168.667,783.333L 159.556,783.333L 144,738.333L 182.667,738.333L 168.667,783.333 Z "/>
-                        <GeometryDrawing Brush="#FFE8B877" Geometry="F1 M 177.583,730.944C 175.561,730.944 173.818,732.667 172.999,735.154C 172.182,732.667 170.439,730.944 168.417,730.944C 165.609,730.944 163.333,734.252 163.333,738.334L 165.583,745.083L 182.667,738.334C 182.667,734.252 180.391,730.944 177.583,730.944 Z "/>
-                        <GeometryDrawing Brush="#FFE8B877" Geometry="F1 M 158.25,730.944C 156.227,730.944 154.485,732.667 153.666,735.154C 152.849,732.667 151.106,730.944 149.083,730.944C 146.275,730.944 143.999,734.252 143.999,738.334L 156.25,742.834L 163.334,738.334C 163.334,734.252 161.058,730.944 158.25,730.944 Z "/>
-                    </DrawingGroup.Children>
-                </DrawingGroup>
-            </DrawingBrush.Drawing>
-        </DrawingBrush>
-        <DrawingBrush x:Key="SummaryNoSelectLogo" Stretch="Uniform">
-            <DrawingBrush.Drawing>
-                <DrawingGroup>
-                    <DrawingGroup.Children>
-                        <GeometryDrawing Brush="Transparent" Geometry="F1 M 0,1066.33L 1066.17,1066.33L 1066.17,-3.05176e-005L 0,-3.05176e-005L 0,1066.33 Z "/>
-                        <GeometryDrawing Brush="#FFCEA063" Geometry="F1 M 821.328,974.333L 249.437,974.333C 240.352,974.333 232.988,966.968 232.988,957.884L 232.988,164.595C 232.988,155.509 240.352,148.145 249.437,148.145L 821.328,148.145C 830.414,148.145 837.778,155.509 837.778,164.595L 837.778,957.884C 837.778,966.968 830.414,974.333 821.328,974.333 Z "/>
-                        <GeometryDrawing Brush="#FFFCCC86" Geometry="F1 M 819.229,970.729L 247.338,970.729C 238.253,970.729 230.889,963.363 230.889,954.279L 230.889,160.99C 230.889,151.905 238.253,144.541 247.338,144.541L 819.229,144.541C 828.314,144.541 835.678,151.905 835.678,160.99L 835.678,954.279C 835.678,963.363 828.314,970.729 819.229,970.729 Z "/>
-                        <GeometryDrawing Brush="#FFD3D1CF" Geometry="F1 M 806.807,938.725L 280.341,938.725L 280.341,194.159L 806.807,194.159L 806.807,938.725 Z "/>
-                        <GeometryDrawing Brush="#FFE2E0DE" Geometry="F1 M 798.287,928.868L 271.821,928.868L 271.821,184.301L 798.287,184.301L 798.287,928.868 Z "/>
-                        <GeometryDrawing Brush="#FFEFEFEF" Geometry="F1 M 660.642,886.417L 684.123,918.4L 788.158,842.601L 727.939,806.088L 660.642,886.417 Z "/>
-                        <GeometryDrawing Brush="#FFF7F7F7" Geometry="F1 M 706.031,846.253L 684.123,918.401L 261.693,918.401L 261.693,173.833L 788.159,173.833L 788.159,842.602L 706.031,846.253 Z "/>
-                        <GeometryDrawing Brush="#FFFFFFFF" Geometry="F1 M 261.693,657.114L 261.693,173.833L 788.158,173.833L 788.158,517.121L 261.693,657.114 Z "/>
-                        <GeometryDrawing Brush="#FFE2E0DE" Geometry="F1 M 581.778,180.556L 623.404,215.162L 633.667,173.861L 623.404,173.861L 581.778,180.556 Z "/>
-                        <GeometryDrawing Brush="#FF8E979C" Geometry="F1 M 623.404,184.495L 443.261,184.495L 443.261,123.161L 623.404,123.161L 623.404,184.495 Z "/>
-                        <GeometryDrawing Brush="#FFD9E1E8" Geometry="F1 M 510.887,56.7135C 508.251,56.7135 506.105,58.8588 506.105,61.4948L 506.105,87.5882C 506.105,90.2242 508.251,92.3695 510.887,92.3695C 514.409,92.3695 517.667,93.9668 519.821,96.7548C 521.977,99.5401 522.706,103.095 521.82,106.504L 501.536,184.603C 501.221,185.811 501.48,187.069 502.244,188.056C 503.007,189.044 504.16,189.609 505.408,189.609L 561.259,189.609C 562.507,189.609 563.66,189.044 564.423,188.056C 565.187,187.069 565.444,185.811 565.131,184.603L 544.847,106.504C 543.961,103.095 544.689,99.5401 546.844,96.7535C 549,93.9668 552.256,92.3695 555.779,92.3695C 558.416,92.3695 560.56,90.2242 560.56,87.5882L 560.56,61.4948C 560.56,58.8588 558.416,56.7135 555.779,56.7135M 561.259,197.389L 505.408,197.389C 501.735,197.389 498.337,195.723 496.091,192.816C 493.843,189.911 493.083,186.204 494.007,182.648L 514.291,104.548C 514.567,103.487 514.34,102.38 513.668,101.513C 512.997,100.645 511.984,100.148 510.887,100.148C 503.961,100.148 498.327,94.5135 498.327,87.5882L 498.327,61.4948C 498.327,54.5681 503.961,48.9348 510.887,48.9348L 555.779,48.9348C 562.706,48.9348 568.34,54.5681 568.34,61.4948L 568.34,87.5882C 568.34,94.5135 562.706,100.148 555.779,100.148C 554.683,100.148 553.669,100.645 552.997,101.513C 552.328,102.38 552.1,103.487 552.376,104.548L 572.66,182.648C 573.584,186.203 572.826,189.91 570.577,192.816C 568.329,195.723 564.932,197.389 561.259,197.389 Z "/>
-                        <GeometryDrawing Brush="#FF6D7578" Geometry="F1 M 443.262,173.861L 443.262,215.161L 486.431,215.161L 493.606,203.79C 495.302,201.102 499.221,201.102 500.917,203.79L 508.093,215.161L 558.565,215.161L 565.739,203.79C 567.435,201.102 571.355,201.102 573.051,203.79L 580.227,215.161L 623.405,215.161L 623.405,173.861L 443.262,173.861 Z "/>
-                        <GeometryDrawing Brush="#FFD3D1CF" Geometry="F1 M 313.555,446.556L 399.333,446.556L 399.333,360.779L 313.555,360.779M 408.667,455.889L 304.221,455.889L 304.221,351.445L 408.667,351.445L 408.667,455.889 Z "/>
-                        <GeometryDrawing Brush="#FFD3D1CF" Geometry="F1 M 313.555,609.332L 399.333,609.332L 399.333,523.553L 313.555,523.553M 408.667,618.665L 304.221,618.665L 304.221,514.22L 408.667,514.22L 408.667,618.665 Z "/>
-                        <GeometryDrawing Brush="#FFD3D1CF" Geometry="F1 M 313.555,772.107L 399.333,772.107L 399.333,686.329L 313.555,686.329M 408.667,781.44L 304.221,781.44L 304.221,676.996L 408.667,676.996L 408.667,781.44 Z "/>
-                        <GeometryDrawing Brush="#FFD3D1CF" Geometry="F1 M 761.333,357.667L 467.889,357.667L 467.889,351.444L 761.333,351.444L 761.333,357.667 Z "/>
-                        <GeometryDrawing Brush="#FFD3D1CF" Geometry="F1 M 761.333,382.223L 467.889,382.223L 467.889,376L 761.333,376L 761.333,382.223 Z "/>
-                        <GeometryDrawing Brush="#FFD3D1CF" Geometry="F1 M 761.333,406.777L 467.889,406.777L 467.889,400.555L 761.333,400.555L 761.333,406.777 Z "/>
-                        <GeometryDrawing Brush="#FFD3D1CF" Geometry="F1 M 761.333,431.333L 467.889,431.333L 467.889,425.111L 761.333,425.111L 761.333,431.333 Z "/>
-                        <GeometryDrawing Brush="#FFD3D1CF" Geometry="F1 M 715.167,455.889L 467.889,455.889L 467.889,449.667L 715.167,449.667L 715.167,455.889 Z "/>
-                        <GeometryDrawing Brush="#FFD3D1CF" Geometry="F1 M 761.333,520.443L 467.889,520.443L 467.889,514.22L 761.333,514.22L 761.333,520.443 Z "/>
-                        <GeometryDrawing Brush="#FFD3D1CF" Geometry="F1 M 761.333,544.999L 467.889,544.999L 467.889,538.777L 761.333,538.777L 761.333,544.999 Z "/>
-                        <GeometryDrawing Brush="#FFD3D1CF" Geometry="F1 M 761.333,569.553L 467.889,569.553L 467.889,563.331L 761.333,563.331L 761.333,569.553 Z "/>
-                        <GeometryDrawing Brush="#FFD3D1CF" Geometry="F1 M 761.333,594.109L 467.889,594.109L 467.889,587.887L 761.333,587.887L 761.333,594.109 Z "/>
-                        <GeometryDrawing Brush="#FFD3D1CF" Geometry="F1 M 715.167,618.665L 467.889,618.665L 467.889,612.443L 715.167,612.443L 715.167,618.665 Z "/>
-                        <GeometryDrawing Brush="#FFD3D1CF" Geometry="F1 M 761.333,683.219L 467.889,683.219L 467.889,676.996L 761.333,676.996L 761.333,683.219 Z "/>
-                        <GeometryDrawing Brush="#FFD3D1CF" Geometry="F1 M 761.333,707.775L 467.889,707.775L 467.889,701.553L 761.333,701.553L 761.333,707.775 Z "/>
-                        <GeometryDrawing Brush="#FFD3D1CF" Geometry="F1 M 761.333,732.329L 467.889,732.329L 467.889,726.107L 761.333,726.107L 761.333,732.329 Z "/>
-                        <GeometryDrawing Brush="#FFD3D1CF" Geometry="F1 M 761.333,756.885L 467.889,756.885L 467.889,750.664L 761.333,750.664L 761.333,756.885 Z "/>
-                        <GeometryDrawing Brush="#FFD3D1CF" Geometry="F1 M 715.167,781.441L 467.889,781.441L 467.889,775.219L 715.167,775.219L 715.167,781.441 Z "/>
-                        <GeometryDrawing Brush="#FF52A898" Geometry="F1 M 352.46,431.004L 322.909,397.884L 330.869,390.783L 352.856,415.425L 408.745,358.847L 416.333,366.343L 352.46,431.004 Z "/>
-                        <GeometryDrawing Brush="#FFF27D75" Geometry="F1 M 913.667,738.333L 875,738.333L 875,342.333L 913.667,342.333L 913.667,738.333 Z "/>
-                        <GeometryDrawing Brush="#FFE06F63" Geometry="F1 M 894.333,738.333L 875,738.333L 875,342.333L 894.333,342.333L 894.333,738.333 Z "/>
-                        <GeometryDrawing Brush="#FFE2E0DE" Geometry="F1 M 899.667,783.333L 890.556,783.333L 875,738.333L 913.667,738.333L 899.667,783.333 Z "/>
-                        <GeometryDrawing Brush="#FFE06F63" Geometry="F1 M 905,333L 883.667,333L 883.667,330.333C 883.667,324.443 888.443,319.667 894.333,319.667C 900.224,319.667 905,324.443 905,330.333L 905,333 Z "/>
-                        <GeometryDrawing Brush="#FFE2E0DE" Geometry="F1 M 913.667,342.333L 875,342.333C 875,336.443 879.776,331.667 885.667,331.667L 903,331.667C 908.891,331.667 913.667,336.443 913.667,342.333 Z "/>
-                        <GeometryDrawing Brush="#FF8E979C" Geometry="F1 M 919.167,379L 913.667,379L 913.667,342.333L 919.167,342.333L 919.167,379 Z "/>
-                        <GeometryDrawing Brush="#FFC4C3C2" Geometry="F1 M 919.167,342.333L 919.167,448.175L 917.296,449.412C 915.499,450.6 914.765,452.876 915.531,454.891L 919.167,464.472C 919.167,465.991 920.397,467.223 921.917,467.223C 923.436,467.223 924.667,465.991 924.667,464.472L 924.667,347.833C 924.667,344.796 922.204,342.333 919.167,342.333 Z "/>
-                        <GeometryDrawing Brush="#FF7C8689" Geometry="F1 M 163.333,772.222L 159.556,783.333L 162.568,791.28C 163.136,792.781 165.268,792.761 165.807,791.249L 168.905,782.568L 163.333,772.222 Z "/>
-                        <GeometryDrawing Brush="#FF7996BA" Geometry="F1 M 182.667,738.333L 144,738.333L 144,342.333L 182.667,342.333L 182.667,738.333 Z "/>
-                        <GeometryDrawing Brush="#FF677C93" Geometry="F1 M 163.333,738.333L 144,738.333L 144,342.333L 163.333,342.333L 163.333,738.333 Z "/>
-                        <GeometryDrawing Brush="#FFE06F63" Geometry="F1 M 182.667,333L 144,333L 144,327.333C 144,321.443 148.776,316.667 154.667,316.667L 172,316.667C 177.891,316.667 182.667,321.443 182.667,327.333L 182.667,333 Z "/>
-                        <GeometryDrawing Brush="#FFE2E0DE" Geometry="F1 M 182.667,342.333L 144,342.333L 144,331.667L 182.667,331.667L 182.667,342.333 Z "/>
-                        <GeometryDrawing Brush="#FFE8B877" Geometry="F1 M 168.667,783.333L 159.556,783.333L 144,738.333L 182.667,738.333L 168.667,783.333 Z "/>
-                        <GeometryDrawing Brush="#FFE8B877" Geometry="F1 M 177.583,730.944C 175.561,730.944 173.818,732.667 172.999,735.154C 172.182,732.667 170.439,730.944 168.417,730.944C 165.609,730.944 163.333,734.252 163.333,738.334L 165.583,745.083L 182.667,738.334C 182.667,734.252 180.391,730.944 177.583,730.944 Z "/>
-                        <GeometryDrawing Brush="#FFE8B877" Geometry="F1 M 158.25,730.944C 156.227,730.944 154.485,732.667 153.666,735.154C 152.849,732.667 151.106,730.944 149.083,730.944C 146.275,730.944 143.999,734.252 143.999,738.334L 156.25,742.834L 163.334,738.334C 163.334,734.252 161.058,730.944 158.25,730.944 Z "/>
-                    </DrawingGroup.Children>
-                </DrawingGroup>
-            </DrawingBrush.Drawing>
-        </DrawingBrush>
-        <Style x:Key="ButtonFocusVisual">
-            <Setter Property="Control.Template">
-                <Setter.Value>
-                    <ControlTemplate>
-                        <Rectangle StrokeDashArray="1 2" StrokeThickness="1"
-                                   Stroke="{DynamicResource {x:Static SystemColors.ControlTextBrushKey}}"
-                                   SnapsToDevicePixels="true" Margin="2" />
-                    </ControlTemplate>
-                </Setter.Value>
-            </Setter>
-        </Style>
-        <Style x:Key="DetailRadioButtonStyle" TargetType="{x:Type RadioButton}">
-            <Setter Property="FocusVisualStyle" Value="{StaticResource ButtonFocusVisual}" />
-            <Setter Property="HorizontalContentAlignment" Value="Center" />
-            <Setter Property="VerticalContentAlignment" Value="Center" />
-            <Setter Property="Padding" Value="10,5" />
-            <Setter Property="BorderThickness" Value="0" />
-            <Setter Property="Cursor" Value="Hand" />
-            <Setter Property="Background" Value="Transparent" />
-            <Setter Property="Foreground" Value="Transparent" />
-            <Setter Property="Template">
-                <Setter.Value>
-                    <ControlTemplate TargetType="{x:Type RadioButton}">
-                        <Grid>
-                            <Border Background="{TemplateBinding Background}"
-                                    BorderBrush="{TemplateBinding BorderBrush}"
-                                    BorderThickness="{TemplateBinding BorderThickness}" />
-                            <ContentPresenter HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
-                                              Margin="{TemplateBinding Padding}" RecognizesAccessKey="True"
-                                              SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"
-                                              VerticalAlignment="{TemplateBinding VerticalContentAlignment}" />
-                        </Grid>
-                        <ControlTemplate.Triggers>
-                            <Trigger Property="IsChecked" Value="true">
-                                <Setter Property="Background" Value="{StaticResource DetailSelectLogo}"/>
-                            </Trigger>
-                            <Trigger Property="IsChecked" Value="false">
-                                <Setter Property="Background" Value="{StaticResource DetailNoSelectLogo}"/>
-                            </Trigger>
-                        </ControlTemplate.Triggers>
-                    </ControlTemplate>
-                </Setter.Value>
-            </Setter>
-        </Style>
-        <Style x:Key="SummaryRadioButtonStyle" TargetType="{x:Type RadioButton}">
-            <Setter Property="FocusVisualStyle" Value="{StaticResource ButtonFocusVisual}" />
-            <Setter Property="HorizontalContentAlignment" Value="Center" />
-            <Setter Property="VerticalContentAlignment" Value="Center" />
-            <Setter Property="Padding" Value="10,5" />
-            <Setter Property="Cursor" Value="Hand" />
-            <Setter Property="BorderThickness" Value="0" />
-            <Setter Property="Background" Value="Transparent" />
-            <Setter Property="Foreground" Value="Transparent" />
-            <Setter Property="Template">
-                <Setter.Value>
-                    <ControlTemplate TargetType="{x:Type RadioButton}">
-                        <Grid>
-                            <Border Background="{TemplateBinding Background}"
-                                    BorderBrush="{TemplateBinding BorderBrush}"
-                                    BorderThickness="{TemplateBinding BorderThickness}" />
-                            <ContentPresenter HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
-                                              Margin="{TemplateBinding Padding}" RecognizesAccessKey="True"
-                                              SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"
-                                              VerticalAlignment="{TemplateBinding VerticalContentAlignment}" />
-                        </Grid>
-                        <ControlTemplate.Triggers>
-                            <Trigger Property="IsChecked" Value="true">
-                                <Setter Property="Background" Value="{StaticResource SummarySelectLogo}"/>
-                            </Trigger>
-                            <Trigger Property="IsChecked" Value="false">
-                                <Setter Property="Background" Value="{StaticResource SummaryNoSelectLogo}"/>
-                            </Trigger>
-                        </ControlTemplate.Triggers>
-                    </ControlTemplate>
-                </Setter.Value>
-            </Setter>
-        </Style>
     </UserControl.Resources>
     <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition Height="0"></RowDefinition>
             <RowDefinition Height="30"></RowDefinition>
             <RowDefinition Height="*"></RowDefinition>
         </Grid.RowDefinitions>
-        <TextBlock Grid.Row="1" FontSize="16" HorizontalAlignment="Center" VerticalAlignment="Center"
-                   Text="检索到的违禁词列表" FontFamily="Microsoft YaHei" TextWrapping="Wrap">
-        </TextBlock>
-        <Grid Grid.Row="2" Visibility="{Binding SummaryVisibility}">
-            <Grid.RowDefinitions>
-                <RowDefinition Height="25"></RowDefinition>
-                <RowDefinition Height="*"></RowDefinition>
-            </Grid.RowDefinitions>
-            <Grid Grid.Row="0">
-                <StackPanel Orientation="Horizontal" Margin="0,0,5,0" HorizontalAlignment="Right" VerticalAlignment="Center">
-                    <TextBlock Text="共包含 " 
-                               Style="{StaticResource CommonLeftTextBlock}"></TextBlock>
-                    <TextBlock Text="{Binding WarningCount}" Foreground="Red" FontWeight="Bold"
-                               Style="{StaticResource CommonLeftTextBlock}"></TextBlock>
-                    <TextBlock Text=" 种违禁字" 
-                               Style="{StaticResource CommonLeftTextBlock}"></TextBlock>
-                </StackPanel>
-            </Grid>
-            <Grid Grid.Row="1" x:Name="UnCheckWordChildrenGrid" Background="Transparent" Margin="25,0,5,0"></Grid>
-            <ListBox Grid.Row="1" x:Name="listBox" BorderThickness="0" Background="Transparent" ItemsSource="{Binding UncheckedWordLists}"
+        <Grid Grid.Row="0">
+            <StackPanel Orientation="Horizontal" Margin="17,0,0,0"
+                                    HorizontalAlignment="Left" VerticalAlignment="Center">
+                <TextBlock Text="违禁词筛选结果" Style="{StaticResource CommonLeftTextBlock}"
+                                   FontSize="14" Foreground="Black" Opacity="0.54">
+                </TextBlock>
+                <TextBlock Text="(" Style="{StaticResource CommonLeftTextBlock}"
+                                   FontSize="14" Foreground="Black" Opacity="0.87" Margin="6,0,0,0">
+                </TextBlock>
+                <TextBlock Text="{Binding WarningTotalCount}" Style="{StaticResource CommonLeftTextBlock}"
+                                   FontSize="14" Foreground="Black" Opacity="0.87">
+                </TextBlock>
+                <TextBlock Text=")" Style="{StaticResource CommonLeftTextBlock}"
+                                   FontSize="14" Foreground="Black" Opacity="0.87">
+                </TextBlock>
+            </StackPanel>
+        </Grid>
+        <Border Grid.Row="1" Height="1" HorizontalAlignment="Stretch" VerticalAlignment="Top"
+                            BorderThickness="1" BorderBrush="Black" Opacity="0.06"></Border>
+        <Grid Grid.Row="1">
+            <Grid x:Name="UnCheckWordChildrenGrid" Background="Transparent" Margin="0,0,5,0"></Grid>
+            <Grid x:Name="UnCheckWordChildrenDetailGrid" Background="Transparent" Margin="50,0,10,0"></Grid>
+            <ListBox x:Name="listBox" BorderThickness="0" Background="Transparent" ItemsSource="{Binding UncheckedWordLists}"
                              ScrollViewer.HorizontalScrollBarVisibility="Disabled" ScrollViewer.VerticalScrollBarVisibility="Auto" SelectedIndex="-1"
                              ItemContainerStyle="{StaticResource ListBoxItemContainerStyle}" VerticalAlignment="Top" HorizontalAlignment="Stretch"
                              ScrollViewer.CanContentScroll="True" ManipulationBoundaryFeedback="ListBox_OnManipulationBoundaryFeedback">
                 <ListBox.ItemTemplate>
                     <DataTemplate>
-                        <Grid>
-                            <Grid.RowDefinitions>
-                                <RowDefinition Height="Auto"></RowDefinition>
-                                <RowDefinition Height="Auto"></RowDefinition>
-                            </Grid.RowDefinitions>
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="25"></ColumnDefinition>
-                                <ColumnDefinition Width="*"></ColumnDefinition>
-                            </Grid.ColumnDefinitions>
-                            <Grid Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" Background="Transparent" Margin="10,0,0,5" Height="30" Tag="{Binding}"
-                                  Cursor="Hand" MouseDown="UnCheckWordGrid_MouseDown">
-                                <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" VerticalAlignment="Center">
-                                    <ToggleButton x:Name="Expander" Margin="0,5,5,0" Cursor="Hand"
-                                                  IsChecked="{Binding IsSelected}"
-                                                  HorizontalAlignment="Left" VerticalAlignment="Center" 
-                                                  Style="{StaticResource ExpandCollapseToggleStyle}"/>
-                                    <TextBlock x:Name="TextBlockPART_Header" Text="{Binding Name}" 
-                                               FontSize="16" FontFamily="Microsoft YaHei"></TextBlock>
-                                    <StackPanel Orientation="Horizontal" Margin="5,0,5,0" HorizontalAlignment="Left" VerticalAlignment="Center">
-                                        <TextBlock Text="(共有 " FontSize="10" Style="{StaticResource CommonLeftTextBlock}"></TextBlock>
-                                        <TextBlock Text="{Binding WarningCount}" FontSize="10" Style="{StaticResource CommonLeftTextBlock}"></TextBlock>
-                                        <TextBlock Text=" 处)" FontSize="10" Style="{StaticResource CommonLeftTextBlock}"></TextBlock>
+                        <Grid Background="Transparent">
+                            <Grid Background="Transparent" MinHeight="48">
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="48"></RowDefinition>
+                                    <RowDefinition Height="Auto"></RowDefinition>
+                                </Grid.RowDefinitions>
+                                <Grid Grid.Row="0" Background="Transparent"
+                                      Width="{Binding ElementName=UnCheckWordChildrenGrid,Path=ActualWidth}"
+                                      Tag="{Binding}" Cursor="Hand" MouseDown="UnCheckWordGrid_MouseDown">
+                                    <StackPanel Margin="15,0,0,0" Orientation="Horizontal" HorizontalAlignment="Left" VerticalAlignment="Center">
+                                        <TextBlock x:Name="TextBlockPART_Header" Text="{Binding Name}"
+                                                   Style="{StaticResource CommonLeftTextBlock}"
+                                                   FontSize="18" Opacity="0.87"></TextBlock>
+                                        <Border Width="16" Height="16" Margin="14,0,0,0" 
+                                                Background="#f44336" CornerRadius="8">
+                                            <TextBlock Text="{Binding WarningCount}" FontSize="12" Opacity="0.87"
+                                                       Style="{StaticResource CommonLeftTextBlock}"
+                                                       Foreground="White" HorizontalAlignment="Center">
+                                            </TextBlock>
+                                        </Border>
                                     </StackPanel>
-                                </StackPanel>
-                            </Grid>
-                            <ListBox x:Name="listBoxChildren" Grid.Row="1" Grid.Column="1" BorderThickness="0" Background="Transparent" ItemsSource="{Binding Children}"
+                                    <ToggleButton IsChecked="{Binding IsSelected}" Width="24" Height="24"
+                                                  Style="{StaticResource ExpandCollapseToggleStyle}"
+                                                  HorizontalAlignment="Right" VerticalAlignment="Center"
+                                                  Margin="0,0,10,0"/>
+                                </Grid>
+                                <ListBox x:Name="listBoxChildren" Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" BorderThickness="0" Background="Transparent" ItemsSource="{Binding Children}"
                                      ScrollViewer.HorizontalScrollBarVisibility="Disabled" ScrollViewer.VerticalScrollBarVisibility="Auto" SelectedIndex="-1"
                                      ItemContainerStyle="{StaticResource ListBoxItemContainerStyle}" VerticalAlignment="Top" HorizontalAlignment="Stretch"
                                      ScrollViewer.CanContentScroll="False" ScrollViewer.PanningMode="None" Visibility="Collapsed">
-                                <ListBox.ItemTemplate>
-                                    <DataTemplate>
-                                        <Border BorderThickness="0" BorderBrush="LightGray" Margin="0,0,0,5"
-                                                Width="{Binding ElementName=UnCheckWordChildrenGrid,Path=ActualWidth}">
-                                            <Grid Tag="{Binding}" Cursor="Hand" Height="40" 
-                                                  MouseUp="UnCheckWordChildrenGrid_MouseUp"
-                                                  MouseDown="UnCheckWordChildrenGrid_MouseDown">
-                                                <Grid Background="LightGray" Opacity="0.5"></Grid>
-                                                <TextBlock x:Name="TextBlockPART_Header2" Text="{Binding Name}" 
-                                                           TextWrapping="Wrap" TextTrimming="CharacterEllipsis" 
-                                                           MaxWidth="{Binding ElementName=UnCheckWordChildrenGrid,Path=ActualWidth}"
-                                                           FontSize="14" Foreground="#777777" FontFamily="Microsoft YaHei">
-                                                </TextBlock>
-                                            </Grid>
-                                        </Border>
-                                        <DataTemplate.Triggers>
-                                            <DataTrigger Binding="{Binding IsSelected}" Value="true">
-                                                <Setter Property="TextElement.Foreground" TargetName="TextBlockPART_Header2" Value="#14a0ed" />
-                                            </DataTrigger>
-                                        </DataTemplate.Triggers>
-                                    </DataTemplate>
-                                </ListBox.ItemTemplate>
-                                <ListBox.ItemsPanel>
-                                    <ItemsPanelTemplate>
-                                        <WrapPanel Orientation="Vertical"/>
-                                    </ItemsPanelTemplate>
-                                </ListBox.ItemsPanel>
-                            </ListBox>
+                                    <ListBox.ItemTemplate>
+                                        <DataTemplate>
+                                            <Border BorderThickness="0" Width="{Binding ElementName=UnCheckWordChildrenGrid,Path=ActualWidth}">
+                                                <Grid Tag="{Binding}" Cursor="Hand" Height="40" Background="Transparent"
+                                                      MouseUp="UnCheckWordChildrenGrid_MouseUp"
+                                                      MouseDown="UnCheckWordChildrenGrid_MouseDown">
+                                                    <StackPanel Orientation="Horizontal" Margin="24,0,0,0"
+                                                                HorizontalAlignment="Left" VerticalAlignment="Center">
+                                                        <Grid Width="18" Height="18" Background="{StaticResource InLineTextDocLogo}"
+                                                              VerticalAlignment="Center"
+                                                              Visibility="{Binding TypeTextFrom,Converter={StaticResource InLineTextToVisibilityConvert}}">
+                                                        </Grid>
+                                                        <Grid Width="18" Height="18" Background="{StaticResource InLineTextImgLogo}"
+                                                              VerticalAlignment="Center"
+                                                              Visibility="{Binding TypeTextFrom,Converter={StaticResource InLineImgToVisibilityConvert}}">
+                                                        </Grid>
+                                                        <TextBlock Text="{Binding Name}" FontSize="14" Opacity="0.54"
+                                                                   Style="{StaticResource CommonLeftTextBlock}" Margin="5,12,0,12"
+                                                                   TextTrimming="CharacterEllipsis" 
+                                                                   VerticalAlignment="Center"
+                                                                   MaxWidth="{Binding ElementName=UnCheckWordChildrenDetailGrid,Path=ActualWidth}">
+                                                        </TextBlock>
+                                                    </StackPanel>
+                                                </Grid>
+                                            </Border>
+                                        </DataTemplate>
+                                    </ListBox.ItemTemplate>
+                                    <ListBox.ItemsPanel>
+                                        <ItemsPanelTemplate>
+                                            <WrapPanel Orientation="Vertical"/>
+                                        </ItemsPanelTemplate>
+                                    </ListBox.ItemsPanel>
+                                </ListBox>
+                            </Grid>
                         </Grid>
                         <DataTemplate.Triggers>
                             <DataTrigger Binding="{Binding IsSelected}" Value="true">
