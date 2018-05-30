@@ -4,6 +4,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:control="clr-namespace:CheckWordControl;assembly=CheckWordControl"
+             xmlns:gifLib="clr-namespace:GifImageLib;assembly=GifImageLib"
              xmlns:local="clr-namespace:MyWordAddIn"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800" Loaded="UserControl_Loaded" Unloaded="UserControl_Unloaded">
@@ -180,8 +181,11 @@
             <RowDefinition Height="*"></RowDefinition>
         </Grid.RowDefinitions>
         <Grid Grid.Row="0">
-            <StackPanel Orientation="Horizontal" Margin="17,0,0,0"
-                                    HorizontalAlignment="Left" VerticalAlignment="Center">
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" VerticalAlignment="Center">
+                <gifLib:GifImage x:Name="element" Width="15" Height="15" Margin="2,0,5,0"
+                                 Visibility="{Binding IsBusyVisibility}"
+                                 HorizontalAlignment="Left" VerticalAlignment="Center">
+                </gifLib:GifImage>
                 <TextBlock Text="违禁词筛选结果" Style="{StaticResource CommonLeftTextBlock}"
                                    FontSize="14" Foreground="Black" Opacity="0.54">
                 </TextBlock>

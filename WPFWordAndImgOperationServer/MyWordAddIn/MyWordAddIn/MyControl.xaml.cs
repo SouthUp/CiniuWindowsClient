@@ -43,6 +43,7 @@ namespace MyWordAddIn
 
         private void UserControl_Loaded(object sender, RoutedEventArgs e)
         {
+            element.Source = AppDomain.CurrentDomain.BaseDirectory + @"Resources\Gif\loading.gif";
             StartDetector();
             System.Threading.Thread tGetUncheckedWord = new System.Threading.Thread(GetUncheckedWordLists);
             tGetUncheckedWord.IsBackground = true;
@@ -151,6 +152,15 @@ namespace MyWordAddIn
         {
             try
             {
+                Dispatcher.Invoke(new Action(() =>
+                {
+                    viewModel.IsBusyVisibility = Visibility.Visible;
+                }));
+            }
+            catch (Exception ex)
+            { }
+            try
+            {
                 List<Microsoft.Office.Interop.Word.Paragraph> ParagraphDataList = new List<Microsoft.Office.Interop.Word.Paragraph>();
                 //检测整个文档
                 foreach (Microsoft.Office.Interop.Word.Paragraph paragraph in document.Paragraphs)
@@ -158,6 +168,15 @@ namespace MyWordAddIn
                     ParagraphDataList.Add(paragraph);
                 }
                 FindTextAndHightLight(ParagraphDataList);
+            }
+            catch (Exception ex)
+            { }
+            try
+            {
+                Dispatcher.Invoke(new Action(() =>
+                {
+                    viewModel.IsBusyVisibility = Visibility.Hidden;
+                }));
             }
             catch (Exception ex)
             { }

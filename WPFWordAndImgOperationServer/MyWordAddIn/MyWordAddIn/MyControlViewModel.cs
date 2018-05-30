@@ -32,5 +32,15 @@ namespace MyWordAddIn
                 RaisePropertyChanged("WarningTotalCount");
             }
         }
+        private Visibility isBusyVisibility = Visibility.Hidden;
+        public Visibility IsBusyVisibility
+        {
+            get { return isBusyVisibility; }
+            set
+            {
+                isBusyVisibility = value;
+                RaisePropertyChanged("IsBusyVisibility");
+            }
+        }
     }
 }
