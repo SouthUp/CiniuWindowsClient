@@ -161,7 +161,7 @@
                 <Setter.Value>
                     <ControlTemplate TargetType="{x:Type Button}">
                         <Grid>
-                            <TextBlock x:Name="NameTextBlock" Text="{Binding Name}" FontSize="18" Opacity="0.87"
+                            <TextBlock x:Name="NameTextBlock" Text="{Binding Name}" FontSize="16" Opacity="0.87"
                                    Style="{StaticResource CommonLeftTextBlock}">
                             </TextBlock>
                         </Grid>
