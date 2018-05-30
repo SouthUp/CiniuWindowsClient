@@ -756,17 +756,24 @@ namespace WordAndImgOperationApp
                         foreach (var itemInfo in listUnChekedWordInfo)
                         {
                             listUnValidInfos.Add(new WordInfo() { UnValidText = itemInfo.Name, AllText = lineWord, Rects = rects });
-                            var infoResult = listResult.FirstOrDefault(x => x.Name == itemInfo.Name);
-                            if (infoResult == null)
+                            MatchCollection mc = Regex.Matches(lineWord, itemInfo.Name, RegexOptions.IgnoreCase);
+                            if (mc.Count > 0)
                             {
-                                itemInfo.UnChekedWordInLineDetailInfos.Add(new UnChekedInLineDetailWordInfo() { TypeTextFrom = "Img", InLineText = lineWord });
-                                itemInfo.ErrorTotalCount++;
-                                listResult.Add(itemInfo);
-                            }
-                            else
-                            {
-                                infoResult.UnChekedWordInLineDetailInfos.Add(new UnChekedInLineDetailWordInfo() { TypeTextFrom = "Img", InLineText = lineWord });
-                                infoResult.ErrorTotalCount++;
+                                foreach (Match m in mc)
+                                {
+                                    var infoResult = listResult.FirstOrDefault(x => x.Name == itemInfo.Name);
+                                    if (infoResult == null)
+                                    {
+                                        itemInfo.UnChekedWordInLineDetailInfos.Add(new UnChekedInLineDetailWordInfo() { TypeTextFrom = "Img", InLineText = lineWord });
+                                        itemInfo.ErrorTotalCount++;
+                                        listResult.Add(itemInfo);
+                                    }
+                                    else
+                                    {
+                                        infoResult.UnChekedWordInLineDetailInfos.Add(new UnChekedInLineDetailWordInfo() { TypeTextFrom = "Img", InLineText = lineWord });
+                                        infoResult.ErrorTotalCount++;
+                                    }
+                                }
                             }
                         }
                     }
