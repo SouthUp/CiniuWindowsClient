@@ -76,6 +76,16 @@ namespace CheckWordModel
                 RaisePropertyChanged("TypeTextFrom");
             }
         }
+        private ObservableCollection<UnChekedDetailWordInfo> _unChekedWordDetailInfos = new ObservableCollection<UnChekedDetailWordInfo>();
+        public ObservableCollection<UnChekedDetailWordInfo> UnChekedWordDetailInfos
+        {
+            get { return _unChekedWordDetailInfos; }
+            set
+            {
+                _unChekedWordDetailInfos = value;
+                RaisePropertyChanged("UnChekedWordDetailInfos");
+            }
+        }
         public void Initialize()
         {
             foreach (UnChekedWordInfo child in this.Children)

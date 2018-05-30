@@ -10,6 +10,26 @@ namespace CheckWordModel
 {
     public class UnChekedDetailWordInfo : ViewModelBase
     {
+        private string sourceDBYear = "";
+        public string SourceDBPublishtime
+        {
+            get { return sourceDBYear; }
+            set
+            {
+                sourceDBYear = value;
+                RaisePropertyChanged("SourceDBPublishtime");
+            }
+        }
+        private string sourceDBID = "";
+        public string SourceDBID
+        {
+            get { return sourceDBID; }
+            set
+            {
+                sourceDBID = value;
+                RaisePropertyChanged("SourceDBID");
+            }
+        }
         private string id = "";
         public string ID
         {

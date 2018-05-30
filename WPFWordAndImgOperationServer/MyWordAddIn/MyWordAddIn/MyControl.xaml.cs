@@ -162,10 +162,6 @@ namespace MyWordAddIn
             catch (Exception ex)
             { }
         }
-        private void ListBox_OnManipulationBoundaryFeedback(object sender, ManipulationBoundaryFeedbackEventArgs e)
-        {
-            e.Handled = true;
-        }
         /// <summary>
         /// 查找文本并高亮显示
         /// </summary>
@@ -191,10 +187,10 @@ namespace MyWordAddIn
                             var listUnChekedWord = CheckWordHelper.GetUnChekedWordInfoList(paragraph.Range.Text).ToList();
                             if (listUnChekedWord != null && listUnChekedWord.Count > 0)
                             {
-                                foreach (var strFind in listUnChekedWord.Select(x => x.Name).ToList())
+                                foreach (var strFind in listUnChekedWord.ToList())
                                 {
-                                    UnChekedWordInfo SelectUnCheckWord = new UnChekedWordInfo() { Name = strFind };
-                                    MatchCollection mc = Regex.Matches(paragraph.Range.Text, strFind, RegexOptions.IgnoreCase);
+                                    UnChekedWordInfo SelectUnCheckWord = new UnChekedWordInfo() { Name = strFind.Name, UnChekedWordDetailInfos = strFind.UnChekedWordDetailInfos };
+                                    MatchCollection mc = Regex.Matches(paragraph.Range.Text, strFind.Name, RegexOptions.IgnoreCase);
                                     if (mc.Count > 0)
                                     {
                                         foreach (Match m in mc)
@@ -365,22 +361,55 @@ namespace MyWordAddIn
         private void UnCheckWordGrid_MouseDown(object sender, MouseButtonEventArgs e)
         {
             Grid grid = sender as Grid;
-            UnChekedWordInfo unChekedWordInfo = grid.Tag as UnChekedWordInfo;
-            unChekedWordInfo.IsSelected = !unChekedWordInfo.IsSelected;
+            if (grid != null)
+            {
+                UnChekedWordInfo unChekedWordInfo = grid.Tag as UnChekedWordInfo;
+                unChekedWordInfo.IsSelected = !unChekedWordInfo.IsSelected;
+                foreach (var item in viewModel.UncheckedWordLists)
+                {
+                    if (item != unChekedWordInfo)
+                    {
+                        item.IsSelected = false;
+                    }
+                }
+            }
         }
         private void UnCheckWordChildrenGrid_MouseDown(object sender, MouseButtonEventArgs e)
         {
             Grid grid = sender as Grid;
-            UnChekedWordInfo unChekedWordInfo = grid.Tag as UnChekedWordInfo;
-            unChekedWordInfo.IsSelected = true;
+            if (grid != null)
+            {
+                UnChekedWordInfo unChekedWordInfo = grid.Tag as UnChekedWordInfo;
+                unChekedWordInfo.IsSelected = true;
+            }
         }
 
         private void UnCheckWordChildrenGrid_MouseUp(object sender, MouseButtonEventArgs e)
         {
             Grid grid = sender as Grid;
-            UnChekedWordInfo unChekedWordInfo = grid.Tag as UnChekedWordInfo;
-            unChekedWordInfo.IsSelected = false;
-            unChekedWordInfo.UnCheckWordRange.Select();
+            if (grid != null)
+            {
+                UnChekedWordInfo unChekedWordInfo = grid.Tag as UnChekedWordInfo;
+                unChekedWordInfo.IsSelected = false;
+                unChekedWordInfo.UnCheckWordRange.Select();
+            }
+        }
+
+        private void listBoxChildren_PreviewMouseWheel(object sender, MouseWheelEventArgs e)
+        {
+            try
+            {
+                var listBox = sender as System.Windows.Controls.ListBox;
+                if (listBox != null)
+                {
+                    var eventArg = new MouseWheelEventArgs(e.MouseDevice, e.Timestamp, e.Delta);
+                    eventArg.RoutedEvent = UIElement.MouseWheelEvent;
+                    eventArg.Source = sender;
+                    listBox.RaiseEvent(eventArg);
+                }
+            }
+            catch (Exception ex)
+            { }
         }
     }
 }
