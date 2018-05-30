@@ -248,7 +248,8 @@
                                                                  ScrollViewer.VerticalScrollBarVisibility="Auto" SelectedIndex="-1"
                                                                  ItemContainerStyle="{StaticResource ListBoxItemContainerStyle}" 
                                                                  VerticalAlignment="Top" HorizontalAlignment="Stretch"
-                                                                 ScrollViewer.CanContentScroll="False">
+                                                                 ScrollViewer.CanContentScroll="False"
+                                                             PreviewMouseWheel="listBox3_PreviewMouseWheel">
                                                         <ListBox.ItemTemplate>
                                                             <DataTemplate>
                                                                 <Grid Height="40" Width="{Binding ElementName=listBox3,Path=ActualWidth}"
