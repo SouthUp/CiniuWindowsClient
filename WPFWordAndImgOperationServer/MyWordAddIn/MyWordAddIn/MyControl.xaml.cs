@@ -43,7 +43,6 @@ namespace MyWordAddIn
 
         private void UserControl_Loaded(object sender, RoutedEventArgs e)
         {
-            element.Source = AppDomain.CurrentDomain.BaseDirectory + @"Resources\Gif\loading.gif";
             StartDetector();
             System.Threading.Thread tGetUncheckedWord = new System.Threading.Thread(GetUncheckedWordLists);
             tGetUncheckedWord.IsBackground = true;
