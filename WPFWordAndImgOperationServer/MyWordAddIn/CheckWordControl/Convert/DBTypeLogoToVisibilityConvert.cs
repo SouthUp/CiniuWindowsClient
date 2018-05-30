@@ -12,13 +12,13 @@ namespace CheckWordControl
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            if (!string.IsNullOrEmpty(value.ToString()) && value.ToString() == "Img")
+            if (!string.IsNullOrEmpty(value.ToString()))
             {
-                return Visibility.Visible;
+                return "Image/" + value.ToString() + ".png";
             }
             else
             {
-                return Visibility.Collapsed;
+                return "Image/Default.png";
             }
         }
 

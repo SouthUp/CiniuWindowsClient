@@ -368,6 +368,11 @@
   <ItemGroup>
     <Resource Include="Image\jdshang.png" />
     <Resource Include="Image\jdxia.png" />
+    <Resource Include="Image\1.png" />
+    <Resource Include="Image\2.png" />
+    <Resource Include="Image\3.png" />
+    <Resource Include="Image\4.png" />
+    <Resource Include="Image\Default.png" />
     <Content Include="Resources\SynonymDB.png" />
     <Content Include="Resources\WordsDB.png" />
   </ItemGroup>

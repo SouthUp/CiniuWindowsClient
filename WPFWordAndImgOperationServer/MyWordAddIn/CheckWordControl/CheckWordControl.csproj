@@ -50,6 +50,7 @@
     <Compile Include="Convert\ConverterIsNoSelectBackground .cs" />
     <Compile Include="Convert\ConverterIsSelectBackground .cs" />
     <Compile Include="Convert\ConverterLoginMarginLeft .cs" />
+    <Compile Include="Convert\DBTypeLogoToVisibilityConvert.cs" />
     <Compile Include="Convert\InLineImgToVisibilityConvert.cs" />
     <Compile Include="Convert\InLineTextToVisibilityConvert.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">

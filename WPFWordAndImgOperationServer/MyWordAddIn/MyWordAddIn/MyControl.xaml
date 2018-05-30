@@ -12,6 +12,7 @@
         <control:ConverterIsNoSelectBackground x:Key="ConverterIsNoSelectBackground" />
         <control:InLineImgToVisibilityConvert x:Key="InLineImgToVisibilityConvert"></control:InLineImgToVisibilityConvert>
         <control:InLineTextToVisibilityConvert x:Key="InLineTextToVisibilityConvert"></control:InLineTextToVisibilityConvert>
+        <control:DBTypeLogoToVisibilityConvert x:Key="DBTypeLogoToVisibilityConvert"></control:DBTypeLogoToVisibilityConvert>
         <Style TargetType="{x:Type TextBlock}" x:Key="CommonLeftTextBlock">
             <Setter Property="Foreground" Value="Black" />
             <Setter Property="FontSize" Value="14" />
@@ -213,7 +214,7 @@
                             </Grid.RowDefinitions>
                             <Grid Grid.Row="0" Background="Transparent"
                                       Width="{Binding ElementName=UnCheckWordChildrenGrid,Path=ActualWidth}"
-                                      Tag="{Binding}" Cursor="Hand" MouseDown="UnCheckWordGrid_MouseDown">
+                                      Tag="{Binding}" Cursor="Hand" MouseLeftButtonDown="UnCheckWordGrid_MouseLeftButtonDown">
                                 <StackPanel Margin="15,0,0,0" Orientation="Horizontal" HorizontalAlignment="Left" VerticalAlignment="Center">
                                     <Button Content="{Binding Name}"
                                             HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
@@ -249,6 +250,7 @@
                                                                             <ColumnDefinition Width="85"></ColumnDefinition>
                                                                         </Grid.ColumnDefinitions>
                                                                         <Grid Grid.Column="0">
+                                                                            <Image Width="24" Height="24" Source="{Binding SourceDBID,Converter={StaticResource DBTypeLogoToVisibilityConvert}}"></Image>
                                                                         </Grid>
                                                                         <Grid Grid.Column="1">
                                                                             <TextBlock Text="{Binding SourceDB}" FontSize="14" Opacity="0.87"
@@ -298,8 +300,7 @@
                                     <DataTemplate>
                                         <Border BorderThickness="0" Width="{Binding ElementName=UnCheckWordChildrenGrid,Path=ActualWidth}">
                                             <Grid Tag="{Binding}" Cursor="Hand" Height="40" Background="Transparent"
-                                                      MouseUp="UnCheckWordChildrenGrid_MouseUp"
-                                                      MouseDown="UnCheckWordChildrenGrid_MouseDown">
+                                                      MouseLeftButtonDown="UnCheckWordChildrenGrid_MouseLeftButtonDown">
                                                 <StackPanel Orientation="Horizontal" Margin="24,0,0,0"
                                                                 HorizontalAlignment="Left" VerticalAlignment="Center">
                                                     <Grid Width="18" Height="18" Background="{StaticResource InLineTextDocLogo}"

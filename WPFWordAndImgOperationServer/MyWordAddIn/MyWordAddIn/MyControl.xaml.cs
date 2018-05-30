@@ -358,7 +358,7 @@ namespace MyWordAddIn
             catch (Exception ex)
             { }
         }
-        private void UnCheckWordGrid_MouseDown(object sender, MouseButtonEventArgs e)
+        private void UnCheckWordGrid_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
             Grid grid = sender as Grid;
             if (grid != null)
@@ -374,23 +374,12 @@ namespace MyWordAddIn
                 }
             }
         }
-        private void UnCheckWordChildrenGrid_MouseDown(object sender, MouseButtonEventArgs e)
+        private void UnCheckWordChildrenGrid_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
             Grid grid = sender as Grid;
             if (grid != null)
             {
                 UnChekedWordInfo unChekedWordInfo = grid.Tag as UnChekedWordInfo;
-                unChekedWordInfo.IsSelected = true;
-            }
-        }
-
-        private void UnCheckWordChildrenGrid_MouseUp(object sender, MouseButtonEventArgs e)
-        {
-            Grid grid = sender as Grid;
-            if (grid != null)
-            {
-                UnChekedWordInfo unChekedWordInfo = grid.Tag as UnChekedWordInfo;
-                unChekedWordInfo.IsSelected = false;
                 unChekedWordInfo.UnCheckWordRange.Select();
             }
         }
