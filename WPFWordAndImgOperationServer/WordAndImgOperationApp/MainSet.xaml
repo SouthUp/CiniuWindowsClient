@@ -177,8 +177,10 @@
                                     </Grid>
                                     <Grid Width="50" Background="Transparent"
                                           Visibility="{Binding IsCheckedFinished,Converter={StaticResource BoolToVisibilityConvert}}">
-                                        <Grid Width="20" Height="20" Background="{StaticResource CheckFinishedBGLogo}"
-                                              HorizontalAlignment="Right" VerticalAlignment="Center"/>
+                                        <!--<Grid Width="20" Height="20" Background="{StaticResource CheckFinishedBGLogo}"
+                                              HorizontalAlignment="Right" VerticalAlignment="Center"/>-->
+                                        <TextBlock Text="检查完成" Style="{StaticResource CommonLeftTextBlock}" 
+                                               FontSize="12" Opacity="0.54" HorizontalAlignment="Right" ></TextBlock>
                                     </Grid>
                                 </Grid>
                             </Grid>

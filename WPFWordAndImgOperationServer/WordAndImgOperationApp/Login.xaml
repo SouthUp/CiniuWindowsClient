@@ -84,7 +84,7 @@
                        Style="{StaticResource CommonCenterTextBlock}">
             </TextBlock>
             <Button Background="{StaticResource RefreshIconLogo}" Width="25" Height="24"
-                    Cursor="Hand" Style="{StaticResource ImageButtonStyle}"
+                    Cursor="Hand" Style="{StaticResource ImageButtonStyle}" IsEnabled="False"
                     Margin="1,0,4,0" Click="CheckVersionBtn_Click">
             </Button>
             <TextBlock Text="检查更新" Foreground="White" Opacity="0.38" FontSize="12" 

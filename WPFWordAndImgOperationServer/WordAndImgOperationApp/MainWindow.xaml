@@ -20,9 +20,9 @@
                       Name="OpenFloatWindow" Click="OpenFloatWindow_Click">
             </MenuItem>
             <MenuItem Header="词库管理"  MinWidth="100" Visibility="{Binding MenueLoginVisibility}"
-                  Name="MenuCiKuManager" Click="MenuCiKuManager_Click">
+                  Name="MenuCiKuManager" Click="MenuCiKuManager_Click" IsEnabled="False">
             </MenuItem>
-            <MenuItem Header="关于"  MinWidth="100">
+            <MenuItem Header="关于"  MinWidth="100" IsEnabled="False">
                 <MenuItem Header="检查更新"  MinWidth="100"
                           Name="CheckVersion" Click="CheckVersion_Click">
                 </MenuItem>
@@ -37,7 +37,7 @@
         <Style x:Key="HighlightedWordBox" TargetType="Border">
             <Setter Property="HorizontalAlignment" Value="Left"/>
             <Setter Property="VerticalAlignment" Value="Top" />
-            <Setter Property="BorderThickness" Value="1.5" />
+            <Setter Property="BorderThickness" Value="3" />
             <Setter Property="BorderBrush" Value="Red" />
         </Style>
         <Style x:Key="HighlightedWordBoxHorizontalLine" TargetType="Border" BasedOn="{StaticResource HighlightedWordBox}">
