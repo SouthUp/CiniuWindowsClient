@@ -142,15 +142,6 @@ namespace BrowseSearchTXT
                 ExcuteSearchResult(SearchTextBox.Text);
             }
         }
-        private void ReturnBtn_Click(object sender, RoutedEventArgs e)
-        {
-            viewModel.TitleLogoVisibility = Visibility.Visible;
-            viewModel.InputCheckGridVisibility = Visibility.Visible;
-            viewModel.ReturnBtnVisibility = Visibility.Collapsed;
-            viewModel.DataProcessGridVisibility = Visibility.Collapsed;
-            viewModel.DataProcessResultGridVisibility = Visibility.Collapsed;
-            SearchTextBox.Text = "";
-        }
         IntPtr WndProc(IntPtr hwnd, int msg, IntPtr wParam, IntPtr lParam, ref bool handled)
         {
             if (msg == WM_COPYDATA)
@@ -297,6 +288,26 @@ namespace BrowseSearchTXT
             commonExchangeInfo.Code = "ExchangeBrowseTxTHide";
             string jsonData = JsonConvert.SerializeObject(commonExchangeInfo); //序列化
             SendMessage("WordAndImgOperationApp", jsonData);
+        }
+        private void ReturnBack()
+        {
+            viewModel.TitleLogoVisibility = Visibility.Visible;
+            viewModel.InputCheckGridVisibility = Visibility.Visible;
+            viewModel.ReturnBtnVisibility = Visibility.Collapsed;
+            viewModel.DataProcessGridVisibility = Visibility.Collapsed;
+            viewModel.DataProcessResultGridVisibility = Visibility.Collapsed;
+            SearchTextBox.Text = "";
+        }
+        private void Border_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            Task task = new Task(() => {
+                System.Threading.Thread.Sleep(150);
+                if (e.LeftButton == MouseButtonState.Released)
+                {
+                    Dispatcher.BeginInvoke(DispatcherPriority.Background, (Action)(() => { ReturnBack(); }));
+                }
+            });
+            task.Start();
         }
     }
 }

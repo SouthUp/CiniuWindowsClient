@@ -108,7 +108,8 @@
         </ContextMenu>
     </Window.Resources>
     <Grid>
-        <Grid ContextMenu="{StaticResource NotifyIconMenu}">
+        <Grid ContextMenu="{StaticResource NotifyIconMenu}" 
+              Cursor="Hand" MouseLeftButtonDown="Grid_MouseLeftButtonDown">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="70"></ColumnDefinition>
                 <ColumnDefinition></ColumnDefinition>
@@ -119,15 +120,14 @@
                     <ImageBrush ImageSource="Images/Bg.png" Stretch="Fill"></ImageBrush>
                 </Grid.Background>
             </Grid>
-            <Grid Grid.Column="0" Cursor="Hand" MouseLeftButtonDown="Grid_MouseLeftButtonDown"
-                  Visibility="{Binding TitleLogoVisibility}" Width="68" Height="68" 
+            <Grid Grid.Column="0" Visibility="{Binding TitleLogoVisibility}" Width="68" Height="68" 
                   HorizontalAlignment="Right" VerticalAlignment="Center">
                 <Image Source="Images/TitleLogo.png" Stretch="Fill"></Image>
             </Grid>
-            <Button Grid.Column="0" Style="{StaticResource ReturnBtnStyle}" 
-                    Width="68" Height="68" HorizontalAlignment="Right" VerticalAlignment="Center"
-                    Click="ReturnBtn_Click" Visibility="{Binding ReturnBtnVisibility}">
-            </Button>
+            <Grid Grid.Column="0" Visibility="{Binding ReturnBtnVisibility}"
+                  Width="68" Height="68" HorizontalAlignment="Right" VerticalAlignment="Center">
+                <Image Source="Images/ReturnLogo.png" Stretch="Fill" MouseLeftButtonDown="Border_MouseLeftButtonDown"></Image>
+            </Grid>
             <Grid Grid.Column="1" Visibility="{Binding InputCheckGridVisibility}">
                 <Border Width="216" Height="38" BorderThickness="1" BorderBrush="#bcbcbc" 
                         Background="#ffffff" CornerRadius="4"
