@@ -47,6 +47,7 @@
     <Reference Include="PresentationFramework" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Convert\BoolToOppositeConvert.cs" />
     <Compile Include="Convert\BoolToVisibilityConvert.cs" />
     <Compile Include="Convert\BoolToVisibilityOppositeConvert.cs" />
     <Compile Include="Convert\ConverterLoginMarginLeft .cs" />

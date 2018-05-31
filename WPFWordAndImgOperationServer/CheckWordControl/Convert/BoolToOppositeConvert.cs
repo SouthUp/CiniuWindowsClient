@@ -12,7 +12,7 @@ namespace CheckWordControl
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            if (!string.IsNullOrEmpty(value.ToString()) && value.ToString() == "false")
+            if (!string.IsNullOrEmpty(value.ToString()) && value.ToString().ToLower() == "false")
             {
                 return true;
             }
