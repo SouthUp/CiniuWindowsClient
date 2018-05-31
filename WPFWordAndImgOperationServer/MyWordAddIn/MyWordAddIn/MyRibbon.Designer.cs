@@ -35,29 +35,23 @@
         private void InitializeComponent()
         {
             this.tab1 = this.Factory.CreateRibbonTab();
-            this.groupCheckWord = this.Factory.CreateRibbonGroup();
+            this.group1 = this.Factory.CreateRibbonGroup();
             this.CheckWordBtn = this.Factory.CreateRibbonCheckBox();
-            this.btnCheckWord = this.Factory.CreateRibbonButton();
-            this.ViolateDBBtn = this.Factory.CreateRibbonButton();
-            this.SynonymDBBtn = this.Factory.CreateRibbonButton();
             this.tab1.SuspendLayout();
-            this.groupCheckWord.SuspendLayout();
+            this.group1.SuspendLayout();
             this.SuspendLayout();
             // 
             // tab1
             // 
-            this.tab1.Groups.Add(this.groupCheckWord);
+            this.tab1.Groups.Add(this.group1);
             this.tab1.Label = "词牛";
             this.tab1.Name = "tab1";
             // 
-            // groupCheckWord
+            // group1
             // 
-            this.groupCheckWord.Items.Add(this.CheckWordBtn);
-            this.groupCheckWord.Items.Add(this.btnCheckWord);
-            this.groupCheckWord.Items.Add(this.ViolateDBBtn);
-            this.groupCheckWord.Items.Add(this.SynonymDBBtn);
-            this.groupCheckWord.Label = "违禁词检查";
-            this.groupCheckWord.Name = "groupCheckWord";
+            this.group1.Items.Add(this.CheckWordBtn);
+            this.group1.Label = "违禁词检查";
+            this.group1.Name = "group1";
             // 
             // CheckWordBtn
             // 
@@ -65,33 +59,6 @@
             this.CheckWordBtn.Label = "实时检查开关";
             this.CheckWordBtn.Name = "CheckWordBtn";
             this.CheckWordBtn.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.CheckWordBtn_Click);
-            // 
-            // btnCheckWord
-            // 
-            this.btnCheckWord.Image = global::MyWordAddIn.Properties.Resources.CheckBtn;
-            this.btnCheckWord.Label = "违禁检查";
-            this.btnCheckWord.Name = "btnCheckWord";
-            this.btnCheckWord.ShowImage = true;
-            this.btnCheckWord.Visible = false;
-            this.btnCheckWord.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.btnCheckWord_Click);
-            // 
-            // ViolateDBBtn
-            // 
-            this.ViolateDBBtn.Image = global::MyWordAddIn.Properties.Resources.WordsDB;
-            this.ViolateDBBtn.Label = "违禁词库";
-            this.ViolateDBBtn.Name = "ViolateDBBtn";
-            this.ViolateDBBtn.ShowImage = true;
-            this.ViolateDBBtn.Visible = false;
-            this.ViolateDBBtn.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.ViolateDBBtn_Click);
-            // 
-            // SynonymDBBtn
-            // 
-            this.SynonymDBBtn.Image = global::MyWordAddIn.Properties.Resources.SynonymDB;
-            this.SynonymDBBtn.Label = "推荐词库";
-            this.SynonymDBBtn.Name = "SynonymDBBtn";
-            this.SynonymDBBtn.ShowImage = true;
-            this.SynonymDBBtn.Visible = false;
-            this.SynonymDBBtn.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.SynonymDBBtn_Click);
             // 
             // MyRibbon
             // 
@@ -101,8 +68,8 @@
             this.Load += new Microsoft.Office.Tools.Ribbon.RibbonUIEventHandler(this.MyRibbon_Load);
             this.tab1.ResumeLayout(false);
             this.tab1.PerformLayout();
-            this.groupCheckWord.ResumeLayout(false);
-            this.groupCheckWord.PerformLayout();
+            this.group1.ResumeLayout(false);
+            this.group1.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -110,10 +77,7 @@
         #endregion
 
         internal Microsoft.Office.Tools.Ribbon.RibbonTab tab1;
-        internal Microsoft.Office.Tools.Ribbon.RibbonGroup groupCheckWord;
-        internal Microsoft.Office.Tools.Ribbon.RibbonButton btnCheckWord;
-        internal Microsoft.Office.Tools.Ribbon.RibbonButton ViolateDBBtn;
-        internal Microsoft.Office.Tools.Ribbon.RibbonButton SynonymDBBtn;
+        internal Microsoft.Office.Tools.Ribbon.RibbonGroup group1;
         internal Microsoft.Office.Tools.Ribbon.RibbonCheckBox CheckWordBtn;
     }
 

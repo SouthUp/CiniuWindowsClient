@@ -29,7 +29,6 @@
         private void InitializeComponent()
         {
             this.MyWordTipsElementHost = new System.Windows.Forms.Integration.ElementHost();
-            this.taskPaneWpfControl1 = new MyWordAddIn.TaskPaneWpfControl();
             this.SuspendLayout();
             // 
             // MyWordTipsElementHost
@@ -40,7 +39,7 @@
             this.MyWordTipsElementHost.Size = new System.Drawing.Size(400, 100);
             this.MyWordTipsElementHost.TabIndex = 0;
             this.MyWordTipsElementHost.Text = "MyWordTipsElementHost";
-            this.MyWordTipsElementHost.Child = this.taskPaneWpfControl1;
+            this.MyWordTipsElementHost.Child = null;
             // 
             // FloatingPanel
             // 
@@ -49,10 +48,7 @@
             this.ClientSize = new System.Drawing.Size(400, 100);
             this.Controls.Add(this.MyWordTipsElementHost);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
-            this.MaximizeBox = false;
-            this.MinimizeBox = false;
             this.Name = "FloatingPanel";
-            this.StartPosition = System.Windows.Forms.FormStartPosition.Manual;
             this.Text = "FloatingPanel";
             this.ResumeLayout(false);
 
@@ -61,6 +57,5 @@
         #endregion
 
         private System.Windows.Forms.Integration.ElementHost MyWordTipsElementHost;
-        private TaskPaneWpfControl taskPaneWpfControl1;
     }
 }

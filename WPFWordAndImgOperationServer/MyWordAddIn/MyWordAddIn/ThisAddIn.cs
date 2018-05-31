@@ -66,7 +66,7 @@ namespace MyWordAddIn
         {
             try
             {
-                if(HostSystemVar.MyWordsDBTaskPane == null)
+                if (HostSystemVar.MyWordsDBTaskPane == null)
                 {
                     var wpfHost = new TaskPaneWpfControlHost();
                     var wpfTaskPane = new TaskPaneWpfControl();
@@ -271,7 +271,7 @@ namespace MyWordAddIn
         {
             try
             {
-                if(!string.IsNullOrEmpty(Globals.ThisAddIn.Application.Selection.Text.Replace("\r","").Replace("\n","")))
+                if (!string.IsNullOrEmpty(Globals.ThisAddIn.Application.Selection.Text.Replace("\r", "").Replace("\n", "")))
                 {
                     OpenMyFloatingPanel();
                 }
@@ -290,7 +290,7 @@ namespace MyWordAddIn
             this.Startup += new System.EventHandler(ThisAddIn_Startup);
             this.Shutdown += new System.EventHandler(ThisAddIn_Shutdown);
         }
-        
+
         #endregion
     }
 }

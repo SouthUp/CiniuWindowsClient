@@ -8,7 +8,6 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Windows.Forms.Integration;
-using Word = Microsoft.Office.Interop.Word;
 
 namespace MyWordAddIn
 {

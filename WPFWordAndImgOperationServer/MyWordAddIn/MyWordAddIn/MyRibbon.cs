@@ -21,7 +21,7 @@ namespace MyWordAddIn
             try
             {
                 //////btnCheckWord.Enabled = isEnable;
-                if(isEnable)
+                if (isEnable)
                 {
                     CheckWordBtn.Checked = false;
                 }
@@ -35,21 +35,21 @@ namespace MyWordAddIn
         }
         private void SetOpenWordsDBEnable(bool isEnable)
         {
-            try
-            {
-                ViolateDBBtn.Enabled = isEnable;
-            }
-            catch (Exception ex)
-            { }
+            //try
+            //{
+            //    ViolateDBBtn.Enabled = isEnable;
+            //}
+            //catch (Exception ex)
+            //{ }
         }
         private void SetOpenSynonymDBEnable(bool isEnable)
         {
-            try
-            {
-                SynonymDBBtn.Enabled = isEnable;
-            }
-            catch (Exception ex)
-            { }
+            //try
+            //{
+            //    SynonymDBBtn.Enabled = isEnable;
+            //}
+            //catch (Exception ex)
+            //{ }
         }
         private void btnCheckWord_Click(object sender, RibbonControlEventArgs e)
         {
@@ -68,7 +68,7 @@ namespace MyWordAddIn
 
         private void CheckWordBtn_Click(object sender, RibbonControlEventArgs e)
         {
-            if(CheckWordBtn.Checked)
+            if (CheckWordBtn.Checked)
             {
                 CheckWordBtn.Checked = true;
                 EventAggregatorRepository.EventAggregator.GetEvent<SetMyControlVisibleEvent>().Publish(true);
