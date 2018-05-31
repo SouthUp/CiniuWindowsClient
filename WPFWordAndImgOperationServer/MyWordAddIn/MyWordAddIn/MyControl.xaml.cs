@@ -417,5 +417,21 @@ namespace MyWordAddIn
             catch (Exception ex)
             { }
         }
+        private void InLineDetailNameBtn_Click(object sender, RoutedEventArgs e)
+        {
+            var btn = sender as Button;
+            if (btn != null)
+            {
+                UnChekedWordInfo unChekedWordInfo = btn.Tag as UnChekedWordInfo;
+                unChekedWordInfo.IsSelected = !unChekedWordInfo.IsSelected;
+                foreach (var item in viewModel.UncheckedWordLists)
+                {
+                    if (item != unChekedWordInfo)
+                    {
+                        item.IsSelected = false;
+                    }
+                }
+            }
+        }
     }
 }

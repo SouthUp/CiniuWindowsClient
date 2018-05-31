@@ -164,7 +164,8 @@
                                                                 VerticalAlignment="Center" HorizontalAlignment="Left">
                                                         <Button Style="{StaticResource ErrorWordsDetailInfoTextButtonStyle}"
                                                                 HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
-                                                                Content="{Binding Name}">
+                                                                Content="{Binding Name}" 
+                                                                Tag="{Binding}" Click="InLineDetailNameBtn_Click">
                                                             <Button.ToolTip>
                                                                 <ToolTip>
                                                                     <Grid Width="248">

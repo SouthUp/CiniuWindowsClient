@@ -349,5 +349,22 @@ namespace WordAndImgOperationApp
             catch (Exception ex)
             { }
         }
+
+        private void InLineDetailNameBtn_Click(object sender, RoutedEventArgs e)
+        {
+            var btn = sender as System.Windows.Controls.Button;
+            if (btn != null)
+            {
+                var info = btn.Tag as UnChekedWordInfo;
+                info.IsChecked = !info.IsChecked;
+                foreach (var item in viewModel.CurrentMyFolderData.UnChekedWordInfos)
+                {
+                    if (item != info)
+                    {
+                        item.IsChecked = false;
+                    }
+                }
+            }
+        }
     }
 }

@@ -221,7 +221,8 @@
                                 <StackPanel Margin="15,0,0,0" Orientation="Horizontal" HorizontalAlignment="Left" VerticalAlignment="Center">
                                     <Button Content="{Binding Name}"
                                             HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
-                                            Style="{StaticResource ErrorWordsDetailInfoTextButtonStyle}">
+                                            Style="{StaticResource ErrorWordsDetailInfoTextButtonStyle}"
+                                            Tag="{Binding}" Click="InLineDetailNameBtn_Click">
                                         <Button.ToolTip>
                                             <ToolTip>
                                                 <Grid Width="248">
