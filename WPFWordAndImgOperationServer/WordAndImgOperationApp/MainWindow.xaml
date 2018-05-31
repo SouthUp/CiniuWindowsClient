@@ -109,10 +109,12 @@
                                 Orientation="Horizontal">
                         <Grid Width="24" Height="24" Background="{StaticResource UserIconLogo}">
                         </Grid>
-                        <TextBlock Margin="4,0,0,0" Text="{Binding UserName}" MinWidth="28"
+                        <TextBlock Margin="4,0,4,0" Text="{Binding UserName}" MinWidth="28"
                                FontSize="12" Foreground="White" Opacity="0.87"
                                Style="{StaticResource CommonLeftTextBlock}">
                         </TextBlock>
+                        <Button Height="24" Content="注销" Style="{StaticResource TextButtonStyle}"
+                                FontSize="12" ToolTip="注销登录" Click="MenuLoginOut_Click"></Button>
                     </StackPanel>
                     <Button x:Name="MinBtn" Width="24" Height="24" Click="MinBtn_Click"
                             Style="{StaticResource MinBtnButtonStyle}"
