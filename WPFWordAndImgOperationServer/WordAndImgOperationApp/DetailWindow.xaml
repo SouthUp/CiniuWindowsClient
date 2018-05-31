@@ -294,13 +294,13 @@
             </Grid>
         </Grid>
         <Grid HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Visibility="{Binding BusyWindowVisibility}">
-            <Grid Background="White" Opacity="0.85"></Grid>
-            <Border Width="400" Height="400" Background="{StaticResource CommonBg}" CornerRadius="40">
+            <Grid Background="White" Opacity="0.87"></Grid>
+            <Border Width="400" Height="400" Background="Transparent" CornerRadius="40">
                 <Grid>
                     <StackPanel Orientation="Vertical" HorizontalAlignment="Center" VerticalAlignment="Center">
                         <gifLib:GifImage x:Name="element" Width="100" Height="20" HorizontalAlignment="Center"/>
                         <TextBlock Text="loading..." Width="350" Height="50" TextAlignment="Center" TextWrapping="Wrap" 
-                                       HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="20" Foreground="White" 
+                                       HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="16" Foreground="#2196F3" 
                                        FontFamily="Microsoft YaHei" Margin="0,10,0,0"/>
                     </StackPanel>
                 </Grid>
