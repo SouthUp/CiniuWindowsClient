@@ -47,9 +47,9 @@
                                           Visibility="{Binding ShowImgTitleLogo,Converter={StaticResource BoolToVisibilityConvert}}"></Grid>
                                     <StackPanel Grid.Row="0" Grid.Column="1" 
                                                 Orientation="Horizontal" HorizontalAlignment="Left" VerticalAlignment="Bottom">
-                                        <TextBlock Text="{Binding FileName}" 
-                                               Style="{StaticResource CommonLeftTextBlock}" VerticalAlignment="Top"
-                                               FontSize="14" Opacity="0.87"
+                                        <TextBlock Text="{Binding FileName}" Cursor="Hand" Tag="{Binding}"
+                                               Style="{StaticResource CommonLeftTextBlock}" VerticalAlignment="Center"
+                                               FontSize="14" Opacity="0.87" MouseLeftButtonDown="EditTextBlock_MouseLeftButtonDown"
                                                MaxWidth="290" TextTrimming="CharacterEllipsis"></TextBlock>
                                         <Button Width="18" Height="18" Style="{StaticResource EditBlueRoundButtonStyle}"
                                                 Tag="{Binding}" Click="EditButton_Click" Margin="3,0,0,0"

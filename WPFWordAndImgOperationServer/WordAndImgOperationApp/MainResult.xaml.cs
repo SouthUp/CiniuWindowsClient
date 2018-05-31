@@ -77,5 +77,20 @@ namespace WordAndImgOperationApp
                 { }
             }
         }
+
+        private void EditTextBlock_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            var textBlock = sender as TextBlock;
+            if (textBlock != null)
+            {
+                var myFolderDataViewModel = textBlock.Tag as MyFolderDataViewModel;
+                try
+                {
+                    System.Diagnostics.Process.Start(myFolderDataViewModel.FilePath); //打开此文件。
+                }
+                catch (Exception ex)
+                { }
+            }
+        }
     }
 }
