@@ -37,7 +37,11 @@ namespace WordAndImgOperationApp
         }
         private void UserControl_Loaded(object sender, RoutedEventArgs e)
         {
-            if(SystemVar.MyDetailWindow == null)
+            if (viewModel.DealDataResultList.Count == 0)
+            {
+                viewModel.EmptyWindowVisibility = Visibility.Visible;
+            }
+            if (SystemVar.MyDetailWindow == null)
             {
                 SystemVar.MyDetailWindow= new DetailWindow();
             }

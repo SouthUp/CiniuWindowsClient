@@ -25,5 +25,15 @@ namespace WordAndImgOperationApp
                 RaisePropertyChanged("DealDataResultList");
             }
         }
+        private Visibility _emptyWindowVisibility = Visibility.Collapsed;
+        public Visibility EmptyWindowVisibility
+        {
+            get { return _emptyWindowVisibility; }
+            set
+            {
+                _emptyWindowVisibility = value;
+                RaisePropertyChanged("EmptyWindowVisibility");
+            }
+        }
     }
 }

@@ -847,4 +847,18 @@
             </DrawingGroup>
         </DrawingBrush.Drawing>
     </DrawingBrush>
+    <DrawingBrush x:Key="EmptyErrorResultImgLogo" Stretch="None">
+        <DrawingBrush.Drawing>
+            <DrawingGroup>
+                <DrawingGroup.ClipGeometry>
+                    <RectangleGeometry Rect="0,0,79,58" />
+                </DrawingGroup.ClipGeometry>
+                <GeometryDrawing Brush="#FF00C853">
+                    <GeometryDrawing.Geometry>
+                        <PathGeometry FillRule="EvenOdd" Figures="M25.052,45.507L6.604,27.93 0.322,33.873 25.052,57.435 78.141,6.856 71.903,0.913 25.052,45.507z" />
+                    </GeometryDrawing.Geometry>
+                </GeometryDrawing>
+            </DrawingGroup>
+        </DrawingBrush.Drawing>
+    </DrawingBrush>
 </ResourceDictionary>

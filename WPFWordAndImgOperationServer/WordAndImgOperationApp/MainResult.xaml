@@ -86,5 +86,14 @@
                 </ItemsPanelTemplate>
             </ListBox.ItemsPanel>
         </ListBox>
+        <Grid Visibility="{Binding EmptyWindowVisibility}">
+            <StackPanel Orientation="Vertical" HorizontalAlignment="Center" VerticalAlignment="Center">
+                <Grid Width="79" Height="58" Background="{StaticResource EmptyErrorResultImgLogo}"></Grid>
+                <TextBlock Style="{StaticResource CommonLeftTextBlock}"
+                           FontSize="14" Opacity="0.87" HorizontalAlignment="Center"
+                           Text="未查出违禁词" Margin="0,30,0,0">
+                </TextBlock>
+            </StackPanel>
+        </Grid>
     </Grid>
 </UserControl>
