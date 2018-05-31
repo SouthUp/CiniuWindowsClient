@@ -146,15 +146,22 @@ namespace BrowseSearchTXT
         {
             if (msg == WM_COPYDATA)
             {
-                if(!IsCancelDeal)
+                CopyDataStruct cds = (CopyDataStruct)System.Runtime.InteropServices.Marshal.PtrToStructure(lParam, typeof(CopyDataStruct));
+                string jsonData = cds.lpData;
+                var result = JsonConvert.DeserializeObject<CommonExchangeInfo>(jsonData);
+                if (result.Code == "ExchangeBrowseTxTReturnBack")
                 {
-                    CopyDataStruct cds = (CopyDataStruct)System.Runtime.InteropServices.Marshal.PtrToStructure(lParam, typeof(CopyDataStruct));
-                    System.Windows.Threading.Dispatcher x = System.Windows.Threading.Dispatcher.CurrentDispatcher;
-                    System.Threading.ThreadStart start = delegate ()
+                    if (viewModel.ReturnBtnVisibility == Visibility.Visible)
                     {
-                        string jsonData = cds.lpData;
-                        var result = JsonConvert.DeserializeObject<CommonExchangeInfo>(jsonData);
-                        if (result.Code == "ExchangeBrowseTxTProcessing")
+                        Dispatcher.BeginInvoke(DispatcherPriority.Background, (Action)(() => { ReturnBack(); }));
+                    }
+                }
+                else if (result.Code == "ExchangeBrowseTxTProcessing")
+                {
+                    if (!IsCancelDeal)
+                    {
+                        System.Windows.Threading.Dispatcher x = System.Windows.Threading.Dispatcher.CurrentDispatcher;
+                        System.Threading.ThreadStart start = delegate ()
                         {
                             string data = result.Data;
                             var exchangeBrowseTxTProcessingInfo = JsonConvert.DeserializeObject<ExchangeBrowseTxTProcessingInfo>(data);
@@ -192,11 +199,11 @@ namespace BrowseSearchTXT
                                 viewModel.InputCheckGridVisibility = Visibility.Collapsed;
                                 viewModel.DataProcessResultGridVisibility = Visibility.Collapsed;
                             }
-                        }
-                    };
-                    System.Threading.Thread t = new System.Threading.Thread(start);
-                    t.IsBackground = true;
-                    t.Start();
+                        };
+                        System.Threading.Thread t = new System.Threading.Thread(start);
+                        t.IsBackground = true;
+                        t.Start();
+                    }
                 }
             }
             return hwnd;

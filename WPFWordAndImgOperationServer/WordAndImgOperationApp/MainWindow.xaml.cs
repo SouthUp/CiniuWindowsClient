@@ -400,6 +400,7 @@ namespace WordAndImgOperationApp
         {
             //10001为快捷键自定义ID，0x0002为Ctrl键, 0x0001为Alt键，或运算符|表同时按住两个键有效，0x41为A键。  
             HotKey.RegisterHotKey(Handle, 10001, (0x0002 | 0x0001), 0x41);
+            HotKey.RegisterHotKey(Handle, 10002, 0, 27);
         }
         /// <summary>  
         /// 重写WndProc函数，类型为虚保护，响应窗体消息事件  
@@ -416,10 +417,20 @@ namespace WordAndImgOperationApp
             {
                 //0x0312表示事件消息为按下快捷键  
                 case 0x0312:
-                    if (viewModel.OpenFloatWindowContent == "显示浮动窗口" && viewModel.OpenFloatWindowEnable
-                        && viewModel.MenueLoginVisibility == Visibility.Visible)
+                    if(wParam.ToString() == "10001")
                     {
-                        ShowSearchPop();
+                        if (viewModel.OpenFloatWindowContent == "显示浮动窗口" && viewModel.OpenFloatWindowEnable
+                    && viewModel.MenueLoginVisibility == Visibility.Visible)
+                        {
+                            ShowSearchPop();
+                        }
+                    }
+                    else if(wParam.ToString() == "10002")
+                    {
+                        CommonExchangeInfo commonExchangeInfo = new CommonExchangeInfo();
+                        commonExchangeInfo.Code = "ExchangeBrowseTxTReturnBack";
+                        string jsonDataCommonExchange = JsonConvert.SerializeObject(commonExchangeInfo); //序列化
+                        CheckWordUtil.Win32Helper.SendMessage("BrowseSearchTXT", jsonDataCommonExchange);
                     }
                     break;
                 case CheckWordUtil.Win32Helper.WM_COPYDATA:
@@ -474,6 +485,7 @@ namespace WordAndImgOperationApp
                 if (source != null)
                     source.RemoveHook(WndProc);  //添加Hook，监听窗口事件
                 HotKey.UnregisterHotKey(Handle, 10001);
+                HotKey.UnregisterHotKey(Handle, 10002);
             }
             catch (Exception ex)
             { }
