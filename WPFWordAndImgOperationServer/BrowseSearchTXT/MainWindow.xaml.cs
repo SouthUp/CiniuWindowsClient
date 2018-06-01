@@ -30,6 +30,7 @@ namespace BrowseSearchTXT
         private static bool IsInputCheckGridVisible = false;
         private static bool IsDataProcessResultVisible = false;
         private static List<string> FilePathsList = new List<string>();
+        private static List<string> UnCheckFilePathsList = new List<string>();
         List<string> listClass = new List<string>() { ".png", ".jpg", ".jpeg", ".doc", ".docx" };
         MainWindowViewModel viewModel;
         public MainWindow()
@@ -56,6 +57,7 @@ namespace BrowseSearchTXT
             IsDataProcessResultVisible = viewModel.DataProcessResultGridVisibility == Visibility.Visible;
             DragTipGrid.Visibility = Visibility.Collapsed;
             FilePathsList = new List<string>();
+            UnCheckFilePathsList = new List<string>();
             if (e.Data.GetDataPresent(DataFormats.FileDrop))
             {
                 foreach (var path in ((System.Array)e.Data.GetData(DataFormats.FileDrop)))
@@ -65,6 +67,10 @@ namespace BrowseSearchTXT
                         if (listClass.Contains(System.IO.Path.GetExtension(path.ToString())))
                         {
                             FilePathsList.Add(path.ToString());
+                        }
+                        else
+                        {
+                            UnCheckFilePathsList.Add(path.ToString());
                         }
                     }
                     else if(Directory.Exists(path.ToString()))
@@ -88,7 +94,14 @@ namespace BrowseSearchTXT
                 }
                 else
                 {
-                    viewModel.CheckResultText = "未发现能检查的文件";
+                    if (UnCheckFilePathsList.Count > 0)
+                    {
+                        viewModel.CheckResultText = UnCheckFilePathsList.Count + "个文件类型不支持";
+                    }
+                    else
+                    {
+                        viewModel.CheckResultText = "未发现支持的文件类型";
+                    }
                     viewModel.TongJiCheckResultVisibility = Visibility.Collapsed;
                     viewModel.SinggleWordCheckResultVisibility = Visibility.Collapsed;
                     viewModel.SinggleWordCheckResultNoUncheckVisibility = Visibility.Collapsed;
@@ -97,6 +110,9 @@ namespace BrowseSearchTXT
                     viewModel.InputCheckGridVisibility = Visibility.Collapsed;
                     viewModel.DataProcessGridVisibility = Visibility.Collapsed;
                     viewModel.DataProcessResultGridVisibility = Visibility.Visible;
+
+                    viewModel.TitleLogoVisibility = Visibility.Collapsed;
+                    viewModel.ReturnBtnVisibility = Visibility.Visible;
                 }
             }
         }
@@ -108,6 +124,10 @@ namespace BrowseSearchTXT
                 if (listClass.Contains(System.IO.Path.GetExtension(fi.FullName)))
                 {
                     FilePathsList.Add(fi.FullName);
+                }
+                else
+                {
+                    UnCheckFilePathsList.Add(fi.FullName);
                 }
             }
             DirectoryInfo[] allDir = dir.GetDirectories();
