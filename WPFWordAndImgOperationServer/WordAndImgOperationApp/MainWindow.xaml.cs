@@ -55,6 +55,23 @@ namespace WordAndImgOperationApp
             EventAggregatorRepository.EventAggregator.GetEvent<DealCheckBtnDataEvent>().Subscribe(DealCheckBtnData);
             EventAggregatorRepository.EventAggregator.GetEvent<CancelDealCheckBtnDataEvent>().Subscribe(CancelDealCheckBtnData);
             EventAggregatorRepository.EventAggregator.GetEvent<LoginInOrOutEvent>().Subscribe(LoginInOrOut);
+            EventAggregatorRepository.EventAggregator.GetEvent<IsCanOpenSearchPopWindowEvent>().Subscribe(IsCanOpenSearchPopWindow);
+        }
+        private void IsCanOpenSearchPopWindow(bool b)
+        {
+            if (b)
+            {
+                try
+                {
+                    bool isSearchPopStateOpen = bool.Parse(ConfigurationSettings.AppSettings["IsSearchPopStateOpen"].ToString());
+                    if (isSearchPopStateOpen)
+                    {
+                        ShowSearchPop();
+                    }
+                }
+                catch (Exception ex)
+                { }
+            }
         }
         private void ReceiveBusyIndicator(AppBusyIndicator busyindicator)
         {
@@ -371,7 +388,7 @@ namespace WordAndImgOperationApp
             }
             else
             {
-                CloseSearchPop();
+                CloseSearchPop(true);
             }
         }
         private void App_Deactivated(object sender, EventArgs e)
@@ -463,7 +480,7 @@ namespace WordAndImgOperationApp
                             }
                             else if (result.Code == "ExchangeBrowseTxTHide")
                             {
-                                CloseSearchPop();
+                                CloseSearchPop(true);
                             }
                         };
                         System.Threading.Thread t = new System.Threading.Thread(start);
@@ -490,7 +507,7 @@ namespace WordAndImgOperationApp
             catch (Exception ex)
             { }
         }
-        private void ShowSearchPop()
+        private void ShowSearchPop(bool isSaveState = true)
         {
             try
             {
@@ -504,13 +521,17 @@ namespace WordAndImgOperationApp
                         proc.StartInfo.FileName = pathBrowseSearchTXT;
                         proc.Start();
                         viewModel.OpenFloatWindowContent = "隐藏浮动窗口";
+                        if (isSaveState)
+                        {
+                            SaveSearchPopState(true);
+                        }
                     }
                 }
             }
             catch (Exception ex)
             { }
         }
-        private void CloseSearchPop()
+        private void CloseSearchPop(bool isSaveState = false)
         {
             try
             {
@@ -520,6 +541,26 @@ namespace WordAndImgOperationApp
                     p.Kill();
                 }
                 viewModel.OpenFloatWindowContent = "显示浮动窗口";
+                if (isSaveState)
+                {
+                    SaveSearchPopState(false);
+                }
+            }
+            catch (Exception ex)
+            { }
+        }
+        private void SaveSearchPopState(bool isPopOpen)
+        {
+            try
+            {
+                System.Configuration.Configuration config = System.Configuration.ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.None);
+                AppSettingsSection appsettings = config.AppSettings;
+                foreach (KeyValueConfigurationElement item in appsettings.Settings)
+                {
+                    if (item.Key == "IsSearchPopStateOpen")
+                        item.Value = isPopOpen.ToString();
+                }
+                config.Save(ConfigurationSaveMode.Modified);
             }
             catch (Exception ex)
             { }

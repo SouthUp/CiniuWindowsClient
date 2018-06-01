@@ -79,4 +79,11 @@ namespace CheckWordEvent
     {
 
     }
+    /// <summary>
+    /// 是否能够打开悬浮窗体事件
+    /// </summary>
+    public class IsCanOpenSearchPopWindowEvent : PubSubEvent<bool>
+    {
+
+    }
 }

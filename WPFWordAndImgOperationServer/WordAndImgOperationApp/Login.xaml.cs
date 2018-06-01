@@ -66,6 +66,7 @@ namespace WordAndImgOperationApp
                     EventAggregatorRepository.EventAggregator.GetEvent<LoginInOrOutEvent>().Publish("LoginIn");
                     SaveLoginInfo(viewModel.UserName, viewModel.PassWord, viewModel.IsAutoLogin);
                     EventAggregatorRepository.EventAggregator.GetEvent<InitContentGridViewEvent>().Publish("MainSet");
+                    EventAggregatorRepository.EventAggregator.GetEvent<IsCanOpenSearchPopWindowEvent>().Publish(true);
                 }
                 else
                 {
