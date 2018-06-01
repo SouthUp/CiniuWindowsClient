@@ -33,7 +33,7 @@
     <PublishUrl>D:\搜狗高速下载\发布2016\</PublishUrl>
     <InstallUrl />
     <TargetCulture>zh-chs</TargetCulture>
-    <ApplicationVersion>1.0.0.1</ApplicationVersion>
+    <ApplicationVersion>1.0.0.2</ApplicationVersion>
     <AutoIncrementApplicationRevision>true</AutoIncrementApplicationRevision>
     <UpdateEnabled>true</UpdateEnabled>
     <UpdateInterval>7</UpdateInterval>
@@ -356,6 +356,7 @@
     <Resource Include="Image\Default.png" />
     <Resource Include="Image\jdshang.png" />
     <Resource Include="Image\jdxia.png" />
+    <Resource Include="Image\5.png" />
     <Content Include="Resources\CheckBtn.png" />
     <Content Include="Resources\SynonymDB.png" />
     <Content Include="Resources\WordsDB.png" />
