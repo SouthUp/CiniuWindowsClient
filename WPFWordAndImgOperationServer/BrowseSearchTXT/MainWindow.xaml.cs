@@ -31,6 +31,7 @@ namespace BrowseSearchTXT
         private static bool IsDataProcessResultVisible = false;
         private static List<string> FilePathsList = new List<string>();
         private static List<string> UnCheckFilePathsList = new List<string>();
+        private static List<string> UnReadFilePathsList = new List<string>();
         List<string> listClass = new List<string>() { ".png", ".jpg", ".jpeg", ".doc", ".docx" };
         MainWindowViewModel viewModel;
         public MainWindow()
@@ -58,6 +59,7 @@ namespace BrowseSearchTXT
             DragTipGrid.Visibility = Visibility.Collapsed;
             FilePathsList = new List<string>();
             UnCheckFilePathsList = new List<string>();
+            UnReadFilePathsList = new List<string>();
             if (e.Data.GetDataPresent(DataFormats.FileDrop))
             {
                 foreach (var path in ((System.Array)e.Data.GetData(DataFormats.FileDrop)))
@@ -66,7 +68,14 @@ namespace BrowseSearchTXT
                     {
                         if (listClass.Contains(System.IO.Path.GetExtension(path.ToString())))
                         {
-                            FilePathsList.Add(path.ToString());
+                            if (!path.ToString().Contains("~$"))
+                            {
+                                FilePathsList.Add(path.ToString());
+                                if (IsFileOpen(path.ToString()))
+                                {
+                                    UnReadFilePathsList.Add(path.ToString());
+                                }
+                            }
                         }
                         else
                         {
@@ -96,11 +105,11 @@ namespace BrowseSearchTXT
                 {
                     if (UnCheckFilePathsList.Count > 0)
                     {
-                        viewModel.CheckResultText = UnCheckFilePathsList.Count + "个文件类型不支持";
+                        viewModel.CheckResultText = UnCheckFilePathsList.Count + "个文件类型不支持.";
                     }
                     else
                     {
-                        viewModel.CheckResultText = "未发现支持的文件类型";
+                        viewModel.CheckResultText = "未发现支持的文件类型.";
                     }
                     viewModel.TongJiCheckResultVisibility = Visibility.Collapsed;
                     viewModel.SinggleWordCheckResultVisibility = Visibility.Collapsed;
@@ -123,7 +132,14 @@ namespace BrowseSearchTXT
             {
                 if (listClass.Contains(System.IO.Path.GetExtension(fi.FullName)))
                 {
-                    FilePathsList.Add(fi.FullName);
+                    if (!fi.FullName.Contains("~$"))
+                    {
+                        FilePathsList.Add(fi.FullName);
+                        if (IsFileOpen(fi.FullName))
+                        {
+                            UnReadFilePathsList.Add(fi.FullName);
+                        }
+                    }
                 }
                 else
                 {
@@ -197,7 +213,14 @@ namespace BrowseSearchTXT
                                 viewModel.ReturnBtnVisibility = Visibility.Visible;
                                 if (viewModel.CurrentProcessingInfo.UnCheckWordsCount == 0)
                                 {
-                                    viewModel.CheckResultText = "未发现违禁词";
+                                    if (UnReadFilePathsList.Count > 0)
+                                    {
+                                        viewModel.CheckResultText = UnReadFilePathsList.Count + "个文件正被编辑，无法读取.";
+                                    }
+                                    else
+                                    {
+                                        viewModel.CheckResultText = "未发现违禁词.";
+                                    }
                                     viewModel.TongJiCheckResultVisibility = Visibility.Collapsed;
                                     viewModel.SinggleWordCheckResultVisibility = Visibility.Collapsed;
                                     viewModel.SinggleWordCheckResultNoUncheckVisibility = Visibility.Collapsed;
@@ -205,6 +228,22 @@ namespace BrowseSearchTXT
                                 }
                                 else
                                 {
+                                    if (UnReadFilePathsList.Count == 0)
+                                    {
+                                        viewModel.FileReadFailTipsVisibility = Visibility.Collapsed;
+                                    }
+                                    else if (UnReadFilePathsList.Count == 1)
+                                    {
+                                        viewModel.FileReadFailTipsVisibility = Visibility.Visible;
+                                        viewModel.FileReadFailTips = System.IO.Path.GetFileNameWithoutExtension(UnReadFilePathsList.FirstOrDefault());
+                                        viewModel.FileReadFailTipsExtention = System.IO.Path.GetExtension(UnReadFilePathsList.FirstOrDefault());
+                                    }
+                                    else
+                                    {
+                                        viewModel.FileReadFailTipsVisibility = Visibility.Visible;
+                                        viewModel.FileReadFailTips = UnReadFilePathsList.Count + "个文件";
+                                        viewModel.FileReadFailTipsExtention = "";
+                                    }
                                     viewModel.CheckResultText =
                                     viewModel.CurrentProcessingInfo.TotalCount + "个文件中有" + viewModel.CurrentProcessingInfo.UnCheckWordsCount + "个违禁词";
                                     viewModel.TongJiCheckResultVisibility = Visibility.Visible;
@@ -277,7 +316,7 @@ namespace BrowseSearchTXT
             }
             else
             {
-                viewModel.CheckResultText = "未发现违禁词";
+                viewModel.CheckResultText = "未发现违禁词.";
                 viewModel.TongJiCheckResultVisibility = Visibility.Collapsed;
                 viewModel.SinggleWordCheckResultVisibility = Visibility.Collapsed;
                 viewModel.SinggleWordCheckResultNoUncheckVisibility = Visibility.Collapsed;

@@ -153,7 +153,11 @@
                 </Grid>
                 <Grid Visibility="{Binding TongJiCheckResultVisibility}"
                       Width="216" HorizontalAlignment="Center" VerticalAlignment="Center">
-                    <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="*"></RowDefinition>
+                        <RowDefinition Height="Auto"></RowDefinition>
+                    </Grid.RowDefinitions>
+                    <Grid Grid.Row="0">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="Auto"></ColumnDefinition>
                             <ColumnDefinition Width="Auto"></ColumnDefinition>
@@ -168,6 +172,23 @@
                                 Style="{StaticResource TextButtonStyle}"
                                 Click="GoLookBtn_Click">
                         </Button>
+                    </Grid>
+                    <Grid Grid.Row="1" Height="20" Visibility="{Binding FileReadFailTipsVisibility}"
+                          Width="216" HorizontalAlignment="Center" VerticalAlignment="Center">
+                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" VerticalAlignment="Center">
+                            <TextBlock Text="{Binding FileReadFailTips}" MaxWidth="60"
+                                   FontSize="12" Foreground="#f44336" HorizontalAlignment="Left"
+                                   Style="{StaticResource CommonTextBlock}" TextTrimming="CharacterEllipsis">
+                            </TextBlock>
+                            <TextBlock Text="{Binding FileReadFailTipsExtention}" MaxWidth="30"
+                                   FontSize="12" Foreground="#f44336" HorizontalAlignment="Left"
+                                   Style="{StaticResource CommonTextBlock}">
+                            </TextBlock>
+                            <TextBlock Text="正被编辑，无法读取."
+                                   FontSize="12" Foreground="#f44336" HorizontalAlignment="Left"
+                                   Style="{StaticResource CommonTextBlock}">
+                            </TextBlock>
+                        </StackPanel>
                     </Grid>
                 </Grid>
                 <Grid Visibility="{Binding SinggleWordCheckResultVisibility}"

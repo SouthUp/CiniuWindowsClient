@@ -134,5 +134,35 @@ namespace BrowseSearchTXT
                 RaisePropertyChanged("CurrentProcessingInfo");
             }
         }
+        private Visibility _fileReadFailTipsVisibility = Visibility.Collapsed;
+        public Visibility FileReadFailTipsVisibility
+        {
+            get { return _fileReadFailTipsVisibility; }
+            set
+            {
+                _fileReadFailTipsVisibility = value;
+                RaisePropertyChanged("FileReadFailTipsVisibility");
+            }
+        }
+        private string _fileReadFailTips = "";
+        public string FileReadFailTips
+        {
+            get { return _fileReadFailTips; }
+            set
+            {
+                _fileReadFailTips = value;
+                RaisePropertyChanged("FileReadFailTips");
+            }
+        }
+        private string _fileReadFailTipsExtention = "";
+        public string FileReadFailTipsExtention
+        {
+            get { return _fileReadFailTipsExtention; }
+            set
+            {
+                _fileReadFailTipsExtention = value;
+                RaisePropertyChanged("FileReadFailTipsExtention");
+            }
+        }
     }
 }

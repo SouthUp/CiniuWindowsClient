@@ -53,7 +53,8 @@ namespace WordAndImgOperationApp
                     FilePathsList = new List<string>();
                     if (File.Exists(item.FileFullPath))
                     {
-                        if (listClass.Contains(System.IO.Path.GetExtension(item.FileFullPath)))
+                        if (listClass.Contains(System.IO.Path.GetExtension(item.FileFullPath))
+                            && !item.FileFullPath.Contains("~$"))
                         {
                             FilePathsList.Add(item.FileFullPath);
                         }
@@ -77,7 +78,8 @@ namespace WordAndImgOperationApp
             FileInfo[] allFile = dir.GetFiles();
             foreach (FileInfo fi in allFile)
             {
-                if (listClass.Contains(System.IO.Path.GetExtension(fi.FullName)))
+                if (listClass.Contains(System.IO.Path.GetExtension(fi.FullName))
+                    && !fi.FullName.Contains("~$"))
                 {
                     FilePathsList.Add(fi.FullName);
                 }

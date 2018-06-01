@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
@@ -66,6 +67,32 @@ namespace CheckWordUtil
             {
                 ShowWindow(intptr, 0);//隐藏本dos窗体, 0: 后台执行；1:正常启动；2:最小化到任务栏；3:最大化
             }
+        }
+
+        [DllImport("kernel32.dll")]
+        public static extern IntPtr _lopen(string lpPathName, int iReadWrite);
+        [DllImport("kernel32.dll")]
+        public static extern bool CloseHandle(IntPtr hObject);
+        public const int OF_READWRITE = 2;
+        public const int OF_SHARE_DENY_NONE = 0x40;
+        public static readonly IntPtr HFILE_ERROR = new IntPtr(-1);
+
+        public static bool IsFileOpen(string path)
+        {
+            bool result = false;
+            try
+            {
+                string vFileName = path;
+                IntPtr vHandle = _lopen(vFileName, OF_READWRITE | OF_SHARE_DENY_NONE);//windows Api上面有定义扩展方法
+                if (vHandle == HFILE_ERROR)
+                {
+                    result = true;//文件被占用  
+                }
+                CloseHandle(vHandle);
+            }
+            catch (Exception ex)
+            { }
+            return result;
         }
     }
 }
