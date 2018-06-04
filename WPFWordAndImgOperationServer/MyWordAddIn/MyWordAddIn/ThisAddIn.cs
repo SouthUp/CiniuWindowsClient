@@ -36,28 +36,35 @@ namespace MyWordAddIn
             //////// 设置为 MsoCTPDockPosition.msoCTPDockPositionRight这个代表停靠到右边，这个值也是默认值 
             //////myControlTaskPane.DockPosition = MsoCTPDockPosition.msoCTPDockPositionRight;
             #endregion
-            var wpfHost = new TaskPaneWpfControlHost();
-            var wpfTaskPane = new TaskPaneWpfControl();
-            wpfControl = new MyControl();
-            wpfTaskPane.TaskPaneContent.Children.Add(wpfControl);
-            wpfHost.WpfElementHost.HostContainer.Children.Add(wpfTaskPane);
-            var taskPane = this.CustomTaskPanes.Add(wpfHost, "违禁词检查");
-            taskPane.Visible = true;
-            taskPane.DockPosition = MsoCTPDockPosition.msoCTPDockPositionRight;
-            taskPane.VisibleChanged += TaskPane_VisibleChanged;
-            HostSystemVar.CustomTaskPane = taskPane;
             ////////屏蔽右键菜单，快捷键和替换词
             ////////this.Application.WindowBeforeRightClick += new Word.ApplicationEvents4_WindowBeforeRightClickEventHandler(Application_WindowBeforeRightClick);
             EventAggregatorRepository.EventAggregator.GetEvent<SetMyControlVisibleEvent>().Subscribe(SetMyControlVisible);
             EventAggregatorRepository.EventAggregator.GetEvent<SetMyWordsDBVisibleEvent>().Subscribe(SetMyWordsDBVisible);
             EventAggregatorRepository.EventAggregator.GetEvent<SetMySynonymDBVisibleEvent>().Subscribe(SetMySynonymDBVisible);
             EventAggregatorRepository.EventAggregator.GetEvent<OpenMyFloatingPanelEvent>().Subscribe(OpenMyFloatingPanel);
+            EventAggregatorRepository.EventAggregator.GetEvent<SetMyControlVisibleEvent>().Publish(true);
         }
         private void SetMyControlVisible(bool isVisible)
         {
             try
             {
-                HostSystemVar.CustomTaskPane.Visible = isVisible;
+                if (HostSystemVar.CustomTaskPane == null)
+                {
+                    var wpfHost = new TaskPaneWpfControlHost();
+                    var wpfTaskPane = new TaskPaneWpfControl();
+                    wpfControl = new MyControl();
+                    wpfTaskPane.TaskPaneContent.Children.Add(wpfControl);
+                    wpfHost.WpfElementHost.HostContainer.Children.Add(wpfTaskPane);
+                    var taskPane = this.CustomTaskPanes.Add(wpfHost, "违禁词检查");
+                    taskPane.Visible = true;
+                    taskPane.DockPosition = MsoCTPDockPosition.msoCTPDockPositionRight;
+                    taskPane.VisibleChanged += TaskPane_VisibleChanged;
+                    HostSystemVar.CustomTaskPane = taskPane;
+                }
+                else
+                {
+                    HostSystemVar.CustomTaskPane.Visible = isVisible;
+                }
             }
             catch (Exception ex)
             { }
