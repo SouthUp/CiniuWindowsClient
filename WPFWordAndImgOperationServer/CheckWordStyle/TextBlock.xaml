@@ -201,7 +201,7 @@
                             <Setter TargetName="PART_PasswordShower" Property="Visibility" Value="Visible"/>
                             <Setter TargetName="PART_PasswordShower" Property="IsHitTestVisible" Value="True"/>
                             <Setter TargetName="PART_PasswordShower" Property="CaretBrush" Value="Black"/>
-                            <Setter TargetName="PART_PasswordShower" Property="Focusable" Value="True"/>
+                            <Setter TargetName="PART_PasswordShower" Property="Focusable" Value="False"/>
                         </DataTrigger>
                         <DataTrigger Binding="{Binding Text, ElementName=PART_PasswordShower,Converter={StaticResource NullOrEmptyStringtoVisibilityConverter}}" Value="Collapsed">
                             <Setter TargetName="PART_PlaceHolder" Property="Visibility" Value="Collapsed"/>
