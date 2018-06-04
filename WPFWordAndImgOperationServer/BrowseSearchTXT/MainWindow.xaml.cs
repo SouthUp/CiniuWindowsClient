@@ -57,6 +57,8 @@ namespace BrowseSearchTXT
         {
             if (this.IsDealingData)
             {
+                DragDealingTipGrid.Visibility = Visibility.Collapsed;
+                DragTipGrid.Visibility = Visibility.Collapsed;
                 return;
             }
             this.IsDealingData = true;
@@ -64,6 +66,7 @@ namespace BrowseSearchTXT
             IsCancelDeal = false;
             IsInputCheckGridVisible = viewModel.InputCheckGridVisibility == Visibility.Visible;
             IsDataProcessResultVisible = viewModel.DataProcessResultGridVisibility == Visibility.Visible;
+            DragDealingTipGrid.Visibility = Visibility.Collapsed;
             DragTipGrid.Visibility = Visibility.Collapsed;
             FilePathsList = new List<string>();
             UnCheckFilePathsList = new List<string>();
