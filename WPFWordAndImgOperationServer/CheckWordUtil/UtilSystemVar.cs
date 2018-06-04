@@ -9,6 +9,7 @@ namespace CheckWordUtil
 {
     public class UtilSystemVar
     {
+        public static bool IsDealingData { get; set; }
         public static string UserToken { get; set; }
         public static string UserName { get; set; }
 

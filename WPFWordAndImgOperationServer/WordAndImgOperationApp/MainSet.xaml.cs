@@ -43,34 +43,38 @@ namespace WordAndImgOperationApp
 
         private void CircleCheckBtn_Click(object sender, RoutedEventArgs e)
         {
-            if(viewModel.ChekedWordSettingsInfos.Where(x => x.IsChecked).ToList().Count > 0)
+            if (!UtilSystemVar.IsDealingData)
             {
-                viewModel.AddTaskBtnIsEnabled = false;
-                viewModel.CancelBtnVisibility = Visibility.Visible;
-                viewModel.CheckBtnVisibility = Visibility.Collapsed;
-                foreach (var item in viewModel.ChekedWordSettingsInfos)
+                if (viewModel.ChekedWordSettingsInfos.Where(x => x.IsChecked).ToList().Count > 0)
                 {
-                    FilePathsList = new List<string>();
-                    if (File.Exists(item.FileFullPath))
+                    UtilSystemVar.IsDealingData = true;
+                    viewModel.AddTaskBtnIsEnabled = false;
+                    viewModel.CancelBtnVisibility = Visibility.Visible;
+                    viewModel.CheckBtnVisibility = Visibility.Collapsed;
+                    foreach (var item in viewModel.ChekedWordSettingsInfos)
                     {
-                        if (listClass.Contains(System.IO.Path.GetExtension(item.FileFullPath))
-                            && !item.FileFullPath.Contains("~$"))
+                        FilePathsList = new List<string>();
+                        if (File.Exists(item.FileFullPath))
                         {
-                            FilePathsList.Add(item.FileFullPath);
+                            if (listClass.Contains(System.IO.Path.GetExtension(item.FileFullPath))
+                                && !item.FileFullPath.Contains("~$"))
+                            {
+                                FilePathsList.Add(item.FileFullPath);
+                            }
                         }
+                        else if (Directory.Exists(item.FileFullPath))
+                        {
+                            DirectoryInfo dir = new DirectoryInfo(item.FileFullPath);
+                            GetAllFiles(dir);
+                        }
+                        item.FilePathsList = FilePathsList;
+                        item.TotalCount = FilePathsList.Count;
+                        item.IsChecking = true;
                     }
-                    else if (Directory.Exists(item.FileFullPath))
-                    {
-                        DirectoryInfo dir = new DirectoryInfo(item.FileFullPath);
-                        GetAllFiles(dir);
-                    }
-                    item.FilePathsList = FilePathsList;
-                    item.TotalCount = FilePathsList.Count;
-                    item.IsChecking = true;
+                    Task.Run(() => {
+                        EventAggregatorRepository.EventAggregator.GetEvent<DealCheckBtnDataEvent>().Publish(viewModel.ChekedWordSettingsInfos);
+                    });
                 }
-                Task.Run(() => {
-                    EventAggregatorRepository.EventAggregator.GetEvent<DealCheckBtnDataEvent>().Publish(viewModel.ChekedWordSettingsInfos);
-                });
             }
         }
         private void GetAllFiles(DirectoryInfo dir)
@@ -93,6 +97,7 @@ namespace WordAndImgOperationApp
         private void CircleCancelCheckBtn_Click(object sender, RoutedEventArgs e)
         {
             EventAggregatorRepository.EventAggregator.GetEvent<CancelDealCheckBtnDataEvent>().Publish(true);
+            UtilSystemVar.IsDealingData = false;
             viewModel.AddTaskBtnIsEnabled = true;
             viewModel.CancelBtnVisibility = Visibility.Collapsed;
             viewModel.CheckBtnVisibility = Visibility.Visible;

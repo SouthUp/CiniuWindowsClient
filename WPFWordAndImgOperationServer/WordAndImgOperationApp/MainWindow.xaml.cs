@@ -484,6 +484,7 @@ namespace WordAndImgOperationApp
                             else if (result.Code == "ExchangeBrowseTxTCancelDeal")
                             {
                                 IsCancelDeal = true;
+                                UtilSystemVar.IsDealingData = false;
                             }
                             else if (result.Code == "ExchangeBrowseTxTGoLook")
                             {
@@ -651,6 +652,7 @@ namespace WordAndImgOperationApp
                     exchangeBrowseTxTProcessingInfo.IsDealFinished = true;
                     exchangeBrowseTxTProcessingInfo.UnCheckWordsCount = dealDataErrorCount;
                     SendProcessingMessageToBrowseSearchTXT(exchangeBrowseTxTProcessingInfo);
+                    UtilSystemVar.IsDealingData = false;
                 };
                 System.Threading.Thread t = new System.Threading.Thread(start);
                 t.IsBackground = true;
@@ -924,6 +926,7 @@ namespace WordAndImgOperationApp
                 System.Threading.ThreadStart start = delegate ()
                 {
                     System.Threading.Thread.Sleep(500);
+                    UtilSystemVar.IsDealingData = false;
                     EventAggregatorRepository.EventAggregator.GetEvent<DealCheckBtnDataFinishedEvent>().Publish(true);
                 };
                 System.Threading.Thread t = new System.Threading.Thread(start);
@@ -938,6 +941,7 @@ namespace WordAndImgOperationApp
             if (b)
             {
                 IsCancelDeal = true;
+                UtilSystemVar.IsDealingData = false;
             }
         }
         private MessageServiceClient mService = null;

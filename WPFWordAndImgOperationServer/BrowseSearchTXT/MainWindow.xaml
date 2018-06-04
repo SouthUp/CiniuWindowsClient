@@ -122,7 +122,7 @@
         </DrawingBrush>
     </Window.Resources>
     <Grid>
-        <Grid ContextMenu="{StaticResource NotifyIconMenu}" 
+        <Grid ContextMenu="{StaticResource NotifyIconMenu}"
               Cursor="Hand" MouseLeftButtonDown="Grid_MouseLeftButtonDown">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="70"></ColumnDefinition>
@@ -339,6 +339,17 @@
                 </Grid>
             </Border>
             <TextBlock FontSize="16" Text="拖到这里检查" Foreground="White"
+                       HorizontalAlignment="Center" VerticalAlignment="Center"></TextBlock>
+        </Grid>
+        <Grid x:Name="DragDealingTipGrid" Visibility="Collapsed">
+            <Border BorderThickness="0" Background="#000000" Opacity="0.54">
+                <Grid>
+                    <Grid.Background>
+                        <ImageBrush ImageSource="Images/DragBoder.png"></ImageBrush>
+                    </Grid.Background>
+                </Grid>
+            </Border>
+            <TextBlock FontSize="16" Text="处理中,请稍等..." Foreground="White"
                        HorizontalAlignment="Center" VerticalAlignment="Center"></TextBlock>
         </Grid>
     </Grid>

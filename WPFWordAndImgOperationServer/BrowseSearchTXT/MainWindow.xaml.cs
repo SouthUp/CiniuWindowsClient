@@ -1,4 +1,5 @@
 ﻿using CheckWordModel.Communication;
+using CheckWordUtil;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -53,6 +54,11 @@ namespace BrowseSearchTXT
         }
         private void MainWindow_Drop(object sender, DragEventArgs e)
         {
+            if (UtilSystemVar.IsDealingData)
+            {
+                return;
+            }
+            UtilSystemVar.IsDealingData = true;
             IsCancelDeal = false;
             IsInputCheckGridVisible = viewModel.InputCheckGridVisibility == Visibility.Visible;
             IsDataProcessResultVisible = viewModel.DataProcessResultGridVisibility == Visibility.Visible;
@@ -122,6 +128,8 @@ namespace BrowseSearchTXT
 
                     viewModel.TitleLogoVisibility = Visibility.Collapsed;
                     viewModel.ReturnBtnVisibility = Visibility.Visible;
+
+                    UtilSystemVar.IsDealingData = false;
                 }
             }
         }
@@ -154,12 +162,22 @@ namespace BrowseSearchTXT
         }
         private void Window_DragLeave(object sender, DragEventArgs e)
         {
+            DragDealingTipGrid.Visibility = Visibility.Collapsed;
             DragTipGrid.Visibility = Visibility.Collapsed;
         }
 
         private void Window_DragEnter(object sender, DragEventArgs e)
         {
-            DragTipGrid.Visibility = Visibility.Visible;
+            if (UtilSystemVar.IsDealingData)
+            {
+                DragDealingTipGrid.Visibility = Visibility.Visible;
+                DragTipGrid.Visibility = Visibility.Collapsed;
+            }
+            else
+            {
+                DragTipGrid.Visibility = Visibility.Visible;
+                DragDealingTipGrid.Visibility = Visibility.Collapsed;
+            }
         }
         private void BtnClose_Click(object sender, RoutedEventArgs e)
         {
@@ -206,6 +224,7 @@ namespace BrowseSearchTXT
                             if (viewModel.CurrentProcessingInfo.IsDealFinished)
                             {
                                 System.Threading.Thread.Sleep(500);
+                                UtilSystemVar.IsDealingData = false;
                                 viewModel.DataProcessGridVisibility = Visibility.Collapsed;
                                 viewModel.DataProcessResultGridVisibility = Visibility.Visible;
                                 viewModel.TitleLogoVisibility = Visibility.Collapsed;
@@ -346,6 +365,7 @@ namespace BrowseSearchTXT
             viewModel.DataProcessGridVisibility = Visibility.Collapsed;
             viewModel.InputCheckGridVisibility = IsInputCheckGridVisible ? Visibility.Visible : Visibility.Collapsed;
             viewModel.DataProcessResultGridVisibility = IsDataProcessResultVisible ? Visibility.Visible : Visibility.Collapsed;
+            UtilSystemVar.IsDealingData = false;
         }
 
         private void MenuHide_Click(object sender, RoutedEventArgs e)
