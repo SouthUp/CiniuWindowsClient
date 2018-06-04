@@ -96,6 +96,7 @@ namespace WordAndImgOperationApp
                             item.Value = "true";
                     }
                     config.Save(ConfigurationSaveMode.Modified);
+                    ConfigurationManager.RefreshSection("appSettings");
                 }
                 else
                 {
@@ -105,6 +106,7 @@ namespace WordAndImgOperationApp
                             item.Value = "false";
                     }
                     config.Save(ConfigurationSaveMode.Modified);
+                    ConfigurationManager.RefreshSection("appSettings");
                 }
             }
             catch (Exception ex)

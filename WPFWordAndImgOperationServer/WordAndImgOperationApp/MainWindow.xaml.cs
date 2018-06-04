@@ -372,6 +372,7 @@ namespace WordAndImgOperationApp
                         item.Value = "false";
                 }
                 config.Save(ConfigurationSaveMode.Modified);
+                ConfigurationManager.RefreshSection("appSettings");
             }
             catch (Exception ex)
             { }
@@ -575,6 +576,7 @@ namespace WordAndImgOperationApp
                         item.Value = isPopOpen.ToString();
                 }
                 config.Save(ConfigurationSaveMode.Modified);
+                ConfigurationManager.RefreshSection("appSettings");
             }
             catch (Exception ex)
             { }
