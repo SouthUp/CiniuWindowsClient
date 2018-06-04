@@ -27,6 +27,7 @@ namespace BrowseSearchTXT
     /// </summary>
     public partial class MainWindow : Window
     {
+        private bool IsDealingData = false;
         private static bool IsCancelDeal = false;
         private static bool IsInputCheckGridVisible = false;
         private static bool IsDataProcessResultVisible = false;
@@ -54,11 +55,12 @@ namespace BrowseSearchTXT
         }
         private void MainWindow_Drop(object sender, DragEventArgs e)
         {
-            if (UtilSystemVar.IsDealingData)
+            if (this.IsDealingData)
             {
                 return;
             }
-            UtilSystemVar.IsDealingData = true;
+            this.IsDealingData = true;
+            SendDealDataStateToApp();
             IsCancelDeal = false;
             IsInputCheckGridVisible = viewModel.InputCheckGridVisibility == Visibility.Visible;
             IsDataProcessResultVisible = viewModel.DataProcessResultGridVisibility == Visibility.Visible;
@@ -129,7 +131,8 @@ namespace BrowseSearchTXT
                     viewModel.TitleLogoVisibility = Visibility.Collapsed;
                     viewModel.ReturnBtnVisibility = Visibility.Visible;
 
-                    UtilSystemVar.IsDealingData = false;
+                    this.IsDealingData = false;
+                    SendDealDataStateToApp();
                 }
             }
         }
@@ -168,7 +171,7 @@ namespace BrowseSearchTXT
 
         private void Window_DragEnter(object sender, DragEventArgs e)
         {
-            if (UtilSystemVar.IsDealingData)
+            if (this.IsDealingData)
             {
                 DragDealingTipGrid.Visibility = Visibility.Visible;
                 DragTipGrid.Visibility = Visibility.Collapsed;
@@ -205,10 +208,16 @@ namespace BrowseSearchTXT
                 var result = JsonConvert.DeserializeObject<CommonExchangeInfo>(jsonData);
                 if (result.Code == "ExchangeBrowseTxTReturnBack")
                 {
-                    if (viewModel.ReturnBtnVisibility == Visibility.Visible)
+                    if (viewModel.ReturnBtnVisibility == Visibility.Visible && !IsDealingData)
                     {
                         Dispatcher.BeginInvoke(DispatcherPriority.Background, (Action)(() => { ReturnBack(); }));
                     }
+                }
+                else if (result.Code == "DealDataProcessingState")
+                {
+                    string data = result.Data;
+                    var info = JsonConvert.DeserializeObject<DealDataProcessingStateInfo>(data);
+                    IsDealingData = info.IsDealingData;
                 }
                 else if (result.Code == "ExchangeBrowseTxTProcessing")
                 {
@@ -224,7 +233,8 @@ namespace BrowseSearchTXT
                             if (viewModel.CurrentProcessingInfo.IsDealFinished)
                             {
                                 System.Threading.Thread.Sleep(500);
-                                UtilSystemVar.IsDealingData = false;
+                                this.IsDealingData = false;
+                                SendDealDataStateToApp();
                                 viewModel.DataProcessGridVisibility = Visibility.Collapsed;
                                 viewModel.DataProcessResultGridVisibility = Visibility.Visible;
                                 viewModel.TitleLogoVisibility = Visibility.Collapsed;
@@ -365,11 +375,16 @@ namespace BrowseSearchTXT
             viewModel.DataProcessGridVisibility = Visibility.Collapsed;
             viewModel.InputCheckGridVisibility = IsInputCheckGridVisible ? Visibility.Visible : Visibility.Collapsed;
             viewModel.DataProcessResultGridVisibility = IsDataProcessResultVisible ? Visibility.Visible : Visibility.Collapsed;
-            UtilSystemVar.IsDealingData = false;
+            this.IsDealingData = false;
+            SendDealDataStateToApp();
         }
 
         private void MenuHide_Click(object sender, RoutedEventArgs e)
         {
+            if (IsDealingData)
+            {
+                CancelBtn_Click(null, null);
+            }
             CommonExchangeInfo commonExchangeInfo = new CommonExchangeInfo();
             commonExchangeInfo.Code = "ExchangeBrowseTxTHide";
             string jsonData = JsonConvert.SerializeObject(commonExchangeInfo); //序列化
@@ -394,6 +409,21 @@ namespace BrowseSearchTXT
                 }
             });
             task.Start();
+        }
+        private void SendDealDataStateToApp()
+        {
+            try
+            {
+                CommonExchangeInfo commonExchangeInfo = new CommonExchangeInfo();
+                commonExchangeInfo.Code = "DealDataProcessingState";
+                DealDataProcessingStateInfo infoDeal = new DealDataProcessingStateInfo();
+                infoDeal.IsDealingData = this.IsDealingData;
+                commonExchangeInfo.Data = JsonConvert.SerializeObject(infoDeal);
+                string jsonData = JsonConvert.SerializeObject(commonExchangeInfo); //序列化
+                SendMessage("WordAndImgOperationApp", jsonData);
+            }
+            catch (Exception ex)
+            { }
         }
     }
 }

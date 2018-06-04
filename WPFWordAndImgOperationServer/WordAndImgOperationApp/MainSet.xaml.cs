@@ -1,5 +1,7 @@
 ﻿using CheckWordEvent;
+using CheckWordModel.Communication;
 using CheckWordUtil;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -48,6 +50,7 @@ namespace WordAndImgOperationApp
                 if (viewModel.ChekedWordSettingsInfos.Where(x => x.IsChecked).ToList().Count > 0)
                 {
                     UtilSystemVar.IsDealingData = true;
+                    EventAggregatorRepository.EventAggregator.GetEvent<SendDealDataStateToSeachTxTEvent>().Publish(true);
                     viewModel.AddTaskBtnIsEnabled = false;
                     viewModel.CancelBtnVisibility = Visibility.Visible;
                     viewModel.CheckBtnVisibility = Visibility.Collapsed;
@@ -98,6 +101,7 @@ namespace WordAndImgOperationApp
         {
             EventAggregatorRepository.EventAggregator.GetEvent<CancelDealCheckBtnDataEvent>().Publish(true);
             UtilSystemVar.IsDealingData = false;
+            EventAggregatorRepository.EventAggregator.GetEvent<SendDealDataStateToSeachTxTEvent>().Publish(true);
             viewModel.AddTaskBtnIsEnabled = true;
             viewModel.CancelBtnVisibility = Visibility.Collapsed;
             viewModel.CheckBtnVisibility = Visibility.Visible;

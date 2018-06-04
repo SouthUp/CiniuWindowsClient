@@ -56,6 +56,7 @@ namespace WordAndImgOperationApp
             EventAggregatorRepository.EventAggregator.GetEvent<CancelDealCheckBtnDataEvent>().Subscribe(CancelDealCheckBtnData);
             EventAggregatorRepository.EventAggregator.GetEvent<LoginInOrOutEvent>().Subscribe(LoginInOrOut);
             EventAggregatorRepository.EventAggregator.GetEvent<IsCanOpenSearchPopWindowEvent>().Subscribe(IsCanOpenSearchPopWindow);
+            EventAggregatorRepository.EventAggregator.GetEvent<SendDealDataStateToSeachTxTEvent>().Subscribe(SendDealDataStateToSeachTxT);
         }
         private void IsCanOpenSearchPopWindow(bool b)
         {
@@ -498,6 +499,12 @@ namespace WordAndImgOperationApp
                             {
                                 CloseSearchPop(true);
                             }
+                            else if (result.Code == "DealDataProcessingState")
+                            {
+                                string data = result.Data;
+                                var info = JsonConvert.DeserializeObject<DealDataProcessingStateInfo>(data);
+                                UtilSystemVar.IsDealingData = info.IsDealingData;
+                            }
                         };
                         System.Threading.Thread t = new System.Threading.Thread(start);
                         t.IsBackground = true;
@@ -653,6 +660,7 @@ namespace WordAndImgOperationApp
                     exchangeBrowseTxTProcessingInfo.UnCheckWordsCount = dealDataErrorCount;
                     SendProcessingMessageToBrowseSearchTXT(exchangeBrowseTxTProcessingInfo);
                     UtilSystemVar.IsDealingData = false;
+                    EventAggregatorRepository.EventAggregator.GetEvent<SendDealDataStateToSeachTxTEvent>().Publish(true);
                 };
                 System.Threading.Thread t = new System.Threading.Thread(start);
                 t.IsBackground = true;
@@ -927,6 +935,7 @@ namespace WordAndImgOperationApp
                 {
                     System.Threading.Thread.Sleep(500);
                     UtilSystemVar.IsDealingData = false;
+                    EventAggregatorRepository.EventAggregator.GetEvent<SendDealDataStateToSeachTxTEvent>().Publish(true);
                     EventAggregatorRepository.EventAggregator.GetEvent<DealCheckBtnDataFinishedEvent>().Publish(true);
                 };
                 System.Threading.Thread t = new System.Threading.Thread(start);
@@ -942,6 +951,7 @@ namespace WordAndImgOperationApp
             {
                 IsCancelDeal = true;
                 UtilSystemVar.IsDealingData = false;
+                EventAggregatorRepository.EventAggregator.GetEvent<SendDealDataStateToSeachTxTEvent>().Publish(true);
             }
         }
         private MessageServiceClient mService = null;
@@ -981,6 +991,21 @@ namespace WordAndImgOperationApp
                 loginInOutInfo.Token = UtilSystemVar.UserToken;
                 string json = JsonConvert.SerializeObject(loginInOutInfo);
                 mService.ClientSendMessage(json);
+            }
+            catch (Exception ex)
+            { }
+        }
+        private void SendDealDataStateToSeachTxT(bool b)
+        {
+            try
+            {
+                CommonExchangeInfo commonExchangeInfo = new CommonExchangeInfo();
+                commonExchangeInfo.Code = "DealDataProcessingState";
+                DealDataProcessingStateInfo infoDeal = new DealDataProcessingStateInfo();
+                infoDeal.IsDealingData = UtilSystemVar.IsDealingData;
+                commonExchangeInfo.Data = JsonConvert.SerializeObject(infoDeal);
+                string jsonData = JsonConvert.SerializeObject(commonExchangeInfo); //序列化
+                Win32Helper.SendMessage("BrowseSearchTXT", jsonData);
             }
             catch (Exception ex)
             { }

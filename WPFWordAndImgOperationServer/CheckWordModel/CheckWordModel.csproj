@@ -48,6 +48,7 @@
   <ItemGroup>
     <Compile Include="ChekedWordSettingsInfo.cs" />
     <Compile Include="Communication\CommonExchangeInfo.cs" />
+    <Compile Include="Communication\DealDataProcessingStateInfo.cs" />
     <Compile Include="Communication\ExchangeBrowseTxTPathsInfo.cs" />
     <Compile Include="Communication\ExchangeBrowseTxTProcessingInfo.cs" />
     <Compile Include="ImgGeneralInfo.cs" />

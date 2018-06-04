@@ -86,4 +86,11 @@ namespace CheckWordEvent
     {
 
     }
+    /// <summary>
+    /// 传递是否在处理数据事件
+    /// </summary>
+    public class SendDealDataStateToSeachTxTEvent : PubSubEvent<bool>
+    {
+
+    }
 }
