@@ -308,6 +308,20 @@ namespace WordAndImgOperationApp
                 System.Windows.Controls.ContextMenu NotifyIconMenu = (System.Windows.Controls.ContextMenu)this.FindResource("NotifyIconMenu");
                 NotifyIconMenu.DataContext = viewModel;
                 NotifyIconMenu.IsOpen = true;
+                //设置悬浮框异常关闭的显示
+                if (viewModel.OpenFloatWindowEnable)
+                {
+                    try
+                    {
+                        Process[] processes = Process.GetProcessesByName("BrowseSearchTXT");
+                        if (processes.Count() == 0 && viewModel.OpenFloatWindowContent == "隐藏浮动窗口")
+                        {
+                            viewModel.OpenFloatWindowContent = "显示浮动窗口";
+                        }
+                    }
+                    catch (Exception ex)
+                    { }
+                }
                 try
                 {
                     this.Activate();
