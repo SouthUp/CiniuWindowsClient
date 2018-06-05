@@ -149,10 +149,12 @@ namespace WordAndImgOperationApp
         private void MinBtn_Click(object sender, RoutedEventArgs e)
         {
             this.WindowState = WindowState.Minimized;
+            this.ShowInTaskbar = true;
         }
         private void CloseBtn_Click(object sender, RoutedEventArgs e)
         {
-            this.Close();
+            this.WindowState = WindowState.Minimized;
+            this.Hide();
         }
         /// <summary>
         /// 解析校验文档
@@ -281,7 +283,7 @@ namespace WordAndImgOperationApp
         {
             if (this.WindowState == WindowState.Minimized)
             {
-                this.Hide();
+                
             }
             else
             {
