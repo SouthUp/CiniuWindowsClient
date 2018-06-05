@@ -16,7 +16,7 @@
                    Style="{StaticResource CommonCenterTextBlock}">
             </TextBlock>
             <TextBlock Text="{Binding MessageInfo}" Margin="0,7,0,0"
-                   FontSize="12" Foreground="#f44336" 
+                   FontSize="12" Foreground="#ff8f00" 
                    Style="{StaticResource CommonCenterTextBlock}">
             </TextBlock>
         </StackPanel>
