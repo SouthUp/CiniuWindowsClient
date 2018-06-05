@@ -912,11 +912,16 @@ namespace WordAndImgOperationApp
             {
                 IsCancelDeal = false;
                 DealDataResultList = new ObservableCollection<MyFolderDataViewModel>();
-                FileOperateHelper.DeleteFolder(CheckWordTempPath);
-                if (!Directory.Exists(CheckWordTempPath))
+                try
                 {
-                    Directory.CreateDirectory(CheckWordTempPath);
+                    FileOperateHelper.DeleteFolder(CheckWordTempPath);
+                    if (!Directory.Exists(CheckWordTempPath))
+                    {
+                        Directory.CreateDirectory(CheckWordTempPath);
+                    }
                 }
+                catch (Exception ex)
+                { }
                 foreach (var item in pathsInfos.Where(x => x.IsChecked))
                 {
                     if (IsCancelDeal)
