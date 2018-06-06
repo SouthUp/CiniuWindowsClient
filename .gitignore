@@ -25,3 +25,6 @@
 /WPFWordAndImgOperationServer/MyWordAddIn/CheckWordControl
 /WPFWordAndImgOperationServer/MyWordAddIn/.vs/MyWordAddIn/v15
 /WPFWordAndImgOperationServer/MyWordAddIn/packages
+/WPFWordAndImgOperationServer/MyExcelAddIn/.vs/MyExcelAddIn/v15
+/WPFWordAndImgOperationServer/MyExcelAddIn/MyExcelAddIn/bin/Debug
+/WPFWordAndImgOperationServer/MyExcelAddIn/MyExcelAddIn/obj/Debug
