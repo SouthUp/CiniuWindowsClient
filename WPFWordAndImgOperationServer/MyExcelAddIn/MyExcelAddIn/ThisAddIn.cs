@@ -17,28 +17,58 @@ namespace MyExcelAddIn
         MyControl wpfControl;
         private void ThisAddIn_Startup(object sender, System.EventArgs e)
         {
-            var wpfHost = new TaskPaneWpfControlHost();
-            var wpfTaskPane = new TaskPaneWpfControl();
-            wpfControl = new MyControl();
-            wpfTaskPane.TaskPaneContent.Children.Add(wpfControl);
-            wpfHost.WpfElementHost.HostContainer.Children.Add(wpfTaskPane);
-            var taskPane = this.CustomTaskPanes.Add(wpfHost, "违禁词检查");
-            taskPane.Visible = true;
-            taskPane.DockPosition = MsoCTPDockPosition.msoCTPDockPositionRight;
-            taskPane.VisibleChanged += TaskPane_VisibleChanged;
-            HostSystemVar.CustomTaskPane = taskPane;
-            EventAggregatorRepository.EventAggregator.GetEvent<SetMyControlVisibleEvent>().Subscribe(SetMyControlVisible);
+            try
+            {
+                var wpfHost = new TaskPaneWpfControlHost();
+                var wpfTaskPane = new TaskPaneWpfControl();
+                wpfControl = new MyControl();
+                wpfTaskPane.TaskPaneContent.Children.Add(wpfControl);
+                wpfHost.WpfElementHost.HostContainer.Children.Add(wpfTaskPane);
+                var taskPane = this.CustomTaskPanes.Add(wpfHost, "违禁词检查");
+                taskPane.Visible = true;
+                taskPane.DockPosition = MsoCTPDockPosition.msoCTPDockPositionRight;
+                taskPane.VisibleChanged += TaskPane_VisibleChanged;
+                HostSystemVar.CustomTaskPane = taskPane;
+                Globals.ThisAddIn.Application.SheetActivate += Application_SheetActivate; ;
+                EventAggregatorRepository.EventAggregator.GetEvent<SetMyControlVisibleEvent>().Subscribe(SetMyControlVisible);
+            }
+            catch (Exception ex)
+            { }
         }
+        /// <summary>
+        /// Sheet表单切换事件
+        /// </summary>
+        /// <param name="Sh"></param>
+        private void Application_SheetActivate(object Sh)
+        {
+            try
+            {
+                if (wpfControl != null && HostSystemVar.CustomTaskPane.Visible)
+                {
+                    wpfControl.InitData();
+                }
+            }
+            catch (Exception ex)
+            { }
+        }
+
         private void TaskPane_VisibleChanged(object sender, EventArgs e)
         {
-            if (HostSystemVar.CustomTaskPane.Visible == false)
+            try
             {
-                EventAggregatorRepository.EventAggregator.GetEvent<SetOpenMyControlEnableEvent>().Publish(true);
+                if (HostSystemVar.CustomTaskPane.Visible == false)
+                {
+                    wpfControl.CloseDetector();
+                    EventAggregatorRepository.EventAggregator.GetEvent<SetOpenMyControlEnableEvent>().Publish(true);
+                }
+                else
+                {
+                    wpfControl.StartDetector();
+                    EventAggregatorRepository.EventAggregator.GetEvent<SetOpenMyControlEnableEvent>().Publish(false);
+                }
             }
-            else
-            {
-                EventAggregatorRepository.EventAggregator.GetEvent<SetOpenMyControlEnableEvent>().Publish(false);
-            }
+            catch (Exception ex)
+            { }
         }
         private void SetMyControlVisible(bool isVisible)
         {
@@ -54,6 +84,7 @@ namespace MyExcelAddIn
             try
             {
                 EventAggregatorRepository.EventAggregator.GetEvent<SetMyControlVisibleEvent>().Publish(false);
+                Globals.ThisAddIn.Application.SheetActivate -= Application_SheetActivate;
             }
             catch (Exception ex)
             { }
