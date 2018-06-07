@@ -338,7 +338,7 @@ namespace MyExcelAddIn
                                     {
                                         rangeSelectLists.Add(item);
                                         rangeBackColorSelectLists.Add(item.Interior.Color);
-                                        item.Interior.Color = System.Drawing.ColorTranslator.ToOle(System.Drawing.Color.Red);
+                                        item.Interior.Color = System.Drawing.ColorTranslator.ToOle(System.Drawing.Color.Yellow);
                                         foreach (Match m in mc)
                                         {
                                             try
