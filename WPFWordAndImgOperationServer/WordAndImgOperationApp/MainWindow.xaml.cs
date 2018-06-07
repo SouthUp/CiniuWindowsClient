@@ -176,7 +176,8 @@ namespace WordAndImgOperationApp
                     {
                         Directory.CreateDirectory(pathDir);
                     }
-                    Document document = new Document(_documentName);
+                    Document document = new Document();
+                    document.LoadFromFileInReadMode(_documentName, FileFormat.Auto);
                     int index = 1;
                     foreach (Spire.Doc.Section section in document.Sections)
                     {

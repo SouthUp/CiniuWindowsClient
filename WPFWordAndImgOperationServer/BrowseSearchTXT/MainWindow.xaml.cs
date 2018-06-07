@@ -82,10 +82,10 @@ namespace BrowseSearchTXT
                             if (!path.ToString().Contains("~$"))
                             {
                                 FilePathsList.Add(path.ToString());
-                                if (IsFileOpen(path.ToString()))
-                                {
-                                    UnReadFilePathsList.Add(path.ToString());
-                                }
+                                //if (IsFileOpen(path.ToString()))
+                                //{
+                                //    UnReadFilePathsList.Add(path.ToString());
+                                //}
                             }
                         }
                         else
@@ -149,10 +149,10 @@ namespace BrowseSearchTXT
                     if (!fi.FullName.Contains("~$"))
                     {
                         FilePathsList.Add(fi.FullName);
-                        if (IsFileOpen(fi.FullName))
-                        {
-                            UnReadFilePathsList.Add(fi.FullName);
-                        }
+                        //if (IsFileOpen(fi.FullName))
+                        //{
+                        //    UnReadFilePathsList.Add(fi.FullName);
+                        //}
                     }
                 }
                 else
