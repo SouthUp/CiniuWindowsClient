@@ -1,9 +1,12 @@
 ﻿using CheckWordModel;
+using CheckWordUtil;
 using Microsoft.Office.Interop.Excel;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
@@ -24,6 +27,9 @@ namespace MyExcelAddIn
     public partial class MyControl : UserControl
     {
         MyControlViewModel viewModel = new MyControlViewModel();
+        // 保存修改过的Range和之前的背景色，以便于恢复
+        private List<Range> rangeSelectLists = new List<Range>();
+        private List<dynamic> rangeBackColorSelectLists = new List<dynamic>();
         public MyControl()
         {
             InitializeComponent();
@@ -49,7 +55,6 @@ namespace MyExcelAddIn
         private void UserControl_Loaded(object sender, RoutedEventArgs e)
         {
             StartDetector();
-            InitData();
         }
         
         private void UserControl_Unloaded(object sender, RoutedEventArgs e)
@@ -63,7 +68,7 @@ namespace MyExcelAddIn
         {
             try
             {
-                viewModel.UncheckedWordLists = new System.Collections.ObjectModel.ObservableCollection<UnChekedWordInfo>();
+                viewModel.UncheckedWordLists = new ObservableCollection<UnChekedExcelWordInfo>();
                 viewModel.WarningTotalCount = 0;
                 viewModel.IsBusyVisibility = Visibility.Hidden;
                 Thread tGetUncheckedWord = new Thread(GetUncheckedWordLists);
@@ -92,27 +97,17 @@ namespace MyExcelAddIn
             {
                 var workBook = Globals.ThisAddIn.Application.ActiveWorkbook;
                 var workSheet = (Worksheet)workBook.ActiveSheet;
-                string workBookName = workBook.Name;
-                string workSheetName = workSheet.Name;
                 int MaxRow = GetMaxRow(workSheet);
                 int MaxColumn = GetMaxColumn(workSheet);
+                List<Range> RangeDataList = new List<Range>();
                 for (int i = 1; i <= MaxRow; i++)
                 {
                     for (int j = 1; j <= MaxColumn; j++)
                     {
-                        string str = CellGetStringValue(workSheet, i, j);
-                        if (!string.IsNullOrEmpty(str))
-                        {
-                            Range rangeStyle = (Range)(workSheet.Cells[i, j]);
-                            if (rangeStyle != null)
-                            {
-                                rangeStyle.Font.Color = System.Drawing.ColorTranslator.ToOle(System.Drawing.Color.Red);
-                                rangeStyle.Select();
-                            }
-                            Thread.Sleep(1000);
-                        }
+                        RangeDataList.Add((Range)(workSheet.Cells[i, j]));
                     }
                 }
+                FindTextAndHightLight(RangeDataList);
             }
             catch (Exception ex)
             { }
@@ -148,17 +143,13 @@ namespace MyExcelAddIn
             { }
             return result;
         }
-        public static string CellGetStringValue(Worksheet theSheet, int row, int column)
+        public static string CellGetStringValue(Range rng)
         {
             var result = string.Empty;
             try
             {
-                if (theSheet != null)
-                {
-                    var rng = theSheet.Cells[row, column] as Range;
-                    if (rng != null)
-                        result = (string)rng.Text;
-                }
+                if (rng != null)
+                    result = (string)rng.Text;
             }
             catch (Exception ex)
             { }
@@ -250,7 +241,7 @@ namespace MyExcelAddIn
             Grid grid = sender as Grid;
             if (grid != null)
             {
-                UnChekedWordInfo unChekedWordInfo = grid.Tag as UnChekedWordInfo;
+                UnChekedExcelWordInfo unChekedWordInfo = grid.Tag as UnChekedExcelWordInfo;
                 unChekedWordInfo.IsSelected = !unChekedWordInfo.IsSelected;
                 foreach (var item in viewModel.UncheckedWordLists)
                 {
@@ -266,7 +257,7 @@ namespace MyExcelAddIn
             var btn = sender as System.Windows.Controls.Button;
             if (btn != null)
             {
-                UnChekedWordInfo unChekedWordInfo = btn.Tag as UnChekedWordInfo;
+                UnChekedExcelWordInfo unChekedWordInfo = btn.Tag as UnChekedExcelWordInfo;
                 unChekedWordInfo.IsSelected = !unChekedWordInfo.IsSelected;
                 foreach (var item in viewModel.UncheckedWordLists)
                 {
@@ -298,9 +289,146 @@ namespace MyExcelAddIn
             Grid grid = sender as Grid;
             if (grid != null)
             {
-                //TODO
-
+                UnChekedExcelWordInfo unChekedWordInfo = grid.Tag as UnChekedExcelWordInfo;
+                unChekedWordInfo.UnCheckWordRange.Select();
             }
+        }
+        /// <summary>
+        /// 查找文本并高亮显示
+        /// </summary>
+        private void FindTextAndHightLight(List<Range> RangeDataList)
+        {
+            ObservableCollection<UnChekedExcelWordInfo> listUnCheckWords = new ObservableCollection<UnChekedExcelWordInfo>();
+            // 清除文档中的高亮显示
+            ClearMark();
+            rangeSelectLists = new List<Range>();
+            rangeBackColorSelectLists = new List<dynamic>();
+            //处理违禁词查找
+            try
+            {
+                int DealPagesCount = 1;
+                if (RangeDataList.Count % 10 > 0)
+                {
+                    DealPagesCount = RangeDataList.Count / 10 + 1;
+                }
+                else
+                {
+                    DealPagesCount = RangeDataList.Count / 10;
+                    if (DealPagesCount == 0)
+                    {
+                        DealPagesCount = 1;
+                    }
+                }
+                Parallel.For(0, DealPagesCount, new ParallelOptions { MaxDegreeOfParallelism = 10 }, (i, state) =>
+                {
+                    var list = RangeDataList.Skip(i * 10).Take(10).ToList();
+                    foreach (var item in list)
+                    {
+                        string str = CellGetStringValue(item);
+                        if (!string.IsNullOrEmpty(str))
+                        {
+                            var listUnChekedWord = CheckWordHelper.GetUnChekedWordInfoList(str).ToList();
+                            if (listUnChekedWord != null && listUnChekedWord.Count > 0)
+                            {
+                                foreach (var strFind in listUnChekedWord.ToList())
+                                {
+                                    UnChekedExcelWordInfo SelectUnCheckWord = new UnChekedExcelWordInfo() { Name = strFind.Name, UnChekedWordDetailInfos = strFind.UnChekedWordDetailInfos };
+                                    MatchCollection mc = Regex.Matches(str, strFind.Name, RegexOptions.IgnoreCase);
+                                    if (mc.Count > 0)
+                                    {
+                                        rangeSelectLists.Add(item);
+                                        rangeBackColorSelectLists.Add(item.Interior.Color);
+                                        item.Interior.Color = System.Drawing.ColorTranslator.ToOle(System.Drawing.Color.Red);
+                                        foreach (Match m in mc)
+                                        {
+                                            try
+                                            {
+                                                SelectUnCheckWord.Children.Add(new UnChekedExcelWordInfo() { Name = str, UnCheckWordRange = item });
+                                                SelectUnCheckWord.Initialize();
+                                            }
+                                            catch (Exception ex)
+                                            { }
+                                        }
+                                        var infoExist = listUnCheckWords.FirstOrDefault(x => x.Name == SelectUnCheckWord.Name);
+                                        if (infoExist == null)
+                                        {
+                                            listUnCheckWords.Add(SelectUnCheckWord);
+                                        }
+                                        else
+                                        {
+                                            foreach (var itemInfo in SelectUnCheckWord.Children)
+                                            {
+                                                infoExist.Children.Add(itemInfo);
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                });
+            }
+            catch (Exception ex)
+            { }
+            foreach (var SelectUnCheckWord in listUnCheckWords)
+            {
+                var itemInfo = viewModel.UncheckedWordLists.FirstOrDefault(x => x.Name == SelectUnCheckWord.Name);
+                if (itemInfo == null)
+                {
+                    Dispatcher.Invoke(new System.Action(() =>
+                    {
+                        viewModel.UncheckedWordLists.Add(SelectUnCheckWord);
+                    }));
+                }
+                else
+                {
+                    Dispatcher.Invoke(new System.Action(() =>
+                    {
+                        itemInfo.Children.Clear();
+                        foreach (var item in SelectUnCheckWord.Children)
+                        {
+                            itemInfo.Children.Add(item);
+                        }
+                        itemInfo.WarningCount = itemInfo.Children.Count;
+                    }));
+                }
+            }
+            for (int i = 0; i < viewModel.UncheckedWordLists.Count; i++)
+            {
+                var itemInfo = listUnCheckWords.FirstOrDefault(x => x.Name == viewModel.UncheckedWordLists[i].Name);
+                if (itemInfo == null)
+                {
+                    Dispatcher.Invoke(new System.Action(() =>
+                    {
+                        viewModel.UncheckedWordLists.RemoveAt(i);
+                    }));
+                    i--;
+                }
+            }
+            int countTotal = 0;
+            foreach (var item in viewModel.UncheckedWordLists)
+            {
+                countTotal += item.WarningCount;
+            }
+            Dispatcher.Invoke(new System.Action(() =>
+            {
+                viewModel.WarningTotalCount = countTotal;
+            }));
+        }
+        /// <summary>
+        /// 清除文档中的高亮显示
+        /// </summary>
+        private void ClearMark()
+        {
+            try
+            {
+                for (int i = 0; i < rangeSelectLists.Count; i++)
+                {
+                    rangeSelectLists[i].Interior.Color = rangeBackColorSelectLists[i];
+                }
+            }
+            catch (Exception ex)
+            { }
         }
     }
 }
