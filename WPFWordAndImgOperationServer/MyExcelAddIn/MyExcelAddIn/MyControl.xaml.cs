@@ -1,4 +1,5 @@
-﻿using Microsoft.Office.Interop.Excel;
+﻿using CheckWordModel;
+using Microsoft.Office.Interop.Excel;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -62,7 +63,9 @@ namespace MyExcelAddIn
         {
             try
             {
-                viewModel = new MyControlViewModel();
+                viewModel.UncheckedWordLists = new System.Collections.ObjectModel.ObservableCollection<UnChekedWordInfo>();
+                viewModel.WarningTotalCount = 0;
+                viewModel.IsBusyVisibility = Visibility.Hidden;
                 Thread tGetUncheckedWord = new Thread(GetUncheckedWordLists);
                 tGetUncheckedWord.IsBackground = true;
                 tGetUncheckedWord.Start();
@@ -78,35 +81,50 @@ namespace MyExcelAddIn
         {
             try
             {
-
+                Dispatcher.Invoke(new System.Action(() =>
+                {
+                    viewModel.IsBusyVisibility = Visibility.Visible;
+                }));
             }
             catch (Exception ex)
             { }
-        }
-        private void Button_Click(object sender, RoutedEventArgs e)
-        {
-            var workBook = Globals.ThisAddIn.Application.ActiveWorkbook;
-            var workSheet = (Worksheet)workBook.ActiveSheet;
-            string workBookName = workBook.Name;
-            string workSheetName = workSheet.Name;
-            int MaxRow = GetMaxRow(workSheet);
-            int MaxColumn = GetMaxColumn(workSheet);
-            for (int i = 1; i <= MaxRow; i++)
+            try
             {
-                for (int j = 1; j <= MaxColumn; j++)
+                var workBook = Globals.ThisAddIn.Application.ActiveWorkbook;
+                var workSheet = (Worksheet)workBook.ActiveSheet;
+                string workBookName = workBook.Name;
+                string workSheetName = workSheet.Name;
+                int MaxRow = GetMaxRow(workSheet);
+                int MaxColumn = GetMaxColumn(workSheet);
+                for (int i = 1; i <= MaxRow; i++)
                 {
-                    string str = CellGetStringValue(workSheet, i, j);
-                    if (!string.IsNullOrEmpty(str) &&str.Contains(InputBox.Text))
+                    for (int j = 1; j <= MaxColumn; j++)
                     {
-                        Range rangeStyle = (Range)(workSheet.Cells[i, j]);
-                        if (rangeStyle != null)
+                        string str = CellGetStringValue(workSheet, i, j);
+                        if (!string.IsNullOrEmpty(str))
                         {
-                            rangeStyle.Font.Color = System.Drawing.ColorTranslator.ToOle(System.Drawing.Color.Red);
-                            rangeStyle.Select();
+                            Range rangeStyle = (Range)(workSheet.Cells[i, j]);
+                            if (rangeStyle != null)
+                            {
+                                rangeStyle.Font.Color = System.Drawing.ColorTranslator.ToOle(System.Drawing.Color.Red);
+                                rangeStyle.Select();
+                            }
+                            Thread.Sleep(1000);
                         }
                     }
                 }
             }
+            catch (Exception ex)
+            { }
+            try
+            {
+                Dispatcher.Invoke(new System.Action(() =>
+                {
+                    viewModel.IsBusyVisibility = Visibility.Hidden;
+                }));
+            }
+            catch (Exception ex)
+            { }
         }
         private static int GetMaxRow(Worksheet workSheet)
         {
@@ -226,6 +244,63 @@ namespace MyExcelAddIn
             }
             catch (Exception ex)
             { }
+        }
+        private void UnCheckWordGrid_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            Grid grid = sender as Grid;
+            if (grid != null)
+            {
+                UnChekedWordInfo unChekedWordInfo = grid.Tag as UnChekedWordInfo;
+                unChekedWordInfo.IsSelected = !unChekedWordInfo.IsSelected;
+                foreach (var item in viewModel.UncheckedWordLists)
+                {
+                    if (item != unChekedWordInfo)
+                    {
+                        item.IsSelected = false;
+                    }
+                }
+            }
+        }
+        private void InLineDetailNameBtn_Click(object sender, RoutedEventArgs e)
+        {
+            var btn = sender as System.Windows.Controls.Button;
+            if (btn != null)
+            {
+                UnChekedWordInfo unChekedWordInfo = btn.Tag as UnChekedWordInfo;
+                unChekedWordInfo.IsSelected = !unChekedWordInfo.IsSelected;
+                foreach (var item in viewModel.UncheckedWordLists)
+                {
+                    if (item != unChekedWordInfo)
+                    {
+                        item.IsSelected = false;
+                    }
+                }
+            }
+        }
+        private void listBoxChildren_PreviewMouseWheel(object sender, MouseWheelEventArgs e)
+        {
+            try
+            {
+                var listBox = sender as System.Windows.Controls.ListBox;
+                if (listBox != null)
+                {
+                    var eventArg = new MouseWheelEventArgs(e.MouseDevice, e.Timestamp, e.Delta);
+                    eventArg.RoutedEvent = UIElement.MouseWheelEvent;
+                    eventArg.Source = sender;
+                    listBox.RaiseEvent(eventArg);
+                }
+            }
+            catch (Exception ex)
+            { }
+        }
+        private void UnCheckWordChildrenGrid_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            Grid grid = sender as Grid;
+            if (grid != null)
+            {
+                //TODO
+
+            }
         }
     }
 }
