@@ -89,6 +89,53 @@ namespace MyExcelAddIn
             var workSheet = (Worksheet)workBook.ActiveSheet;
             string workBookName = workBook.Name;
             string workSheetName = workSheet.Name;
+            int MaxRow = GetMaxRow(workSheet);
+            int MaxColumn = GetMaxColumn(workSheet);
+            for (int i = 1; i <= MaxRow; i++)
+            {
+                for (int j = 1; j <= MaxColumn; j++)
+                {
+                    string str = CellGetStringValue(workSheet, i, j);
+                }
+            }
+        }
+        private static int GetMaxRow(Worksheet workSheet)
+        {
+            int result = 1;
+            try
+            {
+                result = ((Range)(workSheet.Cells[workSheet.Rows.Count, 1])).End[XlDirection.xlUp].Row;
+            }
+            catch (Exception ex)
+            { }
+            return result;
+        }
+        private static int GetMaxColumn(Worksheet workSheet)
+        {
+            int result = 1;
+            try
+            {
+                result = ((Range)(workSheet.Cells[1, workSheet.Columns.Count])).End[XlDirection.xlToLeft].Column;
+            }
+            catch (Exception ex)
+            { }
+            return result;
+        }
+        public static string CellGetStringValue(Worksheet theSheet, int row, int column)
+        {
+            var result = string.Empty;
+            try
+            {
+                if (theSheet != null)
+                {
+                    var rng = theSheet.Cells[row, column] as Range;
+                    if (rng != null)
+                        result = (string)rng.Text;
+                }
+            }
+            catch (Exception ex)
+            { }
+            return result;
         }
         public static Thread tDetector;
         private static object lockObject = new Object();
