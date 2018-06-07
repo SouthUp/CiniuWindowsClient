@@ -84,17 +84,11 @@ namespace MyExcelAddIn
         /// <param name="isInitData">是否初始化数据</param>
         public void GetUncheckedWordLists()
         {
+            viewModel.IsBusyVisibility = Visibility.Visible;
             try
             {
-                Dispatcher.Invoke(new System.Action(() =>
-                {
-                    viewModel.IsBusyVisibility = Visibility.Visible;
-                }));
-            }
-            catch (Exception ex)
-            { }
-            try
-            {
+                // 清除文档中的高亮显示
+                ClearMark();
                 var workBook = Globals.ThisAddIn.Application.ActiveWorkbook;
                 var workSheet = (Worksheet)workBook.ActiveSheet;
                 int MaxRow = GetMaxRow(workSheet);
@@ -111,15 +105,7 @@ namespace MyExcelAddIn
             }
             catch (Exception ex)
             { }
-            try
-            {
-                Dispatcher.Invoke(new System.Action(() =>
-                {
-                    viewModel.IsBusyVisibility = Visibility.Hidden;
-                }));
-            }
-            catch (Exception ex)
-            { }
+            viewModel.IsBusyVisibility = Visibility.Hidden;
         }
         private static int GetMaxRow(Worksheet workSheet)
         {
@@ -299,8 +285,6 @@ namespace MyExcelAddIn
         private void FindTextAndHightLight(List<Range> RangeDataList)
         {
             ObservableCollection<UnChekedExcelWordInfo> listUnCheckWords = new ObservableCollection<UnChekedExcelWordInfo>();
-            // 清除文档中的高亮显示
-            ClearMark();
             rangeSelectLists = new List<Range>();
             rangeBackColorSelectLists = new List<dynamic>();
             //处理违禁词查找
