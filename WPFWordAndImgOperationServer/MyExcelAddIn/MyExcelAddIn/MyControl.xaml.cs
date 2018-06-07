@@ -96,6 +96,15 @@ namespace MyExcelAddIn
                 for (int j = 1; j <= MaxColumn; j++)
                 {
                     string str = CellGetStringValue(workSheet, i, j);
+                    if (!string.IsNullOrEmpty(str) &&str.Contains(InputBox.Text))
+                    {
+                        Range rangeStyle = (Range)(workSheet.Cells[i, j]);
+                        if (rangeStyle != null)
+                        {
+                            rangeStyle.Font.Color = System.Drawing.ColorTranslator.ToOle(System.Drawing.Color.Red);
+                            rangeStyle.Select();
+                        }
+                    }
                 }
             }
         }

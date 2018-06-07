@@ -10,7 +10,7 @@
     <Grid>
         <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" VerticalAlignment="Top">
             <TextBox x:Name="InputBox" Width="100" Height="25" VerticalContentAlignment="Center"></TextBox>
-            <Button Width="60" Height="25" Click="Button_Click">查找</Button>
+            <Button Width="60" Height="25" Click="Button_Click">定位</Button>
         </StackPanel>
     </Grid>
 </UserControl>
