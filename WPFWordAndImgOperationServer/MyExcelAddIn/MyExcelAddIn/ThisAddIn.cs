@@ -100,6 +100,7 @@ namespace MyExcelAddIn
             {
                 EventAggregatorRepository.EventAggregator.GetEvent<SetMyControlVisibleEvent>().Publish(false);
                 Globals.ThisAddIn.Application.SheetActivate -= Application_SheetActivate;
+                Globals.ThisAddIn.Application.WorkbookActivate -= Application_WorkbookActivate;
             }
             catch (Exception ex)
             { }
