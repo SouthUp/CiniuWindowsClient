@@ -29,12 +29,27 @@ namespace MyExcelAddIn
                 taskPane.DockPosition = MsoCTPDockPosition.msoCTPDockPositionRight;
                 taskPane.VisibleChanged += TaskPane_VisibleChanged;
                 HostSystemVar.CustomTaskPane = taskPane;
-                Globals.ThisAddIn.Application.SheetActivate += Application_SheetActivate; ;
+                Globals.ThisAddIn.Application.SheetActivate += Application_SheetActivate;
+                Globals.ThisAddIn.Application.WorkbookActivate += Application_WorkbookActivate;
                 EventAggregatorRepository.EventAggregator.GetEvent<SetMyControlVisibleEvent>().Subscribe(SetMyControlVisible);
             }
             catch (Exception ex)
             { }
         }
+
+        private void Application_WorkbookActivate(Excel.Workbook Wb)
+        {
+            try
+            {
+                if (wpfControl != null && HostSystemVar.CustomTaskPane.Visible)
+                {
+                    wpfControl.InitData();
+                }
+            }
+            catch (Exception ex)
+            { }
+        }
+
         /// <summary>
         /// Sheet表单切换事件
         /// </summary>
