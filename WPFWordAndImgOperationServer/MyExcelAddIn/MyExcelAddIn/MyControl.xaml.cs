@@ -114,7 +114,8 @@ namespace MyExcelAddIn
             int result = 1;
             try
             {
-                result = ((Range)(workSheet.Cells[workSheet.Rows.Count, 1])).End[XlDirection.xlUp].Row;
+                //result = ((Range)(workSheet.Cells[workSheet.Rows.Count, 1])).End[XlDirection.xlUp].Row;
+                result = workSheet.UsedRange.Rows.Count;
             }
             catch (Exception ex)
             { }
@@ -125,7 +126,8 @@ namespace MyExcelAddIn
             int result = 1;
             try
             {
-                result = ((Range)(workSheet.Cells[1, workSheet.Columns.Count])).End[XlDirection.xlToLeft].Column;
+                //result = ((Range)(workSheet.Cells[1, workSheet.Columns.Count])).End[XlDirection.xlToLeft].Column;
+                result = workSheet.UsedRange.Columns.Count;
             }
             catch (Exception ex)
             { }
