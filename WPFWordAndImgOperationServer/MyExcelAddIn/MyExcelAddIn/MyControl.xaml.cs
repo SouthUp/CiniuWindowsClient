@@ -30,6 +30,8 @@ namespace MyExcelAddIn
         // 保存修改过的Range和之前的背景色，以便于恢复
         private List<Range> rangeSelectLists = new List<Range>();
         private List<dynamic> rangeBackColorSelectLists = new List<dynamic>();
+        //保存当前要修改的Range的行和列
+        private List<Range> rangeCurrentDealingLists = new List<Range>();
         public MyControl()
         {
             InitializeComponent();
@@ -68,6 +70,8 @@ namespace MyExcelAddIn
         {
             try
             {
+                // 清除文档中的高亮显示
+                ClearMark();
                 viewModel.UncheckedWordLists = new ObservableCollection<UnChekedExcelWordInfo>();
                 viewModel.WarningTotalCount = 0;
                 viewModel.IsBusyVisibility = Visibility.Hidden;
@@ -87,8 +91,6 @@ namespace MyExcelAddIn
             viewModel.IsBusyVisibility = Visibility.Visible;
             try
             {
-                // 清除文档中的高亮显示
-                ClearMark();
                 var workBook = Globals.ThisAddIn.Application.ActiveWorkbook;
                 var workSheet = (Worksheet)workBook.ActiveSheet;
                 int MaxRow = GetMaxRow(workSheet);
@@ -285,8 +287,7 @@ namespace MyExcelAddIn
         private void FindTextAndHightLight(List<Range> RangeDataList)
         {
             ObservableCollection<UnChekedExcelWordInfo> listUnCheckWords = new ObservableCollection<UnChekedExcelWordInfo>();
-            rangeSelectLists = new List<Range>();
-            rangeBackColorSelectLists = new List<dynamic>();
+            rangeCurrentDealingLists = new List<Range>();
             //处理违禁词查找
             try
             {
@@ -320,9 +321,10 @@ namespace MyExcelAddIn
                                     MatchCollection mc = Regex.Matches(str, strFind.Name, RegexOptions.IgnoreCase);
                                     if (mc.Count > 0)
                                     {
-                                        rangeSelectLists.Add(item);
-                                        rangeBackColorSelectLists.Add(item.Interior.Color);
-                                        item.Interior.Color = System.Drawing.ColorTranslator.ToOle(System.Drawing.Color.Yellow);
+                                        lock (lockObject)
+                                        {
+                                            rangeCurrentDealingLists.Add(item);
+                                        }
                                         foreach (Match m in mc)
                                         {
                                             try
@@ -357,16 +359,13 @@ namespace MyExcelAddIn
             foreach (var SelectUnCheckWord in listUnCheckWords)
             {
                 var itemInfo = viewModel.UncheckedWordLists.FirstOrDefault(x => x.Name == SelectUnCheckWord.Name);
-                if (itemInfo == null)
+                Dispatcher.Invoke(new System.Action(() =>
                 {
-                    Dispatcher.Invoke(new System.Action(() =>
+                    if (itemInfo == null)
                     {
                         viewModel.UncheckedWordLists.Add(SelectUnCheckWord);
-                    }));
-                }
-                else
-                {
-                    Dispatcher.Invoke(new System.Action(() =>
+                    }
+                    else
                     {
                         itemInfo.Children.Clear();
                         foreach (var item in SelectUnCheckWord.Children)
@@ -374,8 +373,8 @@ namespace MyExcelAddIn
                             itemInfo.Children.Add(item);
                         }
                         itemInfo.WarningCount = itemInfo.Children.Count;
-                    }));
-                }
+                    }
+                }));
             }
             for (int i = 0; i < viewModel.UncheckedWordLists.Count; i++)
             {
@@ -389,14 +388,38 @@ namespace MyExcelAddIn
                     i--;
                 }
             }
-            int countTotal = 0;
-            foreach (var item in viewModel.UncheckedWordLists)
+            //渲染高亮
+            foreach (var item in rangeCurrentDealingLists)
             {
-                countTotal += item.WarningCount;
+                var itemInfo = rangeSelectLists.FirstOrDefault(x => x.Row == item.Row && x.Column == item.Column);
+                if (itemInfo == null)
+                {
+                    rangeSelectLists.Add(item);
+                    rangeBackColorSelectLists.Add(item.Interior.Color);
+                    item.Interior.Color = System.Drawing.ColorTranslator.ToOle(System.Drawing.Color.Yellow);
+                }
+            }
+            for (int i = 0; i < rangeSelectLists.Count; i++)
+            {
+                var itemInfo = rangeCurrentDealingLists.FirstOrDefault(x => x.Row == rangeSelectLists[i].Row && x.Column == rangeSelectLists[i].Column);
+                if (itemInfo == null)
+                {
+                    Dispatcher.Invoke(new System.Action(() =>
+                    {
+                        rangeSelectLists[i].Interior.Color = rangeBackColorSelectLists[i];
+                        rangeSelectLists.RemoveAt(i);
+                        rangeBackColorSelectLists.RemoveAt(i);
+                    }));
+                    i--;
+                }
             }
             Dispatcher.Invoke(new System.Action(() =>
             {
-                viewModel.WarningTotalCount = countTotal;
+                viewModel.WarningTotalCount = 0;
+                foreach (var item in viewModel.UncheckedWordLists)
+                {
+                    viewModel.WarningTotalCount += item.WarningCount;
+                }
             }));
         }
         /// <summary>
@@ -410,6 +433,8 @@ namespace MyExcelAddIn
                 {
                     rangeSelectLists[i].Interior.Color = rangeBackColorSelectLists[i];
                 }
+                rangeSelectLists = new List<Range>();
+                rangeBackColorSelectLists = new List<dynamic>();
             }
             catch (Exception ex)
             { }
