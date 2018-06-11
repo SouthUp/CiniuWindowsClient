@@ -473,6 +473,10 @@ namespace MyExcelAddIn
                             DeleteFolder(savePath);
                             image.Save(savePath + pic.Name + ".jpg");
                         }
+                        Dispatcher.Invoke(new System.Action(() =>
+                        {
+                            System.Windows.Forms.Clipboard.Clear();
+                        }));
                     }
                 }
             }
