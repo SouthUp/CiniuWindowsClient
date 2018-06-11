@@ -4,6 +4,7 @@ using Microsoft.Office.Interop.Excel;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
@@ -358,6 +359,7 @@ namespace MyExcelAddIn
             }
             catch (Exception ex)
             { }
+            ////////GetPicsFromExcel();
             foreach (var SelectUnCheckWord in listUnCheckWords)
             {
                 var itemInfo = viewModel.UncheckedWordLists.FirstOrDefault(x => x.Name == SelectUnCheckWord.Name);
@@ -440,6 +442,60 @@ namespace MyExcelAddIn
             }
             catch (Exception ex)
             { }
+        }
+        /// <summary>
+        /// 提取图片
+        /// </summary>
+        private void GetPicsFromExcel()
+        {
+            try
+            {
+                var workBook = Globals.ThisAddIn.Application.ActiveWorkbook;
+                var workSheet = (Worksheet)workBook.ActiveSheet;
+                for (int i = 1; i <= workSheet.Shapes.Count; i++)
+                {
+                    var pic = workSheet.Shapes.Item(i);
+                    if (pic != null && pic.Type == Microsoft.Office.Core.MsoShapeType.msoPicture)
+                    {
+                        pic.Copy();
+                        System.Drawing.Image image = null;
+                        Dispatcher.Invoke(new System.Action(() =>
+                        {
+                            image = System.Windows.Forms.Clipboard.GetImage();
+                        }));
+                        if (image != null)
+                        {
+                            string savePath = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + "\\WordAndImgOCR\\MyExcelAddIn\\";
+                            if (!Directory.Exists(savePath))
+                            {
+                                Directory.CreateDirectory(savePath);
+                            }
+                            DeleteFolder(savePath);
+                            image.Save(savePath + pic.Name + ".jpg");
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            { }
+        }
+        public static void DeleteFolder(string dir)
+        {
+            foreach (string d in Directory.GetFileSystemEntries(dir))
+            {
+                if (File.Exists(d))
+                {
+                    try
+                    {
+                        FileInfo fi = new FileInfo(d);
+                        if (fi.Attributes.ToString().IndexOf("ReadOnly") != -1)
+                            fi.Attributes = FileAttributes.Normal;
+                        File.Delete(d);//直接删除其中的文件
+                    }
+                    catch (Exception)
+                    { }
+                }
+            }
         }
     }
 }
