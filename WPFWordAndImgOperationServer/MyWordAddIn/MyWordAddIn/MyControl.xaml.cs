@@ -247,6 +247,7 @@ namespace MyWordAddIn
             }
             catch (Exception ex)
             { }
+            ////////GetImagesFromWord();
             foreach (var SelectUnCheckWord in listUnCheckWords)
             {
                 var itemInfo = viewModel.UncheckedWordLists.FirstOrDefault(x => x.Name == SelectUnCheckWord.Name);
@@ -430,6 +431,70 @@ namespace MyWordAddIn
                     {
                         item.IsSelected = false;
                     }
+                }
+            }
+        }
+        /// <summary>
+        /// 提取图片
+        /// </summary>
+        private void GetImagesFromWord()
+        {
+            try
+            {
+                string savePath = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + "\\WordAndImgOCR\\MyWordAddIn\\";
+                if (!Directory.Exists(savePath))
+                {
+                    Directory.CreateDirectory(savePath);
+                }
+                DeleteFolder(savePath);
+                int index = 1;
+                foreach (Microsoft.Office.Interop.Word.Paragraph paragraph in Application.ActiveDocument.Paragraphs)
+                {
+                    foreach (InlineShape ils in paragraph.Range.InlineShapes)
+                    {
+                        if (ils != null)
+                        {
+                            if (ils.Type == WdInlineShapeType.wdInlineShapePicture)
+                            {
+                                ils.Select();
+                                Application.Selection.Copy();
+                                System.Drawing.Image image = null;
+                                Dispatcher.Invoke(new Action(() =>
+                                {
+                                    image = System.Windows.Forms.Clipboard.GetImage();
+                                }));
+                                if (image != null)
+                                {
+                                    image.Save(savePath + "照片-" + index + ".jpg");
+                                    index++;
+                                }
+                                Dispatcher.Invoke(new Action(() =>
+                                {
+                                    System.Windows.Forms.Clipboard.Clear();
+                                }));
+                            }
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            { }
+        }
+        public static void DeleteFolder(string dir)
+        {
+            foreach (string d in Directory.GetFileSystemEntries(dir))
+            {
+                if (File.Exists(d))
+                {
+                    try
+                    {
+                        FileInfo fi = new FileInfo(d);
+                        if (fi.Attributes.ToString().IndexOf("ReadOnly") != -1)
+                            fi.Attributes = FileAttributes.Normal;
+                        File.Delete(d);//直接删除其中的文件
+                    }
+                    catch (Exception)
+                    { }
                 }
             }
         }
