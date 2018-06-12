@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.Office.Interop.Word;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
@@ -9,6 +10,8 @@ namespace CheckWordModel
 {
     public class UnChekedInLineDetailWordInfo : ViewModelBase
     {
+        public Range Range { get; set; }
+        public Range UnCheckWordRange { get; set; }
         private string typeTextFrom = "Text";
         public string TypeTextFrom
         {

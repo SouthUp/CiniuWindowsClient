@@ -312,7 +312,7 @@
                                         </Button>
                                         <Border Width="16" Height="16" Margin="8,0,0,0" 
                                                 Background="#f44336" CornerRadius="8">
-                                            <TextBlock Text="{Binding WarningCount}" FontSize="12" Opacity="0.87"
+                                            <TextBlock Text="{Binding ErrorTotalCount}" FontSize="12" Opacity="0.87"
                                                        Style="{StaticResource CommonLeftTextBlock}"
                                                        Foreground="White" HorizontalAlignment="Center">
                                             </TextBlock>
@@ -323,7 +323,7 @@
                                                   HorizontalAlignment="Right" VerticalAlignment="Center"
                                                   Margin="0,0,10,0"/>
                                 </Grid>
-                                <ListBox x:Name="listBoxChildren" Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" BorderThickness="0" Background="Transparent" ItemsSource="{Binding Children}"
+                                <ListBox x:Name="listBoxChildren" Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" BorderThickness="0" Background="Transparent" ItemsSource="{Binding UnChekedWordInLineDetailInfos}"
                                      ScrollViewer.HorizontalScrollBarVisibility="Disabled" ScrollViewer.VerticalScrollBarVisibility="Auto" SelectedIndex="-1"
                                      ItemContainerStyle="{StaticResource ListBoxItemContainerStyle}" VerticalAlignment="Top" HorizontalAlignment="Stretch"
                                      ScrollViewer.CanContentScroll="False" Visibility="Collapsed"
@@ -343,7 +343,7 @@
                                                               VerticalAlignment="Center"
                                                               Visibility="{Binding TypeTextFrom,Converter={StaticResource InLineImgToVisibilityConvert}}">
                                                         </Grid>
-                                                        <TextBlock Text="{Binding Name}" FontSize="14" Opacity="0.54"
+                                                        <TextBlock Text="{Binding InLineText}" FontSize="14" Opacity="0.54"
                                                                    Style="{StaticResource CommonLeftTextBlock}" Margin="5,12,0,12"
                                                                    TextTrimming="CharacterEllipsis" 
                                                                    VerticalAlignment="Center"

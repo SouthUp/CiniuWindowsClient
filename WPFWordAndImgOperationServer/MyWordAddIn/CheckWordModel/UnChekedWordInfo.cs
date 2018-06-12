@@ -30,16 +30,6 @@ namespace CheckWordModel
                 RaisePropertyChanged("Name");
             }
         }
-        private ObservableCollection<UnChekedWordInfo> children = new ObservableCollection<UnChekedWordInfo>();
-        public ObservableCollection<UnChekedWordInfo> Children
-        {
-            get { return children; }
-            set
-            {
-                children = value;
-                RaisePropertyChanged("Children");
-            }
-        }
         public Range Range { get; set; }
         public Range UnCheckWordRange { get; set; }
         private bool _isSelected = false;
@@ -50,20 +40,6 @@ namespace CheckWordModel
             {
                 _isSelected = value;
                 RaisePropertyChanged("IsSelected");
-            }
-        }
-        private int warningCount = 0;
-        public int WarningCount
-        {
-            get
-            {
-                warningCount = Children.Count;
-                return warningCount;
-            }
-            set
-            {
-                warningCount = value;
-                RaisePropertyChanged("WarningCount");
             }
         }
         private string typeTextFrom = "Text";
@@ -104,13 +80,6 @@ namespace CheckWordModel
             {
                 errorCount = value;
                 RaisePropertyChanged("ErrorTotalCount");
-            }
-        }
-        public void Initialize()
-        {
-            foreach (UnChekedWordInfo child in this.Children)
-            {
-                child.Initialize();
             }
         }
     }

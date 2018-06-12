@@ -223,8 +223,8 @@ namespace MyWordAddIn
                                                 rangeSelectLists.Add(keywordRange);
                                                 rangeBackColorSelectLists.Add(keywordRange.HighlightColorIndex);
                                                 keywordRange.HighlightColorIndex = WdColorIndex.wdYellow;
-                                                SelectUnCheckWord.Children.Add(new UnChekedWordInfo() { Name = paragraph.Range.Text, Range = paragraph.Range, UnCheckWordRange = keywordRange });
-                                                SelectUnCheckWord.Initialize();
+                                                SelectUnCheckWord.UnChekedWordInLineDetailInfos.Add(new UnChekedInLineDetailWordInfo() { InLineText = paragraph.Range.Text, Range = paragraph.Range, UnCheckWordRange = keywordRange });
+                                                SelectUnCheckWord.ErrorTotalCount++;
                                             }
                                             catch (Exception ex)
                                             { }
@@ -236,9 +236,10 @@ namespace MyWordAddIn
                                         }
                                         else
                                         {
-                                            foreach (var item in SelectUnCheckWord.Children)
+                                            foreach (var item in SelectUnCheckWord.UnChekedWordInLineDetailInfos)
                                             {
-                                                infoExist.Children.Add(item);
+                                                infoExist.UnChekedWordInLineDetailInfos.Add(item);
+                                                infoExist.ErrorTotalCount++;
                                             }
                                         }
                                     }
@@ -274,6 +275,25 @@ namespace MyWordAddIn
                     CurrentImgsDictionary.Remove(key);
                 }
             }
+            foreach (var Value in CurrentImgsDictionary.Values)
+            {
+                foreach (var item in Value)
+                {
+                    var infoExist = listUnCheckWords.FirstOrDefault(x => x.Name == item.Name);
+                    if (infoExist == null)
+                    {
+                        listUnCheckWords.Add(item);
+                    }
+                    else
+                    {
+                        foreach (var detail in item.UnChekedWordInLineDetailInfos)
+                        {
+                            infoExist.UnChekedWordInLineDetailInfos.Add(detail);
+                            infoExist.ErrorTotalCount++;
+                        }
+                    }
+                }
+            }
             foreach (var SelectUnCheckWord in listUnCheckWords)
             {
                 var itemInfo = viewModel.UncheckedWordLists.FirstOrDefault(x => x.Name == SelectUnCheckWord.Name);
@@ -288,12 +308,8 @@ namespace MyWordAddIn
                 {
                     Dispatcher.Invoke(new Action(() =>
                     {
-                        itemInfo.Children.Clear();
-                        foreach (var item in SelectUnCheckWord.Children)
-                        {
-                            itemInfo.Children.Add(item);
-                        }
-                        itemInfo.WarningCount = itemInfo.Children.Count;
+                        itemInfo.UnChekedWordInLineDetailInfos = SelectUnCheckWord.UnChekedWordInLineDetailInfos;
+                        itemInfo.ErrorTotalCount = SelectUnCheckWord.ErrorTotalCount;
                     }));
                 }
             }
@@ -312,7 +328,7 @@ namespace MyWordAddIn
             int countTotal = 0;
             foreach (var item in viewModel.UncheckedWordLists)
             {
-                countTotal += item.WarningCount;
+                countTotal += item.ErrorTotalCount;
             }
             Dispatcher.Invoke(new Action(() =>
             {
@@ -423,8 +439,15 @@ namespace MyWordAddIn
             Grid grid = sender as Grid;
             if (grid != null)
             {
-                UnChekedWordInfo unChekedWordInfo = grid.Tag as UnChekedWordInfo;
-                unChekedWordInfo.UnCheckWordRange.Select();
+                UnChekedInLineDetailWordInfo unChekedWordInfo = grid.Tag as UnChekedInLineDetailWordInfo;
+                if (unChekedWordInfo.TypeTextFrom == "Text")
+                {
+                    unChekedWordInfo.UnCheckWordRange.Select();
+                }
+                else
+                {
+
+                }
             }
         }
 
