@@ -12,8 +12,8 @@ namespace MyExcelAddIn
 {
     public class MyControlViewModel : NotificationObject
     {
-        private ObservableCollection<UnChekedExcelWordInfo> uncheckedWordLists = new ObservableCollection<UnChekedExcelWordInfo>();
-        public ObservableCollection<UnChekedExcelWordInfo> UncheckedWordLists
+        private ObservableCollection<UnChekedWordInfo> uncheckedWordLists = new ObservableCollection<UnChekedWordInfo>();
+        public ObservableCollection<UnChekedWordInfo> UncheckedWordLists
         {
             get { return uncheckedWordLists; }
             set

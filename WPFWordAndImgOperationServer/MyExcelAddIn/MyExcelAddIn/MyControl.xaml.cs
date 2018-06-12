@@ -76,7 +76,7 @@ namespace MyExcelAddIn
             {
                 // 清除文档中的高亮显示
                 ClearMark();
-                viewModel.UncheckedWordLists = new ObservableCollection<UnChekedExcelWordInfo>();
+                viewModel.UncheckedWordLists = new ObservableCollection<UnChekedWordInfo>();
                 viewModel.WarningTotalCount = 0;
                 viewModel.IsBusyVisibility = Visibility.Hidden;
                 Thread tGetUncheckedWord = new Thread(GetUncheckedWordLists);
@@ -235,7 +235,7 @@ namespace MyExcelAddIn
             Grid grid = sender as Grid;
             if (grid != null)
             {
-                UnChekedExcelWordInfo unChekedWordInfo = grid.Tag as UnChekedExcelWordInfo;
+                UnChekedWordInfo unChekedWordInfo = grid.Tag as UnChekedWordInfo;
                 unChekedWordInfo.IsSelected = !unChekedWordInfo.IsSelected;
                 foreach (var item in viewModel.UncheckedWordLists)
                 {
@@ -251,7 +251,7 @@ namespace MyExcelAddIn
             var btn = sender as System.Windows.Controls.Button;
             if (btn != null)
             {
-                UnChekedExcelWordInfo unChekedWordInfo = btn.Tag as UnChekedExcelWordInfo;
+                UnChekedWordInfo unChekedWordInfo = btn.Tag as UnChekedWordInfo;
                 unChekedWordInfo.IsSelected = !unChekedWordInfo.IsSelected;
                 foreach (var item in viewModel.UncheckedWordLists)
                 {
@@ -283,8 +283,15 @@ namespace MyExcelAddIn
             Grid grid = sender as Grid;
             if (grid != null)
             {
-                UnChekedExcelWordInfo unChekedWordInfo = grid.Tag as UnChekedExcelWordInfo;
-                unChekedWordInfo.UnCheckWordRange.Select();
+                UnChekedInLineDetailWordInfo unChekedWordInfo = grid.Tag as UnChekedInLineDetailWordInfo;
+                if (unChekedWordInfo.TypeTextFrom == "Text")
+                {
+                    unChekedWordInfo.UnCheckWordExcelRange.Select();
+                }
+                else
+                {
+
+                }
             }
         }
         /// <summary>
@@ -292,7 +299,7 @@ namespace MyExcelAddIn
         /// </summary>
         private void FindTextAndHightLight(List<Range> RangeDataList)
         {
-            ObservableCollection<UnChekedExcelWordInfo> listUnCheckWords = new ObservableCollection<UnChekedExcelWordInfo>();
+            ObservableCollection<UnChekedWordInfo> listUnCheckWords = new ObservableCollection<UnChekedWordInfo>();
             rangeCurrentDealingLists = new List<Range>();
             //处理违禁词查找
             try
@@ -323,7 +330,7 @@ namespace MyExcelAddIn
                             {
                                 foreach (var strFind in listUnChekedWord.ToList())
                                 {
-                                    UnChekedExcelWordInfo SelectUnCheckWord = new UnChekedExcelWordInfo() { Name = strFind.Name, UnChekedWordDetailInfos = strFind.UnChekedWordDetailInfos };
+                                    UnChekedWordInfo SelectUnCheckWord = new UnChekedWordInfo() { Name = strFind.Name, UnChekedWordDetailInfos = strFind.UnChekedWordDetailInfos };
                                     MatchCollection mc = Regex.Matches(str, strFind.Name, RegexOptions.IgnoreCase);
                                     if (mc.Count > 0)
                                     {
@@ -335,8 +342,8 @@ namespace MyExcelAddIn
                                         {
                                             try
                                             {
-                                                SelectUnCheckWord.Children.Add(new UnChekedExcelWordInfo() { Name = str, UnCheckWordRange = item });
-                                                SelectUnCheckWord.Initialize();
+                                                SelectUnCheckWord.UnChekedWordInLineDetailInfos.Add(new UnChekedInLineDetailWordInfo() { InLineText = str, UnCheckWordExcelRange = item });
+                                                SelectUnCheckWord.ErrorTotalCount++;
                                             }
                                             catch (Exception ex)
                                             { }
@@ -348,9 +355,10 @@ namespace MyExcelAddIn
                                         }
                                         else
                                         {
-                                            foreach (var itemInfo in SelectUnCheckWord.Children)
+                                            foreach (var itemInfo in SelectUnCheckWord.UnChekedWordInLineDetailInfos)
                                             {
-                                                infoExist.Children.Add(itemInfo);
+                                                infoExist.UnChekedWordInLineDetailInfos.Add(itemInfo);
+                                                infoExist.ErrorTotalCount++;
                                             }
                                         }
                                     }
@@ -386,6 +394,25 @@ namespace MyExcelAddIn
                     CurrentImgsDictionary.Remove(key);
                 }
             }
+            foreach (var Value in CurrentImgsDictionary.Values)
+            {
+                foreach (var item in Value)
+                {
+                    var infoExist = listUnCheckWords.FirstOrDefault(x => x.Name == item.Name);
+                    if (infoExist == null)
+                    {
+                        listUnCheckWords.Add(item);
+                    }
+                    else
+                    {
+                        foreach (var detail in item.UnChekedWordInLineDetailInfos)
+                        {
+                            infoExist.UnChekedWordInLineDetailInfos.Add(detail);
+                            infoExist.ErrorTotalCount++;
+                        }
+                    }
+                }
+            }
             foreach (var SelectUnCheckWord in listUnCheckWords)
             {
                 var itemInfo = viewModel.UncheckedWordLists.FirstOrDefault(x => x.Name == SelectUnCheckWord.Name);
@@ -397,12 +424,8 @@ namespace MyExcelAddIn
                     }
                     else
                     {
-                        itemInfo.Children.Clear();
-                        foreach (var item in SelectUnCheckWord.Children)
-                        {
-                            itemInfo.Children.Add(item);
-                        }
-                        itemInfo.WarningCount = itemInfo.Children.Count;
+                        itemInfo.UnChekedWordInLineDetailInfos = SelectUnCheckWord.UnChekedWordInLineDetailInfos;
+                        itemInfo.ErrorTotalCount = SelectUnCheckWord.ErrorTotalCount;
                     }
                 }));
             }
@@ -448,7 +471,7 @@ namespace MyExcelAddIn
                 viewModel.WarningTotalCount = 0;
                 foreach (var item in viewModel.UncheckedWordLists)
                 {
-                    viewModel.WarningTotalCount += item.WarningCount;
+                    viewModel.WarningTotalCount += item.ErrorTotalCount;
                 }
             }));
         }

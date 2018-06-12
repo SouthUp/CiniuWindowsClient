@@ -73,7 +73,6 @@
     <Compile Include="ReplaceWordInfo.cs" />
     <Compile Include="ReplaceWordModel.cs" />
     <Compile Include="UnChekedDetailWordInfo.cs" />
-    <Compile Include="UnChekedExcelWordInfo.cs" />
     <Compile Include="UnChekedInLineDetailWordInfo.cs" />
     <Compile Include="UnChekedWordInfo.cs" />
     <Compile Include="ViewModelBase.cs" />

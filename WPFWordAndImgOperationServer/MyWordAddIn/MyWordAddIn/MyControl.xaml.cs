@@ -223,7 +223,7 @@ namespace MyWordAddIn
                                                 rangeSelectLists.Add(keywordRange);
                                                 rangeBackColorSelectLists.Add(keywordRange.HighlightColorIndex);
                                                 keywordRange.HighlightColorIndex = WdColorIndex.wdYellow;
-                                                SelectUnCheckWord.UnChekedWordInLineDetailInfos.Add(new UnChekedInLineDetailWordInfo() { InLineText = paragraph.Range.Text, Range = paragraph.Range, UnCheckWordRange = keywordRange });
+                                                SelectUnCheckWord.UnChekedWordInLineDetailInfos.Add(new UnChekedInLineDetailWordInfo() { InLineText = paragraph.Range.Text, UnCheckWordRange = keywordRange });
                                                 SelectUnCheckWord.ErrorTotalCount++;
                                             }
                                             catch (Exception ex)
