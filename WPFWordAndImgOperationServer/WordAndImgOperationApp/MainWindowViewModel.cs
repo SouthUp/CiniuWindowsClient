@@ -70,7 +70,7 @@ namespace WordAndImgOperationApp
                 RaisePropertyChanged("SelectExcuteFilePathInfo");
             }
         }
-        private bool openFloatWindowEnable = true;
+        private bool openFloatWindowEnable = false;
         public bool OpenFloatWindowEnable
         {
             get { return openFloatWindowEnable; }

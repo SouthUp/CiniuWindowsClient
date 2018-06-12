@@ -55,7 +55,7 @@ namespace WordAndImgOperationApp
             EventAggregatorRepository.EventAggregator.GetEvent<DealCheckBtnDataEvent>().Subscribe(DealCheckBtnData);
             EventAggregatorRepository.EventAggregator.GetEvent<CancelDealCheckBtnDataEvent>().Subscribe(CancelDealCheckBtnData);
             EventAggregatorRepository.EventAggregator.GetEvent<LoginInOrOutEvent>().Subscribe(LoginInOrOut);
-            EventAggregatorRepository.EventAggregator.GetEvent<IsCanOpenSearchPopWindowEvent>().Subscribe(IsCanOpenSearchPopWindow);
+            ////////EventAggregatorRepository.EventAggregator.GetEvent<IsCanOpenSearchPopWindowEvent>().Subscribe(IsCanOpenSearchPopWindow);
             EventAggregatorRepository.EventAggregator.GetEvent<SendDealDataStateToSeachTxTEvent>().Subscribe(SendDealDataStateToSeachTxT);
         }
         private void IsCanOpenSearchPopWindow(bool b)
@@ -106,6 +106,7 @@ namespace WordAndImgOperationApp
                     }
                     else if (typeName == "MainSet")
                     {
+                        CloseBtn_Click(null, null);
                         MainSet mainSet = new MainSet();
                         ContentGrid.Children.Add(mainSet);
                         viewModel.UserInfoGridVisibility = Visibility.Visible;
@@ -333,7 +334,7 @@ namespace WordAndImgOperationApp
                 catch (Exception ex)
                 { }
             }
-            else if (e.Button == MouseButtons.Left)
+            else if (e.Button == MouseButtons.Left && viewModel.MenueUnLoginVisibility == Visibility.Visible)
             {
                 this.Show();
                 this.Activate();
