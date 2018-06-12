@@ -98,6 +98,8 @@ namespace MyExcelAddIn
         {
             try
             {
+                CheckWordUtil.FileOperateHelper.DeleteFolder(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + "\\WordAndImgOCR\\CheckWordResultTempExcel");
+                CheckWordUtil.FileOperateHelper.DeleteFolder(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + "\\WordAndImgOCR\\MyExcelAddIn\\");
                 EventAggregatorRepository.EventAggregator.GetEvent<SetMyControlVisibleEvent>().Publish(false);
                 Globals.ThisAddIn.Application.SheetActivate -= Application_SheetActivate;
                 Globals.ThisAddIn.Application.WorkbookActivate -= Application_WorkbookActivate;

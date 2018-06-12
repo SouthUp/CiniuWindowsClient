@@ -443,6 +443,8 @@ namespace MyExcelAddIn
             catch (Exception ex)
             { }
         }
+        private string CheckWordTempPath = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + "\\WordAndImgOCR\\CheckWordResultTempExcel";
+        string savePathGetImage = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + "\\WordAndImgOCR\\MyExcelAddIn\\";
         /// <summary>
         /// 提取图片
         /// </summary>
@@ -452,12 +454,12 @@ namespace MyExcelAddIn
             {
                 var workBook = Globals.ThisAddIn.Application.ActiveWorkbook;
                 var workSheet = (Worksheet)workBook.ActiveSheet;
-                string savePath = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + "\\WordAndImgOCR\\MyExcelAddIn\\";
-                if (!Directory.Exists(savePath))
+                
+                FileOperateHelper.DeleteFolder(savePathGetImage);
+                if (!Directory.Exists(savePathGetImage))
                 {
-                    Directory.CreateDirectory(savePath);
+                    Directory.CreateDirectory(savePathGetImage);
                 }
-                FileOperateHelper.DeleteFolder(savePath);
                 for (int i = 1; i <= workSheet.Shapes.Count; i++)
                 {
                     var pic = workSheet.Shapes.Item(i);
@@ -471,7 +473,7 @@ namespace MyExcelAddIn
                         }));
                         if (image != null)
                         {
-                            image.Save(savePath + pic.Name + ".jpg");
+                            image.Save(savePathGetImage + pic.Name + ".jpg");
                         }
                         Dispatcher.Invoke(new System.Action(() =>
                         {

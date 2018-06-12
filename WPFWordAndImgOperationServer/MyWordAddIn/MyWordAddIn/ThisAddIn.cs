@@ -229,6 +229,8 @@ namespace MyWordAddIn
         }
         private void ThisAddIn_Shutdown(object sender, System.EventArgs e)
         {
+            CheckWordUtil.FileOperateHelper.DeleteFolder(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + "\\WordAndImgOCR\\CheckWordResultTemp");
+            CheckWordUtil.FileOperateHelper.DeleteFolder(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + "\\WordAndImgOCR\\MyWordAddIn\\");
             EventAggregatorRepository.EventAggregator.GetEvent<SetMyControlVisibleEvent>().Publish(false);
             ////////屏蔽右键菜单，快捷键和替换词
             ////////hook.UnHook();

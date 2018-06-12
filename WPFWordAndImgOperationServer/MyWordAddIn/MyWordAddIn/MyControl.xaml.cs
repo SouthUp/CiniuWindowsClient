@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Configuration;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -444,7 +445,7 @@ namespace MyWordAddIn
                 }
             }
         }
-        private string CheckWordTempPath = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + "\\WordAndImgOCR\\MyWordAddIn\\CheckWordResultTemp";
+        private string CheckWordTempPath = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + "\\WordAndImgOCR\\CheckWordResultTemp";
         string savePathGetImage = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + "\\WordAndImgOCR\\MyWordAddIn\\";
         /// <summary>
         /// 提取图片
@@ -453,11 +454,11 @@ namespace MyWordAddIn
         {
             try
             {
+                FileOperateHelper.DeleteFolder(savePathGetImage);
                 if (!Directory.Exists(savePathGetImage))
                 {
                     Directory.CreateDirectory(savePathGetImage);
                 }
-                FileOperateHelper.DeleteFolder(savePathGetImage);
                 int index = 1;
                 foreach (Microsoft.Office.Interop.Word.Paragraph paragraph in Application.ActiveDocument.Paragraphs)
                 {
@@ -560,8 +561,14 @@ namespace MyWordAddIn
                                         {"recognize_granularity", "small"},
                                         {"vertexes_location", "true"}
                                     };
-                    string apiName = "accurate";
-                    OCR clientOCR = new OCR("mVkfwgQPUS6pdGe6XvxExffT", "dk7rKhglPBDr9ceEVy3dfFV8VOnrT41l");
+                    string apiName = "";
+                    try
+                    {
+                        apiName = ConfigurationManager.AppSettings["CallAPIName"].ToString();
+                    }
+                    catch (Exception ex)
+                    { }
+                    OCR clientOCR = new OCR(ConfigurationManager.AppSettings["APIKey"].ToString(), ConfigurationManager.AppSettings["SecretKey"].ToString());
                     var result = clientOCR.Accurate(apiName, image, options);
                     //反序列化
                     resultImgGeneral = JsonConvert.DeserializeObject<ImgGeneralInfo>(result.ToString().Replace("char", "Char"));
@@ -610,7 +617,7 @@ namespace MyWordAddIn
                             }
                         }
                     }
-                    string desiredFolderName = CheckWordTempPath + " \\" + System.IO.Path.GetFileNameWithoutExtension(filePath) + System.IO.Path.GetExtension(filePath).Replace(".", "") + "-Img\\";
+                    string desiredFolderName = CheckWordTempPath + " \\" + Guid.NewGuid().ToString() + "\\";
                     if (!Directory.Exists(desiredFolderName))
                     {
                         Directory.CreateDirectory(desiredFolderName);
