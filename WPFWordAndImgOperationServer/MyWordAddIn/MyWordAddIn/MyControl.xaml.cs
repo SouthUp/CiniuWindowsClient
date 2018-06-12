@@ -446,7 +446,7 @@ namespace MyWordAddIn
                 {
                     Directory.CreateDirectory(savePath);
                 }
-                DeleteFolder(savePath);
+                FileOperateHelper.DeleteFolder(savePath);
                 int index = 1;
                 foreach (Microsoft.Office.Interop.Word.Paragraph paragraph in Application.ActiveDocument.Paragraphs)
                 {
@@ -479,24 +479,6 @@ namespace MyWordAddIn
             }
             catch (Exception ex)
             { }
-        }
-        public static void DeleteFolder(string dir)
-        {
-            foreach (string d in Directory.GetFileSystemEntries(dir))
-            {
-                if (File.Exists(d))
-                {
-                    try
-                    {
-                        FileInfo fi = new FileInfo(d);
-                        if (fi.Attributes.ToString().IndexOf("ReadOnly") != -1)
-                            fi.Attributes = FileAttributes.Normal;
-                        File.Delete(d);//直接删除其中的文件
-                    }
-                    catch (Exception)
-                    { }
-                }
-            }
         }
     }
 }

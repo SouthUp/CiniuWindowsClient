@@ -452,6 +452,12 @@ namespace MyExcelAddIn
             {
                 var workBook = Globals.ThisAddIn.Application.ActiveWorkbook;
                 var workSheet = (Worksheet)workBook.ActiveSheet;
+                string savePath = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + "\\WordAndImgOCR\\MyExcelAddIn\\";
+                if (!Directory.Exists(savePath))
+                {
+                    Directory.CreateDirectory(savePath);
+                }
+                FileOperateHelper.DeleteFolder(savePath);
                 for (int i = 1; i <= workSheet.Shapes.Count; i++)
                 {
                     var pic = workSheet.Shapes.Item(i);
@@ -465,12 +471,6 @@ namespace MyExcelAddIn
                         }));
                         if (image != null)
                         {
-                            string savePath = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + "\\WordAndImgOCR\\MyExcelAddIn\\";
-                            if (!Directory.Exists(savePath))
-                            {
-                                Directory.CreateDirectory(savePath);
-                            }
-                            DeleteFolder(savePath);
                             image.Save(savePath + pic.Name + ".jpg");
                         }
                         Dispatcher.Invoke(new System.Action(() =>
@@ -482,24 +482,6 @@ namespace MyExcelAddIn
             }
             catch (Exception ex)
             { }
-        }
-        public static void DeleteFolder(string dir)
-        {
-            foreach (string d in Directory.GetFileSystemEntries(dir))
-            {
-                if (File.Exists(d))
-                {
-                    try
-                    {
-                        FileInfo fi = new FileInfo(d);
-                        if (fi.Attributes.ToString().IndexOf("ReadOnly") != -1)
-                            fi.Attributes = FileAttributes.Normal;
-                        File.Delete(d);//直接删除其中的文件
-                    }
-                    catch (Exception)
-                    { }
-                }
-            }
         }
     }
 }
