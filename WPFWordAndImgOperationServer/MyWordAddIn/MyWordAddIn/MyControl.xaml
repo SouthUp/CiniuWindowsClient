@@ -188,18 +188,21 @@
         </Style>
     </UserControl.Resources>
     <Grid>
-        <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">
-            <Grid x:Name="ImgGrid" HorizontalAlignment="Left" VerticalAlignment="Top"
+        <Grid Width="50" Height="50">
+            <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto"
+                          Visibility="Hidden">
+                <Grid x:Name="ImgGrid" HorizontalAlignment="Left" VerticalAlignment="Top"
                   Width="{Binding ElementName=img,Path=ActualWidth}"
                   Height="{Binding ElementName=img,Path=ActualHeight}">
-                <Image x:Name="img" HorizontalAlignment="Left" VerticalAlignment="Top"
+                    <Image x:Name="img" HorizontalAlignment="Left" VerticalAlignment="Top"
                        SizeChanged="img_SizeChanged"  Stretch="Fill"/>
-                <Grid x:Name="TextOverlay" HorizontalAlignment="Left" VerticalAlignment="Top"
+                    <Grid x:Name="TextOverlay" HorizontalAlignment="Left" VerticalAlignment="Top"
                       Width="{Binding ElementName=img,Path=ActualWidth}"
                       Height="{Binding ElementName=img,Path=ActualHeight}"/>
-            </Grid>
-        </ScrollViewer>
-        <Grid Background="White">
+                </Grid>
+            </ScrollViewer>
+        </Grid>
+        <Grid>
             <Grid.RowDefinitions>
                 <RowDefinition Height="30"></RowDefinition>
                 <RowDefinition Height="*"></RowDefinition>
