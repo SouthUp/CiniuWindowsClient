@@ -22,21 +22,18 @@ namespace CheckWordUtil
                 return null;
             }
         }
-        public static BitmapImage GetBitmapImageForBackUp(string picPath)
+        public static BitmapImage GetBitmapImage(string picPath)
         {
             BitmapImage image = new BitmapImage();
             try
             {
-                if(!System.IO.Path.GetExtension(picPath).ToLower().Contains("doc"))
+                var bytes = GetBytesByPicture(picPath);
+                if (bytes != null)
                 {
-                    var bytes = GetBytesByPicture(picPath);
-                    if (bytes != null)
-                    {
-                        MemoryStream byteStream = new MemoryStream(bytes);
-                        image.BeginInit();
-                        image.StreamSource = byteStream;
-                        image.EndInit();
-                    }
+                    MemoryStream byteStream = new MemoryStream(bytes);
+                    image.BeginInit();
+                    image.StreamSource = byteStream;
+                    image.EndInit();
                 }
             }
             catch (Exception ex)

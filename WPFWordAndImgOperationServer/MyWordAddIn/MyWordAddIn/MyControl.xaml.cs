@@ -19,6 +19,7 @@ using System.Windows.Shapes;
 using CheckWordModel;
 using CheckWordUtil;
 using Microsoft.Office.Interop.Word;
+using Newtonsoft.Json;
 
 namespace MyWordAddIn
 {
@@ -247,7 +248,16 @@ namespace MyWordAddIn
             }
             catch (Exception ex)
             { }
-            ////////GetImagesFromWord();
+            GetImagesFromWord();
+            DirectoryInfo dirDoc = new DirectoryInfo(savePathGetImage);
+            var filePicInfos = dirDoc.GetFiles();
+            foreach (var picInfo in filePicInfos)
+            {
+                if (picInfo.FullName.Contains("jpg"))
+                {
+                    var listResult = AutoExcutePicOCR(picInfo.FullName);
+                }
+            }
             foreach (var SelectUnCheckWord in listUnCheckWords)
             {
                 var itemInfo = viewModel.UncheckedWordLists.FirstOrDefault(x => x.Name == SelectUnCheckWord.Name);
@@ -434,6 +444,8 @@ namespace MyWordAddIn
                 }
             }
         }
+        private string CheckWordTempPath = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + "\\WordAndImgOCR\\MyWordAddIn\\CheckWordResultTemp";
+        string savePathGetImage = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + "\\WordAndImgOCR\\MyWordAddIn\\";
         /// <summary>
         /// 提取图片
         /// </summary>
@@ -441,12 +453,11 @@ namespace MyWordAddIn
         {
             try
             {
-                string savePath = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + "\\WordAndImgOCR\\MyWordAddIn\\";
-                if (!Directory.Exists(savePath))
+                if (!Directory.Exists(savePathGetImage))
                 {
-                    Directory.CreateDirectory(savePath);
+                    Directory.CreateDirectory(savePathGetImage);
                 }
-                FileOperateHelper.DeleteFolder(savePath);
+                FileOperateHelper.DeleteFolder(savePathGetImage);
                 int index = 1;
                 foreach (Microsoft.Office.Interop.Word.Paragraph paragraph in Application.ActiveDocument.Paragraphs)
                 {
@@ -465,7 +476,7 @@ namespace MyWordAddIn
                                 }));
                                 if (image != null)
                                 {
-                                    image.Save(savePath + "照片-" + index + ".jpg");
+                                    image.Save(savePathGetImage + "照片-" + index + ".jpg");
                                     index++;
                                 }
                                 Dispatcher.Invoke(new Action(() =>
@@ -479,6 +490,161 @@ namespace MyWordAddIn
             }
             catch (Exception ex)
             { }
+        }
+        #region ORC识别
+        bool isInitCompleted = false;
+        int countWhile = 0;
+        double xScale = 1;
+        double yScale = 1;
+        BitmapImage bitmap = null;
+        /// <summary>
+        /// 保存图片
+        /// </summary>
+        /// <param name="fileName"></param>
+        private void SavePic(string fileName)
+        {
+            try
+            {
+                Dispatcher.Invoke(new Action(() =>
+                {
+                    if (ImgGrid.ActualWidth > 0 && ImgGrid.ActualHeight > 0)
+                    {
+                        RenderTargetBitmap targetBitmap = new RenderTargetBitmap((int)ImgGrid.ActualWidth, (int)ImgGrid.ActualHeight, 96, 96, PixelFormats.Default);
+                        targetBitmap.Render(ImgGrid);
+                        PngBitmapEncoder saveEncoder = new PngBitmapEncoder();
+                        saveEncoder.Frames.Add(BitmapFrame.Create(targetBitmap));
+                        using (FileStream fs = System.IO.File.Open(fileName, System.IO.FileMode.Create))
+                        {
+                            saveEncoder.Save(fs);
+                        }
+                    }
+                    img.Source = null;
+                    TextOverlay.Children.Clear();
+                }));
+            }
+            catch (Exception ex)
+            { }
+        }
+        #endregion
+        private void img_SizeChanged(object sender, SizeChangedEventArgs e)
+        {
+            xScale = img.ActualWidth / bitmap.PixelWidth;
+            yScale = img.ActualHeight / bitmap.PixelHeight;
+            isInitCompleted = true;
+        }
+        /// <summary>
+        /// ORC自动分析图片
+        /// </summary>
+        /// <param name="filePath"></param>
+        private List<UnChekedWordInfo> AutoExcutePicOCR(string filePath)
+        {
+            List<UnChekedWordInfo> listResult = new List<UnChekedWordInfo>();
+            try
+            {
+                countWhile = 0;
+                isInitCompleted = false;
+                Dispatcher.Invoke(new Action(() => {
+                    //清除框选
+                    TextOverlay.Children.Clear();
+                    //生成绑定图片
+                    bitmap = Util.GetBitmapImage(filePath);
+                    img.Width = bitmap.PixelWidth;
+                    img.Height = bitmap.PixelHeight;
+                    img.Source = bitmap;
+                }));
+                ImgGeneralInfo resultImgGeneral = null;
+                try
+                {
+                    var image = File.ReadAllBytes(filePath);
+                    var options = new Dictionary<string, object>{
+                                        {"recognize_granularity", "small"},
+                                        {"vertexes_location", "true"}
+                                    };
+                    string apiName = "accurate";
+                    OCR clientOCR = new OCR("mVkfwgQPUS6pdGe6XvxExffT", "dk7rKhglPBDr9ceEVy3dfFV8VOnrT41l");
+                    var result = clientOCR.Accurate(apiName, image, options);
+                    //反序列化
+                    resultImgGeneral = JsonConvert.DeserializeObject<ImgGeneralInfo>(result.ToString().Replace("char", "Char"));
+                }
+                catch (Exception ex)
+                { }
+                while (!isInitCompleted && countWhile < 10)
+                {
+                    System.Threading.Thread.Sleep(100);
+                    countWhile++;
+                }
+                if (resultImgGeneral != null && resultImgGeneral.words_result_num > 0)
+                {
+                    List<WordInfo> listUnValidInfos = new List<WordInfo>();
+                    foreach (var item in resultImgGeneral.words_result)
+                    {
+                        string lineWord = "";
+                        List<Rect> rects = new List<Rect>();
+                        foreach (var charInfo in item.Chars)
+                        {
+                            lineWord += charInfo.Char;
+                            rects.Add(new Rect() { X = charInfo.location.left * xScale, Y = charInfo.location.top * yScale, Width = charInfo.location.width * xScale, Height = charInfo.location.height * yScale });
+                        }
+                        var listUnChekedWordInfo = CheckWordUtil.CheckWordHelper.GetUnChekedWordInfoList(lineWord);
+                        foreach (var itemInfo in listUnChekedWordInfo)
+                        {
+                            listUnValidInfos.Add(new WordInfo() { UnValidText = itemInfo.Name, AllText = lineWord, Rects = rects });
+                            MatchCollection mc = Regex.Matches(lineWord, itemInfo.Name, RegexOptions.IgnoreCase);
+                            if (mc.Count > 0)
+                            {
+                                foreach (Match m in mc)
+                                {
+                                    var infoResult = listResult.FirstOrDefault(x => x.Name == itemInfo.Name);
+                                    if (infoResult == null)
+                                    {
+                                        itemInfo.UnChekedWordInLineDetailInfos.Add(new UnChekedInLineDetailWordInfo() { TypeTextFrom = "Img", InLineText = lineWord });
+                                        itemInfo.ErrorTotalCount++;
+                                        listResult.Add(itemInfo);
+                                    }
+                                    else
+                                    {
+                                        infoResult.UnChekedWordInLineDetailInfos.Add(new UnChekedInLineDetailWordInfo() { TypeTextFrom = "Img", InLineText = lineWord });
+                                        infoResult.ErrorTotalCount++;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    string desiredFolderName = CheckWordTempPath + " \\" + System.IO.Path.GetFileNameWithoutExtension(filePath) + System.IO.Path.GetExtension(filePath).Replace(".", "") + "-Img\\";
+                    if (!Directory.Exists(desiredFolderName))
+                    {
+                        Directory.CreateDirectory(desiredFolderName);
+                    }
+                    var list = CheckWordHelper.GetUnValidRects(listUnValidInfos);
+                    foreach (var item in list)
+                    {
+                        try
+                        {
+                            Dispatcher.Invoke(new Action(() => {
+                                WordOverlay wordBoxOverlay = new WordOverlay(item);
+                                var overlay = new System.Windows.Controls.Border()
+                                {
+                                    Style = (System.Windows.Style)this.Resources["HighlightedWordBoxHorizontalLine"]
+                                };
+                                overlay.SetBinding(System.Windows.Controls.Border.MarginProperty, wordBoxOverlay.CreateWordPositionBinding());
+                                overlay.SetBinding(System.Windows.Controls.Border.WidthProperty, wordBoxOverlay.CreateWordWidthBinding());
+                                overlay.SetBinding(System.Windows.Controls.Border.HeightProperty, wordBoxOverlay.CreateWordHeightBinding());
+                                TextOverlay.Children.Add(overlay);
+                            }));
+                        }
+                        catch (Exception ex)
+                        { }
+                    }
+                    if (listUnValidInfos.Count > 0)
+                    {
+                        System.Threading.Thread.Sleep(50);
+                        SavePic(desiredFolderName + System.IO.Path.GetFileName(filePath));
+                    }
+                }
+            }
+            catch (Exception ex)
+            { }
+            return listResult;
         }
     }
 }

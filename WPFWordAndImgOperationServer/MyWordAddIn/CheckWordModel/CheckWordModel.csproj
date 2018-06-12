@@ -56,6 +56,7 @@
     <Reference Include="PresentationFramework" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ImgGeneralInfo.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -73,8 +74,11 @@
     <Compile Include="ReplaceWordModel.cs" />
     <Compile Include="UnChekedDetailWordInfo.cs" />
     <Compile Include="UnChekedExcelWordInfo.cs" />
+    <Compile Include="UnChekedInLineDetailWordInfo.cs" />
     <Compile Include="UnChekedWordInfo.cs" />
     <Compile Include="ViewModelBase.cs" />
+    <Compile Include="WordInfo.cs" />
+    <Compile Include="WordOverlay.cs" />
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
