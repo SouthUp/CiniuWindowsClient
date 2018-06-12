@@ -268,11 +268,12 @@ namespace MyWordAddIn
                     }
                 }
             }
-            foreach (string key in CurrentImgsDictionary.Keys)
+            string[] keyArr = CurrentImgsDictionary.Keys.ToArray<string>();
+            for (int p = keyArr.Count() - 1; p > -1; p--)
             {
-                if (!listHashs.Contains(key))
+                if (!listHashs.Contains(keyArr[p]))
                 {
-                    CurrentImgsDictionary.Remove(key);
+                    CurrentImgsDictionary.Remove(keyArr[p]);
                 }
             }
             foreach (var Value in CurrentImgsDictionary.Values)
