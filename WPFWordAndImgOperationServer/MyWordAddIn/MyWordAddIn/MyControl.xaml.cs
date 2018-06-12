@@ -29,6 +29,7 @@ namespace MyWordAddIn
     /// </summary>
     public partial class MyControl : UserControl
     {
+        Dictionary<string, List<UnChekedWordInfo>> CurrentImgsDictionary = new Dictionary<string, List<UnChekedWordInfo>>();
         MyControlViewModel viewModel = new MyControlViewModel();
         // 保存修改过的Range和之前的背景色，以便于恢复
         private List<Range> rangeSelectLists = new List<Range>();
@@ -250,13 +251,27 @@ namespace MyWordAddIn
             catch (Exception ex)
             { }
             GetImagesFromWord();
+            List<string> listHashs = new List<string>();
             DirectoryInfo dirDoc = new DirectoryInfo(savePathGetImage);
             var filePicInfos = dirDoc.GetFiles();
             foreach (var picInfo in filePicInfos)
             {
                 if (picInfo.FullName.Contains("jpg"))
                 {
-                    var listResult = AutoExcutePicOCR(picInfo.FullName);
+                    string hashPic = HashHelper.ComputeSHA1(picInfo.FullName);
+                    listHashs.Add(hashPic);
+                    if (!CurrentImgsDictionary.ContainsKey(hashPic))
+                    {
+                        var listResult = AutoExcutePicOCR(picInfo.FullName);
+                        CurrentImgsDictionary.Add(hashPic, listResult);
+                    }
+                }
+            }
+            foreach (string key in CurrentImgsDictionary.Keys)
+            {
+                if (!listHashs.Contains(key))
+                {
+                    CurrentImgsDictionary.Remove(key);
                 }
             }
             foreach (var SelectUnCheckWord in listUnCheckWords)
