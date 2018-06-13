@@ -268,6 +268,7 @@
     <Compile Include="Hook\KeyboardHook.cs" />
     <Compile Include="Hook\KeyboardHook2.cs" />
     <Compile Include="HostSystemVar.cs" />
+    <Compile Include="ImagesChangeDetector.cs" />
     <Compile Include="LoadingWait.xaml.cs">
       <DependentUpon>LoadingWait.xaml</DependentUpon>
     </Compile>

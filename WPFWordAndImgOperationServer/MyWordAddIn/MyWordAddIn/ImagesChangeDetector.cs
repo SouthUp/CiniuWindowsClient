@@ -8,6 +8,7 @@ using Word = Microsoft.Office.Interop.Word;
 using Office = Microsoft.Office.Core;
 using Microsoft.Office.Tools.Word;
 using System.ComponentModel;
+using Microsoft.Office.Interop.Word;
 
 namespace MyWordAddIn
 {
@@ -16,8 +17,8 @@ namespace MyWordAddIn
         public Word.Application Application;
         private BackgroundWorker bg;
 
-        public delegate void TextChangeHandler(object sender, TextChangedEventArgs e);
-        public event TextChangeHandler OnTextChanged;
+        public delegate void ImagesChangeHandler(object sender, ImagesChangedEventArgs e);
+        public event ImagesChangeHandler OnImagesChanged;
 
         public ImagesChangeDetector(Word.Application app)
         {
@@ -41,9 +42,9 @@ namespace MyWordAddIn
             switch (e.ProgressPercentage)
             {
                 case 50: //change
-                    if (OnTextChanged != null)
+                    if (OnImagesChanged != null)
                     {
-                        OnTextChanged(this, new TextChangedEventArgs((char)e.UserState));
+                        OnImagesChanged(this, new ImagesChangedEventArgs("Image"));
                     }
                     break;
             }
@@ -51,44 +52,41 @@ namespace MyWordAddIn
 
         private void bg_DoWork(object sender, DoWorkEventArgs e)
         {
-            Word.Application wordApp = e.Argument as Word.Application;
+            Application wordApp = e.Argument as Application;
             BackgroundWorker bg = sender as BackgroundWorker;
-            string lastPage = string.Empty;
+            int countPicsLast = 0;
             while (true)
             {
                 try
                 {
                     if (Application.Documents.Count > 0)
                     {
-                        if (Application.ActiveDocument.Words.Count > 0)
+                        if (Application.ActiveDocument.Paragraphs.Count > 0)
                         {
-                            var currentPage = Application.ActiveDocument.Bookmarks["\\Page"].Range.Text;
-                            if (currentPage != null && currentPage != lastPage)
+                            int countPics = 0;
+                            foreach (Paragraph paragraph in Application.ActiveDocument.Paragraphs)
                             {
-                                var differ = new DiffPlex.Differ();
-                                var builder = new DiffPlex.DiffBuilder.InlineDiffBuilder(differ);
-                                var difference = builder.BuildDiffModel(lastPage, currentPage);
-                                var change = from d in difference.Lines where d.Type != DiffPlex.DiffBuilder.Model.ChangeType.Unchanged select d;
-                                if (change.Any())
+                                foreach (InlineShape ils in paragraph.Range.InlineShapes)
                                 {
-                                    string changeLastText = change.Last().Text;
-                                    if(!string.IsNullOrEmpty(changeLastText))
+                                    if (ils != null)
                                     {
-                                        bg.ReportProgress(50, changeLastText.Last());
+                                        if (ils.Type == WdInlineShapeType.wdInlineShapePicture)
+                                        {
+                                            countPics++;
+                                        }
                                     }
                                 }
-
-                                lastPage = currentPage;
                             }
-
-
+                            if (countPics != countPicsLast)
+                            {
+                                bg.ReportProgress(50, "");
+                                countPicsLast = countPics;
+                            }
                         }
                     }
                 }
-                catch (Exception)
-                {
-
-                }
+                catch (Exception ex)
+                { }
                 if (bg.CancellationPending)
                 {
                     break;
@@ -108,10 +106,10 @@ namespace MyWordAddIn
         }
     }
 
-    public class TextChangedEventArgs : EventArgs
+    public class ImagesChangedEventArgs : EventArgs
     {
-        public char Letter;
-        public TextChangedEventArgs(char letter)
+        public string Letter;
+        public ImagesChangedEventArgs(string letter)
         {
             this.Letter = letter;
         }

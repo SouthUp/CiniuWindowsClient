@@ -36,6 +36,8 @@ namespace MyWordAddIn
         private List<WdColorIndex> rangeBackColorSelectLists = new List<WdColorIndex>();
         //文本改变检测
         TextChangeDetector detector;
+        //图片改变检测
+        ImagesChangeDetector detectorImages;
         Microsoft.Office.Interop.Word.Application Application = Globals.ThisAddIn.Application;
         public MyControl()
         {
@@ -46,7 +48,7 @@ namespace MyWordAddIn
         private void UserControl_Loaded(object sender, RoutedEventArgs e)
         {
             StartDetector();
-            System.Threading.Thread tGetUncheckedWord = new System.Threading.Thread(GetUncheckedWordLists);
+            System.Threading.Thread tGetUncheckedWord = new System.Threading.Thread(OnlyExcutePicture);
             tGetUncheckedWord.IsBackground = true;
             tGetUncheckedWord.Start();
         }
@@ -54,9 +56,21 @@ namespace MyWordAddIn
         {
             try
             {
-                if (queue.Count == 0)
+                if (!queue.Contains("Text"))
                 {
-                    queue.Enqueue(DateTime.Now);
+                    queue.Enqueue("Text");
+                }
+            }
+            catch (Exception ex)
+            { }
+        }
+        private void detector_OnImagesChanged(object sender, ImagesChangedEventArgs e)
+        {
+            try
+            {
+                if (!queue.Contains("Images"))
+                {
+                    queue.Enqueue("Images");
                 }
             }
             catch (Exception ex)
@@ -66,10 +80,12 @@ namespace MyWordAddIn
         {
             detector.OnTextChanged -= detector_OnTextChanged;
             detector.Stop();
+            detectorImages.OnImagesChanged -= detector_OnImagesChanged;
+            detectorImages.Stop();
         }
         public static Thread tDetector;
         private static object lockObject = new Object();
-        private static Queue<DateTime> queue = new Queue<DateTime>();
+        private static Queue<string> queue = new Queue<string>();
         private static bool IsChecking = false;
         /// <summary>
         /// 执行检测任务
@@ -82,19 +98,27 @@ namespace MyWordAddIn
                 {
                     try
                     {
+                        string typeDequeue = "";
                         lock (lockObject)
                         {
                             IsChecking = true;
-                        }
-                        GetUncheckedWordLists();
-                        lock (lockObject)
-                        {
                             try
                             {
-                                DateTime typeDequeue = queue.Dequeue();
+                                typeDequeue = queue.Dequeue();
                             }
                             catch
                             { }
+                        }
+                        if (typeDequeue == "Text")
+                        {
+                            GetUncheckedWordLists();
+                        }
+                        else if (typeDequeue == "Images")
+                        {
+                            OnlyExcutePicture();
+                        }
+                        lock (lockObject)
+                        {
                             IsChecking = false;
                         }
                     }
@@ -121,6 +145,10 @@ namespace MyWordAddIn
                 detector = new TextChangeDetector(Application);
             detector.OnTextChanged += detector_OnTextChanged;
             detector.Start();
+            if (detectorImages == null)
+                detectorImages = new ImagesChangeDetector(Application);
+            detectorImages.OnImagesChanged += detector_OnImagesChanged;
+            detectorImages.Start();
             if (tDetector == null)
             {
                 tDetector = new System.Threading.Thread(ExcuteQueue);
@@ -137,6 +165,8 @@ namespace MyWordAddIn
             {
                 detector.OnTextChanged -= detector_OnTextChanged;
                 detector.Stop();
+                detectorImages.OnImagesChanged -= detector_OnImagesChanged;
+                detectorImages.Stop();
                 if (tDetector != null)
                 {
                     tDetector.Abort();
@@ -272,31 +302,6 @@ namespace MyWordAddIn
             }
             catch (Exception ex)
             { }
-            GetImagesFromWord();
-            List<string> listHashs = new List<string>();
-            DirectoryInfo dirDoc = new DirectoryInfo(savePathGetImage);
-            var filePicInfos = dirDoc.GetFiles();
-            foreach (var picInfo in filePicInfos)
-            {
-                if (picInfo.FullName.Contains("jpg"))
-                {
-                    string hashPic = HashHelper.ComputeSHA1(picInfo.FullName);
-                    listHashs.Add(hashPic);
-                    if (!CurrentImgsDictionary.ContainsKey(hashPic))
-                    {
-                        var listResult = AutoExcutePicOCR(picInfo.FullName);
-                        CurrentImgsDictionary.Add(hashPic, listResult);
-                    }
-                }
-            }
-            string[] keyArr = CurrentImgsDictionary.Keys.ToArray<string>();
-            for (int p = keyArr.Count() - 1; p > -1; p--)
-            {
-                if (!listHashs.Contains(keyArr[p]))
-                {
-                    CurrentImgsDictionary.Remove(keyArr[p]);
-                }
-            }
             foreach (var Value in CurrentImgsDictionary.Values)
             {
                 foreach (var item in Value)
@@ -366,6 +371,52 @@ namespace MyWordAddIn
                 catch (Exception ex)
                 { }
             }
+        }
+        /// <summary>
+        /// 解析图片OCR
+        /// </summary>
+        private void OnlyExcutePicture()
+        {
+            try
+            {
+                Dispatcher.Invoke(new Action(() =>
+                {
+                    viewModel.IsBusyVisibility = Visibility.Visible;
+                }));
+            }
+            catch (Exception ex)
+            { }
+            try
+            {
+                GetImagesFromWord();
+                List<string> listHashs = new List<string>();
+                DirectoryInfo dirDoc = new DirectoryInfo(savePathGetImage);
+                var filePicInfos = dirDoc.GetFiles();
+                foreach (var picInfo in filePicInfos)
+                {
+                    if (picInfo.FullName.Contains("jpg"))
+                    {
+                        string hashPic = HashHelper.ComputeSHA1(picInfo.FullName);
+                        listHashs.Add(hashPic);
+                        if (!CurrentImgsDictionary.ContainsKey(hashPic))
+                        {
+                            var listResult = AutoExcutePicOCR(picInfo.FullName);
+                            CurrentImgsDictionary.Add(hashPic, listResult);
+                        }
+                    }
+                }
+                string[] keyArr = CurrentImgsDictionary.Keys.ToArray<string>();
+                for (int p = keyArr.Count() - 1; p > -1; p--)
+                {
+                    if (!listHashs.Contains(keyArr[p]))
+                    {
+                        CurrentImgsDictionary.Remove(keyArr[p]);
+                    }
+                }
+            }
+            catch (Exception ex)
+            { }
+            GetUncheckedWordLists();
         }
         // 保存非违禁词带有背景色的Range和之前的背景色，以便于恢复
         private List<Range> rangeOtherHighlightColorLists = new List<Range>();
