@@ -335,7 +335,10 @@ namespace MyExcelAddIn
                 {
                     if (File.Exists(unChekedWordInfo.ImgResultPath))
                     {
-
+                        CheckWordControl.ImageDetailForm imageDetailForm = new CheckWordControl.ImageDetailForm();
+                        CheckWordControl.ImageDetailControl imageDetailControl = new CheckWordControl.ImageDetailControl(unChekedWordInfo.ImgResultPath);
+                        imageDetailForm.WpfElementHost.HostContainer.Children.Add(imageDetailControl);
+                        imageDetailForm.ShowDialog();
                     }
                 }
             }
