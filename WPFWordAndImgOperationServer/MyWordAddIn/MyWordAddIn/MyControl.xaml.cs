@@ -394,21 +394,16 @@ namespace MyWordAddIn
             { }
             try
             {
-                GetImagesFromWord();
+                List<ImagesDetailInfo> ImagesDetailInfos = GetImagesFromWord();
                 List<string> listHashs = new List<string>();
-                DirectoryInfo dirDoc = new DirectoryInfo(savePathGetImage);
-                var filePicInfos = dirDoc.GetFiles();
-                foreach (var picInfo in filePicInfos)
+                foreach (var item in ImagesDetailInfos)
                 {
-                    if (picInfo.FullName.Contains("jpg"))
+                    string hashPic = HashHelper.ComputeSHA1(item.ImgResultPath);
+                    listHashs.Add(hashPic);
+                    if (!CurrentImgsDictionary.ContainsKey(hashPic))
                     {
-                        string hashPic = HashHelper.ComputeSHA1(picInfo.FullName);
-                        listHashs.Add(hashPic);
-                        if (!CurrentImgsDictionary.ContainsKey(hashPic))
-                        {
-                            var listResult = AutoExcutePicOCR(picInfo.FullName);
-                            CurrentImgsDictionary.Add(hashPic, listResult);
-                        }
+                        var listResult = AutoExcutePicOCR(item.ImgResultPath);
+                        CurrentImgsDictionary.Add(hashPic, listResult);
                     }
                 }
                 string[] keyArr = CurrentImgsDictionary.Keys.ToArray<string>();
@@ -573,8 +568,9 @@ namespace MyWordAddIn
         /// <summary>
         /// 提取图片
         /// </summary>
-        private void GetImagesFromWord()
+        private List<ImagesDetailInfo> GetImagesFromWord()
         {
+            List<ImagesDetailInfo> result = new List<ImagesDetailInfo>();
             try
             {
                 FileOperateHelper.DeleteFolder(savePathGetImage);
@@ -600,6 +596,7 @@ namespace MyWordAddIn
                                 if (image != null)
                                 {
                                     image.Save(savePathGetImage + "照片-" + index + ".jpg");
+                                    result.Add(new ImagesDetailInfo() { ImgResultPath = savePathGetImage + "照片-" + index + ".jpg", UnCheckWordRange = ils.Range });
                                     index++;
                                 }
                                 Dispatcher.Invoke(new Action(() =>
@@ -613,6 +610,7 @@ namespace MyWordAddIn
             }
             catch (Exception ex)
             { }
+            return result;
         }
         #region ORC识别
         bool isInitCompleted = false;

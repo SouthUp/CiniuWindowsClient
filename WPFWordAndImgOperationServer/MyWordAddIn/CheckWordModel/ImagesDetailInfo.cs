@@ -8,59 +8,10 @@ using System.Threading.Tasks;
 
 namespace CheckWordModel
 {
-    public class ImagesDetailInfo : ViewModelBase
+    public class ImagesDetailInfo
     {
         public Microsoft.Office.Interop.Excel.Range UnCheckWordExcelRange { get; set; }
         public Range UnCheckWordRange { get; set; }
-        private string typeTextFrom = "Text";
-        public string TypeTextFrom
-        {
-            get { return typeTextFrom; }
-            set
-            {
-                typeTextFrom = value;
-                RaisePropertyChanged("TypeTextFrom");
-            }
-        }
-        private string inLineText = "";
-        public string InLineText
-        {
-            get { return inLineText; }
-            set
-            {
-                inLineText = value;
-                RaisePropertyChanged("InLineText");
-            }
-        }
-        private string inLineKeyText = "";
-        public string InLineKeyText
-        {
-            get { return inLineKeyText; }
-            set
-            {
-                inLineKeyText = value;
-                RaisePropertyChanged("InLineKeyText");
-            }
-        }
-        private int inLineKeyTextRangeStart = -1;
-        public int InLineKeyTextRangeStart
-        {
-            get { return inLineKeyTextRangeStart; }
-            set
-            {
-                inLineKeyTextRangeStart = value;
-                RaisePropertyChanged("InLineKeyTextRangeStart");
-            }
-        }
-        private string imgResultPath = "";
-        public string ImgResultPath
-        {
-            get { return imgResultPath; }
-            set
-            {
-                imgResultPath = value;
-                RaisePropertyChanged("ImgResultPath");
-            }
-        }
+        public string ImgResultPath { get; set; }
     }
 }
