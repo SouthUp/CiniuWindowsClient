@@ -531,8 +531,7 @@ namespace MyWordAddIn
                         {
                             if (ils.Type == WdInlineShapeType.wdInlineShapePicture)
                             {
-                                ils.Select();
-                                Application.Selection.Copy();
+                                ils.Range.Copy();
                                 System.Drawing.Image image = null;
                                 Dispatcher.Invoke(new Action(() =>
                                 {
