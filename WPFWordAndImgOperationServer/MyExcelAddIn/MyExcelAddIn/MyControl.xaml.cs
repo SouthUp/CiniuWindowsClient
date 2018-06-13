@@ -79,6 +79,7 @@ namespace MyExcelAddIn
                 viewModel.UncheckedWordLists = new ObservableCollection<UnChekedWordInfo>();
                 viewModel.WarningTotalCount = 0;
                 viewModel.IsBusyVisibility = Visibility.Hidden;
+                CurrentImgsDictionary = new Dictionary<string, List<UnChekedWordInfo>>();
                 Thread tGetUncheckedWord = new Thread(GetUncheckedWordLists);
                 tGetUncheckedWord.IsBackground = true;
                 tGetUncheckedWord.Start();
@@ -95,19 +96,40 @@ namespace MyExcelAddIn
             viewModel.IsBusyVisibility = Visibility.Visible;
             try
             {
-                var workBook = Globals.ThisAddIn.Application.ActiveWorkbook;
-                var workSheet = (Worksheet)workBook.ActiveSheet;
-                int MaxRow = GetMaxRow(workSheet);
-                int MaxColumn = GetMaxColumn(workSheet);
-                List<Range> RangeDataList = new List<Range>();
-                for (int i = 1; i <= MaxRow; i++)
+                if (Util.IsUrlExist("http://localhost:8888/"))
                 {
-                    for (int j = 1; j <= MaxColumn; j++)
+                    var workBook = Globals.ThisAddIn.Application.ActiveWorkbook;
+                    var workSheet = (Worksheet)workBook.ActiveSheet;
+                    int MaxRow = GetMaxRow(workSheet);
+                    int MaxColumn = GetMaxColumn(workSheet);
+                    List<Range> RangeDataList = new List<Range>();
+                    for (int i = 1; i <= MaxRow; i++)
                     {
-                        RangeDataList.Add((Range)(workSheet.Cells[i, j]));
+                        for (int j = 1; j <= MaxColumn; j++)
+                        {
+                            RangeDataList.Add((Range)(workSheet.Cells[i, j]));
+                        }
                     }
+                    FindTextAndHightLight(RangeDataList);
                 }
-                FindTextAndHightLight(RangeDataList);
+                else
+                {
+                    if (rangeSelectLists.Count > 0)
+                    {
+                        for (int i = 0; i < rangeSelectLists.Count; i++)
+                        {
+                            rangeSelectLists[i].Interior.Color = rangeBackColorSelectLists[i];
+                        }
+                        rangeSelectLists = new List<Range>();
+                        rangeBackColorSelectLists = new List<dynamic>();
+                    }
+                    Dispatcher.Invoke(new System.Action(() =>
+                    {
+                        viewModel.WarningTotalCount = 0;
+                        viewModel.UncheckedWordLists.Clear();
+                        CurrentImgsDictionary = new Dictionary<string, List<UnChekedWordInfo>>();
+                    }));
+                }
             }
             catch (Exception ex)
             { }
