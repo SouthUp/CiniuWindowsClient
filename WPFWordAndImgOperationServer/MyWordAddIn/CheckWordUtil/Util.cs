@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Net;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Media.Imaging;
@@ -39,6 +40,20 @@ namespace CheckWordUtil
             catch (Exception ex)
             { }
             return image;
+        }
+        public static bool IsUrlExist(string URL)
+        {
+            try
+            {
+                WebRequest request = WebRequest.Create(URL);
+                request.Timeout = 1000;
+                WebResponse response = request.GetResponse();
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
         }
     }
 }

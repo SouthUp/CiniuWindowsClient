@@ -162,13 +162,34 @@ namespace MyWordAddIn
             { }
             try
             {
-                List<Microsoft.Office.Interop.Word.Paragraph> ParagraphDataList = new List<Microsoft.Office.Interop.Word.Paragraph>();
-                //检测整个文档
-                foreach (Microsoft.Office.Interop.Word.Paragraph paragraph in Application.ActiveDocument.Paragraphs)
+                if (Util.IsUrlExist("http://localhost:8888/"))
                 {
-                    ParagraphDataList.Add(paragraph);
+                    List<Microsoft.Office.Interop.Word.Paragraph> ParagraphDataList = new List<Microsoft.Office.Interop.Word.Paragraph>();
+                    //检测整个文档
+                    foreach (Microsoft.Office.Interop.Word.Paragraph paragraph in Application.ActiveDocument.Paragraphs)
+                    {
+                        ParagraphDataList.Add(paragraph);
+                    }
+                    FindTextAndHightLight(ParagraphDataList);
                 }
-                FindTextAndHightLight(ParagraphDataList);
+                else
+                {
+                    if (rangeSelectLists.Count > 0)
+                    {
+                        for (int i = 0; i < rangeSelectLists.Count; i++)
+                        {
+                            rangeSelectLists[i].HighlightColorIndex = rangeBackColorSelectLists[i];
+                        }
+                        rangeSelectLists = new List<Range>();
+                        rangeBackColorSelectLists = new List<WdColorIndex>();
+                    }
+                    Dispatcher.Invoke(new Action(() =>
+                    {
+                        viewModel.WarningTotalCount = 0;
+                        viewModel.UncheckedWordLists.Clear();
+                        CurrentImgsDictionary = new Dictionary<string, List<UnChekedWordInfo>>();
+                    }));
+                }
             }
             catch (Exception ex)
             { }
