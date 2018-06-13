@@ -402,7 +402,7 @@ namespace MyWordAddIn
                     listHashs.Add(hashPic);
                     if (!CurrentImgsDictionary.ContainsKey(hashPic))
                     {
-                        var listResult = AutoExcutePicOCR(item.ImgResultPath);
+                        var listResult = AutoExcutePicOCR(item.ImgResultPath, item.UnCheckWordRange);
                         CurrentImgsDictionary.Add(hashPic, listResult);
                     }
                 }
@@ -520,6 +520,8 @@ namespace MyWordAddIn
                 }
                 else
                 {
+                    if (unChekedWordInfo.UnCheckWordRange != null)
+                        unChekedWordInfo.UnCheckWordRange.Select();
                     if (File.Exists(unChekedWordInfo.ImgResultPath))
                     {
                         CheckWordControl.ImageDetailForm imageDetailForm = new CheckWordControl.ImageDetailForm();
@@ -657,7 +659,7 @@ namespace MyWordAddIn
         /// ORC自动分析图片
         /// </summary>
         /// <param name="filePath"></param>
-        private List<UnChekedWordInfo> AutoExcutePicOCR(string filePath)
+        private List<UnChekedWordInfo> AutoExcutePicOCR(string filePath, Range range)
         {
             List<UnChekedWordInfo> listResult = new List<UnChekedWordInfo>();
             try
@@ -729,13 +731,13 @@ namespace MyWordAddIn
                                     var infoResult = listResult.FirstOrDefault(x => x.Name == itemInfo.Name);
                                     if (infoResult == null)
                                     {
-                                        itemInfo.UnChekedWordInLineDetailInfos.Add(new UnChekedInLineDetailWordInfo() { TypeTextFrom = "Img", InLineText = lineWord, ImgResultPath = desiredFolderName + System.IO.Path.GetFileName(filePath) });
+                                        itemInfo.UnChekedWordInLineDetailInfos.Add(new UnChekedInLineDetailWordInfo() { TypeTextFrom = "Img", UnCheckWordRange = range, InLineText = lineWord, ImgResultPath = desiredFolderName + System.IO.Path.GetFileName(filePath) });
                                         itemInfo.ErrorTotalCount++;
                                         listResult.Add(itemInfo);
                                     }
                                     else
                                     {
-                                        infoResult.UnChekedWordInLineDetailInfos.Add(new UnChekedInLineDetailWordInfo() { TypeTextFrom = "Img", InLineText = lineWord, ImgResultPath = desiredFolderName + System.IO.Path.GetFileName(filePath) });
+                                        infoResult.UnChekedWordInLineDetailInfos.Add(new UnChekedInLineDetailWordInfo() { TypeTextFrom = "Img", UnCheckWordRange = range, InLineText = lineWord, ImgResultPath = desiredFolderName + System.IO.Path.GetFileName(filePath) });
                                         infoResult.ErrorTotalCount++;
                                     }
                                 }

@@ -10,6 +10,7 @@ namespace CheckWordModel
 {
     public class UnChekedInLineDetailWordInfo : ViewModelBase
     {
+        public Microsoft.Office.Interop.Excel.Shape UnCheckWordExcelRangeShape { get; set; }
         public Microsoft.Office.Interop.Excel.Range UnCheckWordExcelRange { get; set; }
         public Range UnCheckWordRange { get; set; }
         private string typeTextFrom = "Text";
