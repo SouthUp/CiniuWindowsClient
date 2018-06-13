@@ -468,7 +468,10 @@ namespace MyWordAddIn
                 }
                 else
                 {
-
+                    if (File.Exists(unChekedWordInfo.ImgResultPath))
+                    {
+                        
+                    }
                 }
             }
         }
@@ -642,6 +645,11 @@ namespace MyWordAddIn
                 }
                 if (resultImgGeneral != null && resultImgGeneral.words_result_num > 0)
                 {
+                    string desiredFolderName = CheckWordTempPath + " \\" + Guid.NewGuid().ToString() + "\\";
+                    if (!Directory.Exists(desiredFolderName))
+                    {
+                        Directory.CreateDirectory(desiredFolderName);
+                    }
                     List<WordInfo> listUnValidInfos = new List<WordInfo>();
                     foreach (var item in resultImgGeneral.words_result)
                     {
@@ -664,23 +672,18 @@ namespace MyWordAddIn
                                     var infoResult = listResult.FirstOrDefault(x => x.Name == itemInfo.Name);
                                     if (infoResult == null)
                                     {
-                                        itemInfo.UnChekedWordInLineDetailInfos.Add(new UnChekedInLineDetailWordInfo() { TypeTextFrom = "Img", InLineText = lineWord });
+                                        itemInfo.UnChekedWordInLineDetailInfos.Add(new UnChekedInLineDetailWordInfo() { TypeTextFrom = "Img", InLineText = lineWord, ImgResultPath = desiredFolderName + System.IO.Path.GetFileName(filePath) });
                                         itemInfo.ErrorTotalCount++;
                                         listResult.Add(itemInfo);
                                     }
                                     else
                                     {
-                                        infoResult.UnChekedWordInLineDetailInfos.Add(new UnChekedInLineDetailWordInfo() { TypeTextFrom = "Img", InLineText = lineWord });
+                                        infoResult.UnChekedWordInLineDetailInfos.Add(new UnChekedInLineDetailWordInfo() { TypeTextFrom = "Img", InLineText = lineWord, ImgResultPath = desiredFolderName + System.IO.Path.GetFileName(filePath) });
                                         infoResult.ErrorTotalCount++;
                                     }
                                 }
                             }
                         }
-                    }
-                    string desiredFolderName = CheckWordTempPath + " \\" + Guid.NewGuid().ToString() + "\\";
-                    if (!Directory.Exists(desiredFolderName))
-                    {
-                        Directory.CreateDirectory(desiredFolderName);
                     }
                     var list = CheckWordHelper.GetUnValidRects(listUnValidInfos);
                     foreach (var item in list)

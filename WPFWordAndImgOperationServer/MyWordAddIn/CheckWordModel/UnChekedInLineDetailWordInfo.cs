@@ -52,5 +52,15 @@ namespace CheckWordModel
                 RaisePropertyChanged("InLineKeyTextRangeStart");
             }
         }
+        private string imgResultPath = "";
+        public string ImgResultPath
+        {
+            get { return imgResultPath; }
+            set
+            {
+                imgResultPath = value;
+                RaisePropertyChanged("ImgResultPath");
+            }
+        }
     }
 }
