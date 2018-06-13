@@ -36,6 +36,8 @@ namespace MyExcelAddIn
         private List<dynamic> rangeBackColorSelectLists = new List<dynamic>();
         //保存当前要修改的Range的行和列
         private List<Range> rangeCurrentDealingLists = new List<Range>();
+        //图片改变检测
+        ImagesChangeDetector detectorImages;
         public MyControl()
         {
             InitializeComponent();
@@ -58,6 +60,18 @@ namespace MyExcelAddIn
             catch (Exception ex)
             { }
         }
+        private void detector_OnImagesChanged(object sender, ImagesChangedEventArgs e)
+        {
+            try
+            {
+                if (queue.Count == 0)
+                {
+                    queue.Enqueue(DateTime.Now);
+                }
+            }
+            catch (Exception ex)
+            { }
+        }
         private void UserControl_Loaded(object sender, RoutedEventArgs e)
         {
             StartDetector();
@@ -65,7 +79,8 @@ namespace MyExcelAddIn
         
         private void UserControl_Unloaded(object sender, RoutedEventArgs e)
         {
-            
+            detectorImages.OnImagesChanged -= detector_OnImagesChanged;
+            detectorImages.Stop();
         }
         /// <summary>
         /// 初始化数据
@@ -225,6 +240,10 @@ namespace MyExcelAddIn
             {
                 Globals.ThisAddIn.Application.SheetChange -= Application_SheetChange;
                 Globals.ThisAddIn.Application.SheetChange += Application_SheetChange;
+                if (detectorImages == null)
+                    detectorImages = new ImagesChangeDetector();
+                detectorImages.OnImagesChanged += detector_OnImagesChanged;
+                detectorImages.Start();
                 if (tDetector == null)
                 {
                     tDetector = new Thread(ExcuteQueue);
@@ -243,6 +262,8 @@ namespace MyExcelAddIn
             try
             {
                 Globals.ThisAddIn.Application.SheetChange -= Application_SheetChange;
+                detectorImages.OnImagesChanged -= detector_OnImagesChanged;
+                detectorImages.Stop();
                 if (tDetector != null)
                 {
                     tDetector.Abort();

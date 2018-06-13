@@ -4,25 +4,22 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Xml.Linq;
-using Word = Microsoft.Office.Interop.Word;
-using Office = Microsoft.Office.Core;
-using Microsoft.Office.Tools.Word;
 using System.ComponentModel;
-using Microsoft.Office.Interop.Word;
+using MyExcelAddIn;
+using Microsoft.Office.Interop.Excel;
 
-namespace MyWordAddIn
+namespace MyExcelAddIn
 {
     public class ImagesChangeDetector
     {
-        public Word.Application Application;
         private BackgroundWorker bg;
 
         public delegate void ImagesChangeHandler(object sender, ImagesChangedEventArgs e);
         public event ImagesChangeHandler OnImagesChanged;
 
-        public ImagesChangeDetector(Word.Application app)
+        public ImagesChangeDetector()
         {
-            this.Application = app;
+
         }
         /// <summary>
         /// 开始
@@ -34,7 +31,7 @@ namespace MyWordAddIn
             bg.WorkerSupportsCancellation = true;
             bg.ProgressChanged += bg_ProgressChanged;
             bg.DoWork += bg_DoWork;
-            bg.RunWorkerAsync(this.Application);
+            bg.RunWorkerAsync();
         }
 
         private void bg_ProgressChanged(object sender, ProgressChangedEventArgs e)
@@ -52,37 +49,27 @@ namespace MyWordAddIn
 
         private void bg_DoWork(object sender, DoWorkEventArgs e)
         {
-            Application wordApp = e.Argument as Application;
             BackgroundWorker bg = sender as BackgroundWorker;
             int countPicsLast = 0;
             while (true)
             {
                 try
                 {
-                    if (Application.Documents.Count > 0)
+                    int countPics = 0;
+                    var workBook = Globals.ThisAddIn.Application.ActiveWorkbook;
+                    var workSheet = (Worksheet)workBook.ActiveSheet;
+                    for (int i = 1; i <= workSheet.Shapes.Count; i++)
                     {
-                        if (Application.ActiveDocument.Paragraphs.Count > 0)
+                        var pic = workSheet.Shapes.Item(i);
+                        if (pic != null && pic.Type == Microsoft.Office.Core.MsoShapeType.msoPicture)
                         {
-                            int countPics = 0;
-                            foreach (Paragraph paragraph in Application.ActiveDocument.Paragraphs)
-                            {
-                                foreach (InlineShape ils in paragraph.Range.InlineShapes)
-                                {
-                                    if (ils != null)
-                                    {
-                                        if (ils.Type == WdInlineShapeType.wdInlineShapePicture)
-                                        {
-                                            countPics++;
-                                        }
-                                    }
-                                }
-                            }
-                            if (countPics != countPicsLast)
-                            {
-                                bg.ReportProgress(50, "");
-                                countPicsLast = countPics;
-                            }
+                            countPics++;
                         }
+                    }
+                    if (countPics != countPicsLast)
+                    {
+                        bg.ReportProgress(50, "");
+                        countPicsLast = countPics;
                     }
                 }
                 catch (Exception ex)
