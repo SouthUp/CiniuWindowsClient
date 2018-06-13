@@ -10,7 +10,7 @@ namespace CheckWordModel
 {
     public class ImagesDetailInfo
     {
-        public Microsoft.Office.Interop.Excel.Range UnCheckWordExcelRange { get; set; }
+        public Microsoft.Office.Interop.Excel.Shape UnCheckWordExcelRange { get; set; }
         public Range UnCheckWordRange { get; set; }
         public string ImgResultPath { get; set; }
     }

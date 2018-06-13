@@ -419,21 +419,16 @@ namespace MyExcelAddIn
             }
             catch (Exception ex)
             { }
-            GetPicsFromExcel();
+            List<ImagesDetailInfo> ImagesDetailInfos = GetPicsFromExcel();
             List<string> listHashs = new List<string>();
-            DirectoryInfo dirDoc = new DirectoryInfo(savePathGetImage);
-            var filePicInfos = dirDoc.GetFiles();
-            foreach (var picInfo in filePicInfos)
+            foreach (var item in ImagesDetailInfos)
             {
-                if (picInfo.FullName.Contains("jpg"))
+                string hashPic = HashHelper.ComputeSHA1(item.ImgResultPath);
+                listHashs.Add(hashPic);
+                if (!CurrentImgsDictionary.ContainsKey(hashPic))
                 {
-                    string hashPic = HashHelper.ComputeSHA1(picInfo.FullName);
-                    listHashs.Add(hashPic);
-                    if (!CurrentImgsDictionary.ContainsKey(hashPic))
-                    {
-                        var listResult = AutoExcutePicOCR(picInfo.FullName);
-                        CurrentImgsDictionary.Add(hashPic, listResult);
-                    }
+                    var listResult = AutoExcutePicOCR(item.ImgResultPath);
+                    CurrentImgsDictionary.Add(hashPic, listResult);
                 }
             }
             string[] keyArr = CurrentImgsDictionary.Keys.ToArray<string>();
@@ -547,8 +542,9 @@ namespace MyExcelAddIn
         /// <summary>
         /// 提取图片
         /// </summary>
-        private void GetPicsFromExcel()
+        private List<ImagesDetailInfo> GetPicsFromExcel()
         {
+            List<ImagesDetailInfo> result = new List<ImagesDetailInfo>();
             try
             {
                 var workBook = Globals.ThisAddIn.Application.ActiveWorkbook;
@@ -573,6 +569,7 @@ namespace MyExcelAddIn
                         if (image != null)
                         {
                             image.Save(savePathGetImage + pic.Name + ".jpg");
+                            result.Add(new ImagesDetailInfo() { ImgResultPath = savePathGetImage + pic.Name + ".jpg", UnCheckWordExcelRange = pic });
                         }
                         Dispatcher.Invoke(new System.Action(() =>
                         {
@@ -583,6 +580,7 @@ namespace MyExcelAddIn
             }
             catch (Exception ex)
             { }
+            return result;
         }
         #region ORC识别
         bool isInitCompleted = false;
