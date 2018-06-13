@@ -48,9 +48,15 @@ namespace MyWordAddIn
         private void UserControl_Loaded(object sender, RoutedEventArgs e)
         {
             StartDetector();
-            System.Threading.Thread tGetUncheckedWord = new System.Threading.Thread(OnlyExcutePicture);
-            tGetUncheckedWord.IsBackground = true;
-            tGetUncheckedWord.Start();
+            try
+            {
+                if (!queue.Contains("Images"))
+                {
+                    queue.Enqueue("Images");
+                }
+            }
+            catch (Exception ex)
+            { }
         }
         private void detector_OnTextChanged(object sender, TextChangedEventArgs e)
         {
