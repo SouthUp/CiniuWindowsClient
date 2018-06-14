@@ -122,5 +122,25 @@ namespace WordAndImgOperationApp
                 LoginIn();
             }
         }
+
+        private void FindPasswordBtn_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                System.Diagnostics.Process.Start("http://ciniuwang.com/password");
+            }
+            catch (Exception ex)
+            { }
+        }
+
+        private void RegisterBtn_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                System.Diagnostics.Process.Start("http://ciniuwang.com/register");
+            }
+            catch (Exception ex)
+            { }
+        }
     }
 }
