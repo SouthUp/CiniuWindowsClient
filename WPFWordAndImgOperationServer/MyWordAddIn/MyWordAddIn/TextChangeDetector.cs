@@ -53,7 +53,9 @@ namespace MyWordAddIn
         {
             Word.Application wordApp = e.Argument as Word.Application;
             BackgroundWorker bg = sender as BackgroundWorker;
-            int countWordsLast = 0;
+            string lastPage = string.Empty;
+            bool isChanged = false;
+            DateTime dtChaged = DateTime.Now;
             while (true)
             {
                 try
@@ -62,11 +64,29 @@ namespace MyWordAddIn
                     {
                         if (Application.ActiveDocument.Words.Count > 0)
                         {
-                            int countWords = Application.ActiveDocument.Words.Count;
-                            if (countWords != countWordsLast)
+                            var currentPage = Application.ActiveDocument.Bookmarks["\\Page"].Range.Text;
+                            if (currentPage != null && currentPage != lastPage)
                             {
+                                var differ = new DiffPlex.Differ();
+                                var builder = new DiffPlex.DiffBuilder.InlineDiffBuilder(differ);
+                                var difference = builder.BuildDiffModel(lastPage, currentPage);
+                                var change = from d in difference.Lines where d.Type != DiffPlex.DiffBuilder.Model.ChangeType.Unchanged select d;
+                                if (change.Any())
+                                {
+                                    string changeLastText = change.Last().Text;
+                                    if (!string.IsNullOrEmpty(changeLastText))
+                                    {
+                                        dtChaged = DateTime.Now;
+                                        isChanged = true;
+                                    }
+                                }
+                                lastPage = currentPage;
+                            }
+                            TimeSpan span = (TimeSpan)(DateTime.Now - dtChaged);
+                            if (isChanged && span.Milliseconds >= 300)
+                            {
+                                isChanged = false;
                                 bg.ReportProgress(50, "");
-                                countWordsLast = countWords;
                             }
                         }
                     }
