@@ -292,7 +292,7 @@ namespace MyWordAddIn
                                         }
                                         lock (lockObject)
                                         {
-                                            var infoExist = listUnCheckWords.FirstOrDefault(x => x.Name == SelectUnCheckWord.Name);
+                                            var infoExist = listUnCheckWords.AsParallel().FirstOrDefault(x => x.Name == SelectUnCheckWord.Name);
                                             if (infoExist == null)
                                             {
                                                 listUnCheckWords.Add(SelectUnCheckWord);
@@ -319,7 +319,7 @@ namespace MyWordAddIn
             {
                 foreach (var item in Value)
                 {
-                    var infoExist = listUnCheckWords.FirstOrDefault(x => x.Name == item.Name);
+                    var infoExist = listUnCheckWords.AsParallel().FirstOrDefault(x => x.Name == item.Name);
                     if (infoExist == null)
                     {
                         listUnCheckWords.Add(item);
@@ -336,7 +336,7 @@ namespace MyWordAddIn
             }
             foreach (var SelectUnCheckWord in listUnCheckWords)
             {
-                var itemInfo = viewModel.UncheckedWordLists.FirstOrDefault(x => x.Name == SelectUnCheckWord.Name);
+                var itemInfo = viewModel.UncheckedWordLists.AsParallel().FirstOrDefault(x => x.Name == SelectUnCheckWord.Name);
                 if (itemInfo == null)
                 {
                     Dispatcher.Invoke(new Action(() =>
@@ -355,7 +355,7 @@ namespace MyWordAddIn
             }
             for (int i = 0; i < viewModel.UncheckedWordLists.Count; i++)
             {
-                var itemInfo = listUnCheckWords.FirstOrDefault(x => x.Name == viewModel.UncheckedWordLists[i].Name);
+                var itemInfo = listUnCheckWords.AsParallel().FirstOrDefault(x => x.Name == viewModel.UncheckedWordLists[i].Name);
                 if (itemInfo == null)
                 {
                     Dispatcher.Invoke(new Action(() =>
@@ -366,10 +366,13 @@ namespace MyWordAddIn
                 }
             }
             int countTotal = 0;
-            foreach (var item in viewModel.UncheckedWordLists)
+            Parallel.ForEach(viewModel.UncheckedWordLists, (item, loopState) =>
             {
-                countTotal += item.ErrorTotalCount;
-            }
+                lock (lockObject)
+                {
+                    countTotal += item.ErrorTotalCount;
+                }
+            });
             Dispatcher.Invoke(new Action(() =>
             {
                 viewModel.WarningTotalCount = countTotal;

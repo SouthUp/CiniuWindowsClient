@@ -399,7 +399,7 @@ namespace MyExcelAddIn
                                         }
                                         lock (lockObject)
                                         {
-                                            var infoExist = listUnCheckWords.FirstOrDefault(x => x.Name == SelectUnCheckWord.Name);
+                                            var infoExist = listUnCheckWords.AsParallel().FirstOrDefault(x => x.Name == SelectUnCheckWord.Name);
                                             if (infoExist == null)
                                             {
                                                 listUnCheckWords.Add(SelectUnCheckWord);
@@ -446,7 +446,7 @@ namespace MyExcelAddIn
             {
                 foreach (var item in Value)
                 {
-                    var infoExist = listUnCheckWords.FirstOrDefault(x => x.Name == item.Name);
+                    var infoExist = listUnCheckWords.AsParallel().FirstOrDefault(x => x.Name == item.Name);
                     if (infoExist == null)
                     {
                         listUnCheckWords.Add(item);
@@ -463,7 +463,7 @@ namespace MyExcelAddIn
             }
             foreach (var SelectUnCheckWord in listUnCheckWords)
             {
-                var itemInfo = viewModel.UncheckedWordLists.FirstOrDefault(x => x.Name == SelectUnCheckWord.Name);
+                var itemInfo = viewModel.UncheckedWordLists.AsParallel().FirstOrDefault(x => x.Name == SelectUnCheckWord.Name);
                 Dispatcher.Invoke(new System.Action(() =>
                 {
                     if (itemInfo == null)
@@ -479,7 +479,7 @@ namespace MyExcelAddIn
             }
             for (int i = 0; i < viewModel.UncheckedWordLists.Count; i++)
             {
-                var itemInfo = listUnCheckWords.FirstOrDefault(x => x.Name == viewModel.UncheckedWordLists[i].Name);
+                var itemInfo = listUnCheckWords.AsParallel().FirstOrDefault(x => x.Name == viewModel.UncheckedWordLists[i].Name);
                 if (itemInfo == null)
                 {
                     Dispatcher.Invoke(new System.Action(() =>
@@ -492,7 +492,7 @@ namespace MyExcelAddIn
             //渲染高亮
             foreach (var item in rangeCurrentDealingLists)
             {
-                var itemInfo = rangeSelectLists.FirstOrDefault(x => x.Row == item.Row && x.Column == item.Column);
+                var itemInfo = rangeSelectLists.AsParallel().FirstOrDefault(x => x.Row == item.Row && x.Column == item.Column);
                 if (itemInfo == null)
                 {
                     rangeSelectLists.Add(item);
@@ -502,7 +502,7 @@ namespace MyExcelAddIn
             }
             for (int i = 0; i < rangeSelectLists.Count; i++)
             {
-                var itemInfo = rangeCurrentDealingLists.FirstOrDefault(x => x.Row == rangeSelectLists[i].Row && x.Column == rangeSelectLists[i].Column);
+                var itemInfo = rangeCurrentDealingLists.AsParallel().FirstOrDefault(x => x.Row == rangeSelectLists[i].Row && x.Column == rangeSelectLists[i].Column);
                 if (itemInfo == null)
                 {
                     Dispatcher.Invoke(new System.Action(() =>
@@ -514,13 +514,17 @@ namespace MyExcelAddIn
                     i--;
                 }
             }
+            int countTotal = 0;
+            Parallel.ForEach(viewModel.UncheckedWordLists, (item, loopState) =>
+            {
+                lock (lockObject)
+                {
+                    countTotal += item.ErrorTotalCount;
+                }
+            });
             Dispatcher.Invoke(new System.Action(() =>
             {
-                viewModel.WarningTotalCount = 0;
-                foreach (var item in viewModel.UncheckedWordLists)
-                {
-                    viewModel.WarningTotalCount += item.ErrorTotalCount;
-                }
+                viewModel.WarningTotalCount = countTotal;
             }));
         }
         /// <summary>
