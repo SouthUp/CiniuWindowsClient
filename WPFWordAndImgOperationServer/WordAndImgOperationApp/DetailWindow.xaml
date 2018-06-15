@@ -228,7 +228,7 @@
                                                                 </ToolTip>
                                                             </Button.ToolTip>
                                                         </Button>
-                                                        <Border Width="16" Height="16" Margin="14,0,0,0" Background="#f44336"
+                                                        <Border Width="32" Height="16" Margin="14,0,0,0" Background="#f44336"
                                                                 CornerRadius="8">
                                                             <TextBlock Text="{Binding ErrorTotalCount}" FontSize="12" Opacity="0.87"
                                                                        Style="{StaticResource CommonLeftTextBlock}"
