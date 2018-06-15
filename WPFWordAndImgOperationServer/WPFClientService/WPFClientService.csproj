@@ -69,6 +69,10 @@
     <Compile Include="WPFClientCheckWordService.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\CheckWordUtil\CheckWordUtil.csproj">
+      <Project>{7ade6cf2-1cc9-46f6-8bce-f2f475e00e9f}</Project>
+      <Name>CheckWordUtil</Name>
+    </ProjectReference>
     <ProjectReference Include="..\IWPFClientService\IWPFClientService.csproj">
       <Project>{ccbaf7e2-a23c-4459-a7bf-cbb7a08471e4}</Project>
       <Name>IWPFClientService</Name>

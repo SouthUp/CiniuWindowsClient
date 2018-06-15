@@ -998,6 +998,14 @@ namespace WordAndImgOperationApp
                 loginInOutInfo.Type = typeInfo;
                 loginInOutInfo.UrlStr = ConfigurationManager.AppSettings["UrlStr"].ToString();
                 loginInOutInfo.Token = UtilSystemVar.UserToken;
+                try
+                {
+                    //保存用户登录信息到本地
+                    string loginInOutInfos = string.Format(@"{0}\LoginInOutInfo.xml", Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + "\\WordAndImgOCR\\LoginInOutInfo\\");
+                    DataParse.WriteToXmlPath(JsonConvert.SerializeObject(loginInOutInfo), loginInOutInfos);
+                }
+                catch (Exception ex)
+                { }
                 string json = JsonConvert.SerializeObject(loginInOutInfo);
                 mService.ClientSendMessage(json);
             }

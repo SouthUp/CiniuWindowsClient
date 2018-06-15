@@ -76,11 +76,6 @@ namespace WPFClientService
                     {
                         CheckWordHelper.WordModels = CheckWordHelper.GetAllCheckWordByToken(loginInOutInfo.Token);
                     }
-                    SystemVar.IsLoginIn = true;
-                }
-                else
-                {
-                    SystemVar.IsLoginIn = false;
                 }
             }
             catch (Exception ex)

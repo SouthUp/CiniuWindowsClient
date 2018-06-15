@@ -27,7 +27,7 @@ namespace WPFClientService
         public string CheckWord(CheckWordRequestInfo info)
         {
             CheckWordResponseResult result = new CheckWordResponseResult();
-            if(SystemVar.IsLoginIn)
+            if (IsUserLogin())
             {
                 try
                 {
@@ -52,7 +52,7 @@ namespace WPFClientService
         public string CheckOneWord(CheckWordRequestInfo info)
         {
             CheckOnlyWordResponseResult result = new CheckOnlyWordResponseResult();
-            if (SystemVar.IsLoginIn)
+            if (IsUserLogin())
             {
                 try
                 {
@@ -77,7 +77,7 @@ namespace WPFClientService
         public string GetReplaceWord(ReplaceWordRequestInfo info)
         {
             ReplaceWordResponseResult result = new ReplaceWordResponseResult();
-            if (SystemVar.IsLoginIn)
+            if (IsUserLogin())
             {
                 try
                 {
@@ -95,6 +95,31 @@ namespace WPFClientService
                 result.Message = "LoginOut";
             }
             return JsonConvert.SerializeObject(result);
+        }
+        private static bool IsUserLogin()
+        {
+            bool result = false;
+            try
+            {
+                string loginInOutInfos = string.Format(@"{0}\LoginInOutInfo.xml", Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + "\\WordAndImgOCR\\LoginInOutInfo\\");
+                var ui = CheckWordUtil.DataParse.ReadFromXmlPath<string>(loginInOutInfos);
+                if (ui != null && ui.ToString() != "")
+                {
+                    try
+                    {
+                        var loginInOutInfo = JsonConvert.DeserializeObject<LoginInOutInfo>(ui.ToString());
+                        if (loginInOutInfo != null && loginInOutInfo.Type == "LoginIn")
+                        {
+                            result = true;
+                        }
+                    }
+                    catch
+                    { }
+                }
+            }
+            catch (Exception ex)
+            { }
+            return result;
         }
     }
 }
