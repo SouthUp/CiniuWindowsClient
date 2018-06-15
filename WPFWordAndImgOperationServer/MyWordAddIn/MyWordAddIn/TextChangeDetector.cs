@@ -43,7 +43,7 @@ namespace MyWordAddIn
                 case 50: //change
                     if (OnTextChanged != null)
                     {
-                        OnTextChanged(this, new TextChangedEventArgs((char)e.UserState));
+                        OnTextChanged(this, new TextChangedEventArgs("Text"));
                     }
                     break;
             }
@@ -53,7 +53,7 @@ namespace MyWordAddIn
         {
             Word.Application wordApp = e.Argument as Word.Application;
             BackgroundWorker bg = sender as BackgroundWorker;
-            string lastPage = string.Empty;
+            int countWordsLast = 0;
             while (true)
             {
                 try
@@ -62,26 +62,12 @@ namespace MyWordAddIn
                     {
                         if (Application.ActiveDocument.Words.Count > 0)
                         {
-                            var currentPage = Application.ActiveDocument.Bookmarks["\\Page"].Range.Text;
-                            if (currentPage != null && currentPage != lastPage)
+                            int countWords = Application.ActiveDocument.Words.Count;
+                            if (countWords != countWordsLast)
                             {
-                                var differ = new DiffPlex.Differ();
-                                var builder = new DiffPlex.DiffBuilder.InlineDiffBuilder(differ);
-                                var difference = builder.BuildDiffModel(lastPage, currentPage);
-                                var change = from d in difference.Lines where d.Type != DiffPlex.DiffBuilder.Model.ChangeType.Unchanged select d;
-                                if (change.Any())
-                                {
-                                    string changeLastText = change.Last().Text;
-                                    if(!string.IsNullOrEmpty(changeLastText))
-                                    {
-                                        bg.ReportProgress(50, changeLastText.Last());
-                                    }
-                                }
-
-                                lastPage = currentPage;
+                                bg.ReportProgress(50, "");
+                                countWordsLast = countWords;
                             }
-
-
                         }
                     }
                 }
@@ -110,8 +96,8 @@ namespace MyWordAddIn
 
     public class TextChangedEventArgs : EventArgs
     {
-        public char Letter;
-        public TextChangedEventArgs(char letter)
+        public string Letter;
+        public TextChangedEventArgs(string letter)
         {
             this.Letter = letter;
         }
