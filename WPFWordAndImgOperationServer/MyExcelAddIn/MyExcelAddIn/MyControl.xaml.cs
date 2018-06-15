@@ -3,6 +3,7 @@ using CheckWordUtil;
 using Microsoft.Office.Interop.Excel;
 using Newtonsoft.Json;
 using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Configuration;
@@ -35,7 +36,7 @@ namespace MyExcelAddIn
         private List<Range> rangeSelectLists = new List<Range>();
         private List<dynamic> rangeBackColorSelectLists = new List<dynamic>();
         //保存当前要修改的Range的行和列
-        private List<Range> rangeCurrentDealingLists = new List<Range>();
+        private ConcurrentBag<Range> rangeCurrentDealingLists = new ConcurrentBag<Range>();
         //图片改变检测
         ImagesChangeDetector detectorImages;
         public MyControl()
@@ -350,8 +351,8 @@ namespace MyExcelAddIn
         /// </summary>
         private void FindTextAndHightLight(List<Range> RangeDataList)
         {
-            ObservableCollection<UnChekedWordInfo> listUnCheckWords = new ObservableCollection<UnChekedWordInfo>();
-            rangeCurrentDealingLists = new List<Range>();
+            ConcurrentBag<UnChekedWordInfo> listUnCheckWords = new ConcurrentBag<UnChekedWordInfo>();
+            rangeCurrentDealingLists = new ConcurrentBag<Range>();
             //处理违禁词查找
             try
             {
@@ -385,10 +386,7 @@ namespace MyExcelAddIn
                                     MatchCollection mc = Regex.Matches(str, strFind.Name, RegexOptions.IgnoreCase);
                                     if (mc.Count > 0)
                                     {
-                                        lock (lockObject)
-                                        {
-                                            rangeCurrentDealingLists.Add(item);
-                                        }
+                                        rangeCurrentDealingLists.Add(item);
                                         foreach (Match m in mc)
                                         {
                                             try
@@ -399,17 +397,20 @@ namespace MyExcelAddIn
                                             catch (Exception ex)
                                             { }
                                         }
-                                        var infoExist = listUnCheckWords.FirstOrDefault(x => x.Name == SelectUnCheckWord.Name);
-                                        if (infoExist == null)
+                                        lock (lockObject)
                                         {
-                                            listUnCheckWords.Add(SelectUnCheckWord);
-                                        }
-                                        else
-                                        {
-                                            foreach (var itemInfo in SelectUnCheckWord.UnChekedWordInLineDetailInfos)
+                                            var infoExist = listUnCheckWords.FirstOrDefault(x => x.Name == SelectUnCheckWord.Name);
+                                            if (infoExist == null)
                                             {
-                                                infoExist.UnChekedWordInLineDetailInfos.Add(itemInfo);
-                                                infoExist.ErrorTotalCount++;
+                                                listUnCheckWords.Add(SelectUnCheckWord);
+                                            }
+                                            else
+                                            {
+                                                foreach (var itemInfo in SelectUnCheckWord.UnChekedWordInLineDetailInfos)
+                                                {
+                                                    infoExist.UnChekedWordInLineDetailInfos.Add(itemInfo);
+                                                    infoExist.ErrorTotalCount++;
+                                                }
                                             }
                                         }
                                     }

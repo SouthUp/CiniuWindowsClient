@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Configuration;
@@ -245,7 +246,7 @@ namespace MyWordAddIn
         /// <param name="strFind"></param>
         private void FindTextAndHightLight(List<Microsoft.Office.Interop.Word.Paragraph> ParagraphDataList)
         {
-            ObservableCollection<UnChekedWordInfo> listUnCheckWords = new ObservableCollection<UnChekedWordInfo>();
+            ConcurrentBag<UnChekedWordInfo> listUnCheckWords = new ConcurrentBag<UnChekedWordInfo>();
             // 清除文档中的高亮显示
             ClearMark();
             rangeSelectLists = new List<Range>();
@@ -253,8 +254,8 @@ namespace MyWordAddIn
             //处理段落违禁词查找
             try
             {
-                int ParagraphCount = Application.ActiveDocument.Paragraphs.Count;
-                System.Threading.Tasks.Parallel.For(0, ParagraphCount, new System.Threading.Tasks.ParallelOptions { MaxDegreeOfParallelism = 10 }, (i, state) =>
+                int ParagraphCount = ParagraphDataList.Count;
+                Parallel.For(0, ParagraphCount, new ParallelOptions { MaxDegreeOfParallelism = 10 }, (i, state) =>
                 {
                     if (ParagraphDataList.Skip(i).Take(1).ToList().Count > 0)
                     {
@@ -277,8 +278,11 @@ namespace MyWordAddIn
                                                 int startIndex = paragraph.Range.Start + m.Index;
                                                 int endIndex = paragraph.Range.Start + m.Index + m.Length;
                                                 Range keywordRange = Application.ActiveDocument.Range(startIndex, endIndex);
-                                                rangeSelectLists.Add(keywordRange);
-                                                rangeBackColorSelectLists.Add(keywordRange.HighlightColorIndex);
+                                                lock (lockObject)
+                                                {
+                                                    rangeSelectLists.Add(keywordRange);
+                                                    rangeBackColorSelectLists.Add(keywordRange.HighlightColorIndex);
+                                                }
                                                 keywordRange.HighlightColorIndex = WdColorIndex.wdYellow;
                                                 SelectUnCheckWord.UnChekedWordInLineDetailInfos.Add(new UnChekedInLineDetailWordInfo() { InLineText = paragraph.Range.Text, UnCheckWordRange = keywordRange });
                                                 SelectUnCheckWord.ErrorTotalCount++;
@@ -286,17 +290,20 @@ namespace MyWordAddIn
                                             catch (Exception ex)
                                             { }
                                         }
-                                        var infoExist = listUnCheckWords.FirstOrDefault(x => x.Name == SelectUnCheckWord.Name);
-                                        if (infoExist == null)
+                                        lock (lockObject)
                                         {
-                                            listUnCheckWords.Add(SelectUnCheckWord);
-                                        }
-                                        else
-                                        {
-                                            foreach (var item in SelectUnCheckWord.UnChekedWordInLineDetailInfos)
+                                            var infoExist = listUnCheckWords.FirstOrDefault(x => x.Name == SelectUnCheckWord.Name);
+                                            if (infoExist == null)
                                             {
-                                                infoExist.UnChekedWordInLineDetailInfos.Add(item);
-                                                infoExist.ErrorTotalCount++;
+                                                listUnCheckWords.Add(SelectUnCheckWord);
+                                            }
+                                            else
+                                            {
+                                                foreach (var item in SelectUnCheckWord.UnChekedWordInLineDetailInfos)
+                                                {
+                                                    infoExist.UnChekedWordInLineDetailInfos.Add(item);
+                                                    infoExist.ErrorTotalCount++;
+                                                }
                                             }
                                         }
                                     }
