@@ -84,6 +84,7 @@ namespace CheckWordUtil
                         DeleteFolder(d);////递归删除子文件夹
                     }
                 }
+                Directory.Delete(dir, true);
             }
             catch (Exception ex)
             { }
