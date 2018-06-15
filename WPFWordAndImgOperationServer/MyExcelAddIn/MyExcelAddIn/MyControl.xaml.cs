@@ -30,6 +30,7 @@ namespace MyExcelAddIn
     /// </summary>
     public partial class MyControl : UserControl
     {
+        ConcurrentBag<UnChekedWordInfo> listUnCheckWords = new ConcurrentBag<UnChekedWordInfo>();
         Dictionary<string, List<UnChekedWordInfo>> CurrentImgsDictionary = new Dictionary<string, List<UnChekedWordInfo>>();
         MyControlViewModel viewModel = new MyControlViewModel();
         // 保存修改过的Range和之前的背景色，以便于恢复
@@ -114,19 +115,7 @@ namespace MyExcelAddIn
             {
                 if (Util.IsUrlExist("http://localhost:8888/"))
                 {
-                    var workBook = Globals.ThisAddIn.Application.ActiveWorkbook;
-                    var workSheet = (Worksheet)workBook.ActiveSheet;
-                    int MaxRow = GetMaxRow(workSheet);
-                    int MaxColumn = GetMaxColumn(workSheet);
-                    List<Range> RangeDataList = new List<Range>();
-                    for (int i = 1; i <= MaxRow; i++)
-                    {
-                        for (int j = 1; j <= MaxColumn; j++)
-                        {
-                            RangeDataList.Add((Range)(workSheet.Cells[i, j]));
-                        }
-                    }
-                    FindTextAndHightLight(RangeDataList);
+                    FindTextAndHightLight();
                 }
                 else
                 {
@@ -349,79 +338,30 @@ namespace MyExcelAddIn
         /// <summary>
         /// 查找文本并高亮显示
         /// </summary>
-        private void FindTextAndHightLight(List<Range> RangeDataList)
+        private void FindTextAndHightLight()
         {
-            ConcurrentBag<UnChekedWordInfo> listUnCheckWords = new ConcurrentBag<UnChekedWordInfo>();
+            listUnCheckWords = new ConcurrentBag<UnChekedWordInfo>();
             rangeCurrentDealingLists = new ConcurrentBag<Range>();
-            //处理违禁词查找
-            try
+            var workBook = Globals.ThisAddIn.Application.ActiveWorkbook;
+            var workSheet = (Worksheet)workBook.ActiveSheet;
+            int MaxRow = GetMaxRow(workSheet);
+            int MaxColumn = GetMaxColumn(workSheet);
+            List<Range> RangeDataList = new List<Range>();
+            for (int i = 1; i <= MaxRow; i++)
             {
-                int DealPagesCount = 1;
-                if (RangeDataList.Count % 10 > 0)
+                for (int j = 1; j <= MaxColumn; j++)
                 {
-                    DealPagesCount = RangeDataList.Count / 10 + 1;
-                }
-                else
-                {
-                    DealPagesCount = RangeDataList.Count / 10;
-                    if (DealPagesCount == 0)
+                    RangeDataList.Add((Range)(workSheet.Cells[i, j]));
+                    if (RangeDataList.Count >= 200)
                     {
-                        DealPagesCount = 1;
+                        //处理段落违禁词查找
+                        DealParagraph(RangeDataList);
+                        RangeDataList = new List<Range>();
                     }
                 }
-                Parallel.For(0, DealPagesCount, new ParallelOptions { MaxDegreeOfParallelism = 10 }, (i, state) =>
-                {
-                    var list = RangeDataList.Skip(i * 10).Take(10).ToList();
-                    foreach (var item in list)
-                    {
-                        string str = CellGetStringValue(item);
-                        if (!string.IsNullOrEmpty(str))
-                        {
-                            var listUnChekedWord = CheckWordHelper.GetUnChekedWordInfoList(str).ToList();
-                            if (listUnChekedWord != null && listUnChekedWord.Count > 0)
-                            {
-                                foreach (var strFind in listUnChekedWord.ToList())
-                                {
-                                    UnChekedWordInfo SelectUnCheckWord = new UnChekedWordInfo() { Name = strFind.Name, UnChekedWordDetailInfos = strFind.UnChekedWordDetailInfos };
-                                    MatchCollection mc = Regex.Matches(str, strFind.Name, RegexOptions.IgnoreCase);
-                                    if (mc.Count > 0)
-                                    {
-                                        rangeCurrentDealingLists.Add(item);
-                                        foreach (Match m in mc)
-                                        {
-                                            try
-                                            {
-                                                SelectUnCheckWord.UnChekedWordInLineDetailInfos.Add(new UnChekedInLineDetailWordInfo() { InLineText = str, UnCheckWordExcelRange = item });
-                                                SelectUnCheckWord.ErrorTotalCount++;
-                                            }
-                                            catch (Exception ex)
-                                            { }
-                                        }
-                                        lock (lockObject)
-                                        {
-                                            var infoExist = listUnCheckWords.AsParallel().FirstOrDefault(x => x.Name == SelectUnCheckWord.Name);
-                                            if (infoExist == null)
-                                            {
-                                                listUnCheckWords.Add(SelectUnCheckWord);
-                                            }
-                                            else
-                                            {
-                                                foreach (var itemInfo in SelectUnCheckWord.UnChekedWordInLineDetailInfos)
-                                                {
-                                                    infoExist.UnChekedWordInLineDetailInfos.Add(itemInfo);
-                                                    infoExist.ErrorTotalCount++;
-                                                }
-                                            }
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    }
-                });
             }
-            catch (Exception ex)
-            { }
+            //处理违禁词查找
+            DealParagraph(RangeDataList);
             List<ImagesDetailInfo> ImagesDetailInfos = GetPicsFromExcel();
             List<string> listHashs = new List<string>();
             foreach (var item in ImagesDetailInfos)
@@ -526,6 +466,77 @@ namespace MyExcelAddIn
             {
                 viewModel.WarningTotalCount = countTotal;
             }));
+        }
+        private void DealParagraph(List<Range> RangeDataList)
+        {
+            try
+            {
+                int DealPagesCount = 1;
+                if (RangeDataList.Count % 10 > 0)
+                {
+                    DealPagesCount = RangeDataList.Count / 10 + 1;
+                }
+                else
+                {
+                    DealPagesCount = RangeDataList.Count / 10;
+                    if (DealPagesCount == 0)
+                    {
+                        DealPagesCount = 1;
+                    }
+                }
+                Parallel.For(0, DealPagesCount, new ParallelOptions { MaxDegreeOfParallelism = 10 }, (i, state) =>
+                {
+                    var list = RangeDataList.Skip(i * 10).Take(10).ToList();
+                    foreach (var item in list)
+                    {
+                        string str = CellGetStringValue(item);
+                        if (!string.IsNullOrEmpty(str))
+                        {
+                            var listUnChekedWord = CheckWordHelper.GetUnChekedWordInfoList(str).ToList();
+                            if (listUnChekedWord != null && listUnChekedWord.Count > 0)
+                            {
+                                foreach (var strFind in listUnChekedWord.ToList())
+                                {
+                                    UnChekedWordInfo SelectUnCheckWord = new UnChekedWordInfo() { Name = strFind.Name, UnChekedWordDetailInfos = strFind.UnChekedWordDetailInfos };
+                                    MatchCollection mc = Regex.Matches(str, strFind.Name, RegexOptions.IgnoreCase);
+                                    if (mc.Count > 0)
+                                    {
+                                        rangeCurrentDealingLists.Add(item);
+                                        foreach (Match m in mc)
+                                        {
+                                            try
+                                            {
+                                                SelectUnCheckWord.UnChekedWordInLineDetailInfos.Add(new UnChekedInLineDetailWordInfo() { InLineText = str, UnCheckWordExcelRange = item });
+                                                SelectUnCheckWord.ErrorTotalCount++;
+                                            }
+                                            catch (Exception ex)
+                                            { }
+                                        }
+                                        lock (lockObject)
+                                        {
+                                            var infoExist = listUnCheckWords.AsParallel().FirstOrDefault(x => x.Name == SelectUnCheckWord.Name);
+                                            if (infoExist == null)
+                                            {
+                                                listUnCheckWords.Add(SelectUnCheckWord);
+                                            }
+                                            else
+                                            {
+                                                foreach (var itemInfo in SelectUnCheckWord.UnChekedWordInLineDetailInfos)
+                                                {
+                                                    infoExist.UnChekedWordInLineDetailInfos.Add(itemInfo);
+                                                    infoExist.ErrorTotalCount++;
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                });
+            }
+            catch (Exception ex)
+            { }
         }
         /// <summary>
         /// 清除文档中的高亮显示
