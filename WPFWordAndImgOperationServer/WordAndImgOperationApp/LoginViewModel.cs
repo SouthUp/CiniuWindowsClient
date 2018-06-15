@@ -50,7 +50,7 @@ namespace WordAndImgOperationApp
                 }
             }
         }
-        private bool _isAutoLogin = Convert.ToBoolean(System.Configuration.ConfigurationSettings.AppSettings["IsAutoLogin"].ToString());
+        private bool _isAutoLogin;
         public bool IsAutoLogin
         {
             get { return _isAutoLogin; }

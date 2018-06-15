@@ -8,8 +8,8 @@ namespace WPFClientCheckWordModel
 {
     public class UserLoginInfo
     {
-        public string Type { get; set; }
-        public string Token { get; set; }
-        public string UrlStr { get; set; }
+        public string UserName { get; set; }
+        public string PassWord { get; set; }
+        public bool IsAutoLogin { get; set; }
     }
 }

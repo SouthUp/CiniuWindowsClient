@@ -144,7 +144,7 @@ namespace WordAndImgOperationApp
             {
                 viewModel.SetIsCircleCheckBtnEnable();
                 //保存路径设置信息到本地
-                string chekedWordSettingsInfo = string.Format(@"{0}ChekedWordSettings\ChekedWordSettings.xml", AppDomain.CurrentDomain.BaseDirectory);
+                string chekedWordSettingsInfo = string.Format(@"{0}ChekedWordSettings\ChekedWordSettings.xml", Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + "\\WordAndImgOCR\\");
                 DataParse.WriteToXmlPath(Newtonsoft.Json.JsonConvert.SerializeObject(viewModel.ChekedWordSettingsInfos.ToList()), chekedWordSettingsInfo);
             }
             catch (Exception ex)

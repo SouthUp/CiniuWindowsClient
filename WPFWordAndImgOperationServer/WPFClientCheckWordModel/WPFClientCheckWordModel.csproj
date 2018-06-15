@@ -72,6 +72,8 @@
     <Compile Include="ReplaceWordModel.cs" />
     <Compile Include="ReplaceWordRequestInfo.cs" />
     <Compile Include="ReplaceWordResponseResult.cs" />
+    <Compile Include="SearchPopSettingInfo.cs" />
+    <Compile Include="UserLoginInfo.cs" />
     <Compile Include="UserLoginRequest.cs" />
     <Compile Include="UserLoginResponse.cs" />
     <Compile Include="WordModel.cs" />

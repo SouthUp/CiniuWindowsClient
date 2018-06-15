@@ -39,7 +39,7 @@ namespace WordAndImgOperationApp
     /// </summary>
     public partial class MainWindow : Window, ICallBackServices
     {
-        private string CheckWordTempPath = AppDomain.CurrentDomain.BaseDirectory + "CheckWordResultTemp";
+        private string CheckWordTempPath = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + "\\WordAndImgOCR\\CheckWordResultTemp";
         WindowState windowState;
         NotifyIcon notifyIcon;
         WPFOfficeWindowViewModel viewModel = new WPFOfficeWindowViewModel();
@@ -64,7 +64,22 @@ namespace WordAndImgOperationApp
             {
                 try
                 {
-                    bool isSearchPopStateOpen = bool.Parse(ConfigurationSettings.AppSettings["IsSearchPopStateOpen"].ToString());
+                    bool isSearchPopStateOpen = true;
+                    string loginInOutInfos = string.Format(@"{0}\SearchPopSettingInfo.xml", Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + "\\WordAndImgOCR\\LoginInOutInfo\\");
+                    var ui = CheckWordUtil.DataParse.ReadFromXmlPath<string>(loginInOutInfos);
+                    if (ui != null && ui.ToString() != "")
+                    {
+                        try
+                        {
+                            var searchPopSettingInfo = JsonConvert.DeserializeObject<SearchPopSettingInfo>(ui.ToString());
+                            if (searchPopSettingInfo != null)
+                            {
+                                isSearchPopStateOpen = searchPopSettingInfo.IsSearchPopStateOpen;
+                            }
+                        }
+                        catch
+                        { }
+                    }
                     if (isSearchPopStateOpen)
                     {
                         ShowSearchPop();
@@ -368,15 +383,13 @@ namespace WordAndImgOperationApp
         {
             try
             {
-                System.Configuration.Configuration config = System.Configuration.ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.None);
-                AppSettingsSection appsettings = config.AppSettings;
-                foreach (KeyValueConfigurationElement item in appsettings.Settings)
-                {
-                    if (item.Key == "IsAutoLogin")
-                        item.Value = "false";
-                }
-                config.Save(ConfigurationSaveMode.Modified);
-                ConfigurationManager.RefreshSection("appSettings");
+                UserLoginInfo userLoginInfo = new UserLoginInfo();
+                userLoginInfo.UserName = "";
+                userLoginInfo.PassWord = "";
+                userLoginInfo.IsAutoLogin = false;
+                //保存用户登录信息到本地
+                string userLoginInfos = string.Format(@"{0}\UserLoginInfo.xml", Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + "\\WordAndImgOCR\\LoginInOutInfo\\");
+                DataParse.WriteToXmlPath(JsonConvert.SerializeObject(userLoginInfo), userLoginInfos);
             }
             catch (Exception ex)
             { }
@@ -579,15 +592,11 @@ namespace WordAndImgOperationApp
         {
             try
             {
-                System.Configuration.Configuration config = System.Configuration.ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.None);
-                AppSettingsSection appsettings = config.AppSettings;
-                foreach (KeyValueConfigurationElement item in appsettings.Settings)
-                {
-                    if (item.Key == "IsSearchPopStateOpen")
-                        item.Value = isPopOpen.ToString();
-                }
-                config.Save(ConfigurationSaveMode.Modified);
-                ConfigurationManager.RefreshSection("appSettings");
+                SearchPopSettingInfo searchPopSettingInfo = new SearchPopSettingInfo();
+                searchPopSettingInfo.IsSearchPopStateOpen = isPopOpen;
+                //保存用户登录信息到本地
+                string searchPopSettingInfos = string.Format(@"{0}\SearchPopSettingInfo.xml", Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + "\\WordAndImgOCR\\LoginInOutInfo\\");
+                DataParse.WriteToXmlPath(JsonConvert.SerializeObject(searchPopSettingInfo), searchPopSettingInfos);
             }
             catch (Exception ex)
             { }

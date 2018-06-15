@@ -1,5 +1,6 @@
 ﻿using CheckWordEvent;
 using CheckWordUtil;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
@@ -15,6 +16,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using WPFClientCheckWordModel;
 
 namespace WordAndImgOperationApp
 {
@@ -32,12 +34,32 @@ namespace WordAndImgOperationApp
 
         private void UserControl_Loaded(object sender, RoutedEventArgs e)
         {
-            if(viewModel.IsAutoLogin)
+            try
             {
-                viewModel.UserName = ConfigurationSettings.AppSettings["UserName"].ToString();
-                viewModel.PassWord = ConfigurationSettings.AppSettings["PassWord"].ToString();
-                LoginIn();
+                string loginInOutInfos = string.Format(@"{0}\UserLoginInfo.xml", Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + "\\WordAndImgOCR\\LoginInOutInfo\\");
+                var ui = CheckWordUtil.DataParse.ReadFromXmlPath<string>(loginInOutInfos);
+                if (ui != null && ui.ToString() != "")
+                {
+                    try
+                    {
+                        var userLoginInfo = JsonConvert.DeserializeObject<UserLoginInfo>(ui.ToString());
+                        if (userLoginInfo != null)
+                        {
+                            viewModel.IsAutoLogin = userLoginInfo.IsAutoLogin;
+                            if (viewModel.IsAutoLogin)
+                            {
+                                viewModel.UserName = userLoginInfo.UserName;
+                                viewModel.PassWord = userLoginInfo.PassWord;
+                                LoginIn();
+                            }
+                        }
+                    }
+                    catch
+                    { }
+                }
             }
+            catch (Exception ex)
+            { }
         }
 
         private void CheckVersionBtn_Click(object sender, RoutedEventArgs e)
@@ -82,37 +104,16 @@ namespace WordAndImgOperationApp
         {
             try
             {
-                System.Configuration.Configuration config = System.Configuration.ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.None);
-                AppSettingsSection appsettings = config.AppSettings;
-                if (isAutoLogin)
-                {
-                    foreach (KeyValueConfigurationElement item in appsettings.Settings)
-                    {
-                        if (item.Key == "UserName")
-                            item.Value = userName;
-                        if (item.Key == "PassWord")
-                            item.Value = pwd;
-                        if (item.Key == "IsAutoLogin")
-                            item.Value = "true";
-                    }
-                    config.Save(ConfigurationSaveMode.Modified);
-                    ConfigurationManager.RefreshSection("appSettings");
-                }
-                else
-                {
-                    foreach (KeyValueConfigurationElement item in appsettings.Settings)
-                    {
-                        if (item.Key == "IsAutoLogin")
-                            item.Value = "false";
-                    }
-                    config.Save(ConfigurationSaveMode.Modified);
-                    ConfigurationManager.RefreshSection("appSettings");
-                }
+                UserLoginInfo userLoginInfo = new UserLoginInfo();
+                userLoginInfo.UserName = userName;
+                userLoginInfo.PassWord = pwd;
+                userLoginInfo.IsAutoLogin = isAutoLogin;
+                //保存用户登录信息到本地
+                string userLoginInfos = string.Format(@"{0}\UserLoginInfo.xml", Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + "\\WordAndImgOCR\\LoginInOutInfo\\");
+                DataParse.WriteToXmlPath(JsonConvert.SerializeObject(userLoginInfo), userLoginInfos);
             }
             catch (Exception ex)
-            {
-
-            }
+            { }
         }
 
         private void Password_KeyDown(object sender, KeyEventArgs e)

@@ -67,7 +67,7 @@ namespace WordAndImgOperationApp
         }
         public void InitData()
         {
-            string chekedWordSettingsInfo = string.Format(@"{0}ChekedWordSettings\ChekedWordSettings.xml", AppDomain.CurrentDomain.BaseDirectory);
+            string chekedWordSettingsInfo = string.Format(@"{0}ChekedWordSettings\ChekedWordSettings.xml", Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + "\\WordAndImgOCR\\");
             var ui = DataParse.ReadFromXmlPath<string>(chekedWordSettingsInfo);
             if (ui != null && ui.ToString() != "")
             {
