@@ -448,7 +448,7 @@ namespace WordAndImgOperationApp
         private void RegisterHotKey()
         {
             //10001为快捷键自定义ID，0x0002为Ctrl键, 0x0001为Alt键，或运算符|表同时按住两个键有效，0x41为A键。  
-            HotKey.RegisterHotKey(Handle, 10001, (0x0002 | 0x0001), 0x41);
+            ////////HotKey.RegisterHotKey(Handle, 10001, (0x0002 | 0x0001), 0x41);
             HotKey.RegisterHotKey(Handle, 10002, 0, 27);
         }
         /// <summary>  
@@ -540,7 +540,7 @@ namespace WordAndImgOperationApp
                 HwndSource source = HwndSource.FromHwnd(Handle);
                 if (source != null)
                     source.RemoveHook(WndProc);  //添加Hook，监听窗口事件
-                HotKey.UnregisterHotKey(Handle, 10001);
+                ////////HotKey.UnregisterHotKey(Handle, 10001);
                 HotKey.UnregisterHotKey(Handle, 10002);
             }
             catch (Exception ex)
