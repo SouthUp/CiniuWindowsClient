@@ -57,6 +57,7 @@
     <Compile Include="APIService.cs" />
     <Compile Include="CheckWordHelper.cs" />
     <Compile Include="DataParse.cs" />
+    <Compile Include="DESHelper.cs" />
     <Compile Include="FileOperateHelper.cs" />
     <Compile Include="HotKey.cs" />
     <Compile Include="HttpHelper.cs" />

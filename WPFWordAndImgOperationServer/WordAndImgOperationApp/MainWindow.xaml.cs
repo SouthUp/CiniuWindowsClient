@@ -819,7 +819,8 @@ namespace WordAndImgOperationApp
                     }
                     catch (Exception ex)
                     { }
-                    OCR clientOCR = new OCR(ConfigurationManager.AppSettings["APIKey"].ToString(), ConfigurationManager.AppSettings["SecretKey"].ToString());
+                    DESHelper dESHelper = new DESHelper();
+                    OCR clientOCR = new OCR(dESHelper.DecryptString(ConfigurationManager.AppSettings["APIKey"].ToString()), dESHelper.DecryptString(ConfigurationManager.AppSettings["SecretKey"].ToString()));
                     var result = clientOCR.Accurate(apiName, image, options);
                     //反序列化
                     resultImgGeneral = JsonConvert.DeserializeObject<ImgGeneralInfo>(result.ToString().Replace("char", "Char"));
