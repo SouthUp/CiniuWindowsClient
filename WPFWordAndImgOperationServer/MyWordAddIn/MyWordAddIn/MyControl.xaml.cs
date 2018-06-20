@@ -417,32 +417,47 @@ namespace MyWordAddIn
             }
             catch (Exception ex)
             { }
-            try
+            if (Util.IsUrlExist("http://localhost:8888/"))
             {
-                List<ImagesDetailInfo> ImagesDetailInfos = GetImagesFromWord();
-                List<string> listHashs = new List<string>();
-                foreach (var item in ImagesDetailInfos)
+                try
                 {
-                    string hashPic = HashHelper.ComputeSHA1(item.ImgResultPath);
-                    listHashs.Add(hashPic);
-                    if (!CurrentImgsDictionary.ContainsKey(hashPic))
+                    List<ImagesDetailInfo> ImagesDetailInfos = GetImagesFromWord();
+                    List<string> listHashs = new List<string>();
+                    foreach (var item in ImagesDetailInfos)
                     {
-                        var listResult = AutoExcutePicOCR(item.ImgResultPath, item.UnCheckWordRange);
-                        CurrentImgsDictionary.Add(hashPic, listResult);
+                        string hashPic = HashHelper.ComputeSHA1(item.ImgResultPath);
+                        listHashs.Add(hashPic);
+                        if (!CurrentImgsDictionary.ContainsKey(hashPic))
+                        {
+                            var listResult = AutoExcutePicOCR(item.ImgResultPath, item.UnCheckWordRange);
+                            CurrentImgsDictionary.Add(hashPic, listResult);
+                        }
+                    }
+                    string[] keyArr = CurrentImgsDictionary.Keys.ToArray<string>();
+                    for (int p = keyArr.Count() - 1; p > -1; p--)
+                    {
+                        if (!listHashs.Contains(keyArr[p]))
+                        {
+                            CurrentImgsDictionary.Remove(keyArr[p]);
+                        }
                     }
                 }
-                string[] keyArr = CurrentImgsDictionary.Keys.ToArray<string>();
-                for (int p = keyArr.Count() - 1; p > -1; p--)
-                {
-                    if (!listHashs.Contains(keyArr[p]))
-                    {
-                        CurrentImgsDictionary.Remove(keyArr[p]);
-                    }
-                }
+                catch (Exception ex)
+                { }
+                GetUncheckedWordLists();
             }
-            catch (Exception ex)
-            { }
-            GetUncheckedWordLists();
+            else
+            {
+                try
+                {
+                    Dispatcher.Invoke(new Action(() =>
+                    {
+                        viewModel.IsBusyVisibility = Visibility.Hidden;
+                    }));
+                }
+                catch (Exception ex)
+                { }
+            }
         }
         // 保存非违禁词带有背景色的Range和之前的背景色，以便于恢复
         private List<Range> rangeOtherHighlightColorLists = new List<Range>();
