@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -6,6 +7,7 @@ using System.Net;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Media.Imaging;
+using WPFClientCheckWordModel;
 
 namespace CheckWordUtil
 {
@@ -54,6 +56,33 @@ namespace CheckWordUtil
             {
                 return false;
             }
+        }
+        public static bool GetIsUserLogin()
+        {
+            bool result = false;
+            try
+            {
+                string loginInOutInfos = string.Format(@"{0}\LoginInOutInfo.xml", Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + "\\WordAndImgOCR\\LoginInOutInfo\\");
+                var ui = DataParse.ReadFromXmlPath<string>(loginInOutInfos);
+                if (ui != null && ui.ToString() != "")
+                {
+                    try
+                    {
+                        var loginInOutInfo = JsonConvert.DeserializeObject<LoginInOutInfo>(ui.ToString());
+                        if (loginInOutInfo != null && loginInOutInfo.Type == "LoginIn")
+                        {
+                            var proc = System.Diagnostics.Process.GetProcessesByName("WordAndImgOperationApp");
+                            if (proc != null && proc.Length == 1)
+                                result = true;
+                        }
+                    }
+                    catch
+                    { }
+                }
+            }
+            catch
+            { }
+            return result;
         }
     }
 }

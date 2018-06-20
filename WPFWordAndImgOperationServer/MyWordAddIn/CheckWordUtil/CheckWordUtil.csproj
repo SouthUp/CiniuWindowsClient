@@ -59,6 +59,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CheckWordHelper.cs" />
+    <Compile Include="DataParse.cs" />
     <Compile Include="DESHelper.cs" />
     <Compile Include="FileOperateHelper.cs" />
     <Compile Include="HashHelper.cs" />
