@@ -214,23 +214,32 @@
                                    Visibility="{Binding IsBusyVisibility}"
                                    HorizontalAlignment="Left" VerticalAlignment="Center">
                     </local:LoadingWait>
-                    <TextBlock Text="违禁词筛选结果" Style="{StaticResource CommonLeftTextBlock}"
+                    <StackPanel Orientation="Horizontal" 
+                                Visibility="{Binding IsUnLogin,Converter={StaticResource ConverterIsNoSelectBackground}}"
+                                HorizontalAlignment="Left" VerticalAlignment="Center">
+                        <TextBlock Text="违禁词筛选结果" Style="{StaticResource CommonLeftTextBlock}"
                                    FontSize="14" Foreground="Black" Opacity="0.54">
-                    </TextBlock>
-                    <TextBlock Text="(" Style="{StaticResource CommonLeftTextBlock}"
+                        </TextBlock>
+                        <TextBlock Text="(" Style="{StaticResource CommonLeftTextBlock}"
                                    FontSize="14" Foreground="Black" Opacity="0.87" Margin="6,0,0,0">
-                    </TextBlock>
-                    <TextBlock Text="{Binding WarningTotalCount}" Style="{StaticResource CommonLeftTextBlock}"
+                        </TextBlock>
+                        <TextBlock Text="{Binding WarningTotalCount}" Style="{StaticResource CommonLeftTextBlock}"
                                    FontSize="14" Foreground="Black" Opacity="0.87">
-                    </TextBlock>
-                    <TextBlock Text=")" Style="{StaticResource CommonLeftTextBlock}"
+                        </TextBlock>
+                        <TextBlock Text=")" Style="{StaticResource CommonLeftTextBlock}"
                                    FontSize="14" Foreground="Black" Opacity="0.87">
+                        </TextBlock>
+                    </StackPanel>
+                    <TextBlock Style="{StaticResource CommonLeftTextBlock}"
+                           FontSize="14" Foreground="Black" Opacity="0.54"
+                           Visibility="{Binding IsUnLogin,Converter={StaticResource ConverterIsSelectBackground}}"
+                           Text="用户未登录,请登录后使用">
                     </TextBlock>
                 </StackPanel>
             </Grid>
             <Border Grid.Row="1" Height="1" HorizontalAlignment="Stretch" VerticalAlignment="Top"
                             BorderThickness="1" BorderBrush="Black" Opacity="0.06"></Border>
-            <Grid Grid.Row="1">
+            <Grid Grid.Row="1" Visibility="{Binding IsUnLogin,Converter={StaticResource ConverterIsNoSelectBackground}}">
                 <Grid x:Name="UnCheckWordChildrenGrid" Background="Transparent" Margin="0,0,5,0"></Grid>
                 <Grid x:Name="UnCheckWordChildrenDetailGrid" Background="Transparent" Margin="50,0,10,0"></Grid>
                 <ListBox x:Name="listBox" BorderThickness="0" Background="Transparent" ItemsSource="{Binding UncheckedWordLists}"

@@ -115,10 +115,18 @@ namespace MyExcelAddIn
             {
                 if (Util.IsUrlExist("http://localhost:8888/"))
                 {
+                    Dispatcher.Invoke(new System.Action(() =>
+                    {
+                        viewModel.IsUnLogin = false;
+                    }));
                     FindTextAndHightLight();
                 }
                 else
                 {
+                    Dispatcher.Invoke(new System.Action(() =>
+                    {
+                        viewModel.IsUnLogin = true;
+                    }));
                     if (rangeSelectLists.Count > 0)
                     {
                         for (int i = 0; i < rangeSelectLists.Count; i++)

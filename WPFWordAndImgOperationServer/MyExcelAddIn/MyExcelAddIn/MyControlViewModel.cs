@@ -42,5 +42,15 @@ namespace MyExcelAddIn
                 RaisePropertyChanged("IsBusyVisibility");
             }
         }
+        private bool isUnLogin = false;
+        public bool IsUnLogin
+        {
+            get { return isUnLogin; }
+            set
+            {
+                isUnLogin = value;
+                RaisePropertyChanged("IsUnLogin");
+            }
+        }
     }
 }
