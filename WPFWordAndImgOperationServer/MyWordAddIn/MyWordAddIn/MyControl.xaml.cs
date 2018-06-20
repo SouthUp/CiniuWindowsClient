@@ -466,6 +466,21 @@ namespace MyWordAddIn
                 }));
                 try
                 {
+                    if (rangeSelectLists.Count > 0)
+                    {
+                        for (int i = 0; i < rangeSelectLists.Count; i++)
+                        {
+                            rangeSelectLists[i].HighlightColorIndex = rangeBackColorSelectLists[i];
+                        }
+                        rangeSelectLists = new List<Range>();
+                        rangeBackColorSelectLists = new List<WdColorIndex>();
+                    }
+                    Dispatcher.Invoke(new Action(() =>
+                    {
+                        viewModel.WarningTotalCount = 0;
+                        viewModel.UncheckedWordLists.Clear();
+                        CurrentImgsDictionary = new Dictionary<string, List<UnChekedWordInfo>>();
+                    }));
                     Dispatcher.Invoke(new Action(() =>
                     {
                         viewModel.IsBusyVisibility = Visibility.Hidden;
