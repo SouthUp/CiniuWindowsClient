@@ -51,6 +51,7 @@ namespace MyExcelAddIn
         {
             BackgroundWorker bg = sender as BackgroundWorker;
             int countPicsLast = 0;
+            bool isUserLogin = CheckWordUtil.Util.GetIsUserLogin();
             while (true)
             {
                 try
@@ -70,6 +71,15 @@ namespace MyExcelAddIn
                     {
                         bg.ReportProgress(50, "");
                         countPicsLast = countPics;
+                    }
+                    else
+                    {
+                        bool isLogin = CheckWordUtil.Util.GetIsUserLogin();
+                        if (isLogin != isUserLogin)
+                        {
+                            bg.ReportProgress(50, "");
+                            isUserLogin = isLogin;
+                        }
                     }
                 }
                 catch (Exception ex)
