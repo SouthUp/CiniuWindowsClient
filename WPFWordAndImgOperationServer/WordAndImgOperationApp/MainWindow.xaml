@@ -87,7 +87,7 @@
                             Click="ReturnBackBtn_Click">
                     </Button>-->
                     <TextBlock Style="{StaticResource CommonLeftTextBlock}" Text="检查结果"
-                               Margin="32,0,0,0" FontSize="16" Foreground="White">
+                               FontSize="16" Foreground="White">
                     </TextBlock>
                 </StackPanel>
                 <Grid Background="{StaticResource AppTitleLogo}" 

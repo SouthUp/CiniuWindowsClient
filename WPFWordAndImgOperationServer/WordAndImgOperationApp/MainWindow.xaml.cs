@@ -126,8 +126,8 @@ namespace WordAndImgOperationApp
                         CloseBtn_Click(null, null);
                         viewModel.MainSetVisibility = Visibility.Visible;
 
-                        MainSet mainSet = new MainSet();
-                        ContentGrid.Children.Add(mainSet);
+                        //MainSet mainSet = new MainSet();
+                        //ContentGrid.Children.Add(mainSet);
                         viewModel.UserInfoGridVisibility = Visibility.Visible;
                         viewModel.UserName = UtilSystemVar.UserName;
                         viewModel.MenueUnLoginVisibility = Visibility.Collapsed;
