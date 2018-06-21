@@ -53,7 +53,7 @@
                         <Grid>
                             <TextBlock
                                 Margin="{TemplateBinding Padding}"
-                                Padding="0,0,0,0"
+                                Padding="2,0,0,0"
                                 HorizontalAlignment="Left"
                                 VerticalAlignment="Center"
                                 FontStyle="Normal"
@@ -152,7 +152,7 @@
                                 x:Name="PART_PlaceHolder"
                                 Grid.Column="0" 
                                 Margin="{TemplateBinding Padding}"
-                                Padding="0,0,0,0"
+                                Padding="2,0,0,0"
                                 HorizontalAlignment="Left"
                                 VerticalAlignment="Center"
                                 FontStyle="Normal"
@@ -177,7 +177,7 @@
                                 Background="Transparent"
                                 Visibility="Collapsed" 
                                 IsHitTestVisible="False"  
-                                FontSize="{TemplateBinding FontSize}" 
+                                FontSize="{TemplateBinding FontSize}" CaretBrush="White"
                                 Text="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(local:PasswordHelper.Password)}"/>
                             <ToggleButton x:Name="PART_EyeToggle" 
                                           Grid.Column="1" 

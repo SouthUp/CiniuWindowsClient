@@ -29,7 +29,7 @@
                              Style="{StaticResource WatermarkTextBox}" 
                              Width="220" Height="24" Background="Transparent" Foreground="White" 
                              Text="{Binding UserName}" FontSize="14" 
-                             VerticalContentAlignment="Bottom"
+                             VerticalContentAlignment="Bottom" CaretBrush="White"
                                               control:WatermarkTextBox.Watermark="用户名"/>
                 </StackPanel>
                 <Border Width="260" Height="2" BorderThickness="2" BorderBrush="White" 
@@ -43,7 +43,7 @@
                                  input:InputMethod.IsInputMethodEnabled="False" 
                                  BorderThickness="0"  Width="220"  
                                  Height="24" Background="Transparent"  Foreground="White"
-                                 FontSize="14"
+                                 FontSize="14" CaretBrush="White"
                                  VerticalContentAlignment="Bottom"
                                  control:WatermarkTextBox.Watermark="密码" 
                                  control:PasswordHelper.Attach="True" 
