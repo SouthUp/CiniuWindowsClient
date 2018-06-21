@@ -1,4 +1,5 @@
 ﻿using CheckWordModel.Communication;
+using Microsoft.Win32;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -99,7 +100,13 @@ namespace CheckWordUtil
                 }
                 else
                 {
-
+                    string appPath = "";
+                    if (!string.IsNullOrEmpty(appPath) && File.Exists(appPath))
+                    {
+                        var info = new System.Diagnostics.ProcessStartInfo(appPath);
+                        info.WorkingDirectory = appPath.Substring(0, appPath.LastIndexOf(System.IO.Path.DirectorySeparatorChar));
+                        System.Diagnostics.Process.Start(info);
+                    }
                 }
             }
             catch (Exception ex)
