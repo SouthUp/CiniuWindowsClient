@@ -130,5 +130,15 @@ namespace WordAndImgOperationApp
                 RaisePropertyChanged("MenueLoginVisibility");
             }
         }
+        private Visibility mainSetVisibility = Visibility.Collapsed;
+        public Visibility MainSetVisibility
+        {
+            get { return mainSetVisibility; }
+            set
+            {
+                mainSetVisibility = value;
+                RaisePropertyChanged("MainSetVisibility");
+            }
+        }
     }
 }

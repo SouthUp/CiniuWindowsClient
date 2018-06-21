@@ -116,11 +116,16 @@ namespace WordAndImgOperationApp
                     ContentGrid.Children.Clear();
                     if (typeName == "Login")
                     {
+                        viewModel.MainSetVisibility = Visibility.Collapsed;
+
                         Login login = new Login();
                         ContentGrid.Children.Add(login);
                     }
                     else if (typeName == "MainSet")
                     {
+                        CloseBtn_Click(null, null);
+                        viewModel.MainSetVisibility = Visibility.Visible;
+
                         MainSet mainSet = new MainSet();
                         ContentGrid.Children.Add(mainSet);
                         viewModel.UserInfoGridVisibility = Visibility.Visible;
@@ -133,6 +138,8 @@ namespace WordAndImgOperationApp
                     }
                     else if (typeName == "MainResult")
                     {
+                        viewModel.MainSetVisibility = Visibility.Collapsed;
+
                         MainResult mainResult = new MainResult(DealDataResultList.ToList());
                         ContentGrid.Children.Add(mainResult);
                         viewModel.UserInfoGridVisibility = Visibility.Visible;
@@ -297,6 +304,7 @@ namespace WordAndImgOperationApp
 
         private void Window_StateChanged(object sender, EventArgs e)
         {
+            viewModel.MainSetVisibility = Visibility.Collapsed;
             if (this.WindowState == WindowState.Minimized)
             {
                 
@@ -348,7 +356,7 @@ namespace WordAndImgOperationApp
                 catch (Exception ex)
                 { }
             }
-            else if (e.Button == MouseButtons.Left)
+            else if (e.Button == MouseButtons.Left && viewModel.MainSetVisibility == Visibility.Collapsed)
             {
                 this.Show();
                 this.Activate();
