@@ -847,5 +847,10 @@ namespace MyWordAddIn
             { }
             return listResult;
         }
+
+        private void LoginBtn_Click(object sender, RoutedEventArgs e)
+        {
+            Util.CallWordAndImgApp();
+        }
     }
 }

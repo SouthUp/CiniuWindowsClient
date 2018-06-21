@@ -56,6 +56,7 @@
     <Reference Include="PresentationFramework" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CommonExchangeInfo.cs" />
     <Compile Include="ImagesDetailInfo.cs" />
     <Compile Include="ImgGeneralInfo.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">

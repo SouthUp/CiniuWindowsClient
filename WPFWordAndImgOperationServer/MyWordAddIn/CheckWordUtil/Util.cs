@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using CheckWordModel.Communication;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -83,6 +84,26 @@ namespace CheckWordUtil
             catch
             { }
             return result;
+        }
+        public static void CallWordAndImgApp()
+        {
+            try
+            {
+                var proc = System.Diagnostics.Process.GetProcessesByName("WordAndImgOperationApp");
+                if (proc != null && proc.Length == 1)
+                {
+                    CommonExchangeInfo commonExchangeInfo = new CommonExchangeInfo();
+                    commonExchangeInfo.Code = "ShowWordAndImgOperationApp";
+                    string jsonData = JsonConvert.SerializeObject(commonExchangeInfo); //序列化
+                    Win32Helper.SendMessage("WordAndImgOperationApp", jsonData);
+                }
+                else
+                {
+
+                }
+            }
+            catch (Exception ex)
+            { }
         }
     }
 }

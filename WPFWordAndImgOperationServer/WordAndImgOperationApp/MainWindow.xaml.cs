@@ -521,6 +521,14 @@ namespace WordAndImgOperationApp
                                 var info = JsonConvert.DeserializeObject<DealDataProcessingStateInfo>(data);
                                 UtilSystemVar.IsDealingData = info.IsDealingData;
                             }
+                            else if(result.Code == "ShowWordAndImgOperationApp")
+                            {
+                                Dispatcher.Invoke(new Action(() => {
+                                    this.Show();
+                                    this.Activate();
+                                    this.WindowState = windowState;
+                                }));
+                            }
                         };
                         System.Threading.Thread t = new System.Threading.Thread(start);
                         t.IsBackground = true;
