@@ -11,5 +11,6 @@ namespace WPFClientCheckWordUtil
     {
         public static string FolderPath = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + "\\WordAndImgOCR\\";
         public static string UrlStr { get; set; }
+        public static string UserToken { get; set; }
     }
 }

@@ -72,10 +72,15 @@ namespace WPFClientService
                 if (loginInOutInfo.Type == "LoginIn")
                 {
                     SystemVar.UrlStr = loginInOutInfo.UrlStr;
-                    if (CheckWordHelper.WordModels.Count == 0)
+                    SystemVar.UserToken = loginInOutInfo.Token;
+                    if (CheckWordHelper.WordModels.Count == 0 && !string.IsNullOrEmpty(SystemVar.UserToken))
                     {
-                        CheckWordHelper.WordModels = CheckWordHelper.GetAllCheckWordByToken(loginInOutInfo.Token);
+                        CheckWordHelper.WordModels = CheckWordHelper.GetAllCheckWordByToken(SystemVar.UserToken);
                     }
+                }
+                else
+                {
+                    SystemVar.UserToken = "";
                 }
             }
             catch (Exception ex)
