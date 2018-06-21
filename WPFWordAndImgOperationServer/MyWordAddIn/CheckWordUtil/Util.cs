@@ -101,6 +101,21 @@ namespace CheckWordUtil
                 else
                 {
                     string appPath = "";
+                    string loginInOutInfos = string.Format(@"{0}\WordAndImgAppInfo.xml", Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + "\\WordAndImgOCR\\LoginInOutInfo\\");
+                    var ui = DataParse.ReadFromXmlPath<string>(loginInOutInfos);
+                    if (ui != null && ui.ToString() != "")
+                    {
+                        try
+                        {
+                            var wordAndImgAppInfo = JsonConvert.DeserializeObject<WordAndImgAppInfo>(ui.ToString());
+                            if (wordAndImgAppInfo != null)
+                            {
+                                appPath = wordAndImgAppInfo.Path;
+                            }
+                        }
+                        catch
+                        { }
+                    }
                     if (!string.IsNullOrEmpty(appPath) && File.Exists(appPath))
                     {
                         var info = new System.Diagnostics.ProcessStartInfo(appPath);

@@ -1,4 +1,6 @@
-﻿using System;
+﻿using CheckWordUtil;
+using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Data;
@@ -7,6 +9,7 @@ using System.Linq;
 using System.ServiceModel;
 using System.Threading.Tasks;
 using System.Windows;
+using WPFClientCheckWordModel;
 
 namespace WordAndImgOperationApp
 {
@@ -27,6 +30,15 @@ namespace WordAndImgOperationApp
                 return;
             }
             StartService();
+            try
+            {
+                WordAndImgAppInfo info = new WordAndImgAppInfo();
+                info.Path = AppDomain.CurrentDomain.BaseDirectory + "WordAndImgOperationApp.exe";
+                string infos = string.Format(@"{0}\WordAndImgAppInfo.xml", Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + "\\WordAndImgOCR\\LoginInOutInfo\\");
+                DataParse.WriteToXmlPath(JsonConvert.SerializeObject(info), infos);
+            }
+            catch (Exception ex)
+            { }
         }
         void App_DispatcherUnhandledException(object sender, System.Windows.Threading.DispatcherUnhandledExceptionEventArgs e)
         {
