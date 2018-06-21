@@ -31,15 +31,6 @@ namespace WPFClientService
             {
                 try
                 {
-                    if (CheckWordHelper.WordModels.Count == 0 && !string.IsNullOrEmpty(SystemVar.UserToken))
-                    {
-                        CheckWordHelper.WordModels = CheckWordHelper.GetAllCheckWordByToken(SystemVar.UserToken);
-                    }
-                }
-                catch (Exception ex)
-                { }
-                try
-                {
                     var listUnChekedWord = CheckWordHelper.GetUnChekedWordInfoList(info.Text).ToList();
                     result.Result = true;
                     result.UncheckWordModels = listUnChekedWord;
@@ -119,6 +110,7 @@ namespace WPFClientService
                         var loginInOutInfo = JsonConvert.DeserializeObject<LoginInOutInfo>(ui.ToString());
                         if (loginInOutInfo != null && loginInOutInfo.Type == "LoginIn")
                         {
+                            SystemVar.UserToken = loginInOutInfo.Token;
                             result = true;
                         }
                     }

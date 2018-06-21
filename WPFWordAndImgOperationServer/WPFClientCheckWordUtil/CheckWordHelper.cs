@@ -91,6 +91,15 @@ namespace WPFClientCheckWordUtil
             List<WordModel> result = new List<WordModel>();
             try
             {
+                if (WordModels.Count == 0 && !string.IsNullOrEmpty(SystemVar.UserToken))
+                {
+                    WordModels = CheckWordHelper.GetAllCheckWordByToken(SystemVar.UserToken);
+                }
+            }
+            catch (Exception ex)
+            { }
+            try
+            {
                 foreach(var item in WordModels)
                 {
                     var defaultObj = result.FirstOrDefault(x => x.Name == item.Name);
@@ -112,6 +121,15 @@ namespace WPFClientCheckWordUtil
         public static WordModel GetUnChekedWordInfo(string word)
         {
             WordModel result = null;
+            try
+            {
+                if (WordModels.Count == 0 && !string.IsNullOrEmpty(SystemVar.UserToken))
+                {
+                    WordModels = CheckWordHelper.GetAllCheckWordByToken(SystemVar.UserToken);
+                }
+            }
+            catch (Exception ex)
+            { }
             try
             {
                 result = WordModels.FirstOrDefault(x =>x.Name == word);
