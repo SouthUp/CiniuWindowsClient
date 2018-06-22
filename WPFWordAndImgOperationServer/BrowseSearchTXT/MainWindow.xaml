@@ -362,6 +362,14 @@
             </Border>
             <Button Style="{StaticResource TextButtonStyle}" Click="HidePopWindowBtn_Click"
                     Content="知道了" Foreground="White" FontSize="16" ></Button>
+            <Popup IsOpen="{Binding IsPopWindowOpen}" AllowsTransparency="True"
+                   HorizontalOffset="59" VerticalOffset="35" PopupAnimation="Fade">
+                <Grid Width="195" Height="119">
+                    <Grid.Background>
+                        <ImageBrush ImageSource="Images/PopWindowBg.png" Stretch="Fill"></ImageBrush>
+                    </Grid.Background>
+                </Grid>
+            </Popup>
         </Grid>
     </Grid>
 </Window>

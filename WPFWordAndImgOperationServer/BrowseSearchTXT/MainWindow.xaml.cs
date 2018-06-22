@@ -50,6 +50,7 @@ namespace BrowseSearchTXT
             if (!File.Exists(string.Format(@"{0}\SearchPopWindowTipsSettingInfo.xml", Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + "\\WordAndImgOCR\\LoginInOutInfo\\")))
             {
                 viewModel.HidePopWindowVisibility = Visibility.Visible;
+                viewModel.IsPopWindowOpen = true;
             }
             else
             {
@@ -440,6 +441,7 @@ namespace BrowseSearchTXT
         private void HidePopWindowBtn_Click(object sender, RoutedEventArgs e)
         {
             viewModel.HidePopWindowVisibility = Visibility.Collapsed;
+            viewModel.IsPopWindowOpen = false;
             try
             {
                 SearchPopSettingInfo searchPopSettingInfo = new SearchPopSettingInfo();
