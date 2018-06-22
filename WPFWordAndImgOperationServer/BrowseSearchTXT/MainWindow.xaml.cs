@@ -51,6 +51,7 @@ namespace BrowseSearchTXT
             {
                 viewModel.HidePopWindowVisibility = Visibility.Visible;
                 viewModel.IsPopWindowOpen = true;
+                this.AllowDrop = false;
             }
             else
             {
@@ -440,6 +441,7 @@ namespace BrowseSearchTXT
 
         private void HidePopWindowBtn_Click(object sender, RoutedEventArgs e)
         {
+            this.AllowDrop = true;
             viewModel.HidePopWindowVisibility = Visibility.Collapsed;
             viewModel.IsPopWindowOpen = false;
             try
