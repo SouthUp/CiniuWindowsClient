@@ -279,7 +279,7 @@
                         <TextBlock Text="&quot;" Style="{StaticResource CommonTextBlock}">
                         </TextBlock>
                     </StackPanel>
-                    <TextBlock Grid.Column="2" Text="不是违禁词" FontSize="16"
+                    <TextBlock Grid.Column="2" Text="不包含违禁词" FontSize="16"
                                Style="{StaticResource CommonTextBlock}"
                                HorizontalAlignment="Left">
                     </TextBlock>
