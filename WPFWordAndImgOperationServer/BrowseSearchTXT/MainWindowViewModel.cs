@@ -124,6 +124,26 @@ namespace BrowseSearchTXT
                 RaisePropertyChanged("CurrentWordInfo");
             }
         }
+        private ObservableCollection<UnChekedWordInfo> _currentWordInfoResults = new ObservableCollection<UnChekedWordInfo>();
+        public ObservableCollection<UnChekedWordInfo> CurrentWordInfoResults
+        {
+            get { return _currentWordInfoResults; }
+            set
+            {
+                _currentWordInfoResults = value;
+                RaisePropertyChanged("CurrentWordInfoResults");
+            }
+        }
+        private int _hasUnChekedWordInfoCount = 0;
+        public int HasUnChekedWordInfoCount
+        {
+            get { return _hasUnChekedWordInfoCount; }
+            set
+            {
+                _hasUnChekedWordInfoCount = value;
+                RaisePropertyChanged("HasUnChekedWordInfoCount");
+            }
+        }
         private ExchangeBrowseTxTProcessingInfo _currentCurrentProcessingInfo = new ExchangeBrowseTxTProcessingInfo();
         public ExchangeBrowseTxTProcessingInfo CurrentProcessingInfo
         {

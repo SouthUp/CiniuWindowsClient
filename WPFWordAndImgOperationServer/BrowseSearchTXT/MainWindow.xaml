@@ -210,56 +210,29 @@
                 </Grid>
                 <Grid Visibility="{Binding SinggleWordCheckResultVisibility}"
                       Width="216" HorizontalAlignment="Center" VerticalAlignment="Center">
-                    <Grid.RowDefinitions>
-                        <RowDefinition></RowDefinition>
-                        <RowDefinition></RowDefinition>
-                    </Grid.RowDefinitions>
-                    <Grid Grid.Row="0" VerticalAlignment="Bottom" Margin="0,0,0,5">
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="Auto"></ColumnDefinition>
-                            <ColumnDefinition Width="10"></ColumnDefinition>
-                            <ColumnDefinition Width="*"></ColumnDefinition>
-                        </Grid.ColumnDefinitions>
-                        <StackPanel Grid.Column="0" Orientation="Horizontal" 
-                                    HorizontalAlignment="Left" VerticalAlignment="Center">
-                            <TextBlock Text="&quot;" Style="{StaticResource CommonTextBlock}" 
-                                       Foreground="#f55e55" FontSize="16">
-                            </TextBlock>
-                            <TextBlock Text="{Binding CurrentWordInfo.Name}" FontSize="16"
-                                   Style="{StaticResource CommonTextBlock}" MaxWidth="140"
-                                   Foreground="#f55e55" TextTrimming="CharacterEllipsis"></TextBlock>
-                            <TextBlock Text="&quot;" Style="{StaticResource CommonTextBlock}" 
-                                       Foreground="#f55e55" FontSize="16">
-                            </TextBlock>
-                        </StackPanel>
-                        <TextBlock Grid.Column="2" Text="违禁词" FontSize="16" 
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="160"></ColumnDefinition>
+                        <ColumnDefinition Width="Auto"></ColumnDefinition>
+                    </Grid.ColumnDefinitions>
+                    <StackPanel Grid.Column="0" Orientation="Horizontal" 
+                                HorizontalAlignment="Left" VerticalAlignment="Center">
+                        <TextBlock Text="发现了" Foreground="tomato" Opacity="0.9"
                                    Style="{StaticResource CommonTextBlock}" 
-                                   Foreground="#f55e55" HorizontalAlignment="Left"></TextBlock>
-                    </Grid>
-                    <Grid Grid.Row="1" VerticalAlignment="Top">
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="32"></ColumnDefinition>
-                            <ColumnDefinition Width="Auto"></ColumnDefinition>
-                            <ColumnDefinition Width="50"></ColumnDefinition>
-                            <ColumnDefinition Width="Auto"></ColumnDefinition>
-                        </Grid.ColumnDefinitions>
-                        <TextBlock Grid.Column="0" Text="分类：" 
+                                   FontSize="14" HorizontalAlignment="Left"></TextBlock>
+                        <TextBlock Text="{Binding HasUnChekedWordInfoCount}" 
+                                   Foreground="tomato" Opacity="0.9"
                                    Style="{StaticResource CommonTextBlock}" 
-                                   Foreground="#9b9b9b" HorizontalAlignment="Left"
-                                   FontSize="13"></TextBlock>
-                        <TextBlock Grid.Column="1" Text="{Binding CurrentWordInfo.NameType}" 
-                                   Style="{StaticResource CommonTextBlock}" MaxWidth="70"
-                                   Foreground="#9b9b9b" HorizontalAlignment="Left"
-                                   FontSize="13" TextTrimming="CharacterEllipsis"></TextBlock>
-                        <TextBlock Grid.Column="2" Text="词库：" 
+                                   FontSize="14" HorizontalAlignment="Left"></TextBlock>
+                        <TextBlock Text="个违禁词" Foreground="tomato" Opacity="0.9"
                                    Style="{StaticResource CommonTextBlock}" 
-                                   Foreground="#9b9b9b" HorizontalAlignment="Right"
-                                   FontSize="13"></TextBlock>
-                        <TextBlock Grid.Column="3" Text="{Binding CurrentWordInfo.SourceDB}" 
-                                   Style="{StaticResource CommonTextBlock}" MaxWidth="70"
-                                   Foreground="#9b9b9b" HorizontalAlignment="Left"
-                                   FontSize="13" TextTrimming="CharacterEllipsis"></TextBlock>
-                    </Grid>
+                                   FontSize="14" HorizontalAlignment="Left"></TextBlock>
+                    </StackPanel>
+                    <Button Grid.Column="1" Width="30" Height="30" Margin="10,0,0,0"
+                                HorizontalAlignment="Left" VerticalAlignment="Center" 
+                                Content="详情" Foreground="#6ab1f7" 
+                                Style="{StaticResource TextButtonStyle}"
+                                Click="GoDetailBtn_Click">
+                    </Button>
                 </Grid>
                 <Grid Visibility="{Binding SinggleWordCheckResultNoUncheckVisibility}"
                       Width="216" HorizontalAlignment="Center" VerticalAlignment="Center">

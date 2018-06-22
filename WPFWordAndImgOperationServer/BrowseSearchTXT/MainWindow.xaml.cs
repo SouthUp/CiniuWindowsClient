@@ -336,10 +336,12 @@ namespace BrowseSearchTXT
                 try
                 {
                     //处理逻辑
-                    var resultInfo = CheckWordUtil.CheckWordHelper.GetOneWordInfo(inputTxt);
-                    viewModel.CurrentWordInfo = resultInfo;
-                    if (viewModel.CurrentWordInfo.IsUnCheckWord)
+                    var resultInfo = CheckWordUtil.CheckWordHelper.GetUnChekedWordInfoList(inputTxt);
+                    viewModel.CurrentWordInfo.Name = inputTxt;
+                    viewModel.CurrentWordInfoResults = new System.Collections.ObjectModel.ObservableCollection<CheckWordModel.UnChekedWordInfo>(resultInfo);
+                    if (viewModel.CurrentWordInfoResults.Count > 0)
                     {
+                        viewModel.HasUnChekedWordInfoCount = viewModel.CurrentWordInfoResults.Count;
                         viewModel.TongJiCheckResultVisibility = Visibility.Collapsed;
                         viewModel.SinggleWordCheckResultVisibility = Visibility.Visible;
                         viewModel.SinggleWordCheckResultNoUncheckVisibility = Visibility.Collapsed;
@@ -454,6 +456,10 @@ namespace BrowseSearchTXT
             }
             catch (Exception ex)
             { }
+        }
+        private void GoDetailBtn_Click(object sender, RoutedEventArgs e)
+        {
+            
         }
     }
 }
