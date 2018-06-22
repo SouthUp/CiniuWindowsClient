@@ -203,8 +203,10 @@ namespace BrowseSearchTXT
 
         private void Grid_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
-            viewModel.IsDetailPopWindowOpen = false;
-            this.DragMove();
+            if (e.ButtonState == MouseButtonState.Pressed && !viewModel.IsDetailPopWindowOpen)
+            {
+                this.DragMove();
+            }
         }
 
         private void TextBox_KeyDown(object sender, KeyEventArgs e)
