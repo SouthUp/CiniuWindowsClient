@@ -65,6 +65,7 @@ namespace BrowseSearchTXT
         }
         private void MainWindow_Drop(object sender, DragEventArgs e)
         {
+            viewModel.IsDetailPopWindowOpen = false;
             if (this.IsDealingData)
             {
                 DragDealingTipGrid.Visibility = Visibility.Collapsed;
@@ -202,6 +203,7 @@ namespace BrowseSearchTXT
 
         private void Grid_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
+            viewModel.IsDetailPopWindowOpen = false;
             this.DragMove();
         }
 
@@ -407,6 +409,8 @@ namespace BrowseSearchTXT
         }
         private void ReturnBack()
         {
+            viewModel.IsDetailPopWindowOpen = false;
+
             viewModel.TitleLogoVisibility = Visibility.Visible;
             viewModel.InputCheckGridVisibility = Visibility.Visible;
             viewModel.ReturnBtnVisibility = Visibility.Collapsed;
@@ -459,7 +463,12 @@ namespace BrowseSearchTXT
         }
         private void GoDetailBtn_Click(object sender, RoutedEventArgs e)
         {
-            
+            viewModel.IsDetailPopWindowOpen = true;
+        }
+
+        private void CloseDetailPopWindowBtn_Click(object sender, RoutedEventArgs e)
+        {
+            viewModel.IsDetailPopWindowOpen = false;
         }
     }
 }

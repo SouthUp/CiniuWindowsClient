@@ -120,6 +120,49 @@
                 </DrawingGroup>
             </DrawingBrush.Drawing>
         </DrawingBrush>
+        <DrawingBrush x:Key="GrayCloseBtnLogo" Stretch="None">
+            <DrawingBrush.Drawing>
+                <DrawingGroup>
+                    <DrawingGroup.ClipGeometry>
+                        <RectangleGeometry Rect="0,0,16,16" />
+                    </DrawingGroup.ClipGeometry>
+                    <GeometryDrawing>
+                        <GeometryDrawing.Brush>
+                            <SolidColorBrush Color="#FF000000" Opacity="0.38" />
+                        </GeometryDrawing.Brush>
+                        <GeometryDrawing.Geometry>
+                            <PathGeometry FillRule="EvenOdd" Figures="M14,12.586L12.586,14 8.48,9.895 4.374,14.001 2.999,12.626 7.105,8.519 2.686,4.1 4.1,2.686 8.519,7.105 12.625,3 14,4.375 9.895,8.48 14,12.586z" />
+                        </GeometryDrawing.Geometry>
+                    </GeometryDrawing>
+                </DrawingGroup>
+            </DrawingBrush.Drawing>
+        </DrawingBrush>
+        <Style x:Key="GrayCloseBtnButtonStyle" TargetType="{x:Type Button}">
+            <Setter Property="FocusVisualStyle" Value="{StaticResource ButtonFocusVisual}" />
+            <Setter Property="HorizontalContentAlignment" Value="Center" />
+            <Setter Property="VerticalContentAlignment" Value="Center" />
+            <Setter Property="BorderThickness" Value="0" />
+            <Setter Property="Background" Value="{StaticResource GrayCloseBtnLogo}" />
+            <Setter Property="ToolTip" Value="关闭" />
+            <Setter Property="Cursor" Value="Hand" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type Button}">
+                        <Grid>
+                            <Border Background="{TemplateBinding Background}"
+                                    BorderBrush="{TemplateBinding BorderBrush}"
+                                    BorderThickness="{TemplateBinding BorderThickness}" />
+                            <ContentPresenter HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                              Margin="{TemplateBinding Padding}" RecognizesAccessKey="True"
+                                              SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"
+                                              VerticalAlignment="{TemplateBinding VerticalContentAlignment}" />
+                        </Grid>
+                        <ControlTemplate.Triggers>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
     </Window.Resources>
     <Grid>
         <Grid ContextMenu="{StaticResource NotifyIconMenu}"
@@ -233,6 +276,22 @@
                                 Style="{StaticResource TextButtonStyle}"
                                 Click="GoDetailBtn_Click">
                     </Button>
+                    <Popup IsOpen="{Binding IsDetailPopWindowOpen}" AllowsTransparency="True"
+                           HorizontalOffset="0" VerticalOffset="-20" PopupAnimation="Fade">
+                        <Grid Width="280" Background="White">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="20"></RowDefinition>
+                                <RowDefinition Height="Auto"></RowDefinition>
+                            </Grid.RowDefinitions>
+                            <Button Grid.Row="0" Width="16" Height="16" 
+                                        Style="{StaticResource GrayCloseBtnButtonStyle}"
+                                        HorizontalAlignment="Right" VerticalAlignment="Top"
+                                        Click="CloseDetailPopWindowBtn_Click"></Button>
+                            <Grid Grid.Row="1" MinHeight="80" MaxHeight="400">
+
+                            </Grid>
+                        </Grid>
+                    </Popup>
                 </Grid>
                 <Grid Visibility="{Binding SinggleWordCheckResultNoUncheckVisibility}"
                       Width="216" HorizontalAlignment="Center" VerticalAlignment="Center">

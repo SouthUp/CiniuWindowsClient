@@ -204,5 +204,15 @@ namespace BrowseSearchTXT
                 RaisePropertyChanged("IsPopWindowOpen");
             }
         }
+        private bool _isDetailPopWindowOpen = false;
+        public bool IsDetailPopWindowOpen
+        {
+            get { return _isDetailPopWindowOpen; }
+            set
+            {
+                _isDetailPopWindowOpen = value;
+                RaisePropertyChanged("IsDetailPopWindowOpen");
+            }
+        }
     }
 }
