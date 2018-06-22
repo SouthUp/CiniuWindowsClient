@@ -352,5 +352,16 @@
             <TextBlock FontSize="16" Text="处理中,请稍等..." Foreground="White"
                        HorizontalAlignment="Center" VerticalAlignment="Center"></TextBlock>
         </Grid>
+        <Grid Visibility="{Binding HidePopWindowVisibility}">
+            <Border BorderThickness="0" Background="#000000" Opacity="0.54">
+                <Grid>
+                    <Grid.Background>
+                        <ImageBrush ImageSource="Images/DragBoder.png"></ImageBrush>
+                    </Grid.Background>
+                </Grid>
+            </Border>
+            <Button Style="{StaticResource TextButtonStyle}" Click="HidePopWindowBtn_Click"
+                    Content="知道了" Foreground="White" FontSize="16" ></Button>
+        </Grid>
     </Grid>
 </Window>

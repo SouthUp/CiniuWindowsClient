@@ -18,6 +18,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using System.Windows.Threading;
+using WPFClientCheckWordModel;
 using static CheckWordUtil.Win32Helper;
 
 namespace BrowseSearchTXT
@@ -46,7 +47,14 @@ namespace BrowseSearchTXT
         }
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
-            this.Dispatcher.BeginInvoke(DispatcherPriority.Background,(Action)(() => { Keyboard.Focus(SearchTextBox); }));
+            if (!File.Exists(string.Format(@"{0}\SearchPopWindowTipsSettingInfo.xml", Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + "\\WordAndImgOCR\\LoginInOutInfo\\")))
+            {
+                viewModel.HidePopWindowVisibility = Visibility.Visible;
+            }
+            else
+            {
+                this.Dispatcher.BeginInvoke(DispatcherPriority.Background, (Action)(() => { Keyboard.Focus(SearchTextBox); }));
+            }
         }
 
         private void Window_Unloaded(object sender, RoutedEventArgs e)
@@ -424,6 +432,21 @@ namespace BrowseSearchTXT
                 commonExchangeInfo.Data = JsonConvert.SerializeObject(infoDeal);
                 string jsonData = JsonConvert.SerializeObject(commonExchangeInfo); //序列化
                 SendMessage("WordAndImgOperationApp", jsonData);
+            }
+            catch (Exception ex)
+            { }
+        }
+
+        private void HidePopWindowBtn_Click(object sender, RoutedEventArgs e)
+        {
+            viewModel.HidePopWindowVisibility = Visibility.Collapsed;
+            try
+            {
+                SearchPopSettingInfo searchPopSettingInfo = new SearchPopSettingInfo();
+                searchPopSettingInfo.IsSearchPopStateOpen = false;
+                //保存用户登录信息到本地
+                string searchPopSettingInfos = string.Format(@"{0}\SearchPopWindowTipsSettingInfo.xml", Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + "\\WordAndImgOCR\\LoginInOutInfo\\");
+                DataParse.WriteToXmlPath(JsonConvert.SerializeObject(searchPopSettingInfo), searchPopSettingInfos);
             }
             catch (Exception ex)
             { }

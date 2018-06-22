@@ -164,5 +164,15 @@ namespace BrowseSearchTXT
                 RaisePropertyChanged("FileReadFailTipsExtention");
             }
         }
+        private Visibility _hidePopWindowVisibility = Visibility.Collapsed;
+        public Visibility HidePopWindowVisibility
+        {
+            get { return _hidePopWindowVisibility; }
+            set
+            {
+                _hidePopWindowVisibility = value;
+                RaisePropertyChanged("HidePopWindowVisibility");
+            }
+        }
     }
 }
