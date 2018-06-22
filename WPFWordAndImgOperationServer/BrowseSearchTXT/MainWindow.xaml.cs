@@ -489,5 +489,22 @@ namespace BrowseSearchTXT
         {
             viewModel.IsDetailPopWindowOpen = false;
         }
+
+        private void listBox2_PreviewMouseWheel(object sender, MouseWheelEventArgs e)
+        {
+            try
+            {
+                var listBox = sender as System.Windows.Controls.ListBox;
+                if (listBox != null)
+                {
+                    var eventArg = new MouseWheelEventArgs(e.MouseDevice, e.Timestamp, e.Delta);
+                    eventArg.RoutedEvent = UIElement.MouseWheelEvent;
+                    eventArg.Source = sender;
+                    listBox.RaiseEvent(eventArg);
+                }
+            }
+            catch (Exception ex)
+            { }
+        }
     }
 }
