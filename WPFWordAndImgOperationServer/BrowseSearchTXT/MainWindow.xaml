@@ -4,6 +4,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:BrowseSearchTXT"
+        xmlns:control="clr-namespace:CheckWordControl;assembly=CheckWordControl"
         WindowStyle="None" ResizeMode="NoResize" AllowDrop="True" ShowInTaskbar="False"
         AllowsTransparency="True" Width="318" Height="76" Topmost="True"
         Loaded="Window_Loaded" Unloaded="Window_Unloaded"
@@ -163,6 +164,35 @@
                 </Setter.Value>
             </Setter>
         </Style>
+        <Style x:Key="ListBoxItemContainerStyle" TargetType="ListBoxItem">
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="ListBoxItem">
+                        <Border Background="{TemplateBinding Background}">
+                            <ContentPresenter HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                                 VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
+                                                 TextBlock.Foreground="{TemplateBinding Foreground}"/>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+            <Setter Property="FocusVisualStyle" Value="{x:Null}"/>
+            <Style.Resources>
+                <SolidColorBrush x:Key="{x:Static SystemColors.HighlightBrushKey}" Color="Transparent" Opacity="1"/>
+                <SolidColorBrush x:Key="{x:Static SystemColors.ControlBrushKey}" Color="Transparent" Opacity="1"/>
+                <SolidColorBrush Color="White" x:Key="{x:Static SystemColors.HighlightTextBrushKey}"/>
+            </Style.Resources>
+            <!-- 设置触发器 -->
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="true">
+                    <Setter Property="Background" Value="Transparent"/>
+                    <Setter Property="BorderThickness" Value="0"/>
+                </Trigger>
+                <Trigger Property="IsFocused" Value="true">
+                    <Setter Property="Background" Value="Transparent"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
     </Window.Resources>
     <Grid>
         <Grid ContextMenu="{StaticResource NotifyIconMenu}"
@@ -288,7 +318,95 @@
                                         HorizontalAlignment="Right" VerticalAlignment="Top"
                                         Click="CloseDetailPopWindowBtn_Click"></Button>
                             <Grid Grid.Row="1" MinHeight="80" MaxHeight="400">
-
+                                <ListBox x:Name="listBox" BorderThickness="0" Background="Transparent" ItemsSource="{Binding CurrentWordInfoResults}"
+                                         ScrollViewer.HorizontalScrollBarVisibility="Disabled" ScrollViewer.VerticalScrollBarVisibility="Auto" SelectedIndex="-1"
+                                         ItemContainerStyle="{StaticResource ListBoxItemContainerStyle}" VerticalAlignment="Top" HorizontalAlignment="Stretch"
+                                         ScrollViewer.CanContentScroll="True" Margin="24,0,0,0">
+                                    <ListBox.ItemTemplate>
+                                        <DataTemplate>
+                                            <Grid>
+                                                <Grid Width="{Binding ElementName=listBox,Path=ActualWidth}" Cursor="Hand" Background="Transparent">
+                                                    <Grid Background="Transparent" MinHeight="48">
+                                                        <Grid.RowDefinitions>
+                                                            <RowDefinition Height="32"></RowDefinition>
+                                                            <RowDefinition Height="Auto"></RowDefinition>
+                                                        </Grid.RowDefinitions>
+                                                        <Grid Grid.Row="0" Background="Transparent">
+                                                            <StackPanel Orientation="Horizontal"
+                                                                        VerticalAlignment="Center" HorizontalAlignment="Left">
+                                                                <TextBlock Text="&quot;" Style="{StaticResource CommonTextBlock}"
+                                                                           Foreground="tomato" Opacity="0.9">
+                                                                </TextBlock>
+                                                                <TextBlock Text="{Binding Name}"
+                                                                           Style="{StaticResource CommonTextBlock}"
+                                                                           MaxWidth="180" TextTrimming="CharacterEllipsis"
+                                                                           Foreground="tomato" Opacity="0.9">
+                                                                </TextBlock>
+                                                                <TextBlock Text="&quot;" Style="{StaticResource CommonTextBlock}"
+                                                                           Foreground="tomato" Opacity="0.9">
+                                                                </TextBlock>
+                                                                <TextBlock Text="违禁词" FontSize="16"
+                                                                           Style="{StaticResource CommonTextBlock}"
+                                                                           Foreground="tomato" Opacity="0.9" 
+                                                                           HorizontalAlignment="Left">
+                                                                </TextBlock>
+                                                            </StackPanel>
+                                                        </Grid>
+                                                        <Grid Grid.Row="1">
+                                                            <ListBox x:Name="listBox2" BorderThickness="0" Background="Transparent"
+                                                                     ItemsSource="{Binding UnChekedWordDetailInfos}"
+                                                                     ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+                                                                     ScrollViewer.VerticalScrollBarVisibility="Auto" SelectedIndex="-1"
+                                                                     ItemContainerStyle="{StaticResource ListBoxItemContainerStyle}"
+                                                                     VerticalAlignment="Top" HorizontalAlignment="Stretch"
+                                                                     ScrollViewer.CanContentScroll="False">
+                                                                <ListBox.ItemTemplate>
+                                                                    <DataTemplate>
+                                                                        <Grid Height="40" Width="{Binding ElementName=listBox2,Path=ActualWidth}">
+                                                                            <Grid.ColumnDefinitions>
+                                                                                <ColumnDefinition Width="40"></ColumnDefinition>
+                                                                                <ColumnDefinition Width="100"></ColumnDefinition>
+                                                                                <ColumnDefinition Width="85"></ColumnDefinition>
+                                                                            </Grid.ColumnDefinitions>
+                                                                            <Grid Grid.Column="0">
+                                                                                <Image Width="24" Height="24" Stretch="Fill"
+                                                                                       HorizontalAlignment="Center" VerticalAlignment="Center"
+                                                                                       control:ImageDecoder.Source="{Binding SourceDBImgPath}">
+                                                                                </Image>
+                                                                            </Grid>
+                                                                            <Grid Grid.Column="1">
+                                                                                <TextBlock Text="{Binding SourceDB}" FontSize="14" Opacity="0.87"
+                                                                                           Style="{StaticResource CommonTextBlock}" HorizontalAlignment="Left"
+                                                                                           MaxWidth="100" TextTrimming="CharacterEllipsis">
+                                                                                </TextBlock>
+                                                                            </Grid>
+                                                                            <Grid Grid.Column="2">
+                                                                                <TextBlock Text="{Binding NameType}" FontSize="14" Opacity="0.87"
+                                                                                           Style="{StaticResource CommonTextBlock}" HorizontalAlignment="Left"
+                                                                                           MaxWidth="80" TextTrimming="CharacterEllipsis">
+                                                                                </TextBlock>
+                                                                            </Grid>
+                                                                        </Grid>
+                                                                    </DataTemplate>
+                                                                </ListBox.ItemTemplate>
+                                                                <ListBox.ItemsPanel>
+                                                                    <ItemsPanelTemplate>
+                                                                        <WrapPanel Orientation="Vertical"/>
+                                                                    </ItemsPanelTemplate>
+                                                                </ListBox.ItemsPanel>
+                                                            </ListBox>
+                                                        </Grid>
+                                                    </Grid>
+                                                </Grid>
+                                            </Grid>
+                                        </DataTemplate>
+                                    </ListBox.ItemTemplate>
+                                    <ListBox.ItemsPanel>
+                                        <ItemsPanelTemplate>
+                                            <WrapPanel Orientation="Vertical"/>
+                                        </ItemsPanelTemplate>
+                                    </ListBox.ItemsPanel>
+                                </ListBox>
                             </Grid>
                         </Grid>
                     </Popup>

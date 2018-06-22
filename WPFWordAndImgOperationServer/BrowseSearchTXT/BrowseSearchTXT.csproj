@@ -118,6 +118,10 @@
     <Resource Include="Images\DragBoder.png" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\CheckWordControl\CheckWordControl.csproj">
+      <Project>{0ba50c86-3d12-4db3-98d9-ab157ee40366}</Project>
+      <Name>CheckWordControl</Name>
+    </ProjectReference>
     <ProjectReference Include="..\CheckWordModel\CheckWordModel.csproj">
       <Project>{882975e9-f754-4f88-93c0-e461387d003d}</Project>
       <Name>CheckWordModel</Name>
