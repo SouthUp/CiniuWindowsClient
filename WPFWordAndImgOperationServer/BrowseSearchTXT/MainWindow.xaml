@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:BrowseSearchTXT"
         WindowStyle="None" ResizeMode="NoResize" AllowDrop="True" ShowInTaskbar="False"
-        AllowsTransparency="True" Width="316" Height="70" Topmost="True"
+        AllowsTransparency="True" Width="318" Height="76" Topmost="True"
         Loaded="Window_Loaded" Unloaded="Window_Unloaded"
         Drop="MainWindow_Drop" 
         DragLeave="Window_DragLeave"
@@ -125,21 +125,21 @@
         <Grid ContextMenu="{StaticResource NotifyIconMenu}"
               Cursor="Hand" MouseLeftButtonDown="Grid_MouseLeftButtonDown">
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="70"></ColumnDefinition>
+                <ColumnDefinition Width="75"></ColumnDefinition>
                 <ColumnDefinition></ColumnDefinition>
             </Grid.ColumnDefinitions>
-            <Grid Grid.Column="0" Grid.ColumnSpan="2" Width="283" Height="68" 
+            <Grid Grid.Column="0" Grid.ColumnSpan="2" Width="291" Height="76" 
                   HorizontalAlignment="Right" VerticalAlignment="Center">
                 <Grid.Background>
                     <ImageBrush ImageSource="Images/Bg.png" Stretch="Fill"></ImageBrush>
                 </Grid.Background>
             </Grid>
-            <Grid Grid.Column="0" Visibility="{Binding TitleLogoVisibility}" Width="68" Height="68" 
+            <Grid Grid.Column="0" Visibility="{Binding TitleLogoVisibility}" Width="75" Height="76" 
                   HorizontalAlignment="Right" VerticalAlignment="Center">
                 <Image Source="Images/TitleLogo.png" Stretch="Fill"></Image>
             </Grid>
             <Grid Grid.Column="0" Visibility="{Binding ReturnBtnVisibility}"
-                  Width="68" Height="68" HorizontalAlignment="Right" VerticalAlignment="Center">
+                  Width="75" Height="76" HorizontalAlignment="Right" VerticalAlignment="Center">
                 <Image Source="Images/ReturnLogo.png" Stretch="Fill" MouseLeftButtonDown="Border_MouseLeftButtonDown"></Image>
             </Grid>
             <Grid Grid.Column="1" Visibility="{Binding InputCheckGridVisibility}">
