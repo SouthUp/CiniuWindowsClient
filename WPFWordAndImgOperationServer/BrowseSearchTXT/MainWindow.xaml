@@ -307,53 +307,57 @@
                                 Click="GoDetailBtn_Click">
                     </Button>
                     <Popup IsOpen="{Binding IsDetailPopWindowOpen}" AllowsTransparency="True"
-                           HorizontalOffset="0" VerticalOffset="-20" PopupAnimation="Fade">
-                        <Grid Width="280" Background="White">
-                            <Grid.RowDefinitions>
-                                <RowDefinition Height="20"></RowDefinition>
-                                <RowDefinition Height="Auto"></RowDefinition>
-                            </Grid.RowDefinitions>
-                            <Button Grid.Row="0" Width="16" Height="16" 
+                           HorizontalOffset="0" VerticalOffset="0" PopupAnimation="Fade">
+                        <Grid>
+                            <Grid Width="280" Background="White" Margin="9">
+                                <Grid.Effect>
+                                    <DropShadowEffect ShadowDepth="0" BlurRadius="9" Opacity="0.8"/>
+                                </Grid.Effect>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="20"></RowDefinition>
+                                    <RowDefinition Height="Auto"></RowDefinition>
+                                </Grid.RowDefinitions>
+                                <Button Grid.Row="0" Width="16" Height="16" 
                                         Style="{StaticResource GrayCloseBtnButtonStyle}"
                                         HorizontalAlignment="Right" VerticalAlignment="Top"
                                         Click="CloseDetailPopWindowBtn_Click"></Button>
-                            <Grid Grid.Row="1" MinHeight="80" MaxHeight="400">
-                                <ListBox x:Name="listBox" BorderThickness="0" Background="Transparent" ItemsSource="{Binding CurrentWordInfoResults}"
+                                <Grid Grid.Row="1" MinHeight="80" MaxHeight="400">
+                                    <ListBox x:Name="listBox" BorderThickness="0" Background="Transparent" ItemsSource="{Binding CurrentWordInfoResults}"
                                          ScrollViewer.HorizontalScrollBarVisibility="Disabled" ScrollViewer.VerticalScrollBarVisibility="Auto" SelectedIndex="-1"
                                          ItemContainerStyle="{StaticResource ListBoxItemContainerStyle}" VerticalAlignment="Top" HorizontalAlignment="Stretch"
                                          ScrollViewer.CanContentScroll="True" Margin="24,0,0,0">
-                                    <ListBox.ItemTemplate>
-                                        <DataTemplate>
-                                            <Grid>
-                                                <Grid Width="{Binding ElementName=listBox,Path=ActualWidth}" Cursor="Hand" Background="Transparent">
-                                                    <Grid Background="Transparent" MinHeight="48">
-                                                        <Grid.RowDefinitions>
-                                                            <RowDefinition Height="32"></RowDefinition>
-                                                            <RowDefinition Height="Auto"></RowDefinition>
-                                                        </Grid.RowDefinitions>
-                                                        <Grid Grid.Row="0" Background="Transparent">
-                                                            <StackPanel Orientation="Horizontal"
+                                        <ListBox.ItemTemplate>
+                                            <DataTemplate>
+                                                <Grid>
+                                                    <Grid Width="{Binding ElementName=listBox,Path=ActualWidth}" Cursor="Hand" Background="Transparent">
+                                                        <Grid Background="Transparent" MinHeight="48">
+                                                            <Grid.RowDefinitions>
+                                                                <RowDefinition Height="32"></RowDefinition>
+                                                                <RowDefinition Height="Auto"></RowDefinition>
+                                                            </Grid.RowDefinitions>
+                                                            <Grid Grid.Row="0" Background="Transparent">
+                                                                <StackPanel Orientation="Horizontal"
                                                                         VerticalAlignment="Center" HorizontalAlignment="Left">
-                                                                <TextBlock Text="&quot;" Style="{StaticResource CommonTextBlock}"
+                                                                    <TextBlock Text="&quot;" Style="{StaticResource CommonTextBlock}"
                                                                            Foreground="tomato" Opacity="0.9">
-                                                                </TextBlock>
-                                                                <TextBlock Text="{Binding Name}"
+                                                                    </TextBlock>
+                                                                    <TextBlock Text="{Binding Name}"
                                                                            Style="{StaticResource CommonTextBlock}"
                                                                            MaxWidth="180" TextTrimming="CharacterEllipsis"
                                                                            Foreground="tomato" Opacity="0.9">
-                                                                </TextBlock>
-                                                                <TextBlock Text="&quot;" Style="{StaticResource CommonTextBlock}"
+                                                                    </TextBlock>
+                                                                    <TextBlock Text="&quot;" Style="{StaticResource CommonTextBlock}"
                                                                            Foreground="tomato" Opacity="0.9">
-                                                                </TextBlock>
-                                                                <TextBlock Text="违禁词" FontSize="16"
+                                                                    </TextBlock>
+                                                                    <TextBlock Text="违禁词" FontSize="16"
                                                                            Style="{StaticResource CommonTextBlock}"
                                                                            Foreground="tomato" Opacity="0.9" 
                                                                            HorizontalAlignment="Left">
-                                                                </TextBlock>
-                                                            </StackPanel>
-                                                        </Grid>
-                                                        <Grid Grid.Row="1">
-                                                            <ListBox x:Name="listBox2" BorderThickness="0" Background="Transparent"
+                                                                    </TextBlock>
+                                                                </StackPanel>
+                                                            </Grid>
+                                                            <Grid Grid.Row="1">
+                                                                <ListBox x:Name="listBox2" BorderThickness="0" Background="Transparent"
                                                                      ItemsSource="{Binding UnChekedWordDetailInfos}"
                                                                      ScrollViewer.HorizontalScrollBarVisibility="Disabled"
                                                                      ScrollViewer.VerticalScrollBarVisibility="Auto" SelectedIndex="-1"
@@ -361,53 +365,54 @@
                                                                      VerticalAlignment="Top" HorizontalAlignment="Stretch"
                                                                      ScrollViewer.CanContentScroll="False"
                                                                      PreviewMouseWheel="listBox2_PreviewMouseWheel">
-                                                                <ListBox.ItemTemplate>
-                                                                    <DataTemplate>
-                                                                        <Grid Height="35" Width="{Binding ElementName=listBox2,Path=ActualWidth}">
-                                                                            <Grid.ColumnDefinitions>
-                                                                                <ColumnDefinition Width="40"></ColumnDefinition>
-                                                                                <ColumnDefinition Width="120"></ColumnDefinition>
-                                                                                <ColumnDefinition Width="85"></ColumnDefinition>
-                                                                            </Grid.ColumnDefinitions>
-                                                                            <Grid Grid.Column="0">
-                                                                                <Image Width="24" Height="24" Stretch="Fill"
+                                                                    <ListBox.ItemTemplate>
+                                                                        <DataTemplate>
+                                                                            <Grid Height="35" Width="{Binding ElementName=listBox2,Path=ActualWidth}">
+                                                                                <Grid.ColumnDefinitions>
+                                                                                    <ColumnDefinition Width="40"></ColumnDefinition>
+                                                                                    <ColumnDefinition Width="120"></ColumnDefinition>
+                                                                                    <ColumnDefinition Width="85"></ColumnDefinition>
+                                                                                </Grid.ColumnDefinitions>
+                                                                                <Grid Grid.Column="0">
+                                                                                    <Image Width="24" Height="24" Stretch="Fill"
                                                                                        HorizontalAlignment="Left" VerticalAlignment="Center"
                                                                                        control:ImageDecoder.Source="{Binding SourceDBImgPath}">
-                                                                                </Image>
-                                                                            </Grid>
-                                                                            <Grid Grid.Column="1">
-                                                                                <TextBlock Text="{Binding SourceDB}" FontSize="14" Opacity="0.87"
+                                                                                    </Image>
+                                                                                </Grid>
+                                                                                <Grid Grid.Column="1">
+                                                                                    <TextBlock Text="{Binding SourceDB}" FontSize="14" Opacity="0.87"
                                                                                            Style="{StaticResource CommonTextBlock}" HorizontalAlignment="Left"
                                                                                            MaxWidth="120" TextTrimming="CharacterEllipsis">
-                                                                                </TextBlock>
-                                                                            </Grid>
-                                                                            <Grid Grid.Column="2">
-                                                                                <TextBlock Text="{Binding NameType}" FontSize="14" Opacity="0.87"
+                                                                                    </TextBlock>
+                                                                                </Grid>
+                                                                                <Grid Grid.Column="2">
+                                                                                    <TextBlock Text="{Binding NameType}" FontSize="14" Opacity="0.87"
                                                                                            Style="{StaticResource CommonTextBlock}" HorizontalAlignment="Left"
                                                                                            MaxWidth="80" TextTrimming="CharacterEllipsis">
-                                                                                </TextBlock>
+                                                                                    </TextBlock>
+                                                                                </Grid>
                                                                             </Grid>
-                                                                        </Grid>
-                                                                    </DataTemplate>
-                                                                </ListBox.ItemTemplate>
-                                                                <ListBox.ItemsPanel>
-                                                                    <ItemsPanelTemplate>
-                                                                        <WrapPanel Orientation="Vertical"/>
-                                                                    </ItemsPanelTemplate>
-                                                                </ListBox.ItemsPanel>
-                                                            </ListBox>
+                                                                        </DataTemplate>
+                                                                    </ListBox.ItemTemplate>
+                                                                    <ListBox.ItemsPanel>
+                                                                        <ItemsPanelTemplate>
+                                                                            <WrapPanel Orientation="Vertical"/>
+                                                                        </ItemsPanelTemplate>
+                                                                    </ListBox.ItemsPanel>
+                                                                </ListBox>
+                                                            </Grid>
                                                         </Grid>
                                                     </Grid>
                                                 </Grid>
-                                            </Grid>
-                                        </DataTemplate>
-                                    </ListBox.ItemTemplate>
-                                    <ListBox.ItemsPanel>
-                                        <ItemsPanelTemplate>
-                                            <WrapPanel Orientation="Vertical"/>
-                                        </ItemsPanelTemplate>
-                                    </ListBox.ItemsPanel>
-                                </ListBox>
+                                            </DataTemplate>
+                                        </ListBox.ItemTemplate>
+                                        <ListBox.ItemsPanel>
+                                            <ItemsPanelTemplate>
+                                                <WrapPanel Orientation="Vertical"/>
+                                            </ItemsPanelTemplate>
+                                        </ListBox.ItemsPanel>
+                                    </ListBox>
+                                </Grid>
                             </Grid>
                         </Grid>
                     </Popup>
