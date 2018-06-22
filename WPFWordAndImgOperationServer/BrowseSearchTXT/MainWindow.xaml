@@ -362,22 +362,22 @@
                                                                      ScrollViewer.CanContentScroll="False">
                                                                 <ListBox.ItemTemplate>
                                                                     <DataTemplate>
-                                                                        <Grid Height="40" Width="{Binding ElementName=listBox2,Path=ActualWidth}">
+                                                                        <Grid Height="35" Width="{Binding ElementName=listBox2,Path=ActualWidth}">
                                                                             <Grid.ColumnDefinitions>
                                                                                 <ColumnDefinition Width="40"></ColumnDefinition>
-                                                                                <ColumnDefinition Width="100"></ColumnDefinition>
+                                                                                <ColumnDefinition Width="120"></ColumnDefinition>
                                                                                 <ColumnDefinition Width="85"></ColumnDefinition>
                                                                             </Grid.ColumnDefinitions>
                                                                             <Grid Grid.Column="0">
                                                                                 <Image Width="24" Height="24" Stretch="Fill"
-                                                                                       HorizontalAlignment="Center" VerticalAlignment="Center"
+                                                                                       HorizontalAlignment="Left" VerticalAlignment="Center"
                                                                                        control:ImageDecoder.Source="{Binding SourceDBImgPath}">
                                                                                 </Image>
                                                                             </Grid>
                                                                             <Grid Grid.Column="1">
                                                                                 <TextBlock Text="{Binding SourceDB}" FontSize="14" Opacity="0.87"
                                                                                            Style="{StaticResource CommonTextBlock}" HorizontalAlignment="Left"
-                                                                                           MaxWidth="100" TextTrimming="CharacterEllipsis">
+                                                                                           MaxWidth="120" TextTrimming="CharacterEllipsis">
                                                                                 </TextBlock>
                                                                             </Grid>
                                                                             <Grid Grid.Column="2">
