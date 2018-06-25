@@ -43,6 +43,7 @@
       <HintPath>..\..\Dll\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="System" />
+    <Reference Include="System.Configuration" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
     <Reference Include="Microsoft.CSharp" />
@@ -58,11 +59,13 @@
     <Reference Include="PresentationFramework" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="APIService.cs" />
     <Compile Include="CheckWordHelper.cs" />
     <Compile Include="DataParse.cs" />
     <Compile Include="DESHelper.cs" />
     <Compile Include="FileOperateHelper.cs" />
     <Compile Include="HashHelper.cs" />
+    <Compile Include="HttpHelper.cs" />
     <Compile Include="OCRHelp.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>

@@ -11,48 +11,40 @@ namespace CheckWordUtil
     public class APIService
     {
         /// <summary>
-        /// 用户登陆
-        /// </summary>
-        /// <param name="userName"></param>
-        /// <param name="password"></param>
-        /// <returns></returns>
-        public string LoginIn(string userName,string password)
-        {
-            #region 不调用接口假数据
-            if (!UtilSystemVar.IsCallWebApi)
-            {
-                return "seicjoe5rp6wkkba0sxox3oa3";
-            }
-            #endregion
-            string resultToken = "";
-            try
-            {
-                string apiName = "token";
-                UserLoginRequest user = new UserLoginRequest() { username = userName, password = password };
-                string json = JsonConvert.SerializeObject(user);
-                string resultStr = HttpHelper.HttpUrlSend(apiName, "POST", json);
-                UserLoginResponse resultInfo = JsonConvert.DeserializeObject<UserLoginResponse>(resultStr);
-                resultToken = resultInfo.sessionToken;
-            }
-            catch (Exception ex)
-            { }
-            return resultToken;
-        }
-        /// <summary>
         /// 获取OCR分析结果
         /// </summary>
-        /// <param name="token"></param>
         /// <returns></returns>
-        public string GetOCRResultByToken(string token, byte[] image)
+        public string GetOCRResultByToken(byte[] image)
         {
             string result = "";
             try
             {
+                string token = "";
+                try
+                {
+                    string loginInOutInfos = string.Format(@"{0}\LoginInOutInfo.xml", Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + "\\WordAndImgOCR\\LoginInOutInfo\\");
+                    var ui = CheckWordUtil.DataParse.ReadFromXmlPath<string>(loginInOutInfos);
+                    if (ui != null && ui.ToString() != "")
+                    {
+                        try
+                        {
+                            var loginInOutInfo = JsonConvert.DeserializeObject<LoginInOutInfo>(ui.ToString());
+                            if (loginInOutInfo != null && loginInOutInfo.Type == "LoginIn")
+                            {
+                                token = loginInOutInfo.Token;
+                            }
+                        }
+                        catch
+                        { }
+                    }
+                }
+                catch (Exception ex)
+                { }
                 string apiName = "ocr";
                 OCRRequest ocrRequest = new OCRRequest();
                 ocrRequest.image = System.Convert.ToBase64String(image);
                 string json = JsonConvert.SerializeObject(ocrRequest);
-                string resultStr = HttpHelper.HttpUrlSend(apiName, "POST", json);
+                string resultStr = HttpHelper.HttpUrlSend(apiName, "POST", json, token);
             }
             catch (Exception ex)
             { }
