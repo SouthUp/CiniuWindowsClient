@@ -52,7 +52,7 @@ namespace CheckWordUtil
                 OCRRequest ocrRequest = new OCRRequest();
                 ocrRequest.image = System.Convert.ToBase64String(image);
                 string json = JsonConvert.SerializeObject(ocrRequest);
-                string resultStr = HttpHelper.HttpUrlSend(apiName, "POST", json, token);
+                result = HttpHelper.HttpUrlSend(apiName, "POST", json, token);
             }
             catch (Exception ex)
             { }
