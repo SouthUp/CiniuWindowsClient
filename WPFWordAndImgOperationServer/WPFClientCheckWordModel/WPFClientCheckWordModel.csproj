@@ -55,6 +55,7 @@
     <Compile Include="DBWordModel.cs" />
     <Compile Include="GetAllWordsInfoResponse.cs" />
     <Compile Include="LoginInOutInfo.cs" />
+    <Compile Include="OCRRequest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>

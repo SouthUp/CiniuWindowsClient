@@ -38,5 +38,25 @@ namespace CheckWordUtil
             { }
             return resultToken;
         }
+        /// <summary>
+        /// 获取OCR分析结果
+        /// </summary>
+        /// <param name="token"></param>
+        /// <returns></returns>
+        public string GetOCRResultByToken(string token, byte[] image)
+        {
+            string result = "";
+            try
+            {
+                string apiName = "ocr";
+                OCRRequest ocrRequest = new OCRRequest();
+                ocrRequest.image = System.Convert.ToBase64String(image);
+                string json = JsonConvert.SerializeObject(ocrRequest);
+                string resultStr = HttpHelper.HttpUrlSend(apiName, "POST", json);
+            }
+            catch (Exception ex)
+            { }
+            return result;
+        }
     }
 }
