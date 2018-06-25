@@ -673,22 +673,27 @@ namespace MyExcelAddIn
                 try
                 {
                     var image = File.ReadAllBytes(filePath);
-                    var options = new Dictionary<string, object>{
-                                        {"recognize_granularity", "small"},
-                                        {"vertexes_location", "true"}
-                                    };
-                    string apiName = "";
-                    try
-                    {
-                        apiName = ConfigurationManager.AppSettings["CallAPIName"].ToString();
-                    }
-                    catch (Exception ex)
-                    { }
-                    DESHelper dESHelper = new DESHelper();
-                    OCR clientOCR = new OCR(dESHelper.DecryptString(ConfigurationManager.AppSettings["APIKey"].ToString()), dESHelper.DecryptString(ConfigurationManager.AppSettings["SecretKey"].ToString()));
-                    var result = clientOCR.Accurate(apiName, image, options);
+                    //集成云处理OCR
+                    APIService service = new APIService();
+                    var result = service.GetOCRResultByToken(image);
                     //反序列化
                     resultImgGeneral = JsonConvert.DeserializeObject<ImgGeneralInfo>(result.ToString().Replace("char", "Char"));
+                    ////////var options = new Dictionary<string, object>{
+                    ////////                    {"recognize_granularity", "small"},
+                    ////////                    {"vertexes_location", "true"}
+                    ////////                };
+                    ////////string apiName = "";
+                    ////////try
+                    ////////{
+                    ////////    apiName = ConfigurationManager.AppSettings["CallAPIName"].ToString();
+                    ////////}
+                    ////////catch (Exception ex)
+                    ////////{ }
+                    ////////DESHelper dESHelper = new DESHelper();
+                    ////////OCR clientOCR = new OCR(dESHelper.DecryptString(ConfigurationManager.AppSettings["APIKey"].ToString()), dESHelper.DecryptString(ConfigurationManager.AppSettings["SecretKey"].ToString()));
+                    ////////var result = clientOCR.Accurate(apiName, image, options);
+                    //////////反序列化
+                    ////////resultImgGeneral = JsonConvert.DeserializeObject<ImgGeneralInfo>(result.ToString().Replace("char", "Char"));
                 }
                 catch (Exception ex)
                 { }
