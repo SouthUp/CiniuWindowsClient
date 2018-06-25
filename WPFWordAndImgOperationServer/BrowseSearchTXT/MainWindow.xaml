@@ -344,7 +344,8 @@
                                                                     <TextBlock Text="{Binding Name}"
                                                                            Style="{StaticResource CommonTextBlock}"
                                                                            MaxWidth="180" TextTrimming="CharacterEllipsis"
-                                                                           Foreground="tomato" Opacity="0.9">
+                                                                           Foreground="tomato" Opacity="0.9"
+                                                                               ToolTip="{Binding Name}">
                                                                     </TextBlock>
                                                                     <TextBlock Text="&quot;" Style="{StaticResource CommonTextBlock}"
                                                                            Foreground="tomato" Opacity="0.9">
@@ -382,13 +383,13 @@
                                                                                 <Grid Grid.Column="1">
                                                                                     <TextBlock Text="{Binding SourceDB}" FontSize="14" Opacity="0.87"
                                                                                            Style="{StaticResource CommonTextBlock}" HorizontalAlignment="Left"
-                                                                                           MaxWidth="120" TextTrimming="CharacterEllipsis">
+                                                                                           MaxWidth="120" TextTrimming="CharacterEllipsis" ToolTip="{Binding SourceDB}">
                                                                                     </TextBlock>
                                                                                 </Grid>
                                                                                 <Grid Grid.Column="2">
                                                                                     <TextBlock Text="{Binding NameType}" FontSize="14" Opacity="0.87"
                                                                                            Style="{StaticResource CommonTextBlock}" HorizontalAlignment="Left"
-                                                                                           MaxWidth="80" TextTrimming="CharacterEllipsis">
+                                                                                           MaxWidth="80" TextTrimming="CharacterEllipsis" ToolTip="{Binding NameType}">
                                                                                     </TextBlock>
                                                                                 </Grid>
                                                                             </Grid>
@@ -430,7 +431,8 @@
                         </TextBlock>
                         <TextBlock Text="{Binding CurrentWordInfo.Name}"
                                    Style="{StaticResource CommonTextBlock}" 
-                                   MaxWidth="120" TextTrimming="CharacterEllipsis">
+                                   MaxWidth="120" TextTrimming="CharacterEllipsis"
+                                   ToolTip="{Binding CurrentWordInfo.Name}">
                         </TextBlock>
                         <TextBlock Text="&quot;" Style="{StaticResource CommonTextBlock}">
                         </TextBlock>
