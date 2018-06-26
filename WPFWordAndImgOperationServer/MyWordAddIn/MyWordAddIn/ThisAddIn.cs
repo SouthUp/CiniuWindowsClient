@@ -19,6 +19,7 @@ namespace MyWordAddIn
     {
         ////////屏蔽右键菜单，快捷键和替换词
         ////////KeyboardHook hook;
+        MyControl wpfControl;
         // 定义一个任务窗体 
         //////internal Microsoft.Office.Tools.CustomTaskPane myControlTaskPane;
         private void ThisAddIn_Startup(object sender, System.EventArgs e)
@@ -35,9 +36,114 @@ namespace MyWordAddIn
             //////// 设置为 MsoCTPDockPosition.msoCTPDockPositionRight这个代表停靠到右边，这个值也是默认值 
             //////myControlTaskPane.DockPosition = MsoCTPDockPosition.msoCTPDockPositionRight;
             #endregion
+            var wpfHost = new TaskPaneWpfControlHost();
+            var wpfTaskPane = new TaskPaneWpfControl();
+            wpfControl = new MyControl();
+            wpfTaskPane.TaskPaneContent.Children.Add(wpfControl);
+            wpfHost.WpfElementHost.HostContainer.Children.Add(wpfTaskPane);
+            var taskPane = this.CustomTaskPanes.Add(wpfHost, "违禁词检查");
+            taskPane.Visible = true;
+            taskPane.DockPosition = MsoCTPDockPosition.msoCTPDockPositionRight;
+            taskPane.VisibleChanged += TaskPane_VisibleChanged;
+            HostSystemVar.CustomTaskPane = taskPane;
             ////////屏蔽右键菜单，快捷键和替换词
             ////////this.Application.WindowBeforeRightClick += new Word.ApplicationEvents4_WindowBeforeRightClickEventHandler(Application_WindowBeforeRightClick);
+            EventAggregatorRepository.EventAggregator.GetEvent<SetMyControlVisibleEvent>().Subscribe(SetMyControlVisible);
+            EventAggregatorRepository.EventAggregator.GetEvent<SetMyWordsDBVisibleEvent>().Subscribe(SetMyWordsDBVisible);
+            EventAggregatorRepository.EventAggregator.GetEvent<SetMySynonymDBVisibleEvent>().Subscribe(SetMySynonymDBVisible);
             EventAggregatorRepository.EventAggregator.GetEvent<OpenMyFloatingPanelEvent>().Subscribe(OpenMyFloatingPanel);
+        }
+        private void SetMyControlVisible(bool isVisible)
+        {
+            try
+            {
+                HostSystemVar.CustomTaskPane.Visible = isVisible;
+            }
+            catch (Exception ex)
+            { }
+        }
+        private void SetMyWordsDBVisible(bool isVisible)
+        {
+            try
+            {
+                if (HostSystemVar.MyWordsDBTaskPane == null)
+                {
+                    var wpfHost = new TaskPaneWpfControlHost();
+                    var wpfTaskPane = new TaskPaneWpfControl();
+                    wpfHost.WpfElementHost.HostContainer.Children.Add(wpfTaskPane);
+                    var taskPane = this.CustomTaskPanes.Add(wpfHost, "违禁词词库");
+                    taskPane.Visible = true;
+                    taskPane.DockPosition = MsoCTPDockPosition.msoCTPDockPositionRight;
+                    taskPane.VisibleChanged += MyWordsDBTaskPane_VisibleChanged;
+                    HostSystemVar.MyWordsDBTaskPane = taskPane;
+                }
+                else
+                {
+                    HostSystemVar.MyWordsDBTaskPane.Visible = isVisible;
+                }
+                EventAggregatorRepository.EventAggregator.GetEvent<SetOpenWordsDBEnableEvent>().Publish(false);
+            }
+            catch (Exception ex)
+            { }
+        }
+        private void SetMySynonymDBVisible(bool isVisible)
+        {
+            try
+            {
+                if (HostSystemVar.MySynonymDBTaskPane == null)
+                {
+                    var wpfHost = new TaskPaneWpfControlHost();
+                    var wpfTaskPane = new TaskPaneWpfControl();
+                    wpfHost.WpfElementHost.HostContainer.Children.Add(wpfTaskPane);
+                    var taskPane = this.CustomTaskPanes.Add(wpfHost, "推荐词词库");
+                    taskPane.Visible = true;
+                    taskPane.DockPosition = MsoCTPDockPosition.msoCTPDockPositionRight;
+                    taskPane.VisibleChanged += MySynonymDBTaskPane_VisibleChanged;
+                    HostSystemVar.MySynonymDBTaskPane = taskPane;
+                }
+                else
+                {
+                    HostSystemVar.MySynonymDBTaskPane.Visible = isVisible;
+                }
+                EventAggregatorRepository.EventAggregator.GetEvent<SetOpenSynonymDBEnableEvent>().Publish(false);
+            }
+            catch (Exception ex)
+            { }
+        }
+        private void TaskPane_VisibleChanged(object sender, EventArgs e)
+        {
+            if (HostSystemVar.CustomTaskPane.Visible == false)
+            {
+                wpfControl.CloseDetector();
+                EventAggregatorRepository.EventAggregator.GetEvent<SetOpenMyControlEnableEvent>().Publish(true);
+            }
+            else
+            {
+                wpfControl.StartDetector();
+                EventAggregatorRepository.EventAggregator.GetEvent<SetOpenMyControlEnableEvent>().Publish(false);
+            }
+        }
+        private void MyWordsDBTaskPane_VisibleChanged(object sender, EventArgs e)
+        {
+            if (HostSystemVar.MyWordsDBTaskPane.Visible == false)
+            {
+                EventAggregatorRepository.EventAggregator.GetEvent<SetOpenWordsDBEnableEvent>().Publish(true);
+            }
+            else
+            {
+                EventAggregatorRepository.EventAggregator.GetEvent<SetOpenWordsDBEnableEvent>().Publish(false);
+            }
+        }
+        private void MySynonymDBTaskPane_VisibleChanged(object sender, EventArgs e)
+        {
+            if (HostSystemVar.MySynonymDBTaskPane.Visible == false)
+            {
+                EventAggregatorRepository.EventAggregator.GetEvent<SetOpenSynonymDBEnableEvent>().Publish(true);
+            }
+            else
+            {
+                EventAggregatorRepository.EventAggregator.GetEvent<SetOpenSynonymDBEnableEvent>().Publish(false);
+            }
         }
         void Application_WindowBeforeRightClick(Word.Selection Sel, ref bool Cancel)
         {
@@ -127,6 +233,7 @@ namespace MyWordAddIn
             {
                 CheckWordUtil.FileOperateHelper.DeleteFolder(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + "\\WordAndImgOCR\\CheckWordResultTempWord");
                 CheckWordUtil.FileOperateHelper.DeleteFolder(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + "\\WordAndImgOCR\\MyWordAddIn\\");
+                EventAggregatorRepository.EventAggregator.GetEvent<SetMyControlVisibleEvent>().Publish(false);
                 ////////屏蔽右键菜单，快捷键和替换词
                 ////////hook.UnHook();
             }
