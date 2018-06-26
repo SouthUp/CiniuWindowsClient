@@ -406,6 +406,11 @@ namespace WordAndImgOperationApp
         }
         private void MenuLoginOut_Click(object sender, RoutedEventArgs e)
         {
+            MessageBoxResult confirmToDel = System.Windows.MessageBox.Show("确认要注销登录吗？", "提示", MessageBoxButton.YesNo, MessageBoxImage.Question);
+            if (confirmToDel != MessageBoxResult.Yes)
+            {
+                return;
+            }
             try
             {
                 UserLoginInfo userLoginInfo = new UserLoginInfo();
