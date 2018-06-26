@@ -492,11 +492,6 @@ namespace BrowseSearchTXT
             { }
         }
 
-        private void CloseDetailPopWindowBtn_Click(object sender, RoutedEventArgs e)
-        {
-            viewModel.IsDetailPopWindowOpen = false;
-        }
-
         private void listBox2_PreviewMouseWheel(object sender, MouseWheelEventArgs e)
         {
             try

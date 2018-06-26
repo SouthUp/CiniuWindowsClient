@@ -316,13 +316,9 @@
                                     <DropShadowEffect ShadowDepth="0" BlurRadius="9" Opacity="0.8"/>
                                 </Grid.Effect>
                                 <Grid.RowDefinitions>
-                                    <RowDefinition Height="20"></RowDefinition>
+                                    <RowDefinition Height="0"></RowDefinition>
                                     <RowDefinition Height="Auto"></RowDefinition>
                                 </Grid.RowDefinitions>
-                                <Button Grid.Row="0" Width="16" Height="16" 
-                                        Style="{StaticResource GrayCloseBtnButtonStyle}"
-                                        HorizontalAlignment="Right" VerticalAlignment="Top"
-                                        Click="CloseDetailPopWindowBtn_Click"></Button>
                                 <Grid Grid.Row="1" MinHeight="80" MaxHeight="400">
                                     <ListBox x:Name="listBox" BorderThickness="0" Background="Transparent" ItemsSource="{Binding CurrentWordInfoResults}"
                                          ScrollViewer.HorizontalScrollBarVisibility="Disabled" ScrollViewer.VerticalScrollBarVisibility="Auto" SelectedIndex="-1"
