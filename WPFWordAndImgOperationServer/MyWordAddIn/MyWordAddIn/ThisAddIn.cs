@@ -24,34 +24,39 @@ namespace MyWordAddIn
         //////internal Microsoft.Office.Tools.CustomTaskPane myControlTaskPane;
         private void ThisAddIn_Startup(object sender, System.EventArgs e)
         {
-            ////////屏蔽右键菜单，快捷键和替换词
-            ////////hook = new KeyboardHook();
-            ////////hook.InitHook();
-            #region 加载自定义控件(WinForm)
-            //////// ExcelHelp 是一个自定义控件类 
-            //////myControlTaskPane = Globals.ThisAddIn.CustomTaskPanes.Add(new TaskPaneWpfControlHost(), "违禁词查询");
-            //////// 使任务窗体可见 
-            //////myControlTaskPane.Visible = true;
-            //////// 通过DockPosition属性来控制任务窗体的停靠位置， 
-            //////// 设置为 MsoCTPDockPosition.msoCTPDockPositionRight这个代表停靠到右边，这个值也是默认值 
-            //////myControlTaskPane.DockPosition = MsoCTPDockPosition.msoCTPDockPositionRight;
-            #endregion
-            var wpfHost = new TaskPaneWpfControlHost();
-            var wpfTaskPane = new TaskPaneWpfControl();
-            wpfControl = new MyControl();
-            wpfTaskPane.TaskPaneContent.Children.Add(wpfControl);
-            wpfHost.WpfElementHost.HostContainer.Children.Add(wpfTaskPane);
-            var taskPane = this.CustomTaskPanes.Add(wpfHost, "违禁词检查");
-            taskPane.Visible = true;
-            taskPane.DockPosition = MsoCTPDockPosition.msoCTPDockPositionRight;
-            taskPane.VisibleChanged += TaskPane_VisibleChanged;
-            HostSystemVar.CustomTaskPane = taskPane;
-            ////////屏蔽右键菜单，快捷键和替换词
-            ////////this.Application.WindowBeforeRightClick += new Word.ApplicationEvents4_WindowBeforeRightClickEventHandler(Application_WindowBeforeRightClick);
-            EventAggregatorRepository.EventAggregator.GetEvent<SetMyControlVisibleEvent>().Subscribe(SetMyControlVisible);
-            EventAggregatorRepository.EventAggregator.GetEvent<SetMyWordsDBVisibleEvent>().Subscribe(SetMyWordsDBVisible);
-            EventAggregatorRepository.EventAggregator.GetEvent<SetMySynonymDBVisibleEvent>().Subscribe(SetMySynonymDBVisible);
-            EventAggregatorRepository.EventAggregator.GetEvent<OpenMyFloatingPanelEvent>().Subscribe(OpenMyFloatingPanel);
+            try
+            {
+                ////////屏蔽右键菜单，快捷键和替换词
+                ////////hook = new KeyboardHook();
+                ////////hook.InitHook();
+                #region 加载自定义控件(WinForm)
+                //////// ExcelHelp 是一个自定义控件类 
+                //////myControlTaskPane = Globals.ThisAddIn.CustomTaskPanes.Add(new TaskPaneWpfControlHost(), "违禁词查询");
+                //////// 使任务窗体可见 
+                //////myControlTaskPane.Visible = true;
+                //////// 通过DockPosition属性来控制任务窗体的停靠位置， 
+                //////// 设置为 MsoCTPDockPosition.msoCTPDockPositionRight这个代表停靠到右边，这个值也是默认值 
+                //////myControlTaskPane.DockPosition = MsoCTPDockPosition.msoCTPDockPositionRight;
+                #endregion
+                var wpfHost = new TaskPaneWpfControlHost();
+                var wpfTaskPane = new TaskPaneWpfControl();
+                wpfControl = new MyControl();
+                wpfTaskPane.TaskPaneContent.Children.Add(wpfControl);
+                wpfHost.WpfElementHost.HostContainer.Children.Add(wpfTaskPane);
+                var taskPane = this.CustomTaskPanes.Add(wpfHost, "违禁词检查");
+                taskPane.Visible = true;
+                taskPane.DockPosition = MsoCTPDockPosition.msoCTPDockPositionRight;
+                taskPane.VisibleChanged += TaskPane_VisibleChanged;
+                HostSystemVar.CustomTaskPane = taskPane;
+                ////////屏蔽右键菜单，快捷键和替换词
+                ////////this.Application.WindowBeforeRightClick += new Word.ApplicationEvents4_WindowBeforeRightClickEventHandler(Application_WindowBeforeRightClick);
+                EventAggregatorRepository.EventAggregator.GetEvent<SetMyControlVisibleEvent>().Subscribe(SetMyControlVisible);
+                EventAggregatorRepository.EventAggregator.GetEvent<SetMyWordsDBVisibleEvent>().Subscribe(SetMyWordsDBVisible);
+                EventAggregatorRepository.EventAggregator.GetEvent<SetMySynonymDBVisibleEvent>().Subscribe(SetMySynonymDBVisible);
+                EventAggregatorRepository.EventAggregator.GetEvent<OpenMyFloatingPanelEvent>().Subscribe(OpenMyFloatingPanel);
+            }
+            catch (Exception ex)
+            { }
         }
         private void SetMyControlVisible(bool isVisible)
         {
