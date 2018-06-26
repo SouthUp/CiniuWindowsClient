@@ -317,7 +317,7 @@ namespace WordAndImgOperationApp
         private void SetIcon()
         {
             this.notifyIcon = new NotifyIcon();
-            this.notifyIcon.Text = "词牛";
+            this.notifyIcon.Text = "词牛（未登录）";
             this.notifyIcon.Icon = new System.Drawing.Icon(AppDomain.CurrentDomain.BaseDirectory + "Resources/MyApp.ico");//程序图标
             this.notifyIcon.Visible = true;
             notifyIcon.MouseClick += new System.Windows.Forms.MouseEventHandler(OnNotifyIconClick);
@@ -1024,6 +1024,14 @@ namespace WordAndImgOperationApp
         {
             try
             {
+                if (typeInfo == "LoginIn")
+                {
+                    SetIconToolTip("词牛（已登录）");
+                }
+                else
+                {
+                    SetIconToolTip("词牛（未登录）");
+                }
                 LoginInOutInfo loginInOutInfo = new LoginInOutInfo();
                 loginInOutInfo.Type = typeInfo;
                 loginInOutInfo.UrlStr = ConfigurationManager.AppSettings["UrlStr"].ToString();
@@ -1053,6 +1061,16 @@ namespace WordAndImgOperationApp
                 commonExchangeInfo.Data = JsonConvert.SerializeObject(infoDeal);
                 string jsonData = JsonConvert.SerializeObject(commonExchangeInfo); //序列化
                 Win32Helper.SendMessage("BrowseSearchTXT", jsonData);
+            }
+            catch (Exception ex)
+            { }
+        }
+        private void SetIconToolTip(string toolTips, string icoName = "MyApp.ico")
+        {
+            try
+            {
+                this.notifyIcon.Text = toolTips;
+                this.notifyIcon.Icon = new System.Drawing.Icon(AppDomain.CurrentDomain.BaseDirectory + "Resources/" + icoName);
             }
             catch (Exception ex)
             { }
