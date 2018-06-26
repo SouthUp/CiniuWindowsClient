@@ -321,7 +321,24 @@ namespace WordAndImgOperationApp
             this.notifyIcon.Icon = new System.Drawing.Icon(AppDomain.CurrentDomain.BaseDirectory + "Resources/MyApp.ico");//程序图标
             this.notifyIcon.Visible = true;
             notifyIcon.MouseClick += new System.Windows.Forms.MouseEventHandler(OnNotifyIconClick);
+            notifyIcon.MouseDoubleClick += NotifyIcon_MouseDoubleClick;
         }
+        /// <summary>
+        /// 鼠标双击
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void NotifyIcon_MouseDoubleClick(object sender, System.Windows.Forms.MouseEventArgs e)
+        {
+            //如果鼠标左键双击    
+            if (e.Button == MouseButtons.Left
+                && viewModel.MenueLoginVisibility == Visibility.Visible
+                && viewModel.OpenFloatWindowContent == "显示浮动窗口")
+            {
+                OpenFloatWindow_Click(null, null);
+            }
+        }
+
         /// <summary>    
         /// 鼠标单击    
         /// </summary>    
