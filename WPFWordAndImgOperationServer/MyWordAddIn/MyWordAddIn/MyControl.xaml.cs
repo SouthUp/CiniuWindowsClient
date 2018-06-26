@@ -481,13 +481,13 @@ namespace MyWordAddIn
                         viewModel.UncheckedWordLists.Clear();
                         CurrentImgsDictionary = new Dictionary<string, List<UnChekedWordInfo>>();
                     }));
-                    Dispatcher.Invoke(new Action(() =>
-                    {
-                        viewModel.IsBusyVisibility = Visibility.Hidden;
-                    }));
                 }
                 catch (Exception ex)
                 { }
+                Dispatcher.Invoke(new Action(() =>
+                {
+                    viewModel.IsBusyVisibility = Visibility.Hidden;
+                }));
             }
         }
         // 保存非违禁词带有背景色的Range和之前的背景色，以便于恢复
