@@ -195,13 +195,13 @@
         </Style>
     </Window.Resources>
     <Grid>
-        <Grid x:Name="MainGrid" ContextMenu="{StaticResource NotifyIconMenu}"
+        <Grid ContextMenu="{StaticResource NotifyIconMenu}"
               Cursor="Hand" MouseLeftButtonDown="Grid_MouseLeftButtonDown">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="75"></ColumnDefinition>
                 <ColumnDefinition></ColumnDefinition>
             </Grid.ColumnDefinitions>
-            <Grid Grid.Column="0" Grid.ColumnSpan="2" Width="291" Height="76" 
+            <Grid x:Name="MainGrid" Grid.Column="0" Grid.ColumnSpan="2" Width="291" Height="76" 
                   HorizontalAlignment="Right" VerticalAlignment="Center">
                 <Grid.Background>
                     <ImageBrush ImageSource="Images/Bg.png" Stretch="Fill"></ImageBrush>
@@ -307,7 +307,7 @@
                                 Click="GoDetailBtn_Click">
                     </Button>
                     <Popup IsOpen="{Binding IsDetailPopWindowOpen}" AllowsTransparency="True"
-                           HorizontalOffset="0" VerticalOffset="0" PopupAnimation="Fade"
+                           HorizontalOffset="-5" VerticalOffset="10" PopupAnimation="Fade"
                            PlacementTarget="{Binding ElementName=MainGrid}"
                            Placement="Top" StaysOpen ="False">
                         <Grid>
