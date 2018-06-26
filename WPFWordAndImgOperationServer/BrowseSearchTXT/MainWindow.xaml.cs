@@ -411,6 +411,11 @@ namespace BrowseSearchTXT
         }
         private void ReturnBack()
         {
+            if (IsDealingData)
+            {
+                CancelBtn_Click(null, null);
+            }
+
             viewModel.IsDetailPopWindowOpen = false;
 
             viewModel.TitleLogoVisibility = Visibility.Visible;
