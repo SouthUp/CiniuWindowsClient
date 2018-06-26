@@ -532,8 +532,10 @@ namespace WordAndImgOperationApp
                             {
                                 EventAggregatorRepository.EventAggregator.GetEvent<InitContentGridViewEvent>().Publish("MainResult");
                                 Dispatcher.Invoke(new Action(() => {
+                                    this.Topmost = true;
                                     this.Show();
                                     this.WindowState = windowState;
+                                    this.Topmost = false;
                                 }));
                             }
                             else if (result.Code == "ExchangeBrowseTxTHide")
