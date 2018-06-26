@@ -195,7 +195,7 @@
         </Style>
     </Window.Resources>
     <Grid>
-        <Grid ContextMenu="{StaticResource NotifyIconMenu}"
+        <Grid x:Name="MainGrid" ContextMenu="{StaticResource NotifyIconMenu}"
               Cursor="Hand" MouseLeftButtonDown="Grid_MouseLeftButtonDown">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="75"></ColumnDefinition>
@@ -307,7 +307,9 @@
                                 Click="GoDetailBtn_Click">
                     </Button>
                     <Popup IsOpen="{Binding IsDetailPopWindowOpen}" AllowsTransparency="True"
-                           HorizontalOffset="0" VerticalOffset="0" PopupAnimation="Fade">
+                           HorizontalOffset="0" VerticalOffset="0" PopupAnimation="Fade"
+                           PlacementTarget="{Binding ElementName=MainGrid}"
+                           Placement="Top" StaysOpen ="False">
                         <Grid>
                             <Grid Width="280" Background="White" Margin="9">
                                 <Grid.Effect>
