@@ -24,7 +24,7 @@
                     HorizontalAlignment="Center" VerticalAlignment="Top">
             <StackPanel Orientation="Vertical">
                 <StackPanel Orientation="Horizontal">
-                    <Button Background="{StaticResource UserIconLogo}" Width="24" Height="24" Style="{StaticResource ImageButtonStyle}"></Button>
+                    <Button Focusable="False" Background="{StaticResource UserIconLogo}" Width="24" Height="24" Style="{StaticResource ImageButtonStyle}"></Button>
                     <control:WatermarkTextBox Margin="16,0,0,0" BorderThickness="0"
                              Style="{StaticResource WatermarkTextBox}" 
                              Width="220" Height="24" Background="Transparent" Foreground="White" 
@@ -37,7 +37,7 @@
             </StackPanel>
             <StackPanel Orientation="Vertical" Margin="0,18,0,0">
                 <StackPanel Orientation="Horizontal">
-                    <Button Background="{StaticResource PasswordIconLogo}" Width="24" Height="24" Style="{StaticResource ImageButtonStyle}"></Button>
+                    <Button Focusable="False" Background="{StaticResource PasswordIconLogo}" Width="24" Height="24" Style="{StaticResource ImageButtonStyle}"></Button>
                     <PasswordBox x:Name="Password"  Margin="16,0,0,0"
                                  Style="{StaticResource WatermarkPasswordBox}" 
                                  input:InputMethod.IsInputMethodEnabled="False" 
@@ -63,11 +63,11 @@
                 </TextBlock>
             </StackPanel>
             <StackPanel Orientation="Horizontal" VerticalAlignment="Center" HorizontalAlignment="Right">
-                <Button Width="57" Height="20" FontSize="14"
+                <Button Width="57" Height="20" FontSize="14" Focusable="False" 
                         Style="{StaticResource TextButtonStyle}"
                         Content="找回密码" Click="FindPasswordBtn_Click">
                 </Button>
-                <Button Width="57" Height="20" FontSize="14" 
+                <Button Width="57" Height="20" FontSize="14" Focusable="False" 
                         Style="{StaticResource TextButtonStyle}"
                         Content="注册账号" Margin="16,0,0,0" Click="RegisterBtn_Click">
                 </Button>
@@ -85,7 +85,7 @@
             </TextBlock>
             <Button Background="{StaticResource RefreshIconLogo}" Width="25" Height="24"
                     Cursor="Hand" Style="{StaticResource ImageButtonStyle}" IsEnabled="False"
-                    Margin="1,0,4,0" Click="CheckVersionBtn_Click">
+                    Margin="1,0,4,0" Click="CheckVersionBtn_Click" Focusable="False">
             </Button>
             <TextBlock Text="检查更新" Foreground="White" Opacity="0.38" FontSize="12" 
                        Style="{StaticResource CommonCenterTextBlock}">

@@ -118,11 +118,11 @@
                     </StackPanel>
                     <Button x:Name="MinBtn" Width="24" Height="24" Click="MinBtn_Click"
                             Style="{StaticResource MinBtnButtonStyle}"
-                            Margin="16,0,0,0">
+                            Margin="16,0,0,0" Focusable="False">
                     </Button>
                     <Button x:Name="CloseBtn" Width="24" Height="24" Click="CloseBtn_Click" 
                             Style="{StaticResource CloseBtnButtonStyle}"
-                            Margin="16,0,0,0">
+                            Margin="16,0,0,0" Focusable="False">
                     </Button>
                 </StackPanel>
             </Grid>
