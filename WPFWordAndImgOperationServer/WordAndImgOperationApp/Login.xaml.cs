@@ -143,5 +143,21 @@ namespace WordAndImgOperationApp
             catch (Exception ex)
             { }
         }
+
+        private void LoginBtn_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.Enter)
+            {
+                LoginIn();
+            }
+        }
+
+        private void CheckSelectToggleBtn_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.Enter)
+            {
+                viewModel.IsAutoLogin = !viewModel.IsAutoLogin;
+            }
+        }
     }
 }
