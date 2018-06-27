@@ -5,9 +5,7 @@
         <Setter Property="Control.Template">
             <Setter.Value>
                 <ControlTemplate>
-                    <Rectangle StrokeDashArray="1 2" StrokeThickness="1"
-                                   Stroke="{DynamicResource {x:Static SystemColors.ControlTextBrushKey}}"
-                                   SnapsToDevicePixels="true" Margin="2" />
+                    <Rectangle Margin="0" StrokeThickness="2" Stroke="#40c4ff"/>
                 </ControlTemplate>
             </Setter.Value>
         </Setter>

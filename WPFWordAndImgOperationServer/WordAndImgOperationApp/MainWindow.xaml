@@ -6,7 +6,7 @@
         xmlns:gifLib="clr-namespace:GifImageLib;assembly=GifImageLib"
         xmlns:control="clr-namespace:CheckWordControl;assembly=CheckWordControl"
         xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
-        Style="{StaticResource NoresizeWindow}" AllowsTransparency="True"
+        AllowsTransparency="True" Background="Transparent"
         WindowStyle="None" WindowStartupLocation="CenterScreen" Topmost="False"
         Height="510" Width="810" Loaded="Window_Loaded" Unloaded="Window_Unloaded"
         StateChanged="Window_StateChanged" Closed="Window_Closed" Title="WordAndImgOperationApp">
@@ -48,7 +48,7 @@
             </Setter>
         </Style>
     </Window.Resources>
-    <Grid>
+    <Grid Height="500" Width="800">
         <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">
             <Grid x:Name="ImgGrid" HorizontalAlignment="Left" VerticalAlignment="Top"
                   Width="{Binding ElementName=img,Path=ActualWidth}"
