@@ -57,6 +57,14 @@
     <Compile Include="Convert\ValueToVisibilityConvert.cs" />
     <Compile Include="ImageDecoder\ImageDecoder.cs" />
     <Compile Include="ImageDecoder\ImageQueue.cs" />
+    <Compile Include="Notify\AnimateLocation.cs" />
+    <Compile Include="Notify\NotifyMessage.cs" />
+    <Compile Include="Notify\NotifyMessageManager.cs" />
+    <Compile Include="Notify\NotifyMessageView.xaml.cs">
+      <DependentUpon>NotifyMessageView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Notify\NotifyMessageViewModel.cs" />
+    <Compile Include="Notify\Screen.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -86,6 +94,12 @@
       <Project>{7ade6cf2-1cc9-46f6-8bce-f2f475e00e9f}</Project>
       <Name>CheckWordUtil</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Page Include="Notify\NotifyMessageView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

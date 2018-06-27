@@ -388,6 +388,7 @@ namespace WordAndImgOperationApp
             LeaveWcfService();
             CloseConsoleWPFClientServer();
             CloseSearchPop();
+            CloseNotifyMessageView();
         }
         private void MenuCiKuManager_Click(object sender, RoutedEventArgs e)
         {
@@ -623,6 +624,21 @@ namespace WordAndImgOperationApp
                 if (isSaveState)
                 {
                     SaveSearchPopState(false);
+                }
+            }
+            catch (Exception ex)
+            { }
+        }
+        private void CloseNotifyMessageView()
+        {
+            try
+            {
+                foreach (Window win in App.Current.Windows)
+                {
+                    if (win != this && win.Title == "NotifyMessageView")
+                    {
+                        win.Close();
+                    }
                 }
             }
             catch (Exception ex)
