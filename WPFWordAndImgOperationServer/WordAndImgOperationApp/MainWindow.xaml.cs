@@ -15,6 +15,7 @@ using System.Configuration;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Net.NetworkInformation;
 using System.ServiceModel;
 using System.Text;
 using System.Text.RegularExpressions;
@@ -44,6 +45,7 @@ namespace WordAndImgOperationApp
         WindowState windowState;
         NotifyIcon notifyIcon;
         WPFOfficeWindowViewModel viewModel = new WPFOfficeWindowViewModel();
+        System.Threading.Thread thCheckNetConn;
         public MainWindow()
         {
             InitializeComponent();
@@ -75,6 +77,7 @@ namespace WordAndImgOperationApp
                         break;
                     case "300":
                         bodyText = "网络异常";
+                        SetIconToolTip("词牛（网络异常）", "MyAppError.ico");
                         break;
                     case "4001":
                         bodyText = "服务器数据获取失败";
@@ -175,6 +178,17 @@ namespace WordAndImgOperationApp
 
                         viewModel.TitleLogoVisibility = Visibility.Visible;
                         viewModel.ReturnBackBtnVisibility = Visibility.Collapsed;
+                        try
+                        {
+                            if (thCheckNetConn == null)
+                            {
+                                thCheckNetConn = new System.Threading.Thread(CheckNetConn);
+                                thCheckNetConn.IsBackground = true;
+                                thCheckNetConn.Start();
+                            }
+                        }
+                        catch (Exception ex)
+                        { }
                     }
                     else if (typeName == "MainResult")
                     {
@@ -203,6 +217,36 @@ namespace WordAndImgOperationApp
             CheckWordUtil.Win32Helper.ShowHideWindow("WPF服务程序");
             RegisterWcfService();
             EventAggregatorRepository.EventAggregator.GetEvent<InitContentGridViewEvent>().Publish("Login");
+        }
+        private void CheckNetConn()
+        {
+            while (true)
+            {
+                try
+                {
+                    //using (Ping ping = new Ping())
+                    //{
+                    //    int timeout = 2000;
+                    //    PingReply reply = ping.Send("https://www.baidu.com/", timeout);
+                    //    if (reply == null || reply.Status != IPStatus.Success)
+                    //    {
+                    //        EventAggregatorRepository.EventAggregator.GetEvent<SendNotifyMessageEvent>().Publish("300");
+                    //    }
+                    //    else
+                    //    {
+                    //        if (this.notifyIcon.Text.Contains("网络异常"))
+                    //        {
+                    //            SetIconToolTip("词牛（已登录）");
+                    //        }
+                    //    }
+                    //}
+                }
+                catch (Exception ex)
+                {
+                    EventAggregatorRepository.EventAggregator.GetEvent<SendNotifyMessageEvent>().Publish("300");
+                }
+                System.Threading.Thread.Sleep(1000);
+            }
         }
         private void TitleGrid_MouseDown(object sender, MouseButtonEventArgs e)
         {
@@ -340,8 +384,28 @@ namespace WordAndImgOperationApp
         {
             WPFClientCheckWordUtil.CheckWordHelper.WordModels = new List<WPFClientCheckWordModel.WordModel>();
             RemoveHotKey();
+            CancelCheckNet();
         }
-
+        private void CancelCheckNet()
+        {
+            try
+            {
+                if (thCheckNetConn != null)
+                {
+                    thCheckNetConn.Abort();
+                    thCheckNetConn = null;
+                }
+            }
+            catch (Exception ex)
+            {
+                try
+                {
+                    thCheckNetConn = null;
+                }
+                catch
+                { }
+            }
+        }
         private void Window_StateChanged(object sender, EventArgs e)
         {
             viewModel.MainSetVisibility = Visibility.Collapsed;
@@ -452,6 +516,7 @@ namespace WordAndImgOperationApp
             {
                 return;
             }
+            CancelCheckNet();
             try
             {
                 UserLoginInfo userLoginInfo = new UserLoginInfo();
