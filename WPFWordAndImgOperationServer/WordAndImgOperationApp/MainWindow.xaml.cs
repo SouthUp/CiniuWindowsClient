@@ -8,6 +8,7 @@ using Spire.Doc;
 using Spire.Doc.Documents;
 using Spire.Doc.Fields;
 using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Configuration;
@@ -57,6 +58,45 @@ namespace WordAndImgOperationApp
             EventAggregatorRepository.EventAggregator.GetEvent<LoginInOrOutEvent>().Subscribe(LoginInOrOut);
             EventAggregatorRepository.EventAggregator.GetEvent<IsCanOpenSearchPopWindowEvent>().Subscribe(IsCanOpenSearchPopWindow);
             EventAggregatorRepository.EventAggregator.GetEvent<SendDealDataStateToSeachTxTEvent>().Subscribe(SendDealDataStateToSeachTxT);
+            EventAggregatorRepository.EventAggregator.GetEvent<SendNotifyMessageEvent>().Subscribe(SendNotifyMessage);
+        }
+        private void SendNotifyMessage(string errorCode)
+        {
+            try
+            {
+                string bodyText = "";
+                switch (errorCode)
+                {
+                    case "100":
+                        bodyText = "内存数据异常";
+                        break;
+                    case "200":
+                        bodyText = "服务器异常";
+                        break;
+                    case "300":
+                        bodyText = "网络异常";
+                        break;
+                    case "4001":
+                        bodyText = "服务器数据获取失败";
+                        break;
+                    case "4002":
+                        bodyText = "数据解析错误";
+                        break;
+                    case "4003":
+                        bodyText = "词库获取错误";
+                        break;
+                    case "4004":
+                        bodyText = "词库解析错误";
+                        break;
+                }
+                if (!string.IsNullOrEmpty(bodyText))
+                {
+                    var notifyMessage = new CheckWordControl.Notify.NotifyMessage(bodyText, errorCode, null);
+                    CheckWordControl.Notify.NotifyMessageManager.Current.EnqueueMessage(notifyMessage);
+                }
+            }
+            catch (Exception ex)
+            { }
         }
         private void IsCanOpenSearchPopWindow(bool b)
         {

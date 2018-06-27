@@ -41,6 +41,8 @@ namespace CheckWordControl.Notify
         /// </summary>
         protected ConcurrentQueue<NotifyMessage> queueMessages { get; set; }
 
+        private List<string> NotifyMessageTypeLists = new List<string>();
+
         private delegate void MethodInvoker();
 
         #region 单例模式
@@ -96,8 +98,17 @@ namespace CheckWordControl.Notify
         /// <param name="msg">显示的信息<see cref="NotifyMessage"/></param>
         public void EnqueueMessage(NotifyMessage msg)
         {
-            queueMessages.Enqueue(msg);
-            Start();
+            try
+            {
+                if (!NotifyMessageTypeLists.Contains(msg.ErrorCode))
+                {
+                    NotifyMessageTypeLists.Add(msg.ErrorCode);
+                    queueMessages.Enqueue(msg);
+                    Start();
+                }
+            }
+            catch (Exception ex)
+            { }
         }
 
         private void Start()
@@ -131,7 +142,16 @@ namespace CheckWordControl.Notify
                                     NotifyMessageViewModel viewModel = new NotifyMessageViewModel
                                         (notifyMsg,
                                         displayLocations[nextLocation],
-                                        () => { displayMessages[nextLocation] = null; }
+                                        () => 
+                                        {
+                                            displayMessages[nextLocation] = null;
+                                            try
+                                            {
+                                                NotifyMessageTypeLists.Remove(notifyMsg.ErrorCode);
+                                            }
+                                            catch (Exception ex)
+                                            { }
+                                        }
                                         );
                                     displayMessages[nextLocation] = viewModel;
                                     var dispatcher = Application.Current.Dispatcher;

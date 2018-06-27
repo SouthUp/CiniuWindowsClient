@@ -93,4 +93,11 @@ namespace CheckWordEvent
     {
 
     }
+    /// <summary>
+    /// 传递NotifyMessage事件
+    /// </summary>
+    public class SendNotifyMessageEvent : PubSubEvent<string>
+    {
+
+    }
 }
