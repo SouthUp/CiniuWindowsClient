@@ -306,7 +306,7 @@
                                 Style="{StaticResource TextButtonStyle}"
                                 Click="GoDetailBtn_Click">
                     </Button>
-                    <Popup IsOpen="{Binding IsDetailPopWindowOpen}" AllowsTransparency="True"
+                    <Popup x:Name="GoDetailPopup" IsOpen="{Binding IsDetailPopWindowOpen}" AllowsTransparency="True"
                            HorizontalOffset="-5" VerticalOffset="10" PopupAnimation="Fade"
                            PlacementTarget="{Binding ElementName=MainGrid}"
                            Placement="Top" StaysOpen ="False">

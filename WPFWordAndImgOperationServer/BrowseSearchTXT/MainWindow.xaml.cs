@@ -470,6 +470,14 @@ namespace BrowseSearchTXT
         }
         private void GoDetailBtn_Click(object sender, RoutedEventArgs e)
         {
+            if (this.Top < 420)
+            {
+                GoDetailPopup.VerticalOffset = -15;
+            }
+            else
+            {
+                GoDetailPopup.VerticalOffset = 10;
+            }
             viewModel.IsDetailPopWindowOpen = true;
             try
             {
