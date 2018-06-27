@@ -224,22 +224,22 @@ namespace WordAndImgOperationApp
             {
                 try
                 {
-                    //using (Ping ping = new Ping())
-                    //{
-                    //    int timeout = 2000;
-                    //    PingReply reply = ping.Send("https://www.baidu.com/", timeout);
-                    //    if (reply == null || reply.Status != IPStatus.Success)
-                    //    {
-                    //        EventAggregatorRepository.EventAggregator.GetEvent<SendNotifyMessageEvent>().Publish("300");
-                    //    }
-                    //    else
-                    //    {
-                    //        if (this.notifyIcon.Text.Contains("网络异常"))
-                    //        {
-                    //            SetIconToolTip("词牛（已登录）");
-                    //        }
-                    //    }
-                    //}
+                    using (Ping ping = new Ping())
+                    {
+                        int timeout = 1500;
+                        PingReply reply = ping.Send("www.baidu.com", timeout);
+                        if (reply == null || reply.Status != IPStatus.Success)
+                        {
+                            EventAggregatorRepository.EventAggregator.GetEvent<SendNotifyMessageEvent>().Publish("300");
+                        }
+                        else
+                        {
+                            if (this.notifyIcon.Text.Contains("网络异常"))
+                            {
+                                SetIconToolTip("词牛（已登录）");
+                            }
+                        }
+                    }
                 }
                 catch (Exception ex)
                 {
