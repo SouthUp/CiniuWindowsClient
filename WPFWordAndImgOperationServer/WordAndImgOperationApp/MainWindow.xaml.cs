@@ -224,49 +224,74 @@ namespace WordAndImgOperationApp
             {
                 try
                 {
-                    using (Ping ping = new Ping())
+                    bool result = GetCurrentNetState();
+                    if (result)
                     {
-                        int timeout = 3000;
-                        PingReply reply = ping.Send("www.baidu.com", timeout);
-                        if (reply == null || reply.Status != IPStatus.Success)
+                        if (this.notifyIcon.Text.Contains("网络异常"))
                         {
-                            EventAggregatorRepository.EventAggregator.GetEvent<SendNotifyMessageEvent>().Publish("300");
-                        }
-                        else
-                        {
-                            if (this.notifyIcon.Text.Contains("网络异常"))
+                            SetIconToolTip("词牛（已登录）");
+                            try
                             {
-                                SetIconToolTip("词牛（已登录）");
-                                try
-                                {
-                                    Dispatcher.Invoke(new Action(() => {
-                                        foreach (Window win in App.Current.Windows)
+                                Dispatcher.Invoke(new Action(() => {
+                                    foreach (Window win in App.Current.Windows)
+                                    {
+                                        if (win != this && win.Title == "NotifyMessageView")
                                         {
-                                            if (win != this && win.Title == "NotifyMessageView")
+                                            var viewModel = win.DataContext as CheckWordControl.Notify.NotifyMessageViewModel;
+                                            if (viewModel != null && viewModel.Message.ErrorCode == "300")
                                             {
-                                                var viewModel = win.DataContext as CheckWordControl.Notify.NotifyMessageViewModel;
-                                                if (viewModel != null && viewModel.Message.ErrorCode == "300")
-                                                {
-                                                    viewModel._closeAction();
-                                                    win.Close();
-                                                    return;
-                                                }
+                                                viewModel._closeAction();
+                                                win.Close();
+                                                break;
                                             }
                                         }
-                                    }));
-                                }
-                                catch (Exception ex)
-                                { }
+                                    }
+                                }));
+                            }
+                            catch (Exception ex)
+                            { }
+                        }
+                    }
+                    else
+                    {
+                        System.Threading.Thread.Sleep(500);
+                        result = GetCurrentNetState();
+                        if (!result)
+                        {
+                            System.Threading.Thread.Sleep(500);
+                            result = GetCurrentNetState();
+                            if (!result)
+                            {
+                                EventAggregatorRepository.EventAggregator.GetEvent<SendNotifyMessageEvent>().Publish("300");
                             }
                         }
                     }
                 }
                 catch (Exception ex)
-                {
-                    EventAggregatorRepository.EventAggregator.GetEvent<SendNotifyMessageEvent>().Publish("300");
-                }
+                { }
                 System.Threading.Thread.Sleep(1000);
             }
+        }
+        private bool GetCurrentNetState()
+        {
+            bool result = true;
+            try
+            {
+                using (Ping ping = new Ping())
+                {
+                    int timeout = 3000;
+                    PingReply reply = ping.Send("www.baidu.com", timeout);
+                    if (reply == null || reply.Status != IPStatus.Success)
+                    {
+                        result = false;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                result = false;
+            }
+            return result;
         }
         private void TitleGrid_MouseDown(object sender, MouseButtonEventArgs e)
         {
