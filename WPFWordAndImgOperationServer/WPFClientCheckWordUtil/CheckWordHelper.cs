@@ -54,6 +54,23 @@ namespace WPFClientCheckWordUtil
             }
             catch (Exception ex)
             {
+                WordModels = new List<WordModel>();
+            }
+            if (WordModels.Count > 0)
+            {
+                try
+                {
+                    CommonExchangeInfo commonExchangeInfo = new CommonExchangeInfo();
+                    commonExchangeInfo.Code = "HideNotifyMessageView";
+                    commonExchangeInfo.Data = "4003";
+                    string jsonData = JsonConvert.SerializeObject(commonExchangeInfo); //序列化
+                    WPFClientCheckWordUtilWin32Helper.SendMessage("WordAndImgOperationApp", jsonData);
+                }
+                catch
+                { }
+            }
+            else
+            {
                 try
                 {
                     CommonExchangeInfo commonExchangeInfo = new CommonExchangeInfo();
@@ -64,18 +81,7 @@ namespace WPFClientCheckWordUtil
                 }
                 catch
                 { }
-                return new List<WordModel>();
             }
-            try
-            {
-                CommonExchangeInfo commonExchangeInfo = new CommonExchangeInfo();
-                commonExchangeInfo.Code = "HideNotifyMessageView";
-                commonExchangeInfo.Data = "4003";
-                string jsonData = JsonConvert.SerializeObject(commonExchangeInfo); //序列化
-                WPFClientCheckWordUtilWin32Helper.SendMessage("WordAndImgOperationApp", jsonData);
-            }
-            catch
-            { }
             return WordModels;
         }
         /// <summary>

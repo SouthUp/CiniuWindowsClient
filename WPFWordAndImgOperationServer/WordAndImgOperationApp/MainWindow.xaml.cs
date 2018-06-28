@@ -87,6 +87,7 @@ namespace WordAndImgOperationApp
                         break;
                     case "4003":
                         bodyText = "词库获取错误";
+                        SetIconToolTip("词牛（数据异常）", "MyAppError.ico");
                         break;
                     case "4004":
                         bodyText = "词库解析错误";
