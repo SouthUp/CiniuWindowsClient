@@ -237,6 +237,26 @@ namespace WordAndImgOperationApp
                             if (this.notifyIcon.Text.Contains("网络异常"))
                             {
                                 SetIconToolTip("词牛（已登录）");
+                                try
+                                {
+                                    Dispatcher.Invoke(new Action(() => {
+                                        foreach (Window win in App.Current.Windows)
+                                        {
+                                            if (win != this && win.Title == "NotifyMessageView")
+                                            {
+                                                var viewModel = win.DataContext as CheckWordControl.Notify.NotifyMessageViewModel;
+                                                if (viewModel != null && viewModel.Message.ErrorCode == "300")
+                                                {
+                                                    viewModel._closeAction();
+                                                    win.Close();
+                                                    return;
+                                                }
+                                            }
+                                        }
+                                    }));
+                                }
+                                catch (Exception ex)
+                                { }
                             }
                         }
                     }
