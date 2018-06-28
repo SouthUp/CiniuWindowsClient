@@ -88,7 +88,7 @@ namespace BrowseSearchTXT
                 {
                     if (File.Exists(path.ToString()))
                     {
-                        if (listClass.Contains(System.IO.Path.GetExtension(path.ToString())))
+                        if (listClass.Contains(System.IO.Path.GetExtension(path.ToString()).ToLower()))
                         {
                             if (!path.ToString().Contains("~$"))
                             {
@@ -155,7 +155,7 @@ namespace BrowseSearchTXT
             FileInfo[] allFile = dir.GetFiles();
             foreach (FileInfo fi in allFile)
             {
-                if (listClass.Contains(System.IO.Path.GetExtension(fi.FullName)))
+                if (listClass.Contains(System.IO.Path.GetExtension(fi.FullName).ToLower()))
                 {
                     if (!fi.FullName.Contains("~$"))
                     {
