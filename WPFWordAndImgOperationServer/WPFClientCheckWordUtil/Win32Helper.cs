@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace WPFClientCheckWordUtil
 {
-    public class Win32Helper
+    public class WPFClientCheckWordUtilWin32Helper
     {
         public const int WM_COPYDATA = 0x004A;
 

@@ -712,6 +712,37 @@ namespace WordAndImgOperationApp
                                     this.WindowState = windowState;
                                 }));
                             }
+                            else if (result.Code == "ShowNotifyMessageView")
+                            {
+                                EventAggregatorRepository.EventAggregator.GetEvent<SendNotifyMessageEvent>().Publish(result.Data);
+                            }
+                            else if (result.Code == "HideNotifyMessageView")
+                            {
+                                if (result.Data == "4003" && this.notifyIcon.Text.Contains("词库获取错误"))
+                                {
+                                    SetIconToolTip("词牛（已登录）");
+                                    try
+                                    {
+                                        Dispatcher.Invoke(new Action(() => {
+                                            foreach (Window win in App.Current.Windows)
+                                            {
+                                                if (win != this && win.Title == "NotifyMessageView")
+                                                {
+                                                    var viewModel = win.DataContext as CheckWordControl.Notify.NotifyMessageViewModel;
+                                                    if (viewModel != null && viewModel.Message.ErrorCode == "4003")
+                                                    {
+                                                        viewModel._closeAction();
+                                                        win.Close();
+                                                        break;
+                                                    }
+                                                }
+                                            }
+                                        }));
+                                    }
+                                    catch (Exception ex)
+                                    { }
+                                }
+                            }
                         };
                         System.Threading.Thread t = new System.Threading.Thread(start);
                         t.IsBackground = true;

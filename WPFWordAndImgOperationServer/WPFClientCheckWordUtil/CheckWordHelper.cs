@@ -9,6 +9,7 @@ using System.Configuration;
 using System.Net;
 using System.IO;
 using Newtonsoft.Json;
+using CheckWordModel.Communication;
 
 namespace WPFClientCheckWordUtil
 {
@@ -53,8 +54,28 @@ namespace WPFClientCheckWordUtil
             }
             catch (Exception ex)
             {
+                try
+                {
+                    CommonExchangeInfo commonExchangeInfo = new CommonExchangeInfo();
+                    commonExchangeInfo.Code = "ShowNotifyMessageView";
+                    commonExchangeInfo.Data = "4003";
+                    string jsonData = JsonConvert.SerializeObject(commonExchangeInfo); //序列化
+                    WPFClientCheckWordUtilWin32Helper.SendMessage("WordAndImgOperationApp", jsonData);
+                }
+                catch
+                { }
                 return new List<WordModel>();
             }
+            try
+            {
+                CommonExchangeInfo commonExchangeInfo = new CommonExchangeInfo();
+                commonExchangeInfo.Code = "HideNotifyMessageView";
+                commonExchangeInfo.Data = "4003";
+                string jsonData = JsonConvert.SerializeObject(commonExchangeInfo); //序列化
+                WPFClientCheckWordUtilWin32Helper.SendMessage("WordAndImgOperationApp", jsonData);
+            }
+            catch
+            { }
             return WordModels;
         }
         /// <summary>

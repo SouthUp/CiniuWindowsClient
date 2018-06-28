@@ -67,6 +67,7 @@
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
     <Compile Include="SystemVar.cs" />
+    <Compile Include="Win32Helper.cs" />
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
@@ -77,6 +78,10 @@
     </None>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\CheckWordModel\CheckWordModel.csproj">
+      <Project>{882975e9-f754-4f88-93c0-e461387d003d}</Project>
+      <Name>CheckWordModel</Name>
+    </ProjectReference>
     <ProjectReference Include="..\WPFClientCheckWordModel\WPFClientCheckWordModel.csproj">
       <Project>{11d0fe11-bf6d-49db-ad3f-76694e47d305}</Project>
       <Name>WPFClientCheckWordModel</Name>
