@@ -226,7 +226,7 @@ namespace WordAndImgOperationApp
                 {
                     using (Ping ping = new Ping())
                     {
-                        int timeout = 1500;
+                        int timeout = 3000;
                         PingReply reply = ping.Send("www.baidu.com", timeout);
                         if (reply == null || reply.Status != IPStatus.Success)
                         {
