@@ -150,5 +150,15 @@ namespace WordAndImgOperationApp
                 RaisePropertyChanged("IsUserInfoPopWindowOpen");
             }
         }
+        private UserStateInfos _currentUserInfo = new UserStateInfos();
+        public UserStateInfos CurrentUserInfo
+        {
+            get { return _currentUserInfo; }
+            set
+            {
+                _currentUserInfo = value;
+                RaisePropertyChanged("CurrentUserInfo");
+            }
+        }
     }
 }

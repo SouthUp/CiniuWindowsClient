@@ -82,6 +82,24 @@
                     <Grid.Effect>
                         <DropShadowEffect ShadowDepth="0" BlurRadius="9" Opacity="0.8"/>
                     </Grid.Effect>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="*"></RowDefinition>
+                        <RowDefinition Height="48"></RowDefinition>
+                        <RowDefinition Height="32"></RowDefinition>
+                        <RowDefinition Height="32"></RowDefinition>
+                        <RowDefinition Height="32"></RowDefinition>
+                        <RowDefinition Height="32"></RowDefinition>
+                        <RowDefinition Height="*"></RowDefinition>
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="62"></ColumnDefinition>
+                        <ColumnDefinition Width="*"></ColumnDefinition>
+                    </Grid.ColumnDefinitions>
+                    <Grid Grid.Row="1" Grid.Column="0" Background="{StaticResource UserInfoLogo}" 
+                          Height="24" Width="24" HorizontalAlignment="Right" Margin="0,0,14,0"></Grid>
+                    <TextBlock Grid.Row="1" Grid.Column="1" Text="{Binding UserName}"
+                               FontSize="16" Style="{StaticResource CommonLeftTextBlock}">
+                    </TextBlock>
                 </Grid>
             </Grid>
         </Popup>

@@ -861,4 +861,21 @@
             </DrawingGroup>
         </DrawingBrush.Drawing>
     </DrawingBrush>
+    <DrawingBrush x:Key="UserInfoLogo" Stretch="None">
+        <DrawingBrush.Drawing>
+            <DrawingGroup>
+                <DrawingGroup.ClipGeometry>
+                    <RectangleGeometry Rect="0,0,24,24" />
+                </DrawingGroup.ClipGeometry>
+                <GeometryDrawing>
+                    <GeometryDrawing.Brush>
+                        <SolidColorBrush Color="#FF000000" Opacity="0.541" />
+                    </GeometryDrawing.Brush>
+                    <GeometryDrawing.Geometry>
+                        <PathGeometry FillRule="EvenOdd" Figures="M12,2C6.48,2 2,6.48 2,12 2,17.52 6.48,22 12,22 17.52,22 22,17.52 22,12 22,6.48 17.52,2 12,2z M12,5C13.66,5 15,6.34 15,8 15,9.66 13.66,11 12,11 10.34,11 9,9.66 9,8 9,6.34 10.34,5 12,5z M12,19.2A7.2,7.2,0,0,1,6,15.98C6.03,13.99 10,12.9 12,12.9 13.99,12.9 17.97,13.99 18,15.98A7.2,7.2,0,0,1,12,19.2z" />
+                    </GeometryDrawing.Geometry>
+                </GeometryDrawing>
+            </DrawingGroup>
+        </DrawingBrush.Drawing>
+    </DrawingBrush>
 </ResourceDictionary>
