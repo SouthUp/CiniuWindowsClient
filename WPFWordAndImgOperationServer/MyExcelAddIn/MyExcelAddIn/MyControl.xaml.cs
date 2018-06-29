@@ -343,6 +343,8 @@ namespace MyExcelAddIn
                 }
             }
         }
+        private static AutoResetEvent myEvent = new AutoResetEvent(false);
+        private int countDealParagraph = 0;
         /// <summary>
         /// 查找文本并高亮显示
         /// </summary>
@@ -354,22 +356,33 @@ namespace MyExcelAddIn
             var workSheet = (Worksheet)workBook.ActiveSheet;
             int MaxRow = GetMaxRow(workSheet);
             int MaxColumn = GetMaxColumn(workSheet);
-            List<Range> RangeDataList = new List<Range>();
+            //线程池处理数据
+            ThreadPool.SetMaxThreads(500, 500);
+            countDealParagraph = MaxRow * MaxColumn;
             for (int i = 1; i <= MaxRow; i++)
             {
                 for (int j = 1; j <= MaxColumn; j++)
                 {
-                    RangeDataList.Add((Range)(workSheet.Cells[i, j]));
-                    if (RangeDataList.Count >= 200)
-                    {
-                        //处理段落违禁词查找
-                        DealParagraph(RangeDataList);
-                        RangeDataList = new List<Range>();
-                    }
+                    ThreadPool.QueueUserWorkItem(DealSingleParagraph, (Range)(workSheet.Cells[i, j]));
                 }
             }
-            //处理违禁词查找
-            DealParagraph(RangeDataList);
+            myEvent.WaitOne();
+            //List<Range> RangeDataList = new List<Range>();
+            //for (int i = 1; i <= MaxRow; i++)
+            //{
+            //    for (int j = 1; j <= MaxColumn; j++)
+            //    {
+            //        RangeDataList.Add((Range)(workSheet.Cells[i, j]));
+            //        if (RangeDataList.Count >= 200)
+            //        {
+            //            //处理段落违禁词查找
+            //            DealParagraph(RangeDataList);
+            //            RangeDataList = new List<Range>();
+            //        }
+            //    }
+            //}
+            ////处理违禁词查找
+            //DealParagraph(RangeDataList);
             List<ImagesDetailInfo> ImagesDetailInfos = GetPicsFromExcel();
             List<string> listHashs = new List<string>();
             foreach (var item in ImagesDetailInfos)
@@ -449,6 +462,69 @@ namespace MyExcelAddIn
             {
                 viewModel.WarningTotalCount = countTotal;
             }));
+        }
+        private void DealSingleParagraph(object obj)
+        {
+            try
+            {
+                Range item = obj as Range;
+                string str = CellGetStringValue(item);
+                if (!string.IsNullOrEmpty(str))
+                {
+                    var listUnChekedWord = CheckWordHelper.GetUnChekedWordInfoList(str).ToList();
+                    if (listUnChekedWord != null && listUnChekedWord.Count > 0)
+                    {
+                        foreach (var strFind in listUnChekedWord.ToList())
+                        {
+                            UnChekedWordInfo SelectUnCheckWord = new UnChekedWordInfo() { Name = strFind.Name, UnChekedWordDetailInfos = strFind.UnChekedWordDetailInfos };
+                            MatchCollection mc = Regex.Matches(str, strFind.Name, RegexOptions.IgnoreCase);
+                            if (mc.Count > 0)
+                            {
+                                rangeCurrentDealingLists.Add(item);
+                                foreach (Match m in mc)
+                                {
+                                    try
+                                    {
+                                        SelectUnCheckWord.UnChekedWordInLineDetailInfos.Add(new UnChekedInLineDetailWordInfo() { InLineText = str, UnCheckWordExcelRange = item });
+                                        SelectUnCheckWord.ErrorTotalCount++;
+                                    }
+                                    catch (Exception ex)
+                                    { }
+                                }
+                                lock (lockObject)
+                                {
+                                    var infoExist = listUnCheckWords.AsParallel().FirstOrDefault(x => x.Name == SelectUnCheckWord.Name);
+                                    if (infoExist == null)
+                                    {
+                                        listUnCheckWords.Add(SelectUnCheckWord);
+                                    }
+                                    else
+                                    {
+                                        foreach (var itemInfo in SelectUnCheckWord.UnChekedWordInLineDetailInfos)
+                                        {
+                                            infoExist.UnChekedWordInLineDetailInfos.Add(itemInfo);
+                                            infoExist.ErrorTotalCount++;
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            { }
+            try
+            {
+                // 以原子操作的形式递减指定变量的值并存储结果。
+                if (Interlocked.Decrement(ref countDealParagraph) == 0)
+                {
+                    // 将事件状态设置为有信号，从而允许一个或多个等待线程继续执行。
+                    myEvent.Set();
+                }
+            }
+            catch
+            { }
         }
         private void DealParagraph(List<Range> RangeDataList)
         {
