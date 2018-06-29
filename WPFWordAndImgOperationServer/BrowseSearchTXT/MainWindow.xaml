@@ -4,6 +4,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:BrowseSearchTXT"
+        xmlns:Microsoft_Windows_Themes="clr-namespace:Microsoft.Windows.Themes;assembly=PresentationFramework.Aero"
         xmlns:control="clr-namespace:CheckWordControl;assembly=CheckWordControl"
         WindowStyle="None" ResizeMode="NoResize" AllowDrop="True" ShowInTaskbar="False"
         AllowsTransparency="True" Width="318" Height="76" Topmost="True"
@@ -193,6 +194,59 @@
                 </Trigger>
             </Style.Triggers>
         </Style>
+        <control:NullOrEmptyStringToVisibilityConverter
+        x:Key="NullOrEmptyStringtoVisibilityConverter"
+        NotNullOrEmpty="Collapsed"
+        NullOrEmpty="Visible" />
+        <Style x:Key="WatermarkTextBox" TargetType="{x:Type control:WatermarkTextBox}">
+            <Setter Property="Foreground" Value="White" />
+            <Setter Property="FontSize" Value="12" />
+            <Setter Property="Margin" Value="3,0,0,0" />
+            <Setter Property="HorizontalAlignment" Value="Left" />
+            <Setter Property="VerticalAlignment" Value="Center" />
+            <Setter Property="Background" Value="{DynamicResource {x:Static SystemColors.WindowBrushKey}}" />
+            <Setter Property="BorderBrush" Value="{DynamicResource TextBoxBorder}" />
+            <Setter Property="BorderThickness" Value="0" />
+            <Setter Property="AllowDrop" Value="true" />
+            <Setter Property="FocusVisualStyle" Value="{x:Null}" />
+            <Setter Property="ScrollViewer.PanningMode" Value="VerticalFirst" />
+            <Setter Property="Stylus.IsFlicksEnabled" Value="False" />
+            <Setter Property="VerticalContentAlignment" Value="Center" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type control:WatermarkTextBox}">
+                        <Microsoft_Windows_Themes:ListBoxChrome
+                        x:Name="Bd"
+                        Background="{TemplateBinding Background}"
+                        BorderBrush="{TemplateBinding BorderBrush}"
+                        BorderThickness="{TemplateBinding BorderThickness}"
+                        SnapsToDevicePixels="true">
+                            <Grid>
+                                <TextBlock
+                                Margin="{TemplateBinding Padding}"
+                                HorizontalAlignment="Left"
+                                VerticalAlignment="Center"
+                                FontStyle="Normal"
+                                Foreground="Black"
+                                IsHitTestVisible="False"
+                                Padding="2,0,0,0"
+                                Opacity="0.38"
+                                Style="{TemplateBinding WatermarkStyle}"
+                                Text="{TemplateBinding Watermark}"
+                                Visibility="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=Text, Converter={StaticResource NullOrEmptyStringtoVisibilityConverter}}" />
+                                <ScrollViewer x:Name="PART_ContentHost" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" VerticalAlignment="Center"/>
+                            </Grid>
+                        </Microsoft_Windows_Themes:ListBoxChrome>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsEnabled" Value="false">
+                                <Setter TargetName="Bd" Property="Background" Value="{DynamicResource {x:Static SystemColors.ControlBrushKey}}" />
+                                <Setter Property="Foreground" Value="{DynamicResource {x:Static SystemColors.GrayTextBrushKey}}" />
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
     </Window.Resources>
     <Grid>
         <Grid ContextMenu="{StaticResource NotifyIconMenu}"
@@ -220,10 +274,13 @@
                         Background="#ffffff" CornerRadius="4"
                         VerticalAlignment="Center" HorizontalAlignment="Center">
                     <Grid>
-                        <TextBox x:Name="SearchTextBox" Width="177" Height="38" FontSize="16" 
-                                 VerticalContentAlignment="Center" VerticalAlignment="Center"
-                                 BorderThickness="0" Background="Transparent" 
-                                 HorizontalAlignment="Left" KeyDown="TextBox_KeyDown" ></TextBox>
+                        <control:WatermarkTextBox x:Name="SearchTextBox" Text="{Binding SearchText}"
+                                                  Style="{StaticResource WatermarkTextBox}"
+                                                  Width="177" Height="38" FontSize="16" Foreground="Black"
+                                                  VerticalContentAlignment="Center" VerticalAlignment="Center"
+                                                  BorderThickness="0" Background="Transparent" 
+                                                  HorizontalAlignment="Left" KeyDown="TextBox_KeyDown"
+                                                  control:WatermarkTextBox.Watermark="可输入词或句子"/>
                         <Button Width="46" Height="44" HorizontalAlignment="Right"
                                 Style="{StaticResource GoBtnStyle}" VerticalAlignment="Center"
                                 Click="GoBtn_Click" Margin="0,0,-3,0">

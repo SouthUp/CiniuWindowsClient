@@ -214,5 +214,18 @@ namespace BrowseSearchTXT
                 RaisePropertyChanged("IsDetailPopWindowOpen");
             }
         }
+        private string _searchText;
+        public string SearchText
+        {
+            get { return _searchText; }
+            set
+            {
+                if (_searchText != value)
+                {
+                    _searchText = value;
+                    RaisePropertyChanged("SearchText");
+                }
+            }
+        }
     }
 }
