@@ -221,6 +221,7 @@ namespace WordAndImgOperationApp
         }
         private void CheckNetConn()
         {
+            int count = 0;
             while (true)
             {
                 try
@@ -270,25 +271,35 @@ namespace WordAndImgOperationApp
                     //检测会员状态
                     if (result)
                     {
-                        APIService service = new APIService();
-                        var userStateInfos = service.GetUserStateByToken(UtilSystemVar.UserToken);
-                        if (userStateInfos != null)
+                        if (count == 0 || count == 60)
                         {
-                            if (userStateInfos.Active)
+                            try
                             {
-                                if (this.notifyIcon.Text.Contains("会员过期"))
+                                APIService service = new APIService();
+                                var userStateInfos = service.GetUserStateByToken(UtilSystemVar.UserToken);
+                                if (userStateInfos != null)
                                 {
-                                    SetIconToolTip("词牛（已登录）");
+                                    if (userStateInfos.Active)
+                                    {
+                                        if (this.notifyIcon.Text.Contains("会员过期"))
+                                        {
+                                            SetIconToolTip("词牛（已登录）");
+                                        }
+                                    }
+                                    else
+                                    {
+                                        if (!this.notifyIcon.Text.Contains("会员过期"))
+                                        {
+                                            SetIconToolTip("词牛（会员过期）", "MyAppError.ico");
+                                        }
+                                    }
                                 }
                             }
-                            else
-                            {
-                                if (!this.notifyIcon.Text.Contains("会员过期"))
-                                {
-                                    SetIconToolTip("词牛（会员过期）", "MyAppError.ico");
-                                }
-                            }
+                            catch
+                            { }
+                            count = 0;
                         }
+                        count++;
                     }
                 }
                 catch (Exception ex)
