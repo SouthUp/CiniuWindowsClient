@@ -243,6 +243,9 @@ namespace MyWordAddIn
             catch (Exception ex)
             { }
         }
+        private static AutoResetEvent myEvent = new AutoResetEvent(false);
+        private static int countParagraph = 0;
+        private static int countDealParagraph = 0;
         /// <summary>
         /// 查找文本并高亮显示
         /// </summary>
@@ -254,20 +257,30 @@ namespace MyWordAddIn
             ClearMark();
             rangeSelectLists = new List<Range>();
             rangeBackColorSelectLists = new List<WdColorIndex>();
-            List<Microsoft.Office.Interop.Word.Paragraph> ParagraphDataList = new List<Microsoft.Office.Interop.Word.Paragraph>();
+            //线程池处理数据
+            ThreadPool.SetMaxThreads(500, 500);
+            countParagraph = Application.ActiveDocument.Paragraphs.Count;
+            countDealParagraph = 0;
             //检测整个文档
             foreach (Microsoft.Office.Interop.Word.Paragraph paragraph in Application.ActiveDocument.Paragraphs)
             {
-                ParagraphDataList.Add(paragraph);
-                if (ParagraphDataList.Count >= 200)
-                {
-                    //处理段落违禁词查找
-                    DealParagraph(ParagraphDataList);
-                    ParagraphDataList = new List<Microsoft.Office.Interop.Word.Paragraph>();
-                }
+                ThreadPool.QueueUserWorkItem(DealSingleParagraph, paragraph);
             }
-            //处理段落违禁词查找
-            DealParagraph(ParagraphDataList);
+            myEvent.WaitOne();
+            //List<Microsoft.Office.Interop.Word.Paragraph> ParagraphDataList = new List<Microsoft.Office.Interop.Word.Paragraph>();
+            ////检测整个文档
+            //foreach (Microsoft.Office.Interop.Word.Paragraph paragraph in Application.ActiveDocument.Paragraphs)
+            //{
+            //    ParagraphDataList.Add(paragraph);
+            //    if (ParagraphDataList.Count >= 200)
+            //    {
+            //        //处理段落违禁词查找
+            //        DealParagraph(ParagraphDataList);
+            //        ParagraphDataList = new List<Microsoft.Office.Interop.Word.Paragraph>();
+            //    }
+            //}
+            ////处理段落违禁词查找
+            //DealParagraph(ParagraphDataList);
             foreach (var Value in CurrentImgsDictionary.Values)
             {
                 foreach (var item in Value)
@@ -409,6 +422,82 @@ namespace MyWordAddIn
                 });
             }
             catch (Exception ex)
+            { }
+        }
+        /// <summary>
+        /// 解析处理段落
+        /// </summary>
+        /// <param name="ParagraphDataList"></param>
+        private void DealSingleParagraph(object obj)
+        {
+            try
+            {
+                Microsoft.Office.Interop.Word.Paragraph paragraph = obj as Microsoft.Office.Interop.Word.Paragraph;
+                if (paragraph != null)
+                {
+                    var listUnChekedWord = CheckWordHelper.GetUnChekedWordInfoList(paragraph.Range.Text).ToList();
+                    if (listUnChekedWord != null && listUnChekedWord.Count > 0)
+                    {
+                        foreach (var strFind in listUnChekedWord.ToList())
+                        {
+                            UnChekedWordInfo SelectUnCheckWord = new UnChekedWordInfo() { Name = strFind.Name, UnChekedWordDetailInfos = strFind.UnChekedWordDetailInfos };
+                            MatchCollection mc = Regex.Matches(paragraph.Range.Text, strFind.Name, RegexOptions.IgnoreCase);
+                            if (mc.Count > 0)
+                            {
+                                foreach (Match m in mc)
+                                {
+                                    try
+                                    {
+                                        int startIndex = paragraph.Range.Start + m.Index;
+                                        int endIndex = paragraph.Range.Start + m.Index + m.Length;
+                                        Range keywordRange = Application.ActiveDocument.Range(startIndex, endIndex);
+                                        lock (lockObject)
+                                        {
+                                            rangeSelectLists.Add(keywordRange);
+                                            rangeBackColorSelectLists.Add(keywordRange.HighlightColorIndex);
+                                        }
+                                        keywordRange.HighlightColorIndex = WdColorIndex.wdYellow;
+                                        SelectUnCheckWord.UnChekedWordInLineDetailInfos.Add(new UnChekedInLineDetailWordInfo() { InLineText = paragraph.Range.Text, UnCheckWordRange = keywordRange });
+                                        SelectUnCheckWord.ErrorTotalCount++;
+                                    }
+                                    catch (Exception ex)
+                                    { }
+                                }
+                                lock (lockObject)
+                                {
+                                    var infoExist = listUnCheckWords.AsParallel().FirstOrDefault(x => x.Name == SelectUnCheckWord.Name);
+                                    if (infoExist == null)
+                                    {
+                                        listUnCheckWords.Add(SelectUnCheckWord);
+                                    }
+                                    else
+                                    {
+                                        foreach (var item in SelectUnCheckWord.UnChekedWordInLineDetailInfos)
+                                        {
+                                            infoExist.UnChekedWordInLineDetailInfos.Add(item);
+                                            infoExist.ErrorTotalCount++;
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            { }
+            try
+            {
+                lock (lockObject)
+                {
+                    countDealParagraph++;
+                    if (countDealParagraph == countParagraph)
+                    {
+                        myEvent.Set();
+                    }
+                }
+            }
+            catch
             { }
         }
         /// <summary>
