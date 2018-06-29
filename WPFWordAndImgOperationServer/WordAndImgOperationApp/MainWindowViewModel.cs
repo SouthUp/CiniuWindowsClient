@@ -140,5 +140,15 @@ namespace WordAndImgOperationApp
                 RaisePropertyChanged("MainSetVisibility");
             }
         }
+        private bool _isUserInfoPopWindowOpen = false;
+        public bool IsUserInfoPopWindowOpen
+        {
+            get { return _isUserInfoPopWindowOpen; }
+            set
+            {
+                _isUserInfoPopWindowOpen = value;
+                RaisePropertyChanged("IsUserInfoPopWindowOpen");
+            }
+        }
     }
 }

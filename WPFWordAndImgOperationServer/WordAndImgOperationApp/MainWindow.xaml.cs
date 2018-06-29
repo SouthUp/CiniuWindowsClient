@@ -624,6 +624,12 @@ namespace WordAndImgOperationApp
             this.Show();
             this.WindowState = windowState;
         }
+
+        private void MenuUserInfo_Click(object sender, RoutedEventArgs e)
+        {
+            viewModel.IsUserInfoPopWindowOpen = true;
+        }
+
         private void MenuExit_Click(object sender, RoutedEventArgs e)
         {
             this.Close();

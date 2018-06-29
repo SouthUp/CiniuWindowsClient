@@ -27,6 +27,9 @@
                           Name="CheckVersion" Click="CheckVersion_Click">
                 </MenuItem>
             </MenuItem>
+            <MenuItem Header="会员信息"  MinWidth="100" Visibility="{Binding MenueLoginVisibility}"
+                  Name="MenuUserInfo" Click="MenuUserInfo_Click">
+            </MenuItem>
             <MenuItem Header="注销"  MinWidth="100" Visibility="{Binding MenueLoginVisibility}"
                   Name="MenuLoginOut" Click="MenuLoginOut_Click">
             </MenuItem>
@@ -71,6 +74,17 @@
                 <DropShadowEffect ShadowDepth="0" />
             </Border.Effect>
         </Border>
+        <Popup x:Name="GoUserInfoPopup" IsOpen="{Binding IsUserInfoPopWindowOpen}" AllowsTransparency="True"
+               HorizontalOffset="0" VerticalOffset="0" PopupAnimation="Fade"
+               Placement="MousePoint" StaysOpen ="False">
+            <Grid>
+                <Grid Width="280" Height="190" Background="White" Margin="9">
+                    <Grid.Effect>
+                        <DropShadowEffect ShadowDepth="0" BlurRadius="9" Opacity="0.8"/>
+                    </Grid.Effect>
+                </Grid>
+            </Grid>
+        </Popup>
         <Grid>
             <Grid.RowDefinitions>
                 <RowDefinition Height="64"></RowDefinition>
