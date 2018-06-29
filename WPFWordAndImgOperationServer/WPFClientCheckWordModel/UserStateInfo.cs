@@ -8,6 +8,6 @@ namespace WPFClientCheckWordModel
 {
     public class UserStateInfo
     {
-        public bool active { get; set; }
+        public DateTime expiryTime { get; set; }
     }
 }

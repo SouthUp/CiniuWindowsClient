@@ -100,6 +100,51 @@
                     <TextBlock Grid.Row="1" Grid.Column="1" Text="{Binding UserName}"
                                FontSize="16" Style="{StaticResource CommonLeftTextBlock}">
                     </TextBlock>
+                    <StackPanel Grid.Row="2" Grid.Column="1" Orientation="Horizontal" 
+                                HorizontalAlignment="Left" VerticalAlignment="Center">
+                        <TextBlock Text="会员状态：" Opacity="0.87" FontSize="12" 
+                               Style="{StaticResource CommonLeftTextBlock}">
+                        </TextBlock>
+                        <TextBlock Text="{Binding CurrentUserInfo.ActiveName}" Opacity="0.87" FontSize="12"
+                                   Style="{StaticResource CommonLeftTextBlock}">
+                        </TextBlock>
+                    </StackPanel>
+                    <StackPanel Grid.Row="3" Grid.Column="1" Orientation="Horizontal" 
+                                HorizontalAlignment="Left" VerticalAlignment="Center">
+                        <TextBlock Text="到期时间：" Opacity="0.87" FontSize="12" 
+                               Style="{StaticResource CommonLeftTextBlock}">
+                        </TextBlock>
+                        <TextBlock Text="{Binding CurrentUserInfo.ExpiredDateStr}" Opacity="0.87" FontSize="12"
+                                   Style="{StaticResource CommonLeftTextBlock}">
+                        </TextBlock>
+                    </StackPanel>
+                    <StackPanel Grid.Row="4" Grid.Column="1" Orientation="Horizontal" 
+                                HorizontalAlignment="Left" VerticalAlignment="Center">
+                        <TextBlock Text="余" Opacity="0.87" FontSize="12"
+                                   Style="{StaticResource CommonLeftTextBlock}">
+                        </TextBlock>
+                        <TextBlock Text="余额" Opacity="0.87" FontSize="12" Visibility="Hidden"
+                                   Style="{StaticResource CommonLeftTextBlock}">
+                        </TextBlock>
+                        <TextBlock Text="额：" Opacity="0.87" FontSize="12"
+                                   Style="{StaticResource CommonLeftTextBlock}">
+                        </TextBlock>
+                        <TextBlock Text="{Binding CurrentUserInfo.PointCount}" Opacity="0.87" FontSize="12"
+                                   Style="{StaticResource CommonLeftTextBlock}">
+                        </TextBlock>
+                        <TextBlock Text="点" Opacity="0.87" FontSize="12"
+                                   Style="{StaticResource CommonLeftTextBlock}">
+                        </TextBlock>
+                    </StackPanel>
+                    <StackPanel Grid.Row="5" Grid.Column="1" Orientation="Horizontal" 
+                                HorizontalAlignment="Left" VerticalAlignment="Center">
+                        <TextBlock Text="词库权限：" Opacity="0.87" FontSize="12" 
+                               Style="{StaticResource CommonLeftTextBlock}">
+                        </TextBlock>
+                        <TextBlock Text="全部" Opacity="0.87" FontSize="12"
+                                   Style="{StaticResource CommonLeftTextBlock}">
+                        </TextBlock>
+                    </StackPanel>
                 </Grid>
             </Grid>
         </Popup>

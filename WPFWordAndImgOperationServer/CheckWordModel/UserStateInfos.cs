@@ -19,7 +19,16 @@ namespace CheckWordModel
                 RaisePropertyChanged("Active");
             }
         }
-
+        private string activeName = "";
+        public string ActiveName
+        {
+            get { return activeName; }
+            set
+            {
+                activeName = value;
+                RaisePropertyChanged("ActiveName");
+            }
+        }
         private int pointCount = 0;
         public int PointCount
         {
@@ -38,6 +47,26 @@ namespace CheckWordModel
             {
                 picCount = value;
                 RaisePropertyChanged("PicCount");
+            }
+        }
+        private DateTime expiredDate;
+        public DateTime ExpiredDate
+        {
+            get { return expiredDate; }
+            set
+            {
+                expiredDate = value;
+                RaisePropertyChanged("ExpiredDate");
+            }
+        }
+        private string expiredDateStr;
+        public string ExpiredDateStr
+        {
+            get { return expiredDateStr; }
+            set
+            {
+                expiredDateStr = value;
+                RaisePropertyChanged("ExpiredDateStr");
             }
         }
     }

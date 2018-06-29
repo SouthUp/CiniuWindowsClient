@@ -293,6 +293,7 @@ namespace WordAndImgOperationApp
                                             SetIconToolTip("词牛（会员过期）", "MyAppError.ico");
                                         }
                                     }
+                                    viewModel.CurrentUserInfo = userStateInfos;
                                 }
                             }
                             catch
