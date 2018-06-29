@@ -79,5 +79,10 @@ namespace MyWordAddIn
                 EventAggregatorRepository.EventAggregator.GetEvent<SetMyControlVisibleEvent>().Publish(false);
             }
         }
+
+        private void button1_Click(object sender, RibbonControlEventArgs e)
+        {
+            EventAggregatorRepository.EventAggregator.GetEvent<MarkUnCheckWordEvent>().Publish(true);
+        }
     }
 }

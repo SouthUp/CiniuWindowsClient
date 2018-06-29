@@ -18,6 +18,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using CheckWordEvent;
 using CheckWordModel;
 using CheckWordUtil;
 using Microsoft.Office.Interop.Word;
@@ -34,8 +35,7 @@ namespace MyWordAddIn
         Dictionary<string, List<UnChekedWordInfo>> CurrentImgsDictionary = new Dictionary<string, List<UnChekedWordInfo>>();
         MyControlViewModel viewModel = new MyControlViewModel();
         // 保存修改过的Range和之前的背景色，以便于恢复
-        private List<Range> rangeSelectLists = new List<Range>();
-        private List<WdColorIndex> rangeBackColorSelectLists = new List<WdColorIndex>();
+        private ConcurrentBag<Range> rangeSelectLists = new ConcurrentBag<Range>();
         //文本改变检测
         TextChangeDetector detector;
         //图片改变检测
@@ -45,8 +45,20 @@ namespace MyWordAddIn
         {
             InitializeComponent();
             this.DataContext = viewModel;
+            EventAggregatorRepository.EventAggregator.GetEvent<MarkUnCheckWordEvent>().Subscribe(MarkUnCheckWord);
         }
-
+        private void MarkUnCheckWord(bool b)
+        {
+            try
+            {
+                foreach (var item in rangeSelectLists)
+                {
+                    item.HighlightColorIndex = WdColorIndex.wdYellow;
+                }
+            }
+            catch (Exception ex)
+            { }
+        }
         private void UserControl_Loaded(object sender, RoutedEventArgs e)
         {
             StartDetector();
@@ -214,15 +226,6 @@ namespace MyWordAddIn
                     {
                         viewModel.IsUnLogin = true;
                     }));
-                    if (rangeSelectLists.Count > 0)
-                    {
-                        for (int i = 0; i < rangeSelectLists.Count; i++)
-                        {
-                            rangeSelectLists[i].HighlightColorIndex = rangeBackColorSelectLists[i];
-                        }
-                        rangeSelectLists = new List<Range>();
-                        rangeBackColorSelectLists = new List<WdColorIndex>();
-                    }
                     Dispatcher.Invoke(new Action(() =>
                     {
                         viewModel.WarningTotalCount = 0;
@@ -253,10 +256,7 @@ namespace MyWordAddIn
         private void FindTextAndHightLight()
         {
             listUnCheckWords = new ConcurrentBag<UnChekedWordInfo>();
-            // 清除文档中的高亮显示
-            ClearMark();
-            rangeSelectLists = new List<Range>();
-            rangeBackColorSelectLists = new List<WdColorIndex>();
+            rangeSelectLists = new ConcurrentBag<Range>();
             //线程池处理数据
             ThreadPool.SetMaxThreads(500, 500);
             countParagraph = Application.ActiveDocument.Paragraphs.Count;
@@ -343,87 +343,76 @@ namespace MyWordAddIn
             {
                 viewModel.WarningTotalCount = countTotal;
             }));
-            //回复非违禁词背景色
-            for (int i = 0; i < rangeOtherHighlightColorLists.Count; i++)
-            {
-                try
-                {
-                    rangeOtherHighlightColorLists[i].HighlightColorIndex = rangeBackOtherHighlightColorLists[i];
-                }
-                catch (Exception ex)
-                { }
-            }
         }
         /// <summary>
         /// 解析处理段落
         /// </summary>
         /// <param name="ParagraphDataList"></param>
-        private void DealParagraph(List<Microsoft.Office.Interop.Word.Paragraph> ParagraphDataList)
-        {
-            try
-            {
-                int ParagraphCount = ParagraphDataList.Count;
-                Parallel.For(0, ParagraphCount, new ParallelOptions { MaxDegreeOfParallelism = 10 }, (i, state) =>
-                {
-                    if (ParagraphDataList.Skip(i).Take(1).ToList().Count > 0)
-                    {
-                        var paragraph = ParagraphDataList.Skip(i).Take(1).ToList().First();
-                        if (paragraph != null)
-                        {
-                            var listUnChekedWord = CheckWordHelper.GetUnChekedWordInfoList(paragraph.Range.Text).ToList();
-                            if (listUnChekedWord != null && listUnChekedWord.Count > 0)
-                            {
-                                foreach (var strFind in listUnChekedWord.ToList())
-                                {
-                                    UnChekedWordInfo SelectUnCheckWord = new UnChekedWordInfo() { Name = strFind.Name, UnChekedWordDetailInfos = strFind.UnChekedWordDetailInfos };
-                                    MatchCollection mc = Regex.Matches(paragraph.Range.Text, strFind.Name, RegexOptions.IgnoreCase);
-                                    if (mc.Count > 0)
-                                    {
-                                        foreach (Match m in mc)
-                                        {
-                                            try
-                                            {
-                                                int startIndex = paragraph.Range.Start + m.Index;
-                                                int endIndex = paragraph.Range.Start + m.Index + m.Length;
-                                                Range keywordRange = Application.ActiveDocument.Range(startIndex, endIndex);
-                                                lock (lockObject)
-                                                {
-                                                    rangeSelectLists.Add(keywordRange);
-                                                    rangeBackColorSelectLists.Add(keywordRange.HighlightColorIndex);
-                                                }
-                                                keywordRange.HighlightColorIndex = WdColorIndex.wdYellow;
-                                                SelectUnCheckWord.UnChekedWordInLineDetailInfos.Add(new UnChekedInLineDetailWordInfo() { InLineText = paragraph.Range.Text, UnCheckWordRange = keywordRange });
-                                                SelectUnCheckWord.ErrorTotalCount++;
-                                            }
-                                            catch (Exception ex)
-                                            { }
-                                        }
-                                        lock (lockObject)
-                                        {
-                                            var infoExist = listUnCheckWords.AsParallel().FirstOrDefault(x => x.Name == SelectUnCheckWord.Name);
-                                            if (infoExist == null)
-                                            {
-                                                listUnCheckWords.Add(SelectUnCheckWord);
-                                            }
-                                            else
-                                            {
-                                                foreach (var item in SelectUnCheckWord.UnChekedWordInLineDetailInfos)
-                                                {
-                                                    infoExist.UnChekedWordInLineDetailInfos.Add(item);
-                                                    infoExist.ErrorTotalCount++;
-                                                }
-                                            }
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    }
-                });
-            }
-            catch (Exception ex)
-            { }
-        }
+        //private void DealParagraph(List<Microsoft.Office.Interop.Word.Paragraph> ParagraphDataList)
+        //{
+        //    try
+        //    {
+        //        int ParagraphCount = ParagraphDataList.Count;
+        //        Parallel.For(0, ParagraphCount, new ParallelOptions { MaxDegreeOfParallelism = 10 }, (i, state) =>
+        //        {
+        //            if (ParagraphDataList.Skip(i).Take(1).ToList().Count > 0)
+        //            {
+        //                var paragraph = ParagraphDataList.Skip(i).Take(1).ToList().First();
+        //                if (paragraph != null)
+        //                {
+        //                    var listUnChekedWord = CheckWordHelper.GetUnChekedWordInfoList(paragraph.Range.Text).ToList();
+        //                    if (listUnChekedWord != null && listUnChekedWord.Count > 0)
+        //                    {
+        //                        foreach (var strFind in listUnChekedWord.ToList())
+        //                        {
+        //                            UnChekedWordInfo SelectUnCheckWord = new UnChekedWordInfo() { Name = strFind.Name, UnChekedWordDetailInfos = strFind.UnChekedWordDetailInfos };
+        //                            MatchCollection mc = Regex.Matches(paragraph.Range.Text, strFind.Name, RegexOptions.IgnoreCase);
+        //                            if (mc.Count > 0)
+        //                            {
+        //                                foreach (Match m in mc)
+        //                                {
+        //                                    try
+        //                                    {
+        //                                        int startIndex = paragraph.Range.Start + m.Index;
+        //                                        int endIndex = paragraph.Range.Start + m.Index + m.Length;
+        //                                        Range keywordRange = Application.ActiveDocument.Range(startIndex, endIndex);
+        //                                        lock (lockObject)
+        //                                        {
+        //                                            rangeSelectLists.Add(keywordRange);
+        //                                        }
+        //                                        keywordRange.HighlightColorIndex = WdColorIndex.wdYellow;
+        //                                        SelectUnCheckWord.UnChekedWordInLineDetailInfos.Add(new UnChekedInLineDetailWordInfo() { InLineText = paragraph.Range.Text, UnCheckWordRange = keywordRange });
+        //                                        SelectUnCheckWord.ErrorTotalCount++;
+        //                                    }
+        //                                    catch (Exception ex)
+        //                                    { }
+        //                                }
+        //                                lock (lockObject)
+        //                                {
+        //                                    var infoExist = listUnCheckWords.AsParallel().FirstOrDefault(x => x.Name == SelectUnCheckWord.Name);
+        //                                    if (infoExist == null)
+        //                                    {
+        //                                        listUnCheckWords.Add(SelectUnCheckWord);
+        //                                    }
+        //                                    else
+        //                                    {
+        //                                        foreach (var item in SelectUnCheckWord.UnChekedWordInLineDetailInfos)
+        //                                        {
+        //                                            infoExist.UnChekedWordInLineDetailInfos.Add(item);
+        //                                            infoExist.ErrorTotalCount++;
+        //                                        }
+        //                                    }
+        //                                }
+        //                            }
+        //                        }
+        //                    }
+        //                }
+        //            }
+        //        });
+        //    }
+        //    catch (Exception ex)
+        //    { }
+        //}
         /// <summary>
         /// 解析处理段落
         /// </summary>
@@ -451,12 +440,7 @@ namespace MyWordAddIn
                                         int startIndex = paragraph.Range.Start + m.Index;
                                         int endIndex = paragraph.Range.Start + m.Index + m.Length;
                                         Range keywordRange = Application.ActiveDocument.Range(startIndex, endIndex);
-                                        lock (lockObject)
-                                        {
-                                            rangeSelectLists.Add(keywordRange);
-                                            rangeBackColorSelectLists.Add(keywordRange.HighlightColorIndex);
-                                        }
-                                        keywordRange.HighlightColorIndex = WdColorIndex.wdYellow;
+                                        rangeSelectLists.Add(keywordRange);
                                         SelectUnCheckWord.UnChekedWordInLineDetailInfos.Add(new UnChekedInLineDetailWordInfo() { InLineText = paragraph.Range.Text, UnCheckWordRange = keywordRange });
                                         SelectUnCheckWord.ErrorTotalCount++;
                                     }
@@ -555,15 +539,6 @@ namespace MyWordAddIn
                 }));
                 try
                 {
-                    if (rangeSelectLists.Count > 0)
-                    {
-                        for (int i = 0; i < rangeSelectLists.Count; i++)
-                        {
-                            rangeSelectLists[i].HighlightColorIndex = rangeBackColorSelectLists[i];
-                        }
-                        rangeSelectLists = new List<Range>();
-                        rangeBackColorSelectLists = new List<WdColorIndex>();
-                    }
                     Dispatcher.Invoke(new Action(() =>
                     {
                         viewModel.WarningTotalCount = 0;
@@ -578,79 +553,6 @@ namespace MyWordAddIn
                     viewModel.IsBusyVisibility = Visibility.Hidden;
                 }));
             }
-        }
-        // 保存非违禁词带有背景色的Range和之前的背景色，以便于恢复
-        private List<Range> rangeOtherHighlightColorLists = new List<Range>();
-        private List<WdColorIndex> rangeBackOtherHighlightColorLists = new List<WdColorIndex>();
-        /// <summary>
-        /// 清除文档中的高亮显示
-        /// </summary>
-        private void ClearMark()
-        {
-            try
-            {
-                rangeOtherHighlightColorLists = new List<Range>();
-                rangeBackOtherHighlightColorLists = new List<WdColorIndex>();
-                for (int i = 0; i < rangeSelectLists.Count; i++)
-                {
-                    rangeSelectLists[i].HighlightColorIndex = rangeBackColorSelectLists[i];
-                }
-                Document currentDocument = Globals.ThisAddIn.Application.ActiveDocument;
-                if (currentDocument.Paragraphs != null &&
-                    currentDocument.Paragraphs.Count != 0)
-                {
-                    foreach (Microsoft.Office.Interop.Word.Paragraph paragraph in currentDocument.Paragraphs)
-                    {
-                        if(paragraph.Range.HighlightColorIndex != WdColorIndex.wdNoHighlight
-                            && paragraph.Range.HighlightColorIndex != WdColorIndex.wdAuto)
-                        {
-                            GetOtherHighlightColorLists(paragraph.Range);
-                        }
-                    }
-                }
-            }
-            catch (Exception ex)
-            { }
-        }
-        private void GetOtherHighlightColorLists(Range range)
-        {
-            try
-            {
-                for (int i = 1; i < range.Words.Count; i++)
-                {
-                    var word = range.Words[i];
-                    if (word.HighlightColorIndex != WdColorIndex.wdYellow
-                        && word.HighlightColorIndex != WdColorIndex.wdNoHighlight
-                        && word.HighlightColorIndex != WdColorIndex.wdAuto)
-                    {
-                        if (word.Text.Length > 1)
-                        {
-                            int startIndex = word.Start;
-                            int endIndex = word.End;
-                            var currentDocument = Globals.ThisAddIn.Application.ActiveDocument;
-                            for (int ii = startIndex; ii < endIndex; ii++)
-                            {
-                                var rangeCurrent = currentDocument.Range(ii, ii + 1);
-                                if (rangeCurrent.HighlightColorIndex != WdColorIndex.wdYellow
-                                    && rangeCurrent.HighlightColorIndex != WdColorIndex.wdNoHighlight
-                                    && rangeCurrent.HighlightColorIndex != WdColorIndex.wdAuto)
-                                {
-                                    rangeOtherHighlightColorLists.Add(rangeCurrent);
-                                    rangeBackOtherHighlightColorLists.Add(rangeCurrent.HighlightColorIndex);
-                                }
-                            }
-                        }
-                        else
-                        {
-                            rangeOtherHighlightColorLists.Add(word);
-                            rangeBackOtherHighlightColorLists.Add(word.HighlightColorIndex);
-                        }
-                    }
-                    word.HighlightColorIndex = WdColorIndex.wdNoHighlight;
-                }
-            }
-            catch (Exception ex)
-            { }
         }
         private void UnCheckWordGrid_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {

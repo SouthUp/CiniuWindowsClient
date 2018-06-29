@@ -78,4 +78,11 @@ namespace CheckWordEvent
     {
 
     }
+    /// <summary>
+    ///  标记违禁词事件
+    /// </summary>
+    public class MarkUnCheckWordEvent : PubSubEvent<bool>
+    {
+
+    }
 }

@@ -1,4 +1,5 @@
-﻿using CheckWordModel;
+﻿using CheckWordEvent;
+using CheckWordModel;
 using CheckWordUtil;
 using Microsoft.Office.Interop.Excel;
 using Newtonsoft.Json;
@@ -33,9 +34,6 @@ namespace MyExcelAddIn
         ConcurrentBag<UnChekedWordInfo> listUnCheckWords = new ConcurrentBag<UnChekedWordInfo>();
         Dictionary<string, List<UnChekedWordInfo>> CurrentImgsDictionary = new Dictionary<string, List<UnChekedWordInfo>>();
         MyControlViewModel viewModel = new MyControlViewModel();
-        // 保存修改过的Range和之前的背景色，以便于恢复
-        private List<Range> rangeSelectLists = new List<Range>();
-        private List<dynamic> rangeBackColorSelectLists = new List<dynamic>();
         //保存当前要修改的Range的行和列
         private ConcurrentBag<Range> rangeCurrentDealingLists = new ConcurrentBag<Range>();
         //图片改变检测
@@ -44,6 +42,19 @@ namespace MyExcelAddIn
         {
             InitializeComponent();
             this.DataContext = viewModel;
+            EventAggregatorRepository.EventAggregator.GetEvent<MarkUnCheckWordEvent>().Subscribe(MarkUnCheckWord);
+        }
+        private void MarkUnCheckWord(bool b)
+        {
+            try
+            {
+                foreach (var item in rangeCurrentDealingLists)
+                {
+                    item.Interior.Color = System.Drawing.ColorTranslator.ToOle(System.Drawing.Color.Yellow);
+                }
+            }
+            catch (Exception ex)
+            { }
         }
         /// <summary>
         /// 单元格内容改变事件
@@ -91,8 +102,6 @@ namespace MyExcelAddIn
         {
             try
             {
-                // 清除文档中的高亮显示
-                ClearMark();
                 viewModel.UncheckedWordLists = new ObservableCollection<UnChekedWordInfo>();
                 viewModel.WarningTotalCount = 0;
                 viewModel.IsBusyVisibility = Visibility.Hidden;
@@ -127,15 +136,6 @@ namespace MyExcelAddIn
                     {
                         viewModel.IsUnLogin = true;
                     }));
-                    if (rangeSelectLists.Count > 0)
-                    {
-                        for (int i = 0; i < rangeSelectLists.Count; i++)
-                        {
-                            rangeSelectLists[i].Interior.Color = rangeBackColorSelectLists[i];
-                        }
-                        rangeSelectLists = new List<Range>();
-                        rangeBackColorSelectLists = new List<dynamic>();
-                    }
                     Dispatcher.Invoke(new System.Action(() =>
                     {
                         viewModel.WarningTotalCount = 0;
@@ -437,31 +437,6 @@ namespace MyExcelAddIn
                     i--;
                 }
             }
-            //渲染高亮
-            foreach (var item in rangeCurrentDealingLists)
-            {
-                var itemInfo = rangeSelectLists.AsParallel().FirstOrDefault(x => x.Row == item.Row && x.Column == item.Column);
-                if (itemInfo == null)
-                {
-                    rangeSelectLists.Add(item);
-                    rangeBackColorSelectLists.Add(item.Interior.Color);
-                    item.Interior.Color = System.Drawing.ColorTranslator.ToOle(System.Drawing.Color.Yellow);
-                }
-            }
-            for (int i = 0; i < rangeSelectLists.Count; i++)
-            {
-                var itemInfo = rangeCurrentDealingLists.AsParallel().FirstOrDefault(x => x.Row == rangeSelectLists[i].Row && x.Column == rangeSelectLists[i].Column);
-                if (itemInfo == null)
-                {
-                    Dispatcher.Invoke(new System.Action(() =>
-                    {
-                        rangeSelectLists[i].Interior.Color = rangeBackColorSelectLists[i];
-                        rangeSelectLists.RemoveAt(i);
-                        rangeBackColorSelectLists.RemoveAt(i);
-                    }));
-                    i--;
-                }
-            }
             int countTotal = 0;
             Parallel.ForEach(viewModel.UncheckedWordLists, (item, loopState) =>
             {
@@ -542,23 +517,6 @@ namespace MyExcelAddIn
                         }
                     }
                 });
-            }
-            catch (Exception ex)
-            { }
-        }
-        /// <summary>
-        /// 清除文档中的高亮显示
-        /// </summary>
-        private void ClearMark()
-        {
-            try
-            {
-                for (int i = 0; i < rangeSelectLists.Count; i++)
-                {
-                    rangeSelectLists[i].Interior.Color = rangeBackColorSelectLists[i];
-                }
-                rangeSelectLists = new List<Range>();
-                rangeBackColorSelectLists = new List<dynamic>();
             }
             catch (Exception ex)
             { }

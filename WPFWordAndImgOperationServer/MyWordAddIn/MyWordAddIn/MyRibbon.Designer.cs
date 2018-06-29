@@ -37,6 +37,7 @@
             this.tab1 = this.Factory.CreateRibbonTab();
             this.group1 = this.Factory.CreateRibbonGroup();
             this.CheckWordBtn = this.Factory.CreateRibbonCheckBox();
+            this.button1 = this.Factory.CreateRibbonButton();
             this.tab1.SuspendLayout();
             this.group1.SuspendLayout();
             this.SuspendLayout();
@@ -50,6 +51,7 @@
             // group1
             // 
             this.group1.Items.Add(this.CheckWordBtn);
+            this.group1.Items.Add(this.button1);
             this.group1.Label = "违禁词检查";
             this.group1.Name = "group1";
             // 
@@ -59,6 +61,12 @@
             this.CheckWordBtn.Label = "实时检查开关";
             this.CheckWordBtn.Name = "CheckWordBtn";
             this.CheckWordBtn.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.CheckWordBtn_Click);
+            // 
+            // button1
+            // 
+            this.button1.Label = "标记违禁词";
+            this.button1.Name = "button1";
+            this.button1.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.button1_Click);
             // 
             // MyRibbon
             // 
@@ -79,6 +87,7 @@
         internal Microsoft.Office.Tools.Ribbon.RibbonTab tab1;
         internal Microsoft.Office.Tools.Ribbon.RibbonGroup group1;
         internal Microsoft.Office.Tools.Ribbon.RibbonCheckBox CheckWordBtn;
+        internal Microsoft.Office.Tools.Ribbon.RibbonButton button1;
     }
 
     partial class ThisRibbonCollection
