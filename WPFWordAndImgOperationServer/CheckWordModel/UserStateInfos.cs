@@ -30,5 +30,15 @@ namespace CheckWordModel
                 RaisePropertyChanged("PointCount");
             }
         }
+        private int picCount = 0;
+        public int PicCount
+        {
+            get { return picCount; }
+            set
+            {
+                picCount = value;
+                RaisePropertyChanged("PicCount");
+            }
+        }
     }
 }

@@ -72,15 +72,18 @@ namespace CheckWordUtil
                 string apiName = "user";
                 string resultStr = HttpHelper.HttpUrlGet(apiName, "GET", token);
                 UserStateResponse resultInfo = JsonConvert.DeserializeObject<UserStateResponse>(resultStr);
-                if (resultInfo != null && resultInfo.result != null)
+                if (resultInfo != null && resultInfo.roles != null && resultInfo.roles.Count > 0 && resultInfo.roles.First() != null)
                 {
                     result = new UserStateInfos();
-                    result.PointCount = resultInfo.point;
-                    result.Active = resultInfo.result.active;
+                    result.PointCount = resultInfo.points;
+                    result.PicCount = resultInfo.count;
+                    result.Active = resultInfo.roles.First().active;
                 }
             }
             catch (Exception ex)
-            { }
+            {
+                result = null;
+            }
             return result;
         }
     }

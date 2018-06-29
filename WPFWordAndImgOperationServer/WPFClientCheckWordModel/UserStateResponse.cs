@@ -8,7 +8,8 @@ namespace WPFClientCheckWordModel
 {
     public class UserStateResponse
     {
-        public int point { get; set; }
-        public UserStateInfo result { get; set; }
+        public int points { get; set; }
+        public List<UserStateInfo> roles { get; set; }
+        public int count { get; set; }
     }
 }
