@@ -64,8 +64,10 @@
             // 
             // button1
             // 
+            this.button1.Image = global::MyExcelAddIn.Properties.Resources.MarkWord;
             this.button1.Label = "标记违禁词";
             this.button1.Name = "button1";
+            this.button1.ShowImage = true;
             this.button1.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.button1_Click);
             // 
             // MyRibbon

@@ -303,6 +303,7 @@
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
+      <DesignTime>True</DesignTime>
     </Compile>
     <EmbeddedResource Include="TaskPaneWpfControlHost.resx">
       <DependentUpon>TaskPaneWpfControlHost.cs</DependentUpon>
@@ -367,6 +368,7 @@
     <Resource Include="Image\jdxia.png" />
     <Resource Include="Image\5.png" />
     <Content Include="Resources\CheckBtn.png" />
+    <None Include="Resources\MarkWord.png" />
     <Content Include="Resources\SynonymDB.png" />
     <Content Include="Resources\WordsDB.png" />
   </ItemGroup>
