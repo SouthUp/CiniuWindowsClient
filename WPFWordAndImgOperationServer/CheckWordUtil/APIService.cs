@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using CheckWordModel;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -53,6 +54,30 @@ namespace CheckWordUtil
                 ocrRequest.image = System.Convert.ToBase64String(image);
                 string json = JsonConvert.SerializeObject(ocrRequest);
                 result = HttpHelper.HttpUrlSend(apiName, "POST", json, token);
+            }
+            catch (Exception ex)
+            { }
+            return result;
+        }
+        /// <summary>
+        /// 获取会员状态
+        /// </summary>
+        /// <param name="token"></param>
+        /// <returns></returns>
+        public UserStateInfos GetUserStateByToken(string token)
+        {
+            UserStateInfos result = null;
+            try
+            {
+                string apiName = "user";
+                string resultStr = HttpHelper.HttpUrlGet(apiName, "GET", token);
+                UserStateResponse resultInfo = JsonConvert.DeserializeObject<UserStateResponse>(resultStr);
+                if (resultInfo != null && resultInfo.result != null)
+                {
+                    result = new UserStateInfos();
+                    result.PointCount = resultInfo.point;
+                    result.Active = resultInfo.result.active;
+                }
             }
             catch (Exception ex)
             { }

@@ -57,6 +57,7 @@
     <Compile Include="UnChekedDetailWordInfo.cs" />
     <Compile Include="UnChekedInLineDetailWordInfo.cs" />
     <Compile Include="UnChekedWordInfo.cs" />
+    <Compile Include="UserStateInfos.cs" />
     <Compile Include="ViewModelBase.cs" />
     <Compile Include="WordInfo.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

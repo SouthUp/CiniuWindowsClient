@@ -77,6 +77,8 @@
     <Compile Include="UserLoginInfo.cs" />
     <Compile Include="UserLoginRequest.cs" />
     <Compile Include="UserLoginResponse.cs" />
+    <Compile Include="UserStateInfo.cs" />
+    <Compile Include="UserStateResponse.cs" />
     <Compile Include="WordAndImgAppInfo.cs" />
     <Compile Include="WordModel.cs" />
     <EmbeddedResource Include="Properties\Resources.resx">
