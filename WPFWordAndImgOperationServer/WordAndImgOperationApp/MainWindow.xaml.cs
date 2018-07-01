@@ -92,6 +92,9 @@ namespace WordAndImgOperationApp
                     case "4004":
                         bodyText = "词库解析错误";
                         break;
+                    case "500":
+                        bodyText = "余额不足，请充值";
+                        break;
                 }
                 if (!string.IsNullOrEmpty(bodyText))
                 {
@@ -1336,6 +1339,16 @@ namespace WordAndImgOperationApp
             {
                 this.notifyIcon.Text = toolTips;
                 this.notifyIcon.Icon = new System.Drawing.Icon(AppDomain.CurrentDomain.BaseDirectory + "Resources/" + icoName);
+            }
+            catch (Exception ex)
+            { }
+        }
+
+        private void RechargeBtn_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                System.Diagnostics.Process.Start("http://ciniuwang.com/pay");
             }
             catch (Exception ex)
             { }
