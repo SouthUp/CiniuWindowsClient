@@ -420,10 +420,10 @@
                             <ColumnDefinition Width="Auto"></ColumnDefinition>
                         </Grid.ColumnDefinitions>
                         <TextBlock Grid.Column="0" Text="{Binding CheckResultText}" 
-                                   MaxWidth="170" Style="{StaticResource CommonTextBlock}" 
-                                   TextTrimming="CharacterEllipsis" FontSize="13"
-                                   HorizontalAlignment="Left"></TextBlock>
-                        <Button Grid.Column="1" Width="30" Height="30" Margin="10,0,0,0"
+                                   MaxWidth="185" Style="{StaticResource CommonTextBlock}" 
+                                   TextTrimming="CharacterEllipsis" FontSize="12"
+                                   HorizontalAlignment="Left" ToolTip="{Binding CheckResultText}"></TextBlock>
+                        <Button Grid.Column="1" Width="30" Height="30" Margin="1,0,0,0"
                                 HorizontalAlignment="Left" VerticalAlignment="Center" 
                                 Content="查看" Foreground="#6ab1f7" 
                                 Style="{StaticResource TextButtonStyle}"

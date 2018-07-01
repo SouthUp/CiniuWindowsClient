@@ -291,7 +291,7 @@ namespace BrowseSearchTXT
                                         viewModel.FileReadFailTipsExtention = "";
                                     }
                                     viewModel.CheckResultText =
-                                    viewModel.CurrentProcessingInfo.TotalCount + "个文件中有" + viewModel.CurrentProcessingInfo.UnCheckWordsCount + "个违禁词";
+                                    "共检查" + viewModel.CurrentProcessingInfo.TotalCount + "个文件,发现" + viewModel.CurrentProcessingInfo.UnCheckWordsCount + "个违禁词";
                                     viewModel.TongJiCheckResultVisibility = Visibility.Visible;
                                     viewModel.SinggleWordCheckResultVisibility = Visibility.Collapsed;
                                     viewModel.SinggleWordCheckResultNoUncheckVisibility = Visibility.Collapsed;
