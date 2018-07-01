@@ -247,6 +247,119 @@
                 </Setter.Value>
             </Setter>
         </Style>
+        <!--ScrollViewer样式-->
+        <Style TargetType="{x:Type ScrollViewer}">
+            <Setter Property="OverridesDefaultStyle" Value="True" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type ScrollViewer}">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="Auto"/>
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="*"/>
+                                <RowDefinition Height="Auto"/>
+                            </Grid.RowDefinitions>
+                            <Border Grid.Row="0" Grid.Column="0" VerticalAlignment="Top">
+                                <ScrollContentPresenter CanContentScroll="True" Content="{TemplateBinding ScrollViewer.Content}" />
+                            </Border>
+                            <ScrollBar Orientation="Vertical" Grid.Row="0" Grid.Column="1" Minimum="0" 
+                                   Maximum="{TemplateBinding ScrollViewer.ScrollableHeight}" Value="{TemplateBinding ScrollViewer.VerticalOffset}" 
+                                   ViewportSize="{TemplateBinding ScrollViewer.ViewportHeight}" Name="PART_VerticalScrollBar" 
+                                   Visibility="{TemplateBinding ScrollViewer.ComputedVerticalScrollBarVisibility}" />
+                            <ScrollBar Orientation="Horizontal" Grid.Row="1" Grid.Column="1" Minimum="0" 
+                                   Maximum="{TemplateBinding ScrollViewer.ScrollableWidth}" Value="{TemplateBinding ScrollViewer.HorizontalOffset}" 
+                                   ViewportSize="{TemplateBinding ScrollViewer.ViewportWidth}" Name="PART_HorizontalScrollBar" 
+                                   Visibility="{TemplateBinding ScrollViewer.ComputedHorizontalScrollBarVisibility}"/>
+                        </Grid>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        <!--滚动条两端箭头按钮-->
+        <Style x:Key="ScrollBar_LineButton" TargetType="{x:Type RepeatButton}">
+            <Setter Property="OverridesDefaultStyle" Value="true" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type RepeatButton}">
+
+                        <Path x:Name="arrow" HorizontalAlignment="Center" Stroke="Transparent" Fill="Transparent" VerticalAlignment="Center" Data="{Binding Path=Content,
+                       RelativeSource={RelativeSource TemplatedParent}}"  />
+
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="true">
+                                <Setter TargetName="arrow" Property="Stroke" Value="Transparent">
+                                </Setter>
+                            </Trigger>
+                            <Trigger Property="IsPressed" Value="true">
+                                <Setter TargetName="arrow" Property="Stroke" Value="Transparent">
+                                </Setter>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style x:Key="ScrollBar_PageButton" TargetType="{x:Type RepeatButton}">
+            <Setter Property="OverridesDefaultStyle" Value="true" />
+            <Setter Property="IsTabStop" Value="false" />
+            <Setter Property="Focusable" Value="false" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type RepeatButton}">
+                        <Rectangle Fill="Transparent" />
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        <Style x:Key="ScrollBar_Thumb" TargetType="{x:Type Thumb}">
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type Thumb}">
+                        <Border CornerRadius="6" Background="LightGray" Width="12" BorderThickness="0">
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        <Style TargetType="{x:Type ScrollBar}">
+            <Setter Property="Stylus.IsFlicksEnabled" Value="false" />
+            <Setter Property="Background" Value="Transparent" />
+            <Setter Property="Width" Value="12" />
+            <Setter Property="MinWidth" Value="12" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type ScrollBar}">
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="16" />
+                                <RowDefinition Height="*"/>
+                                <RowDefinition Height="16" />
+                            </Grid.RowDefinitions>
+                            <RepeatButton Grid.Row="0" Style="{DynamicResource ScrollBar_LineButton}" Command="ScrollBar.LineUpCommand" 
+                                      Content="M 0 10 L 6 0 L 12 10 Z" />
+                            <Track Grid.Row="1" Name="PART_Track" IsDirectionReversed="true">
+                                <Track.DecreaseRepeatButton>
+                                    <RepeatButton Style="{StaticResource ScrollBar_PageButton}"/>
+                                </Track.DecreaseRepeatButton>
+                                <Track.Thumb>
+                                    <Thumb Style="{StaticResource ScrollBar_Thumb}" MinHeight="4"/>
+                                </Track.Thumb>
+                                <Track.IncreaseRepeatButton>
+                                    <RepeatButton Style="{StaticResource ScrollBar_PageButton}"/>
+                                </Track.IncreaseRepeatButton>
+                            </Track>
+                            <RepeatButton Grid.Row="2" Style="{DynamicResource ScrollBar_LineButton}" Command="ScrollBar.LineDownCommand" 
+                                      Content="M 0 0 L 6 10 L 12 0 Z" />
+                        </Grid>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+
+        </Style>
     </Window.Resources>
     <Grid>
         <Grid ContextMenu="{StaticResource NotifyIconMenu}"
@@ -426,8 +539,8 @@
                                                                             <Grid Height="35" Width="{Binding ElementName=listBox2,Path=ActualWidth}">
                                                                                 <Grid.ColumnDefinitions>
                                                                                     <ColumnDefinition Width="40"></ColumnDefinition>
-                                                                                    <ColumnDefinition Width="120"></ColumnDefinition>
-                                                                                    <ColumnDefinition Width="85"></ColumnDefinition>
+                                                                                    <ColumnDefinition Width="105"></ColumnDefinition>
+                                                                                    <ColumnDefinition Width="100"></ColumnDefinition>
                                                                                 </Grid.ColumnDefinitions>
                                                                                 <Grid Grid.Column="0">
                                                                                     <Image Width="24" Height="24" Stretch="Fill"
@@ -438,13 +551,13 @@
                                                                                 <Grid Grid.Column="1">
                                                                                     <TextBlock Text="{Binding SourceDB}" FontSize="14" Opacity="0.87"
                                                                                            Style="{StaticResource CommonTextBlock}" HorizontalAlignment="Left"
-                                                                                           MaxWidth="120" TextTrimming="CharacterEllipsis" ToolTip="{Binding SourceDB}">
+                                                                                           MaxWidth="105" TextTrimming="CharacterEllipsis" ToolTip="{Binding SourceDB}">
                                                                                     </TextBlock>
                                                                                 </Grid>
                                                                                 <Grid Grid.Column="2">
                                                                                     <TextBlock Text="{Binding NameType}" FontSize="14" Opacity="0.87"
                                                                                            Style="{StaticResource CommonTextBlock}" HorizontalAlignment="Left"
-                                                                                           MaxWidth="80" TextTrimming="CharacterEllipsis" ToolTip="{Binding NameType}">
+                                                                                           MaxWidth="95" TextTrimming="CharacterEllipsis" ToolTip="{Binding NameType}">
                                                                                     </TextBlock>
                                                                                 </Grid>
                                                                             </Grid>
