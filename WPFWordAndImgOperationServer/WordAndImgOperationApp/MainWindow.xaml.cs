@@ -93,7 +93,7 @@ namespace WordAndImgOperationApp
                         bodyText = "词库解析错误";
                         break;
                     case "500":
-                        bodyText = "余额不足，请充值";
+                        bodyText = "剩余点数不足";
                         break;
                 }
                 if (!string.IsNullOrEmpty(bodyText))
