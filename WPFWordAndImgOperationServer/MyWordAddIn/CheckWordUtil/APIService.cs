@@ -50,5 +50,53 @@ namespace CheckWordUtil
             { }
             return result;
         }
+        /// <summary>
+        /// 获取会员状态
+        /// </summary>
+        /// <param name="token"></param>
+        /// <returns></returns>
+        public bool GetUserStateByToken()
+        {
+            bool result = false;
+            try
+            {
+                string token = "";
+                try
+                {
+                    string loginInOutInfos = string.Format(@"{0}\LoginInOutInfo.xml", Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + "\\WordAndImgOCR\\LoginInOutInfo\\");
+                    var ui = CheckWordUtil.DataParse.ReadFromXmlPath<string>(loginInOutInfos);
+                    if (ui != null && ui.ToString() != "")
+                    {
+                        try
+                        {
+                            var loginInOutInfo = JsonConvert.DeserializeObject<LoginInOutInfo>(ui.ToString());
+                            if (loginInOutInfo != null && loginInOutInfo.Type == "LoginIn")
+                            {
+                                token = loginInOutInfo.Token;
+                            }
+                        }
+                        catch
+                        { }
+                    }
+                }
+                catch (Exception ex)
+                { }
+                string apiName = "user";
+                string resultStr = HttpHelper.HttpUrlGet(apiName, "GET", token);
+                UserStateResponse resultInfo = JsonConvert.DeserializeObject<UserStateResponse>(resultStr);
+                if (resultInfo != null)
+                {
+                    if(resultInfo.count > 0)
+                    {
+                        result = true;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                result = false;
+            }
+            return result;
+        }
     }
 }

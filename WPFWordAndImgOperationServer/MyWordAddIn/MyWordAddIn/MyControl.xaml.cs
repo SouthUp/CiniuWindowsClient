@@ -20,6 +20,7 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using CheckWordEvent;
 using CheckWordModel;
+using CheckWordModel.Communication;
 using CheckWordUtil;
 using Microsoft.Office.Interop.Word;
 using Newtonsoft.Json;
@@ -428,7 +429,10 @@ namespace MyWordAddIn
                         if (!CurrentImgsDictionary.ContainsKey(hashPic))
                         {
                             var listResult = AutoExcutePicOCR(item.ImgResultPath, item.UnCheckWordRange);
-                            CurrentImgsDictionary.Add(hashPic, listResult);
+                            if (listResult != null)
+                            {
+                                CurrentImgsDictionary.Add(hashPic, listResult);
+                            }
                         }
                     }
                     string[] keyArr = CurrentImgsDictionary.Keys.ToArray<string>();
@@ -639,6 +643,29 @@ namespace MyWordAddIn
             List<UnChekedWordInfo> listResult = new List<UnChekedWordInfo>();
             try
             {
+                try
+                {
+                    APIService service = new APIService();
+                    var userStateInfos = service.GetUserStateByToken();
+                    if (!userStateInfos)
+                    {
+                        try
+                        {
+                            CommonExchangeInfo commonExchangeInfo = new CommonExchangeInfo();
+                            commonExchangeInfo.Code = "ShowNotifyMessageView";
+                            commonExchangeInfo.Data = "500";
+                            string jsonData = JsonConvert.SerializeObject(commonExchangeInfo); //序列化
+                            Win32Helper.SendMessage("WordAndImgOperationApp", jsonData);
+                        }
+                        catch
+                        { }
+                        return null;
+                    }
+                }
+                catch
+                {
+                    return null;
+                }
                 countWhile = 0;
                 isInitCompleted = false;
                 Dispatcher.Invoke(new Action(() => {

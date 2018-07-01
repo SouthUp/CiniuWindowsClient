@@ -45,5 +45,31 @@ namespace CheckWordUtil
                 return ex.Message;
             }
         }
+        public static string HttpUrlGet(string apiName, string method, string token = "")
+        {
+            string urlStr = UrlStr + apiName;
+            HttpWebRequest req = (HttpWebRequest)WebRequest.Create(urlStr);
+            req.Method = method;
+            if (!string.IsNullOrEmpty(token))
+            {
+                req.Headers.Add("X-LC-Session", token);
+            }
+            req.ContentType = "application/json;charset=UTF-8";
+            try
+            {
+                using (WebResponse res = req.GetResponse())
+                {
+                    using (StreamReader sr = new StreamReader(res.GetResponseStream(), Encoding.GetEncoding("UTF-8")))
+                    {
+                        string strResult = sr.ReadToEnd();
+                        return strResult;
+                    }
+                }
+            }
+            catch (WebException ex)
+            {
+                return ex.Message;
+            }
+        }
     }
 }
