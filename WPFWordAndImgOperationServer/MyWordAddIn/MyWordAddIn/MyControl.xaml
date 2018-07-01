@@ -319,7 +319,7 @@
                                                                             <Grid.ColumnDefinitions>
                                                                                 <ColumnDefinition Width="40"></ColumnDefinition>
                                                                                 <ColumnDefinition Width="100"></ColumnDefinition>
-                                                                                <ColumnDefinition Width="85"></ColumnDefinition>
+                                                                                <ColumnDefinition Width="100"></ColumnDefinition>
                                                                             </Grid.ColumnDefinitions>
                                                                             <Grid Grid.Column="0">
                                                                                 <Image Width="24" Height="24" Source="{Binding SourceDBID,Converter={StaticResource DBTypeLogoToVisibilityConvert}}"></Image>
@@ -333,7 +333,7 @@
                                                                             <Grid Grid.Column="2">
                                                                                 <TextBlock Text="{Binding NameType}" FontSize="14" Opacity="0.87"
                                                                                                            Style="{StaticResource CommonLeftTextBlock}"
-                                                                                                           MaxWidth="80" TextTrimming="CharacterEllipsis">
+                                                                                                           MaxWidth="95" TextTrimming="CharacterEllipsis">
                                                                                 </TextBlock>
                                                                             </Grid>
                                                                         </Grid>
