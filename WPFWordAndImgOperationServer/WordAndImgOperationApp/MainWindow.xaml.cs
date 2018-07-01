@@ -1004,14 +1004,17 @@ namespace WordAndImgOperationApp
                                 MyFolderDataViewModel modelPic = new MyFolderDataViewModel(System.IO.Path.GetFileName(picInfo.FullName), picInfo.FullName);
                                 modelPic.TypeSelectFile = SelectFileType.Img;
                                 var listResult = AutoExcutePicOCR(picInfo.FullName);
-                                foreach (var item in listResult)
+                                if (listResult != null)
                                 {
-                                    modelPic.CountError += item.ErrorTotalCount;
-                                }
-                                if (modelPic.CountError > 0)
-                                {
-                                    modelPic.UnChekedWordInfos = new ObservableCollection<UnChekedWordInfo>(listResult);
-                                    model.Children.Add(modelPic);
+                                    foreach (var item in listResult)
+                                    {
+                                        modelPic.CountError += item.ErrorTotalCount;
+                                    }
+                                    if (modelPic.CountError > 0)
+                                    {
+                                        modelPic.UnChekedWordInfos = new ObservableCollection<UnChekedWordInfo>(listResult);
+                                        model.Children.Add(modelPic);
+                                    }
                                 }
                             }
                         }
@@ -1050,17 +1053,20 @@ namespace WordAndImgOperationApp
                     MyFolderDataViewModel model = new MyFolderDataViewModel(System.IO.Path.GetFileName(dealFilePath), dealFilePath);
                     model.TypeSelectFile = SelectFileType.Img;
                     var listResult = AutoExcutePicOCR(dealFilePath);
-                    foreach (var item in listResult)
+                    if (listResult != null)
                     {
-                        model.CountError += item.ErrorTotalCount;
-                    }
-                    if(model.CountError > 0)
-                    {
-                        string errorImgPath = CheckWordTempPath + " \\" + System.IO.Path.GetFileNameWithoutExtension(dealFilePath) + System.IO.Path.GetExtension(dealFilePath).Replace(".", "") + "-Img\\" + System.IO.Path.GetFileName(dealFilePath);
-                        model.FileImgShowPath = errorImgPath;
-                        model.UnChekedWordInfos = new ObservableCollection<UnChekedWordInfo>(listResult);
-                        model.ErrorWordsInfos = string.Join("   ", model.UnChekedWordInfos.Select(x => x.Name).Distinct().ToList());
-                        DealDataResultList.Add(model);
+                        foreach (var item in listResult)
+                        {
+                            model.CountError += item.ErrorTotalCount;
+                        }
+                        if (model.CountError > 0)
+                        {
+                            string errorImgPath = CheckWordTempPath + " \\" + System.IO.Path.GetFileNameWithoutExtension(dealFilePath) + System.IO.Path.GetExtension(dealFilePath).Replace(".", "") + "-Img\\" + System.IO.Path.GetFileName(dealFilePath);
+                            model.FileImgShowPath = errorImgPath;
+                            model.UnChekedWordInfos = new ObservableCollection<UnChekedWordInfo>(listResult);
+                            model.ErrorWordsInfos = string.Join("   ", model.UnChekedWordInfos.Select(x => x.Name).Distinct().ToList());
+                            DealDataResultList.Add(model);
+                        }
                     }
                 }
             }
@@ -1076,6 +1082,23 @@ namespace WordAndImgOperationApp
             List<UnChekedWordInfo> listResult = new List<UnChekedWordInfo>();
             try
             {
+                try
+                {
+                    APIService service = new APIService();
+                    var userStateInfos = service.GetUserStateByToken(UtilSystemVar.UserToken);
+                    if (userStateInfos != null)
+                    {
+                        if (userStateInfos.PicCount == 0)
+                        {
+                            EventAggregatorRepository.EventAggregator.GetEvent<SendNotifyMessageEvent>().Publish("500");
+                            return null;
+                        }
+                    }
+                }
+                catch
+                {
+                    return null;
+                }
                 countWhile = 0;
                 isInitCompleted = false;
                 viewModel.SelectExcuteFilePathInfo = filePath;
