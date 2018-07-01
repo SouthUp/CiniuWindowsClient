@@ -187,7 +187,7 @@
                                 Height="24" Width="1"
                                 Margin="9,0,8,0" VerticalAlignment="Center"></Border>
                     </StackPanel>
-                    <StackPanel x:Name="UserInfoGrid" Visibility="{Binding UserInfoGridVisibility}"
+                    <StackPanel x:Name="UserInfoGrid" Visibility="Collapsed"
                                 Orientation="Horizontal">
                         <Grid Width="24" Height="24" Background="{StaticResource UserIconLogo}">
                         </Grid>
