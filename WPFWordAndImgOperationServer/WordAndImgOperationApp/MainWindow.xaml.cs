@@ -633,6 +633,31 @@ namespace WordAndImgOperationApp
 
         private void MenuUserInfo_Click(object sender, RoutedEventArgs e)
         {
+            try
+            {
+                APIService service = new APIService();
+                var userStateInfos = service.GetUserStateByToken(UtilSystemVar.UserToken);
+                if (userStateInfos != null)
+                {
+                    if (userStateInfos.Active)
+                    {
+                        if (this.notifyIcon.Text.Contains("会员过期"))
+                        {
+                            SetIconToolTip("词牛（已登录）");
+                        }
+                    }
+                    else
+                    {
+                        if (!this.notifyIcon.Text.Contains("会员过期"))
+                        {
+                            SetIconToolTip("词牛（会员过期）", "MyAppError.ico");
+                        }
+                    }
+                    viewModel.CurrentUserInfo = userStateInfos;
+                }
+            }
+            catch
+            { }
             viewModel.IsUserInfoPopWindowOpen = true;
         }
 
