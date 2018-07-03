@@ -99,10 +99,15 @@ namespace MyWordAddIn
         }
         private void UserControl_Unloaded(object sender, RoutedEventArgs e)
         {
-            detector.OnTextChanged -= detector_OnTextChanged;
-            detector.Stop();
-            detectorImages.OnImagesChanged -= detector_OnImagesChanged;
-            detectorImages.Stop();
+            try
+            {
+                detector.OnTextChanged -= detector_OnTextChanged;
+                detector.Stop();
+                detectorImages.OnImagesChanged -= detector_OnImagesChanged;
+                detectorImages.Stop();
+            }
+            catch (Exception ex)
+            { }
         }
         public static Thread tDetector;
         private static object lockObject = new Object();
@@ -162,20 +167,43 @@ namespace MyWordAddIn
         /// </summary>
         public void StartDetector()
         {
-            if (detector == null)
-                detector = new TextChangeDetector(Application);
-            detector.OnTextChanged += detector_OnTextChanged;
-            detector.Start();
-            if (detectorImages == null)
-                detectorImages = new ImagesChangeDetector(Application);
-            detectorImages.OnImagesChanged += detector_OnImagesChanged;
-            detectorImages.Start();
-            if (tDetector == null)
+            try
             {
-                tDetector = new System.Threading.Thread(ExcuteQueue);
-                tDetector.IsBackground = true;
-                tDetector.Start();
+                try
+                {
+                    lock (lockObject)
+                    {
+                        IsChecking = false;
+                    }
+                }
+                catch
+                { }
+                if (detector == null)
+                    detector = new TextChangeDetector(Application);
+                detector.OnTextChanged += detector_OnTextChanged;
+                detector.Start();
+                if (detectorImages == null)
+                    detectorImages = new ImagesChangeDetector(Application);
+                detectorImages.OnImagesChanged += detector_OnImagesChanged;
+                detectorImages.Start();
+                if (tDetector == null)
+                {
+                    tDetector = new System.Threading.Thread(ExcuteQueue);
+                    tDetector.IsBackground = true;
+                    tDetector.Start();
+                }
+                try
+                {
+                    if (!queue.Contains("Images"))
+                    {
+                        queue.Enqueue("Images");
+                    }
+                }
+                catch (Exception ex)
+                { }
             }
+            catch (Exception ex)
+            { }
         }
         /// <summary>
         /// 关闭实时检测功能
@@ -188,6 +216,15 @@ namespace MyWordAddIn
                 detector.Stop();
                 detectorImages.OnImagesChanged -= detector_OnImagesChanged;
                 detectorImages.Stop();
+                try
+                {
+                    lock (lockObject)
+                    {
+                        IsChecking = false;
+                    }
+                }
+                catch
+                { }
                 if (tDetector != null)
                 {
                     tDetector.Abort();
