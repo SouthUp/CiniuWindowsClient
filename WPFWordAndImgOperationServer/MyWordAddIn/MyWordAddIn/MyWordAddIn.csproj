@@ -319,9 +319,6 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>Settings.settings</DependentUpon>
     </Compile>
-    <Compile Include="TaskPaneWpfControl.xaml.cs">
-      <DependentUpon>TaskPaneWpfControl.xaml</DependentUpon>
-    </Compile>
     <Compile Include="TaskPaneWpfControlHost.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -382,10 +379,6 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="MyWordTipsControl.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="TaskPaneWpfControl.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>

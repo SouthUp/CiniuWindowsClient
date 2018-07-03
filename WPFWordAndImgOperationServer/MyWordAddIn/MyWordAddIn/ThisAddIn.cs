@@ -39,10 +39,8 @@ namespace MyWordAddIn
                 //////myControlTaskPane.DockPosition = MsoCTPDockPosition.msoCTPDockPositionRight;
                 #endregion
                 var wpfHost = new TaskPaneWpfControlHost();
-                var wpfTaskPane = new TaskPaneWpfControl();
                 wpfControl = new MyControl();
-                wpfTaskPane.TaskPaneContent.Children.Add(wpfControl);
-                wpfHost.WpfElementHost.HostContainer.Children.Add(wpfTaskPane);
+                wpfHost.WpfElementHost.HostContainer.Children.Add(wpfControl);
                 var taskPane = this.CustomTaskPanes.Add(wpfHost, "违禁词检查");
                 taskPane.Visible = true;
                 taskPane.DockPosition = MsoCTPDockPosition.msoCTPDockPositionRight;
@@ -74,8 +72,6 @@ namespace MyWordAddIn
                 if (HostSystemVar.MyWordsDBTaskPane == null)
                 {
                     var wpfHost = new TaskPaneWpfControlHost();
-                    var wpfTaskPane = new TaskPaneWpfControl();
-                    wpfHost.WpfElementHost.HostContainer.Children.Add(wpfTaskPane);
                     var taskPane = this.CustomTaskPanes.Add(wpfHost, "违禁词词库");
                     taskPane.Visible = true;
                     taskPane.DockPosition = MsoCTPDockPosition.msoCTPDockPositionRight;
@@ -98,8 +94,6 @@ namespace MyWordAddIn
                 if (HostSystemVar.MySynonymDBTaskPane == null)
                 {
                     var wpfHost = new TaskPaneWpfControlHost();
-                    var wpfTaskPane = new TaskPaneWpfControl();
-                    wpfHost.WpfElementHost.HostContainer.Children.Add(wpfTaskPane);
                     var taskPane = this.CustomTaskPanes.Add(wpfHost, "推荐词词库");
                     taskPane.Visible = true;
                     taskPane.DockPosition = MsoCTPDockPosition.msoCTPDockPositionRight;
