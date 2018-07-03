@@ -88,30 +88,35 @@ namespace MyWordAddIn
         }
         private void TaskPane_VisibleChanged(object sender, EventArgs e)
         {
-            var customTaskPane = sender as Microsoft.Office.Tools.CustomTaskPane;
-            if (customTaskPane.Window == Globals.ThisAddIn.Application.ActiveWindow)
+            try
             {
-                CurrentWindowsDictionary[Globals.ThisAddIn.Application.ActiveWindow] = customTaskPane.Visible;
-                EventAggregatorRepository.EventAggregator.GetEvent<SetOpenMyControlEnableEvent>().Publish(!customTaskPane.Visible);
-            }
-            if (customTaskPane.Visible == false)
-            {
-                var taskPaneWpfControlHost = customTaskPane.Control as TaskPaneWpfControlHost;
-                foreach (var item in taskPaneWpfControlHost.WpfElementHost.HostContainer.Children)
+                var customTaskPane = sender as Microsoft.Office.Tools.CustomTaskPane;
+                if (customTaskPane.Window == Globals.ThisAddIn.Application.ActiveWindow)
                 {
-                    var wpfControl = item as MyControl;
-                    wpfControl.CloseDetector();
+                    CurrentWindowsDictionary[Globals.ThisAddIn.Application.ActiveWindow] = customTaskPane.Visible;
+                    EventAggregatorRepository.EventAggregator.GetEvent<SetOpenMyControlEnableEvent>().Publish(!customTaskPane.Visible);
+                }
+                if (customTaskPane.Visible == false)
+                {
+                    var taskPaneWpfControlHost = customTaskPane.Control as TaskPaneWpfControlHost;
+                    foreach (var item in taskPaneWpfControlHost.WpfElementHost.HostContainer.Children)
+                    {
+                        var wpfControl = item as MyControl;
+                        wpfControl.CloseDetector();
+                    }
+                }
+                else
+                {
+                    var taskPaneWpfControlHost = customTaskPane.Control as TaskPaneWpfControlHost;
+                    foreach (var item in taskPaneWpfControlHost.WpfElementHost.HostContainer.Children)
+                    {
+                        var wpfControl = item as MyControl;
+                        wpfControl.StartDetector();
+                    }
                 }
             }
-            else
-            {
-                var taskPaneWpfControlHost = customTaskPane.Control as TaskPaneWpfControlHost;
-                foreach (var item in taskPaneWpfControlHost.WpfElementHost.HostContainer.Children)
-                {
-                    var wpfControl = item as MyControl;
-                    wpfControl.StartDetector();
-                }
-            }
+            catch (Exception ex)
+            { }
         }
         private void SetOpenMyControlEnable(bool isEnable)
         {
