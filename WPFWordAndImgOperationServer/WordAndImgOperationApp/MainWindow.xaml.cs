@@ -462,7 +462,7 @@ namespace WordAndImgOperationApp
                 }
                 catch (Exception ex)
                 {
-                    EventAggregatorRepository.EventAggregator.GetEvent<SendNotifyMessageEvent>().Publish("4002");
+                    //EventAggregatorRepository.EventAggregator.GetEvent<SendNotifyMessageEvent>().Publish("4002");
                 }
             }
             catch (Exception ex)
