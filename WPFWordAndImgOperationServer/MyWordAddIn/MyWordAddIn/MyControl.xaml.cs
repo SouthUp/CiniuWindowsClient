@@ -63,15 +63,6 @@ namespace MyWordAddIn
         private void UserControl_Loaded(object sender, RoutedEventArgs e)
         {
             StartDetector();
-            try
-            {
-                if (!queue.Contains("Images"))
-                {
-                    queue.Enqueue("Images");
-                }
-            }
-            catch (Exception ex)
-            { }
         }
         private void detector_OnTextChanged(object sender, TextChangedEventArgs e)
         {
@@ -120,46 +111,51 @@ namespace MyWordAddIn
         {
             while (true)
             {
-                if (queue.Count > 0 && !IsChecking)
+                try
                 {
-                    try
+                    if (queue.Count > 0 && !IsChecking)
                     {
-                        string typeDequeue = "";
-                        lock (lockObject)
+                        try
                         {
-                            IsChecking = true;
-                            try
+                            string typeDequeue = "";
+                            lock (lockObject)
                             {
-                                typeDequeue = queue.Dequeue();
+                                IsChecking = true;
+                                try
+                                {
+                                    typeDequeue = queue.Dequeue();
+                                }
+                                catch
+                                { }
                             }
-                            catch
-                            { }
+                            if (typeDequeue == "Text")
+                            {
+                                GetUncheckedWordLists();
+                            }
+                            else if (typeDequeue == "Images")
+                            {
+                                OnlyExcutePicture();
+                            }
+                            lock (lockObject)
+                            {
+                                IsChecking = false;
+                            }
                         }
-                        if (typeDequeue == "Text")
+                        catch (Exception ex)
                         {
-                            GetUncheckedWordLists();
-                        }
-                        else if (typeDequeue == "Images")
-                        {
-                            OnlyExcutePicture();
-                        }
-                        lock (lockObject)
-                        {
-                            IsChecking = false;
+                            lock (lockObject)
+                            {
+                                IsChecking = false;
+                            }
                         }
                     }
-                    catch (Exception ex)
+                    else
                     {
-                        lock (lockObject)
-                        {
-                            IsChecking = false;
-                        }
+                        Thread.Sleep(500);
                     }
                 }
-                else
-                {
-                    Thread.Sleep(500);
-                }
+                catch (Exception ex)
+                { }
             }
         }
         /// <summary>
@@ -169,15 +165,12 @@ namespace MyWordAddIn
         {
             try
             {
-                try
-                {
-                    lock (lockObject)
-                    {
-                        IsChecking = false;
-                    }
-                }
-                catch
-                { }
+                IsChecking = false;
+            }
+            catch
+            { }
+            try
+            {
                 if (detector == null)
                     detector = new TextChangeDetector(Application);
                 detector.OnTextChanged += detector_OnTextChanged;
@@ -192,15 +185,15 @@ namespace MyWordAddIn
                     tDetector.IsBackground = true;
                     tDetector.Start();
                 }
-                try
+            }
+            catch (Exception ex)
+            { }
+            try
+            {
+                if (!queue.Contains("Images"))
                 {
-                    if (!queue.Contains("Images"))
-                    {
-                        queue.Enqueue("Images");
-                    }
+                    queue.Enqueue("Images");
                 }
-                catch (Exception ex)
-                { }
             }
             catch (Exception ex)
             { }
@@ -216,15 +209,6 @@ namespace MyWordAddIn
                 detector.Stop();
                 detectorImages.OnImagesChanged -= detector_OnImagesChanged;
                 detectorImages.Stop();
-                try
-                {
-                    lock (lockObject)
-                    {
-                        IsChecking = false;
-                    }
-                }
-                catch
-                { }
                 if (tDetector != null)
                 {
                     tDetector.Abort();
@@ -232,6 +216,12 @@ namespace MyWordAddIn
                 }
             }
             catch (Exception ex)
+            { }
+            try
+            {
+                IsChecking = false;
+            }
+            catch
             { }
         }
         /// <summary>
