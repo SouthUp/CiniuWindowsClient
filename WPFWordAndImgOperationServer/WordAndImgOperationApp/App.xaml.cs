@@ -26,7 +26,12 @@ namespace WordAndImgOperationApp
             //两个进程的话就杀掉一个
             if (proc.Length > 1)
             {
-                Application.Current.Dispatcher.Invoke((Action)(() => Application.Current.Shutdown()));
+                try
+                {
+                    proc[1].Kill();
+                }
+                catch
+                { }
                 return;
             }
             StartService();
