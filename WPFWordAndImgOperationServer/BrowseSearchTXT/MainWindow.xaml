@@ -664,7 +664,7 @@
                     </Grid.Background>
                 </Grid>
             </Border>
-            <TextBlock FontSize="16" Text="拖到这里检查" Foreground="White"
+            <TextBlock FontSize="16" Text="支持JPG,PNG,Word文档" Foreground="White"
                        HorizontalAlignment="Center" VerticalAlignment="Center"></TextBlock>
         </Grid>
         <Grid x:Name="DragDealingTipGrid" Visibility="Collapsed">
