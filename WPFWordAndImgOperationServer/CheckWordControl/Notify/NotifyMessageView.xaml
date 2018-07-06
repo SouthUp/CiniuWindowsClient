@@ -4,7 +4,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         AllowsTransparency="True" Background="Transparent" WindowStyle="None" WindowStartupLocation="Manual"
-        Title="NotifyMessageView" Height="100" Width="300" Topmost="True">
+        Title="NotifyMessageView" Height="100" Width="300" Topmost="True" Loaded="Window_Loaded">
     <Window.Resources>
         <Storyboard x:Key="flyinStoryboard">
             <DoubleAnimation From="{Binding Location.FromLeft}" To="{Binding Location.ToLeft}"
@@ -71,6 +71,11 @@
                        Text="{Binding Message.HeaderText}" Margin="0,0,0,5"></TextBlock>
             <TextBlock Grid.Row="1" Grid.Column="1" Style="{StaticResource bodyTextStyle}" 
                        Text="{Binding Message.BodyText}" Margin="0,0,10,0"></TextBlock>
+            <Button x:Name="RechargeBtn" Grid.Row="1" Grid.Column="1" Width="40" Margin="0,0,40,0"
+                    HorizontalAlignment="Right" VerticalAlignment="Top" 
+                    Content="充值" Foreground="#6ab1f7" FontSize="14"
+                    Style="{StaticResource TextButtonStyle}"
+                    Click="RechargeBtn_Click" Visibility="Collapsed"></Button>
             <StackPanel Grid.Row="2" Grid.Column="1" Orientation="Horizontal" 
                         HorizontalAlignment="Left" VerticalAlignment="Center">
                 <TextBlock Style="{StaticResource bodyTextStyle}" FontSize="12" Text="错误码: "></TextBlock>

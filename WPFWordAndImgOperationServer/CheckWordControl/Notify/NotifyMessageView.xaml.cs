@@ -49,5 +49,29 @@ namespace CheckWordControl.Notify
             catch (Exception ex)
             { }
         }
+
+        private void RechargeBtn_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                System.Diagnostics.Process.Start("http://ciniuwang.com/pay");
+            }
+            catch (Exception ex)
+            { }
+        }
+
+        private void Window_Loaded(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                var viewModel = this.DataContext as NotifyMessageViewModel;
+                if (viewModel != null && viewModel.Message.ErrorCode == "500")
+                {
+                    RechargeBtn.Visibility = Visibility.Visible;
+                }
+            }
+            catch
+            { }
+        }
     }
 }
