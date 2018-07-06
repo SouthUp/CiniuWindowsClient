@@ -170,5 +170,25 @@ namespace WordAndImgOperationApp
                 RaisePropertyChanged("IsVersionInfoPopWindowOpen");
             }
         }
+        private string _currentVersionInfo = "";
+        public string CurrentVersionInfo
+        {
+            get { return _currentVersionInfo; }
+            set
+            {
+                _currentVersionInfo = value;
+                RaisePropertyChanged("CurrentVersionInfo");
+            }
+        }
+        private string _newVersionInfo = "";
+        public string NewVersionInfo
+        {
+            get { return _newVersionInfo; }
+            set
+            {
+                _newVersionInfo = value;
+                RaisePropertyChanged("NewVersionInfo");
+            }
+        }
     }
 }

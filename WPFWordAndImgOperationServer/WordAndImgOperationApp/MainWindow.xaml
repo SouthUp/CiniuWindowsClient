@@ -89,11 +89,39 @@
                                    HorizontalAlignment="Center" VerticalAlignment="Bottom">
                         </TextBlock>
                         <Grid Height="66" Width="163" Background="Transparent">
-                            
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width=".55*"></ColumnDefinition>
+                                <ColumnDefinition Width=".45*"></ColumnDefinition>
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition></RowDefinition>
+                                <RowDefinition></RowDefinition>
+                            </Grid.RowDefinitions>
+                            <TextBlock Grid.Row="0" Grid.Column="0" 
+                                       Text="当前版本：" Opacity="0.87" FontSize="13"
+                                       Style="{StaticResource CommonLeftTextBlock}"
+                                       VerticalAlignment="Bottom" HorizontalAlignment="Right">
+                            </TextBlock>
+                            <TextBlock Grid.Row="0" Grid.Column="1" 
+                                       Text="{Binding CurrentVersionInfo}" Opacity="0.87" FontSize="13"
+                                       Style="{StaticResource CommonLeftTextBlock}"
+                                       VerticalAlignment="Bottom">
+                            </TextBlock>
+                            <TextBlock Grid.Row="1" Grid.Column="0" Margin="0,5,0,0"
+                                       Text="最新版本：" Opacity="0.87" FontSize="13"
+                                       Style="{StaticResource CommonLeftTextBlock}"
+                                       VerticalAlignment="Top" HorizontalAlignment="Right">
+                            </TextBlock>
+                            <TextBlock Grid.Row="1" Grid.Column="1" Margin="0,5,0,0"
+                                       Text="{Binding NewVersionInfo}" Opacity="0.87" FontSize="13"
+                                       Style="{StaticResource CommonLeftTextBlock}"
+                                       VerticalAlignment="Top">
+                            </TextBlock>
                         </Grid>
                         <Button Content="立即下载" Width="88" Height="32"
-                                HorizontalAlignment="Center" VerticalAlignment="Top">
-                            
+                                HorizontalAlignment="Center" VerticalAlignment="Top"
+                                Style="{StaticResource DownLoadVersionBlueRoundButtonStyle}"
+                                Click="DownLoadVersionBtn_Click">
                         </Button>
                     </StackPanel>
                 </Grid>

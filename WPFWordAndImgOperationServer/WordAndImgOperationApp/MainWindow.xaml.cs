@@ -226,6 +226,20 @@ namespace WordAndImgOperationApp
             CheckWordUtil.Win32Helper.ShowHideWindow("WPF服务程序");
             RegisterWcfService();
             EventAggregatorRepository.EventAggregator.GetEvent<InitContentGridViewEvent>().Publish("Login");
+            GetVersionInfo();
+        }
+        private void GetVersionInfo()
+        {
+            Task task = new Task(() => {
+                try
+                {
+                    string version = FileVersionInfo.GetVersionInfo(System.Reflection.Assembly.GetEntryAssembly().Location).ProductVersion;
+                    viewModel.CurrentVersionInfo = version;
+                }
+                catch (Exception ex)
+                { }
+            });
+            task.Start();
         }
         private void CheckNetConn()
         {
@@ -1449,6 +1463,16 @@ namespace WordAndImgOperationApp
             try
             {
                 System.Diagnostics.Process.Start("http://ciniuwang.com/pay");
+            }
+            catch (Exception ex)
+            { }
+        }
+
+        private void DownLoadVersionBtn_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                System.Diagnostics.Process.Start("http://ciniuwang.com/");
             }
             catch (Exception ex)
             { }
