@@ -63,9 +63,30 @@ namespace WordAndImgOperationApp
             EventAggregatorRepository.EventAggregator.GetEvent<SendNotifyMessageEvent>().Subscribe(SendNotifyMessage);
             EventAggregatorRepository.EventAggregator.GetEvent<CheckVersionMessageEvent>().Subscribe(CheckVersionMessage);
         }
-        private void CheckVersionMessage(bool b)
+        private async void CheckVersionMessage(bool b)
         {
-            viewModel.IsVersionInfoPopWindowOpen = true;
+            try
+            {
+                string newVersion = await GetNewVersionInfo();
+                if (!string.IsNullOrEmpty(newVersion))
+                {
+                    if(new Version(newVersion) > new Version(viewModel.CurrentVersionInfo))
+                    {
+                        viewModel.NewVersionInfo = newVersion;
+                        viewModel.IsVersionInfoPopWindowOpen = true;
+                    }
+                    else
+                    {
+                        EventAggregatorRepository.EventAggregator.GetEvent<SendNotifyMessageEvent>().Publish("60010");
+                    }
+                }
+                else
+                {
+                    EventAggregatorRepository.EventAggregator.GetEvent<SendNotifyMessageEvent>().Publish("60020");
+                }
+            }
+            catch (Exception ex)
+            { }
         }
         private void SendNotifyMessage(string errorCode)
         {
@@ -99,6 +120,12 @@ namespace WordAndImgOperationApp
                         break;
                     case "500":
                         bodyText = "剩余点数不足";
+                        break;
+                    case "60010":
+                        bodyText = "已是最新版本";
+                        break;
+                    case "60020":
+                        bodyText = "获取最新版本失败";
                         break;
                 }
                 if (!string.IsNullOrEmpty(bodyText))
@@ -240,6 +267,27 @@ namespace WordAndImgOperationApp
                 { }
             });
             task.Start();
+        }
+        private async Task<string> GetNewVersionInfo()
+        {
+            string result = "";
+            Task<string> task = new Task<string>(() => {
+                string versionInfo = "";
+                try
+                {
+
+                }
+                catch (Exception ex)
+                { }
+                return versionInfo;
+            });
+            task.Start();
+            await task;
+            if (!string.IsNullOrEmpty(task.Result))
+            {
+                result = task.Result;
+            }
+            return result;
         }
         private void CheckNetConn()
         {
