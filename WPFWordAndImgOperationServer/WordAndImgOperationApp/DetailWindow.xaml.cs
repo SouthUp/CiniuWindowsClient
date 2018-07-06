@@ -39,7 +39,6 @@ namespace WordAndImgOperationApp
     /// </summary>
     public partial class DetailWindow : Window
     {
-        System.Threading.Thread tTimer;
         WindowState windowState;
         DetailWindowViewModel viewModel = new DetailWindowViewModel();
         public DetailWindow()
@@ -73,53 +72,31 @@ namespace WordAndImgOperationApp
         }
         public void SetMyFolderDataViewModel(MyFolderDataViewModel myFolderData)
         {
-            viewModel.CurrentMyFolderData = myFolderData;
-            foreach (var item in viewModel.CurrentMyFolderData.UnChekedWordInfos)
+            try
             {
-                foreach (var infoDetail in item.UnChekedWordDetailInfos)
+                viewModel.CurrentMyFolderData = myFolderData;
+                foreach (var item in viewModel.CurrentMyFolderData.UnChekedWordInfos)
                 {
-                    if (!string.IsNullOrEmpty(infoDetail.SourceDBID))
+                    foreach (var infoDetail in item.UnChekedWordDetailInfos)
                     {
-                        infoDetail.SourceDBImgPath = AppDomain.CurrentDomain.BaseDirectory + "Resources/DBTypeLogo/" + infoDetail.SourceDBID + ".png";
+                        if (!string.IsNullOrEmpty(infoDetail.SourceDBID))
+                        {
+                            infoDetail.SourceDBImgPath = AppDomain.CurrentDomain.BaseDirectory + "Resources/DBTypeLogo/" + infoDetail.SourceDBID + ".png";
+                        }
+                        else
+                        {
+                            infoDetail.SourceDBImgPath = AppDomain.CurrentDomain.BaseDirectory + "Resources/DBTypeLogo/Default.png";
+                        }
                     }
-                    else
+                    foreach (var infoDetail in item.UnChekedWordInLineDetailInfos)
                     {
-                        infoDetail.SourceDBImgPath = AppDomain.CurrentDomain.BaseDirectory + "Resources/DBTypeLogo/Default.png";
+                        infoDetail.InLineKeyTextRangeStart = -1;
                     }
                 }
-                foreach (var infoDetail in item.UnChekedWordInLineDetailInfos)
-                {
-                    infoDetail.InLineKeyTextRangeStart = -1;
-                }
+                LoadData();
             }
-            LoadData();
-            System.Threading.ThreadStart start = delegate ()
-            {
-                System.Threading.Thread.Sleep(60000);
-                try
-                {
-                    viewModel.BusyWindowVisibility = Visibility.Collapsed;
-                }
-                catch (Exception ex)
-                {
-                    Dispatcher.Invoke(new Action(() => {
-                        viewModel.BusyWindowVisibility = Visibility.Collapsed;
-                    }));
-                }
-            };
-            if (tTimer != null)
-            {
-                try
-                {
-                    tTimer.Abort();
-                    tTimer = null;
-                }
-                catch (Exception)
-                { }
-            }
-            tTimer = new System.Threading.Thread(start);
-            tTimer.IsBackground = true;
-            tTimer.Start();
+            catch (Exception ex)
+            { }
         }
         /// <summary>
         /// 加载显示数据
@@ -141,7 +118,11 @@ namespace WordAndImgOperationApp
                 }
             }
             catch (Exception ex)
-            { }
+            {
+                Dispatcher.Invoke(new Action(() => {
+                    viewModel.BusyWindowVisibility = Visibility.Collapsed;
+                }));
+            }
         }
         private void RichEdit_DocumentLoaded(object sender, EventArgs e)
         {
