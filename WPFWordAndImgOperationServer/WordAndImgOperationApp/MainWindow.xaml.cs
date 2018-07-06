@@ -272,13 +272,8 @@ namespace WordAndImgOperationApp
         {
             string result = "";
             Task<string> task = new Task<string>(() => {
-                string versionInfo = "";
-                try
-                {
-
-                }
-                catch (Exception ex)
-                { }
+                APIService service = new APIService();
+                string versionInfo = service.GetVersion();
                 return versionInfo;
             });
             task.Start();
@@ -1510,7 +1505,7 @@ namespace WordAndImgOperationApp
         {
             try
             {
-                System.Diagnostics.Process.Start("http://ciniuwang.com/pay");
+                System.Diagnostics.Process.Start("http://www.ciniuwang.com/pay");
             }
             catch (Exception ex)
             { }
@@ -1520,7 +1515,7 @@ namespace WordAndImgOperationApp
         {
             try
             {
-                System.Diagnostics.Process.Start("http://ciniuwang.com/");
+                System.Diagnostics.Process.Start("http://www.ciniuwang.com/download");
             }
             catch (Exception ex)
             { }

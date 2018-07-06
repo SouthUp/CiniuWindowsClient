@@ -54,7 +54,7 @@ namespace CheckWordControl.Notify
         {
             try
             {
-                System.Diagnostics.Process.Start("http://ciniuwang.com/pay");
+                System.Diagnostics.Process.Start("http://www.ciniuwang.com/pay");
             }
             catch (Exception ex)
             { }

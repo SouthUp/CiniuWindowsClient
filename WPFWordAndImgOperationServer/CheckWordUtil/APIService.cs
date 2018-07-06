@@ -111,5 +111,22 @@ namespace CheckWordUtil
             }
             return result;
         }
+        public string GetVersion()
+        {
+            string version = "";
+            try
+            {
+                string apiName = "version";
+                string resultStr = HttpHelper.HttpUrlGet(apiName, "GET");
+                VersionResponse resultInfo = JsonConvert.DeserializeObject<VersionResponse>(resultStr);
+                if (resultInfo != null)
+                {
+                    version = resultInfo.version;
+                }
+            }
+            catch (Exception ex)
+            { }
+            return version;
+        }
     }
 }

@@ -128,7 +128,7 @@ namespace WordAndImgOperationApp
         {
             try
             {
-                System.Diagnostics.Process.Start("http://ciniuwang.com/password");
+                System.Diagnostics.Process.Start("http://www.ciniuwang.com/password");
             }
             catch (Exception ex)
             { }
@@ -138,7 +138,7 @@ namespace WordAndImgOperationApp
         {
             try
             {
-                System.Diagnostics.Process.Start("http://ciniuwang.com/register");
+                System.Diagnostics.Process.Start("http://www.ciniuwang.com/register");
             }
             catch (Exception ex)
             { }
