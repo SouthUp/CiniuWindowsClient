@@ -61,6 +61,11 @@ namespace WordAndImgOperationApp
             EventAggregatorRepository.EventAggregator.GetEvent<IsCanOpenSearchPopWindowEvent>().Subscribe(IsCanOpenSearchPopWindow);
             EventAggregatorRepository.EventAggregator.GetEvent<SendDealDataStateToSeachTxTEvent>().Subscribe(SendDealDataStateToSeachTxT);
             EventAggregatorRepository.EventAggregator.GetEvent<SendNotifyMessageEvent>().Subscribe(SendNotifyMessage);
+            EventAggregatorRepository.EventAggregator.GetEvent<CheckVersionMessageEvent>().Subscribe(CheckVersionMessage);
+        }
+        private void CheckVersionMessage(bool b)
+        {
+            viewModel.IsVersionInfoPopWindowOpen = true;
         }
         private void SendNotifyMessage(string errorCode)
         {
@@ -632,7 +637,7 @@ namespace WordAndImgOperationApp
 
         private void CheckVersion_Click(object sender, RoutedEventArgs e)
         {
-
+            EventAggregatorRepository.EventAggregator.GetEvent<CheckVersionMessageEvent>().Publish(true);
         }
 
         private void MenuLogin_Click(object sender, RoutedEventArgs e)

@@ -63,6 +63,15 @@ namespace MyWordAddIn
         private void UserControl_Loaded(object sender, RoutedEventArgs e)
         {
             StartDetector();
+            try
+            {
+                if (!queue.Contains("Images"))
+                {
+                    queue.Enqueue("Images");
+                }
+            }
+            catch (Exception ex)
+            { }
         }
         private void detector_OnTextChanged(object sender, TextChangedEventArgs e)
         {
@@ -184,15 +193,6 @@ namespace MyWordAddIn
                     tDetector = new System.Threading.Thread(ExcuteQueue);
                     tDetector.IsBackground = true;
                     tDetector.Start();
-                }
-            }
-            catch (Exception ex)
-            { }
-            try
-            {
-                if (!queue.Contains("Images"))
-                {
-                    queue.Enqueue("Images");
                 }
             }
             catch (Exception ex)

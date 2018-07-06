@@ -26,11 +26,14 @@ namespace MyExcelAddIn
         /// </summary>
         public void Start()
         {
-            bg = new BackgroundWorker();
-            bg.WorkerReportsProgress = true;
-            bg.WorkerSupportsCancellation = true;
-            bg.ProgressChanged += bg_ProgressChanged;
-            bg.DoWork += bg_DoWork;
+            if(bg == null)
+            {
+                bg = new BackgroundWorker();
+                bg.WorkerReportsProgress = true;
+                bg.WorkerSupportsCancellation = true;
+                bg.ProgressChanged += bg_ProgressChanged;
+                bg.DoWork += bg_DoWork;
+            }
             bg.RunWorkerAsync();
         }
 

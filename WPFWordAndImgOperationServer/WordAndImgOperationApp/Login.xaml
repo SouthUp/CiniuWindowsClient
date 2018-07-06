@@ -86,12 +86,13 @@
                        Style="{StaticResource CommonCenterTextBlock}">
             </TextBlock>
             <Button Background="{StaticResource RefreshIconLogo}" Width="25" Height="24"
-                    Cursor="Hand" Style="{StaticResource ImageButtonStyle}" IsEnabled="False"
-                    Margin="16,0,4,0" Click="CheckVersionBtn_Click" Focusable="False">
+                    Cursor="Hand" Style="{StaticResource ImageButtonStyle}"
+                    Margin="16,0,0,0" Click="CheckVersionBtn_Click" Focusable="False">
             </Button>
-            <TextBlock Text="检查更新" Foreground="White" Opacity="0.38" FontSize="12" 
-                       Style="{StaticResource CommonCenterTextBlock}">
-            </TextBlock>
+            <Button  Opacity="0.38" HorizontalAlignment="Left" VerticalAlignment="Center"
+                     Content="检查更新" Foreground="White" FontSize="12"
+                     Style="{StaticResource TextButtonStyle}"
+                     Click="CheckVersionBtn_Click"></Button>
             <TextBlock Text="©2020 版权所有" Foreground="White" Opacity="0.38" FontSize="12" 
                        Margin="16,0,0,0" Style="{StaticResource CommonCenterTextBlock}">
             </TextBlock>

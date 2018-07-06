@@ -22,7 +22,7 @@
             <MenuItem Header="词库管理"  MinWidth="100" Visibility="{Binding MenueLoginVisibility}"
                   Name="MenuCiKuManager" Click="MenuCiKuManager_Click" IsEnabled="False">
             </MenuItem>
-            <MenuItem Header="关于"  MinWidth="100" IsEnabled="False">
+            <MenuItem Header="关于"  MinWidth="100">
                 <MenuItem Header="检查更新"  MinWidth="100"
                           Name="CheckVersion" Click="CheckVersion_Click">
                 </MenuItem>
@@ -74,6 +74,31 @@
                 <DropShadowEffect ShadowDepth="0" />
             </Border.Effect>
         </Border>
+        <Popup x:Name="VersionInfoPopup" IsOpen="{Binding IsVersionInfoPopWindowOpen}" AllowsTransparency="True"
+               HorizontalOffset="0" VerticalOffset="0" PopupAnimation="Fade"
+               Placement="MousePoint" StaysOpen ="False">
+            <Grid>
+                <Grid Width="163" Height="172" Background="White" Margin="9">
+                    <Grid.Effect>
+                        <DropShadowEffect ShadowDepth="0" BlurRadius="9" Opacity="0.8"/>
+                    </Grid.Effect>
+                    <StackPanel Orientation="Vertical" 
+                                HorizontalAlignment="Center" VerticalAlignment="Center">
+                        <TextBlock Text="词牛版本检测" Opacity="0.87" FontSize="14"
+                                   Style="{StaticResource CommonLeftTextBlock}" 
+                                   HorizontalAlignment="Center" VerticalAlignment="Bottom">
+                        </TextBlock>
+                        <Grid Height="66" Width="163" Background="Transparent">
+                            
+                        </Grid>
+                        <Button Content="立即下载" Width="88" Height="32"
+                                HorizontalAlignment="Center" VerticalAlignment="Top">
+                            
+                        </Button>
+                    </StackPanel>
+                </Grid>
+            </Grid>
+        </Popup>
         <Popup x:Name="GoUserInfoPopup" IsOpen="{Binding IsUserInfoPopWindowOpen}" AllowsTransparency="True"
                HorizontalOffset="0" VerticalOffset="0" PopupAnimation="Fade"
                Placement="MousePoint" StaysOpen ="False">

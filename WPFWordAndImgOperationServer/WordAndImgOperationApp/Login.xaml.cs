@@ -64,7 +64,7 @@ namespace WordAndImgOperationApp
 
         private void CheckVersionBtn_Click(object sender, RoutedEventArgs e)
         {
-
+            EventAggregatorRepository.EventAggregator.GetEvent<CheckVersionMessageEvent>().Publish(true);
         }
 
         private void LoginBtn_Click(object sender, RoutedEventArgs e)

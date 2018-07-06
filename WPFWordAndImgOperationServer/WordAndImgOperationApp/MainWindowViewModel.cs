@@ -160,5 +160,15 @@ namespace WordAndImgOperationApp
                 RaisePropertyChanged("CurrentUserInfo");
             }
         }
+        private bool _isVersionInfoPopWindowOpen = false;
+        public bool IsVersionInfoPopWindowOpen
+        {
+            get { return _isVersionInfoPopWindowOpen; }
+            set
+            {
+                _isVersionInfoPopWindowOpen = value;
+                RaisePropertyChanged("IsVersionInfoPopWindowOpen");
+            }
+        }
     }
 }

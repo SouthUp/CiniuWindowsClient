@@ -100,4 +100,11 @@ namespace CheckWordEvent
     {
 
     }
+    /// <summary>
+    /// 检查版本事件
+    /// </summary>
+    public class CheckVersionMessageEvent : PubSubEvent<bool>
+    {
+
+    }
 }
