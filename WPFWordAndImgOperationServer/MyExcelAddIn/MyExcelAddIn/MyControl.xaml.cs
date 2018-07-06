@@ -103,16 +103,28 @@ namespace MyExcelAddIn
         {
             try
             {
-                viewModel.UncheckedWordLists = new ObservableCollection<UnChekedWordInfo>();
-                viewModel.WarningTotalCount = 0;
-                viewModel.IsBusyVisibility = Visibility.Hidden;
-                CurrentImgsDictionary = new Dictionary<string, List<UnChekedWordInfo>>();
-                Thread tGetUncheckedWord = new Thread(GetUncheckedWordLists);
-                tGetUncheckedWord.IsBackground = true;
-                tGetUncheckedWord.Start();
+                if (!IsChecking)
+                {
+                    lock (lockObject)
+                    {
+                        IsChecking = true;
+                    }
+                    viewModel.UncheckedWordLists = new ObservableCollection<UnChekedWordInfo>();
+                    viewModel.WarningTotalCount = 0;
+                    viewModel.IsBusyVisibility = Visibility.Hidden;
+                    CurrentImgsDictionary = new Dictionary<string, List<UnChekedWordInfo>>();
+                    Thread tGetUncheckedWord = new Thread(GetUncheckedWordLists);
+                    tGetUncheckedWord.IsBackground = true;
+                    tGetUncheckedWord.Start();
+                }
             }
             catch (Exception ex)
-            { }
+            {
+                lock (lockObject)
+                {
+                    IsChecking = false;
+                }
+            }
         }
         /// <summary>
         /// 获取违禁词数据
@@ -148,6 +160,10 @@ namespace MyExcelAddIn
             catch (Exception ex)
             { }
             viewModel.IsBusyVisibility = Visibility.Hidden;
+            lock (lockObject)
+            {
+                IsChecking = false;
+            }
         }
         private static int GetMaxRow(Worksheet workSheet)
         {
