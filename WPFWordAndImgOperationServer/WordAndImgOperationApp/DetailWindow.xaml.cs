@@ -39,6 +39,7 @@ namespace WordAndImgOperationApp
     /// </summary>
     public partial class DetailWindow : Window
     {
+        System.Threading.Thread tTimer;
         WindowState windowState;
         DetailWindowViewModel viewModel = new DetailWindowViewModel();
         public DetailWindow()
@@ -92,6 +93,33 @@ namespace WordAndImgOperationApp
                 }
             }
             LoadData();
+            System.Threading.ThreadStart start = delegate ()
+            {
+                System.Threading.Thread.Sleep(60000);
+                try
+                {
+                    viewModel.BusyWindowVisibility = Visibility.Collapsed;
+                }
+                catch (Exception ex)
+                {
+                    Dispatcher.Invoke(new Action(() => {
+                        viewModel.BusyWindowVisibility = Visibility.Collapsed;
+                    }));
+                }
+            };
+            if (tTimer != null)
+            {
+                try
+                {
+                    tTimer.Abort();
+                    tTimer = null;
+                }
+                catch (Exception)
+                { }
+            }
+            tTimer = new System.Threading.Thread(start);
+            tTimer.IsBackground = true;
+            tTimer.Start();
         }
         /// <summary>
         /// 加载显示数据
