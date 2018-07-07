@@ -73,6 +73,10 @@
     <Reference Include="Aspose.Words">
       <HintPath>..\Dll\Aspose.Words.dll</HintPath>
     </Reference>
+    <Reference Include="DevExpress.Data.v15.2, Version=15.2.5.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Dll\DevExpress.Data.v15.2.dll</HintPath>
+    </Reference>
     <Reference Include="DevExpress.Office.v15.2.Core, Version=15.2.5.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\Dll\DevExpress.Office.v15.2.Core.dll</HintPath>
@@ -80,6 +84,10 @@
     <Reference Include="DevExpress.RichEdit.v15.2.Core, Version=15.2.5.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\Dll\DevExpress.RichEdit.v15.2.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.Xpf.Core.v15.2, Version=15.2.5.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Dll\DevExpress.Xpf.Core.v15.2.dll</HintPath>
     </Reference>
     <Reference Include="DevExpress.Xpf.RichEdit.v15.2, Version=15.2.5.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
