@@ -424,6 +424,7 @@ namespace BrowseSearchTXT
             viewModel.DataProcessGridVisibility = Visibility.Collapsed;
             viewModel.DataProcessResultGridVisibility = Visibility.Collapsed;
             SearchTextBox.Text = "";
+            this.Dispatcher.BeginInvoke(DispatcherPriority.Background, (Action)(() => { Keyboard.Focus(SearchTextBox); }));
         }
         private void Border_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {

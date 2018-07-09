@@ -599,7 +599,7 @@
                         </TextBlock>
                         <TextBlock Text="{Binding CurrentWordInfo.Name}"
                                    Style="{StaticResource CommonTextBlock}" 
-                                   MaxWidth="120" TextTrimming="CharacterEllipsis"
+                                   MaxWidth="90" TextTrimming="CharacterEllipsis"
                                    ToolTip="{Binding CurrentWordInfo.Name}">
                         </TextBlock>
                         <TextBlock Text="&quot;" Style="{StaticResource CommonTextBlock}">
