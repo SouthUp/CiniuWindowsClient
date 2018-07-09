@@ -393,7 +393,7 @@
                                                   VerticalContentAlignment="Center" VerticalAlignment="Center"
                                                   BorderThickness="0" Background="Transparent" 
                                                   HorizontalAlignment="Left" KeyDown="TextBox_KeyDown"
-                                                  control:WatermarkTextBox.Watermark="可输入词或句子"/>
+                                                  control:WatermarkTextBox.Watermark="拖入文件或输入文字"/>
                         <Button Width="46" Height="44" HorizontalAlignment="Right"
                                 Style="{StaticResource GoBtnStyle}" VerticalAlignment="Center"
                                 Click="GoBtn_Click" Margin="0,0,-3,0">
