@@ -12,6 +12,9 @@ using System.Drawing;
 using CheckWordEvent;
 using System.Runtime.InteropServices;
 using MyWordAddIn.Hook;
+using Newtonsoft.Json;
+using WPFClientCheckWordModel;
+using CheckWordUtil;
 
 namespace MyWordAddIn
 {
@@ -38,14 +41,21 @@ namespace MyWordAddIn
                 //////// 设置为 MsoCTPDockPosition.msoCTPDockPositionRight这个代表停靠到右边，这个值也是默认值 
                 //////myControlTaskPane.DockPosition = MsoCTPDockPosition.msoCTPDockPositionRight;
                 #endregion
-                var wpfHost = new TaskPaneWpfControlHost();
-                wpfControl = new MyControl();
-                wpfHost.WpfElementHost.HostContainer.Children.Add(wpfControl);
-                var taskPane = this.CustomTaskPanes.Add(wpfHost, "违禁词检查");
-                taskPane.Visible = true;
-                taskPane.DockPosition = MsoCTPDockPosition.msoCTPDockPositionRight;
-                taskPane.VisibleChanged += TaskPane_VisibleChanged;
-                HostSystemVar.CustomTaskPane = taskPane;
+                try
+                {
+                    APIService service = new APIService();
+                    bool isOpen = service.GetCurrentAddIn("Word");
+                    if (isOpen)
+                    {
+                        CreateMyControlCustomTaskPane();
+                    }
+                    else
+                    {
+                        EventAggregatorRepository.EventAggregator.GetEvent<SetOpenMyControlEnableEvent>().Publish(true);
+                    }
+                }
+                catch
+                { }
                 ////////屏蔽右键菜单，快捷键和替换词
                 ////////this.Application.WindowBeforeRightClick += new Word.ApplicationEvents4_WindowBeforeRightClickEventHandler(Application_WindowBeforeRightClick);
                 EventAggregatorRepository.EventAggregator.GetEvent<SetMyControlVisibleEvent>().Subscribe(SetMyControlVisible);
@@ -56,11 +66,34 @@ namespace MyWordAddIn
             catch (Exception ex)
             { }
         }
+        private void CreateMyControlCustomTaskPane()
+        {
+            try
+            {
+                var wpfHost = new TaskPaneWpfControlHost();
+                wpfControl = new MyControl();
+                wpfHost.WpfElementHost.HostContainer.Children.Add(wpfControl);
+                var taskPane = this.CustomTaskPanes.Add(wpfHost, "违禁词检查");
+                taskPane.Visible = true;
+                taskPane.DockPosition = MsoCTPDockPosition.msoCTPDockPositionRight;
+                taskPane.VisibleChanged += TaskPane_VisibleChanged;
+                HostSystemVar.CustomTaskPane = taskPane;
+            }
+            catch
+            { }
+        }
         private void SetMyControlVisible(bool isVisible)
         {
             try
             {
-                HostSystemVar.CustomTaskPane.Visible = isVisible;
+                if (HostSystemVar.CustomTaskPane != null)
+                {
+                    HostSystemVar.CustomTaskPane.Visible = isVisible;
+                }
+                else
+                {
+                    CreateMyControlCustomTaskPane();
+                }
             }
             catch (Exception ex)
             { }
@@ -111,16 +144,31 @@ namespace MyWordAddIn
         }
         private void TaskPane_VisibleChanged(object sender, EventArgs e)
         {
-            if (HostSystemVar.CustomTaskPane.Visible == false)
+            try
             {
-                wpfControl.CloseDetector();
-                EventAggregatorRepository.EventAggregator.GetEvent<SetOpenMyControlEnableEvent>().Publish(true);
+                try
+                {
+                    AddInStateInfo addInStateInfo = new AddInStateInfo();
+                    addInStateInfo.IsOpen = HostSystemVar.CustomTaskPane.Visible;
+                    //保存用户操作信息到本地
+                    string addInStateInfos = string.Format(@"{0}\WordAddInStateInfo.xml", Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + "\\WordAndImgOCR\\LoginInOutInfo\\");
+                    CheckWordUtil.DataParse.WriteToXmlPath(JsonConvert.SerializeObject(addInStateInfo), addInStateInfos);
+                }
+                catch (Exception ex)
+                { }
+                if (HostSystemVar.CustomTaskPane.Visible == false)
+                {
+                    wpfControl.CloseDetector();
+                    EventAggregatorRepository.EventAggregator.GetEvent<SetOpenMyControlEnableEvent>().Publish(true);
+                }
+                else
+                {
+                    wpfControl.StartDetector();
+                    EventAggregatorRepository.EventAggregator.GetEvent<SetOpenMyControlEnableEvent>().Publish(false);
+                }
             }
-            else
-            {
-                wpfControl.StartDetector();
-                EventAggregatorRepository.EventAggregator.GetEvent<SetOpenMyControlEnableEvent>().Publish(false);
-            }
+            catch
+            { }
         }
         private void MyWordsDBTaskPane_VisibleChanged(object sender, EventArgs e)
         {
@@ -232,7 +280,9 @@ namespace MyWordAddIn
             {
                 CheckWordUtil.FileOperateHelper.DeleteFolder(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + "\\WordAndImgOCR\\CheckWordResultTempWord");
                 CheckWordUtil.FileOperateHelper.DeleteFolder(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + "\\WordAndImgOCR\\MyWordAddIn\\");
-                EventAggregatorRepository.EventAggregator.GetEvent<SetMyControlVisibleEvent>().Publish(false);
+                if (wpfControl != null)
+                    wpfControl.CloseDetector();
+                EventAggregatorRepository.EventAggregator.GetEvent<SetOpenMyControlEnableEvent>().Publish(true);
                 ////////屏蔽右键菜单，快捷键和替换词
                 ////////hook.UnHook();
             }

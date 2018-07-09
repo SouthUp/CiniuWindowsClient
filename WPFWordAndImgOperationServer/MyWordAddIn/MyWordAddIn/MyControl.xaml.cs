@@ -42,6 +42,7 @@ namespace MyWordAddIn
         //图片改变检测
         ImagesChangeDetector detectorImages;
         Microsoft.Office.Interop.Word.Application Application = Globals.ThisAddIn.Application;
+        bool isFirst = true;
         public MyControl()
         {
             InitializeComponent();
@@ -63,15 +64,6 @@ namespace MyWordAddIn
         private void UserControl_Loaded(object sender, RoutedEventArgs e)
         {
             StartDetector();
-            try
-            {
-                if (!queue.Contains("Images"))
-                {
-                    queue.Enqueue("Images");
-                }
-            }
-            catch (Exception ex)
-            { }
         }
         private void detector_OnTextChanged(object sender, TextChangedEventArgs e)
         {
@@ -101,10 +93,16 @@ namespace MyWordAddIn
         {
             try
             {
-                detector.OnTextChanged -= detector_OnTextChanged;
-                detector.Stop();
-                detectorImages.OnImagesChanged -= detector_OnImagesChanged;
-                detectorImages.Stop();
+                if (detector != null)
+                {
+                    detector.OnTextChanged -= detector_OnTextChanged;
+                    detector.Stop();
+                }
+                if (detectorImages != null)
+                {
+                    detectorImages.OnImagesChanged -= detector_OnImagesChanged;
+                    detectorImages.Stop();
+                }
             }
             catch (Exception ex)
             { }
@@ -197,6 +195,19 @@ namespace MyWordAddIn
             }
             catch (Exception ex)
             { }
+            try
+            {
+                if (isFirst)
+                {
+                    isFirst = false;
+                    if (!queue.Contains("Images"))
+                    {
+                        queue.Enqueue("Images");
+                    }
+                }
+            }
+            catch
+            { }
         }
         /// <summary>
         /// 关闭实时检测功能
@@ -205,10 +216,16 @@ namespace MyWordAddIn
         {
             try
             {
-                detector.OnTextChanged -= detector_OnTextChanged;
-                detector.Stop();
-                detectorImages.OnImagesChanged -= detector_OnImagesChanged;
-                detectorImages.Stop();
+                if (detector != null)
+                {
+                    detector.OnTextChanged -= detector_OnTextChanged;
+                    detector.Stop();
+                }
+                if (detectorImages != null)
+                {
+                    detectorImages.OnImagesChanged -= detector_OnImagesChanged;
+                    detectorImages.Stop();
+                }
                 if (tDetector != null)
                 {
                     tDetector.Abort();

@@ -39,6 +39,7 @@ namespace MyExcelAddIn
         private ConcurrentBag<Range> rangeCurrentDealingLists = new ConcurrentBag<Range>();
         //图片改变检测
         ImagesChangeDetector detectorImages;
+        bool isFirst = true;
         public MyControl()
         {
             InitializeComponent();
@@ -88,13 +89,30 @@ namespace MyExcelAddIn
         }
         private void UserControl_Loaded(object sender, RoutedEventArgs e)
         {
-            StartDetector();
+            try
+            {
+                APIService service = new APIService();
+                bool isOpen = service.GetCurrentAddIn("Excel");
+                if (isOpen)
+                {
+                    StartDetector();
+                }
+                else
+                {
+                    EventAggregatorRepository.EventAggregator.GetEvent<SetMyControlVisibleEvent>().Publish(false);
+                }
+            }
+            catch
+            { }
         }
         
         private void UserControl_Unloaded(object sender, RoutedEventArgs e)
         {
-            detectorImages.OnImagesChanged -= detector_OnImagesChanged;
-            detectorImages.Stop();
+            if (detectorImages != null)
+            {
+                detectorImages.OnImagesChanged -= detector_OnImagesChanged;
+                detectorImages.Stop();
+            }
         }
         /// <summary>
         /// 初始化数据
@@ -268,6 +286,19 @@ namespace MyExcelAddIn
             }
             catch (Exception ex)
             { }
+            try
+            {
+                if (isFirst && !IsChecking)
+                {
+                    isFirst = false;
+                    if (queue.Count == 0)
+                    {
+                        queue.Enqueue(DateTime.Now);
+                    }
+                }
+            }
+            catch
+            { }
         }
         /// <summary>
         /// 关闭实时检测功能
@@ -277,8 +308,11 @@ namespace MyExcelAddIn
             try
             {
                 Globals.ThisAddIn.Application.SheetChange -= Application_SheetChange;
-                detectorImages.OnImagesChanged -= detector_OnImagesChanged;
-                detectorImages.Stop();
+                if (detectorImages != null)
+                {
+                    detectorImages.OnImagesChanged -= detector_OnImagesChanged;
+                    detectorImages.Stop();
+                }
                 if (tDetector != null)
                 {
                     tDetector.Abort();

@@ -98,5 +98,35 @@ namespace CheckWordUtil
             }
             return result;
         }
+        /// <summary>
+        /// 获取插件状态
+        /// </summary>
+        /// <returns></returns>
+        public bool GetCurrentAddIn(string type)
+        {
+            bool result = true;
+            try
+            {
+                string fileName = type + "AddInStateInfo.xml";
+                string addInStateInfos = string.Format(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + "\\WordAndImgOCR\\LoginInOutInfo\\" + fileName);
+                var ui = CheckWordUtil.DataParse.ReadFromXmlPath<string>(addInStateInfos);
+                if (ui != null && ui.ToString() != "")
+                {
+                    try
+                    {
+                        var addInStateInfo = JsonConvert.DeserializeObject<AddInStateInfo>(ui.ToString());
+                        if (addInStateInfo != null)
+                        {
+                            result = addInStateInfo.IsOpen;
+                        }
+                    }
+                    catch
+                    { }
+                }
+            }
+            catch (Exception ex)
+            { }
+            return result;
+        }
     }
 }

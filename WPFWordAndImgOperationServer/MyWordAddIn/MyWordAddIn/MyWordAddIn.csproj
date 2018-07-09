@@ -338,6 +338,10 @@
     <AppDesigner Include="Properties\" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\WPFClientCheckWordModel\WPFClientCheckWordModel.csproj">
+      <Project>{b92f769c-c517-4261-8c03-f58c8cd79651}</Project>
+      <Name>WPFClientCheckWordModel</Name>
+    </ProjectReference>
     <ProjectReference Include="..\CheckWordControl\CheckWordControl.csproj">
       <Project>{cb5c0a4b-f44b-4c2b-b314-4ae67126811b}</Project>
       <Name>CheckWordControl</Name>

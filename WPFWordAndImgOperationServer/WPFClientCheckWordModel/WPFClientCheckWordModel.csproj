@@ -47,6 +47,7 @@
     <Reference Include="PresentationFramework" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AddInStateInfo.cs" />
     <Compile Include="CheckOnlyWordResponseResult.cs" />
     <Compile Include="CheckWordRequestInfo.cs" />
     <Compile Include="CheckWordResponseResult.cs" />

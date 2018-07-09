@@ -9,6 +9,8 @@ using Microsoft.Office.Tools.Excel;
 using MyWordAddIn;
 using Microsoft.Office.Core;
 using CheckWordEvent;
+using WPFClientCheckWordModel;
+using Newtonsoft.Json;
 
 namespace MyExcelAddIn
 {
@@ -69,6 +71,16 @@ namespace MyExcelAddIn
         {
             try
             {
+                try
+                {
+                    AddInStateInfo addInStateInfo = new AddInStateInfo();
+                    addInStateInfo.IsOpen = HostSystemVar.CustomTaskPane.Visible;
+                    //保存用户操作信息到本地
+                    string addInStateInfos = string.Format(@"{0}\ExcelAddInStateInfo.xml", Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + "\\WordAndImgOCR\\LoginInOutInfo\\");
+                    CheckWordUtil.DataParse.WriteToXmlPath(JsonConvert.SerializeObject(addInStateInfo), addInStateInfos);
+                }
+                catch (Exception ex)
+                { }
                 if (HostSystemVar.CustomTaskPane.Visible == false)
                 {
                     wpfControl.CloseDetector();
@@ -98,7 +110,8 @@ namespace MyExcelAddIn
             {
                 CheckWordUtil.FileOperateHelper.DeleteFolder(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + "\\WordAndImgOCR\\CheckWordResultTempExcel");
                 CheckWordUtil.FileOperateHelper.DeleteFolder(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + "\\WordAndImgOCR\\MyExcelAddIn\\");
-                EventAggregatorRepository.EventAggregator.GetEvent<SetMyControlVisibleEvent>().Publish(false);
+                wpfControl.CloseDetector();
+                EventAggregatorRepository.EventAggregator.GetEvent<SetOpenMyControlEnableEvent>().Publish(true);
                 Globals.ThisAddIn.Application.SheetActivate -= Application_SheetActivate;
                 Globals.ThisAddIn.Application.WorkbookActivate -= Application_WorkbookActivate;
             }
