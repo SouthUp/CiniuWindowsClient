@@ -77,6 +77,7 @@ namespace CheckWordUtil
                     result = new UserStateInfos();
                     result.PointCount = resultInfo.points;
                     result.PicCount = resultInfo.count;
+                    result.WordCount = resultInfo.countWord;
                     result.Active = resultInfo.vip;
                     result.ActiveName = result.Active ? "已购买" : "未购买";
                     if (resultInfo.roles != null && resultInfo.roles.Count > 0)
@@ -128,9 +129,9 @@ namespace CheckWordUtil
             { }
             return version;
         }
-        public bool GetWordConsume(int count, string token)
+        public ConsumeResponse GetWordConsume(int count, string token)
         {
-            bool result = false;
+            ConsumeResponse result = null;
             try
             {
                 string apiName = "consume";
@@ -141,8 +142,7 @@ namespace CheckWordUtil
                 ConsumeResponse resultInfo = JsonConvert.DeserializeObject<ConsumeResponse>(resultStr);
                 if (resultInfo != null)
                 {
-                    if (resultInfo.count > 0)
-                        result = true;
+                    result = resultInfo;
                 }
             }
             catch (Exception ex)

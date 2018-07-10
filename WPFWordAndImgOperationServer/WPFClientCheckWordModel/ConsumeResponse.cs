@@ -8,7 +8,6 @@ namespace WPFClientCheckWordModel
 {
     public class ConsumeResponse
     {
-        public int count { get; set; }
         public int points { get; set; }
         public int consumedPoints { get; set; }
         public int toAccountWords { get; set; }

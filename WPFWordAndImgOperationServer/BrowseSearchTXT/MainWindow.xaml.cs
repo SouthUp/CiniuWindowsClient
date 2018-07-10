@@ -337,43 +337,114 @@ namespace BrowseSearchTXT
         {
             if (!string.IsNullOrEmpty(inputTxt))
             {
+                int countWords = 0;
+                countWords = inputTxt.Count();
                 try
                 {
-                    //处理逻辑
-                    var resultInfo = CheckWordUtil.CheckWordHelper.GetUnChekedWordInfoList(inputTxt);
-                    viewModel.CurrentWordInfo.Name = inputTxt;
-                    viewModel.CurrentWordInfoResults = new System.Collections.ObjectModel.ObservableCollection<CheckWordModel.UnChekedWordInfo>(resultInfo);
-                    if (viewModel.CurrentWordInfoResults.Count > 0)
+                    string token = "";
+                    try
                     {
-                        viewModel.HasUnChekedWordInfoCount = viewModel.CurrentWordInfoResults.Count;
-                        viewModel.TongJiCheckResultVisibility = Visibility.Collapsed;
-                        viewModel.SinggleWordCheckResultVisibility = Visibility.Visible;
-                        viewModel.SinggleWordCheckResultNoUncheckVisibility = Visibility.Collapsed;
-                        viewModel.CommonCheckResultVisibility = Visibility.Collapsed;
+                        string loginInOutInfos = string.Format(@"{0}\LoginInOutInfo.xml", Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + "\\WordAndImgOCR\\LoginInOutInfo\\");
+                        var ui = CheckWordUtil.DataParse.ReadFromXmlPath<string>(loginInOutInfos);
+                        if (ui != null && ui.ToString() != "")
+                        {
+                            try
+                            {
+                                var loginInOutInfo = JsonConvert.DeserializeObject<LoginInOutInfo>(ui.ToString());
+                                if (loginInOutInfo != null && loginInOutInfo.Type == "LoginIn")
+                                {
+                                    token = loginInOutInfo.Token;
+                                }
+                            }
+                            catch
+                            { }
+                        }
+                    }
+                    catch (Exception ex)
+                    { }
+                    APIService service = new APIService();
+                    var userStateInfos = service.GetUserStateByToken(token);
+                    if (userStateInfos != null)
+                    {
+                        if (userStateInfos.WordCount < countWords)
+                        {
+                            try
+                            {
+                                CommonExchangeInfo commonExchangeInfo = new CommonExchangeInfo();
+                                commonExchangeInfo.Code = "ShowNotifyMessageView";
+                                commonExchangeInfo.Data = "500";
+                                string jsonData = JsonConvert.SerializeObject(commonExchangeInfo); //序列化
+                                SendMessage("WordAndImgOperationApp", jsonData);
+                            }
+                            catch
+                            { }
+                        }
+                        else
+                        {
+                            ConsumeResponse consume = service.GetWordConsume(countWords, token);
+                            if (consume != null)
+                            {
+                                try
+                                {
+                                    //处理逻辑
+                                    var resultInfo = CheckWordUtil.CheckWordHelper.GetUnChekedWordInfoList(inputTxt);
+                                    viewModel.CurrentWordInfo.Name = inputTxt;
+                                    viewModel.CurrentWordInfoResults = new System.Collections.ObjectModel.ObservableCollection<CheckWordModel.UnChekedWordInfo>(resultInfo);
+                                    if (viewModel.CurrentWordInfoResults.Count > 0)
+                                    {
+                                        viewModel.HasUnChekedWordInfoCount = viewModel.CurrentWordInfoResults.Count;
+                                        viewModel.TongJiCheckResultVisibility = Visibility.Collapsed;
+                                        viewModel.SinggleWordCheckResultVisibility = Visibility.Visible;
+                                        viewModel.SinggleWordCheckResultNoUncheckVisibility = Visibility.Collapsed;
+                                        viewModel.CommonCheckResultVisibility = Visibility.Collapsed;
+                                    }
+                                    else
+                                    {
+                                        viewModel.TongJiCheckResultVisibility = Visibility.Collapsed;
+                                        viewModel.SinggleWordCheckResultVisibility = Visibility.Collapsed;
+                                        viewModel.SinggleWordCheckResultNoUncheckVisibility = Visibility.Visible;
+                                        viewModel.CommonCheckResultVisibility = Visibility.Collapsed;
+                                    }
+                                }
+                                catch (Exception ex)
+                                { }
+                                viewModel.TitleLogoVisibility = Visibility.Collapsed;
+                                viewModel.InputCheckGridVisibility = Visibility.Collapsed;
+                                viewModel.ReturnBtnVisibility = Visibility.Visible;
+                                viewModel.DataProcessResultGridVisibility = Visibility.Visible;
+                            }
+                            else
+                            {
+                                try
+                                {
+                                    CommonExchangeInfo commonExchangeInfo = new CommonExchangeInfo();
+                                    commonExchangeInfo.Code = "ShowNotifyMessageView";
+                                    commonExchangeInfo.Data = "200";
+                                    string jsonData = JsonConvert.SerializeObject(commonExchangeInfo); //序列化
+                                    SendMessage("WordAndImgOperationApp", jsonData);
+                                }
+                                catch
+                                { }
+                            }
+                        }
                     }
                     else
                     {
-                        viewModel.TongJiCheckResultVisibility = Visibility.Collapsed;
-                        viewModel.SinggleWordCheckResultVisibility = Visibility.Collapsed;
-                        viewModel.SinggleWordCheckResultNoUncheckVisibility = Visibility.Visible;
-                        viewModel.CommonCheckResultVisibility = Visibility.Collapsed;
+                        try
+                        {
+                            CommonExchangeInfo commonExchangeInfo = new CommonExchangeInfo();
+                            commonExchangeInfo.Code = "ShowNotifyMessageView";
+                            commonExchangeInfo.Data = "200";
+                            string jsonData = JsonConvert.SerializeObject(commonExchangeInfo); //序列化
+                            SendMessage("WordAndImgOperationApp", jsonData);
+                        }
+                        catch
+                        { }
                     }
                 }
-                catch (Exception ex)
+                catch
                 { }
             }
-            else
-            {
-                viewModel.CheckResultText = "未发现违禁词.";
-                viewModel.TongJiCheckResultVisibility = Visibility.Collapsed;
-                viewModel.SinggleWordCheckResultVisibility = Visibility.Collapsed;
-                viewModel.SinggleWordCheckResultNoUncheckVisibility = Visibility.Collapsed;
-                viewModel.CommonCheckResultVisibility = Visibility.Visible;
-            }
-            viewModel.TitleLogoVisibility = Visibility.Collapsed;
-            viewModel.InputCheckGridVisibility = Visibility.Collapsed;
-            viewModel.ReturnBtnVisibility = Visibility.Visible;
-            viewModel.DataProcessResultGridVisibility = Visibility.Visible;
         }
 
         private void GoLookBtn_Click(object sender, RoutedEventArgs e)

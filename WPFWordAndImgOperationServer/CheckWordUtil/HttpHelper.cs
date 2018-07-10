@@ -12,7 +12,7 @@ namespace CheckWordUtil
 {
     public class HttpHelper
     {
-        public static string UrlStr = ConfigurationManager.AppSettings["UrlStr"].ToString();
+        public static string UrlStr = "http://ciniu.leanapp.cn/";
         public static string HttpUrlSend(string apiName, string method, string json, string token = "")
         {
             string urlStr = UrlStr + apiName;

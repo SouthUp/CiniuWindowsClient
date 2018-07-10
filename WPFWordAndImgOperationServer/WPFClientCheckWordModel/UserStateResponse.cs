@@ -11,6 +11,7 @@ namespace WPFClientCheckWordModel
         public int points { get; set; }
         public List<UserStateInfo> roles { get; set; }
         public int count { get; set; }
+        public int countWord { get; set; }
         public bool vip { get; set; }
     }
 }

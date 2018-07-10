@@ -49,6 +49,16 @@ namespace CheckWordModel
                 RaisePropertyChanged("PicCount");
             }
         }
+        private int wordCount = 0;
+        public int WordCount
+        {
+            get { return wordCount; }
+            set
+            {
+                wordCount = value;
+                RaisePropertyChanged("WordCount");
+            }
+        }
         private DateTime expiredDate;
         public DateTime ExpiredDate
         {
