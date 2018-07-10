@@ -68,6 +68,11 @@ namespace CheckWordControl.Notify
                 if (viewModel != null && viewModel.Message.ErrorCode == "500")
                 {
                     RechargeBtn.Visibility = Visibility.Visible;
+                    ErrorCodeStackPanel.Visibility = Visibility.Collapsed;
+                }
+                else if (viewModel != null && viewModel.Message.ErrorCode == "60010")
+                {
+                    ErrorCodeStackPanel.Visibility = Visibility.Collapsed;
                 }
             }
             catch

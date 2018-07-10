@@ -12,7 +12,7 @@
         StateChanged="Window_StateChanged" Closed="Window_Closed" Title="WordAndImgOperationApp">
     <Window.Resources>
         <ContextMenu x:Key="NotifyIconMenu" StaysOpen="False">
-            <MenuItem Header="登陆"  MinWidth="100" Visibility="{Binding MenueUnLoginVisibility}"
+            <MenuItem Header="登录"  MinWidth="100" Visibility="{Binding MenueUnLoginVisibility}"
                   Name="MenuLogin" Click="MenuLogin_Click">
             </MenuItem>
             <MenuItem Header="{Binding OpenFloatWindowContent}"  MinWidth="100" 
