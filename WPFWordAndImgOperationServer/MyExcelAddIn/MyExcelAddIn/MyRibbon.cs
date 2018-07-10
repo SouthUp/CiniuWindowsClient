@@ -4,6 +4,8 @@ using System.Linq;
 using System.Text;
 using CheckWordEvent;
 using Microsoft.Office.Tools.Ribbon;
+using Newtonsoft.Json;
+using WPFClientCheckWordModel;
 
 namespace MyExcelAddIn
 {
@@ -41,6 +43,16 @@ namespace MyExcelAddIn
                 CheckWordBtn.Checked = false;
                 EventAggregatorRepository.EventAggregator.GetEvent<SetMyControlVisibleEvent>().Publish(false);
             }
+            try
+            {
+                AddInStateInfo addInStateInfo = new AddInStateInfo();
+                addInStateInfo.IsOpen = CheckWordBtn.Checked;
+                //保存用户操作信息到本地
+                string addInStateInfos = string.Format(@"{0}\ExcelAddInStateInfo.xml", Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + "\\WordAndImgOCR\\LoginInOutInfo\\");
+                CheckWordUtil.DataParse.WriteToXmlPath(JsonConvert.SerializeObject(addInStateInfo), addInStateInfos);
+            }
+            catch (Exception ex)
+            { }
         }
 
         private void button1_Click(object sender, RibbonControlEventArgs e)
