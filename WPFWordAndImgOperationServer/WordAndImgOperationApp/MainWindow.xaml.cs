@@ -1273,6 +1273,10 @@ namespace WordAndImgOperationApp
                             return null;
                         }
                     }
+                    else
+                    {
+                        EventAggregatorRepository.EventAggregator.GetEvent<SendNotifyMessageEvent>().Publish("200");
+                    }
                 }
                 catch
                 {
