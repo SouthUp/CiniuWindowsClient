@@ -456,105 +456,108 @@ namespace WordAndImgOperationApp
                             }
                             else
                             {
-                                ConsumeResponse consume = service.GetWordConsume(countWords, UtilSystemVar.UserToken);
-                                if (consume != null)
+                                if(countWords > 0)
                                 {
-                                    int index = 1;
-                                    //取得对象集合
-                                    Aspose.Words.NodeCollection shapes = doc.GetChildNodes(Aspose.Words.NodeType.Shape, true);
-                                    foreach (Aspose.Words.Drawing.Shape shape in shapes)
+                                    ConsumeResponse consume = service.GetWordConsume(countWords, UtilSystemVar.UserToken);
+                                    if (consume != null)
                                     {
-                                        if (shape != null && shape.HasImage)
+                                        int index = 1;
+                                        //取得对象集合
+                                        Aspose.Words.NodeCollection shapes = doc.GetChildNodes(Aspose.Words.NodeType.Shape, true);
+                                        foreach (Aspose.Words.Drawing.Shape shape in shapes)
                                         {
-                                            string imageName = String.Format(pathDir + "照片-{0}.png", index);
-                                            shape.ImageData.Save(imageName);
-                                            index++;
-                                        }
-                                    }
-                                    foreach (Aspose.Words.Section section in doc.Sections)
-                                    {
-                                        foreach (Aspose.Words.Paragraph paragraph in section.Body.Paragraphs)
-                                        {
-                                            string textResult = paragraph.GetText();
-                                            var list = CheckWordUtil.CheckWordHelper.GetUnChekedWordInfoList(textResult).ToList();
-                                            foreach (var item in list)
+                                            if (shape != null && shape.HasImage)
                                             {
-                                                MatchCollection mc = Regex.Matches(textResult, item.Name, RegexOptions.IgnoreCase);
-                                                if (mc.Count > 0)
+                                                string imageName = String.Format(pathDir + "照片-{0}.png", index);
+                                                shape.ImageData.Save(imageName);
+                                                index++;
+                                            }
+                                        }
+                                        foreach (Aspose.Words.Section section in doc.Sections)
+                                        {
+                                            foreach (Aspose.Words.Paragraph paragraph in section.Body.Paragraphs)
+                                            {
+                                                string textResult = paragraph.GetText();
+                                                var list = CheckWordUtil.CheckWordHelper.GetUnChekedWordInfoList(textResult).ToList();
+                                                foreach (var item in list)
                                                 {
-                                                    foreach (Match m in mc)
+                                                    MatchCollection mc = Regex.Matches(textResult, item.Name, RegexOptions.IgnoreCase);
+                                                    if (mc.Count > 0)
                                                     {
-                                                        var infoResult = listResult.FirstOrDefault(x => x.Name == item.Name);
-                                                        if (infoResult == null)
+                                                        foreach (Match m in mc)
                                                         {
-                                                            item.UnChekedWordInLineDetailInfos.Add(new UnChekedInLineDetailWordInfo() { InLineKeyText = item.Name, InLineText = textResult });
-                                                            item.ErrorTotalCount++;
-                                                            listResult.Add(item);
-                                                        }
-                                                        else
-                                                        {
-                                                            infoResult.UnChekedWordInLineDetailInfos.Add(new UnChekedInLineDetailWordInfo() { InLineKeyText = item.Name, InLineText = textResult });
-                                                            infoResult.ErrorTotalCount++;
+                                                            var infoResult = listResult.FirstOrDefault(x => x.Name == item.Name);
+                                                            if (infoResult == null)
+                                                            {
+                                                                item.UnChekedWordInLineDetailInfos.Add(new UnChekedInLineDetailWordInfo() { InLineKeyText = item.Name, InLineText = textResult });
+                                                                item.ErrorTotalCount++;
+                                                                listResult.Add(item);
+                                                            }
+                                                            else
+                                                            {
+                                                                infoResult.UnChekedWordInLineDetailInfos.Add(new UnChekedInLineDetailWordInfo() { InLineKeyText = item.Name, InLineText = textResult });
+                                                                infoResult.ErrorTotalCount++;
+                                                            }
                                                         }
                                                     }
                                                 }
                                             }
                                         }
+                                        #region Spire.Doc
+                                        //Document document = new Document();
+                                        //document.LoadFromFileInReadMode(_documentName, FileFormat.Auto);
+                                        //int index = 1;
+                                        //foreach (Spire.Doc.Section section in document.Sections)
+                                        //{
+                                        //    foreach (Paragraph paragraph in section.Paragraphs)
+                                        //    {
+                                        //        string textResult = "";
+                                        //        foreach (DocumentObject docObject in paragraph.ChildObjects)
+                                        //        {
+                                        //            if (docObject.DocumentObjectType == DocumentObjectType.Picture)
+                                        //            {
+                                        //                DocPicture picture = docObject as DocPicture;
+                                        //                string imageName = String.Format(pathDir + "照片-{0}.png", index);
+                                        //                picture.Image.Save(imageName, System.Drawing.Imaging.ImageFormat.Png);
+                                        //                index++;
+                                        //            }
+                                        //            if (docObject.DocumentObjectType == DocumentObjectType.TextRange)
+                                        //            {
+                                        //                TextRange textRange = docObject as TextRange;
+                                        //                textResult += textRange.Text;
+                                        //            }
+                                        //        }
+                                        //        var list = CheckWordUtil.CheckWordHelper.GetUnChekedWordInfoList(textResult).ToList();
+                                        //        foreach (var item in list)
+                                        //        {
+                                        //            MatchCollection mc = Regex.Matches(textResult, item.Name, RegexOptions.IgnoreCase);
+                                        //            if (mc.Count > 0)
+                                        //            {
+                                        //                foreach (Match m in mc)
+                                        //                {
+                                        //                    var infoResult = listResult.FirstOrDefault(x => x.Name == item.Name);
+                                        //                    if (infoResult == null)
+                                        //                    {
+                                        //                        item.UnChekedWordInLineDetailInfos.Add(new UnChekedInLineDetailWordInfo() { InLineKeyText = item.Name, InLineText = textResult });
+                                        //                        item.ErrorTotalCount++;
+                                        //                        listResult.Add(item);
+                                        //                    }
+                                        //                    else
+                                        //                    {
+                                        //                        infoResult.UnChekedWordInLineDetailInfos.Add(new UnChekedInLineDetailWordInfo() { InLineKeyText = item.Name, InLineText = textResult });
+                                        //                        infoResult.ErrorTotalCount++;
+                                        //                    }
+                                        //                }
+                                        //            }
+                                        //        }
+                                        //    }
+                                        //}
+                                        #endregion
                                     }
-                                    #region Spire.Doc
-                                    //Document document = new Document();
-                                    //document.LoadFromFileInReadMode(_documentName, FileFormat.Auto);
-                                    //int index = 1;
-                                    //foreach (Spire.Doc.Section section in document.Sections)
-                                    //{
-                                    //    foreach (Paragraph paragraph in section.Paragraphs)
-                                    //    {
-                                    //        string textResult = "";
-                                    //        foreach (DocumentObject docObject in paragraph.ChildObjects)
-                                    //        {
-                                    //            if (docObject.DocumentObjectType == DocumentObjectType.Picture)
-                                    //            {
-                                    //                DocPicture picture = docObject as DocPicture;
-                                    //                string imageName = String.Format(pathDir + "照片-{0}.png", index);
-                                    //                picture.Image.Save(imageName, System.Drawing.Imaging.ImageFormat.Png);
-                                    //                index++;
-                                    //            }
-                                    //            if (docObject.DocumentObjectType == DocumentObjectType.TextRange)
-                                    //            {
-                                    //                TextRange textRange = docObject as TextRange;
-                                    //                textResult += textRange.Text;
-                                    //            }
-                                    //        }
-                                    //        var list = CheckWordUtil.CheckWordHelper.GetUnChekedWordInfoList(textResult).ToList();
-                                    //        foreach (var item in list)
-                                    //        {
-                                    //            MatchCollection mc = Regex.Matches(textResult, item.Name, RegexOptions.IgnoreCase);
-                                    //            if (mc.Count > 0)
-                                    //            {
-                                    //                foreach (Match m in mc)
-                                    //                {
-                                    //                    var infoResult = listResult.FirstOrDefault(x => x.Name == item.Name);
-                                    //                    if (infoResult == null)
-                                    //                    {
-                                    //                        item.UnChekedWordInLineDetailInfos.Add(new UnChekedInLineDetailWordInfo() { InLineKeyText = item.Name, InLineText = textResult });
-                                    //                        item.ErrorTotalCount++;
-                                    //                        listResult.Add(item);
-                                    //                    }
-                                    //                    else
-                                    //                    {
-                                    //                        infoResult.UnChekedWordInLineDetailInfos.Add(new UnChekedInLineDetailWordInfo() { InLineKeyText = item.Name, InLineText = textResult });
-                                    //                        infoResult.ErrorTotalCount++;
-                                    //                    }
-                                    //                }
-                                    //            }
-                                    //        }
-                                    //    }
-                                    //}
-                                    #endregion
-                                }
-                                else
-                                {
-                                    EventAggregatorRepository.EventAggregator.GetEvent<SendNotifyMessageEvent>().Publish("200");
+                                    else
+                                    {
+                                        EventAggregatorRepository.EventAggregator.GetEvent<SendNotifyMessageEvent>().Publish("200");
+                                    }
                                 }
                             }
                         }
