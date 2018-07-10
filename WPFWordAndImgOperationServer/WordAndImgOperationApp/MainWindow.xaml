@@ -131,15 +131,15 @@
                HorizontalOffset="0" VerticalOffset="0" PopupAnimation="Fade"
                Placement="MousePoint" StaysOpen ="False">
             <Grid>
-                <Grid Width="280" Height="190" Background="White" Margin="9">
+                <Grid Width="280" Height="126" Background="White" Margin="9">
                     <Grid.Effect>
                         <DropShadowEffect ShadowDepth="0" BlurRadius="9" Opacity="0.8"/>
                     </Grid.Effect>
                     <Grid.RowDefinitions>
                         <RowDefinition Height="*"></RowDefinition>
                         <RowDefinition Height="48"></RowDefinition>
-                        <RowDefinition Height="32"></RowDefinition>
-                        <RowDefinition Height="32"></RowDefinition>
+                        <RowDefinition Height="0"></RowDefinition>
+                        <RowDefinition Height="0"></RowDefinition>
                         <RowDefinition Height="32"></RowDefinition>
                         <RowDefinition Height="32"></RowDefinition>
                         <RowDefinition Height="*"></RowDefinition>
