@@ -25,21 +25,6 @@ namespace CheckWordControl.Notify
             InitializeComponent();
         }
 
-        private void Grid_MouseLeftButtonDownClose(object sender, MouseButtonEventArgs e)
-        {
-            try
-            {
-                var viewModel = this.DataContext as NotifyMessageViewModel;
-                if (viewModel != null)
-                {
-                    viewModel._closeAction();
-                }
-            }
-            catch (Exception ex)
-            { }
-            this.Close();
-        }
-
         private void Grid_MouseLeftButtonDownDrag(object sender, MouseButtonEventArgs e)
         {
             try
@@ -77,6 +62,21 @@ namespace CheckWordControl.Notify
             }
             catch
             { }
+        }
+
+        private void CloseBtn_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                var viewModel = this.DataContext as NotifyMessageViewModel;
+                if (viewModel != null)
+                {
+                    viewModel._closeAction();
+                }
+            }
+            catch (Exception ex)
+            { }
+            this.Close();
         }
     }
 }
