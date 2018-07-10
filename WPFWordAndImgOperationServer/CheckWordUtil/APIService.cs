@@ -128,5 +128,26 @@ namespace CheckWordUtil
             { }
             return version;
         }
+        public bool GetWordConsume(int count, string token)
+        {
+            bool result = false;
+            try
+            {
+                string apiName = "consume";
+                ConsumeRequest consumeRequest = new ConsumeRequest();
+                consumeRequest.count = count;
+                string json = JsonConvert.SerializeObject(consumeRequest);
+                string resultStr = HttpHelper.HttpUrlSend(apiName, "POST", json, token);
+                ConsumeResponse resultInfo = JsonConvert.DeserializeObject<ConsumeResponse>(resultStr);
+                if (resultInfo != null)
+                {
+                    if (resultInfo.count > 0)
+                        result = true;
+                }
+            }
+            catch (Exception ex)
+            { }
+            return result;
+        }
     }
 }

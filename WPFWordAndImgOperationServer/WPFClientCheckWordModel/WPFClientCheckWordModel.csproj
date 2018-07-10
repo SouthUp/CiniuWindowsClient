@@ -53,6 +53,8 @@
     <Compile Include="CheckWordResponseResult.cs" />
     <Compile Include="CommonNameAndYearModel.cs" />
     <Compile Include="CommonNameModel.cs" />
+    <Compile Include="ConsumeRequest.cs" />
+    <Compile Include="ConsumeResponse.cs" />
     <Compile Include="DBWordModel.cs" />
     <Compile Include="GetAllWordsInfoResponse.cs" />
     <Compile Include="LoginInOutInfo.cs" />

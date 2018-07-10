@@ -76,8 +76,8 @@
                     Content="充值" Foreground="#6ab1f7" FontSize="14"
                     Style="{StaticResource TextButtonStyle}"
                     Click="RechargeBtn_Click" Visibility="Collapsed"></Button>
-            <StackPanel x:Name="ErrorCodeStackPanel" Grid.Row="2" Grid.Column="1" Orientation="Horizontal" 
-                        HorizontalAlignment="Left" VerticalAlignment="Center">
+            <StackPanel x:Name="ErrorCodeStackPanel" Grid.Row="1" Grid.Column="1" Orientation="Horizontal" 
+                        HorizontalAlignment="Left" VerticalAlignment="Bottom">
                 <TextBlock Style="{StaticResource bodyTextStyle}" FontSize="12" Text="错误码: "></TextBlock>
                 <TextBlock Style="{StaticResource bodyTextStyle}" FontSize="12" Text="{Binding Message.ErrorCode}"></TextBlock>
             </StackPanel>
