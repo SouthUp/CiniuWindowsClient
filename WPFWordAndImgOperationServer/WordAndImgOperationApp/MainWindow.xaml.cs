@@ -456,23 +456,23 @@ namespace WordAndImgOperationApp
                             }
                             else
                             {
-                                if(countWords > 0)
+                                int index = 1;
+                                //取得对象集合
+                                Aspose.Words.NodeCollection shapes = doc.GetChildNodes(Aspose.Words.NodeType.Shape, true);
+                                foreach (Aspose.Words.Drawing.Shape shape in shapes)
+                                {
+                                    if (shape != null && shape.HasImage)
+                                    {
+                                        string imageName = String.Format(pathDir + "照片-{0}.png", index);
+                                        shape.ImageData.Save(imageName);
+                                        index++;
+                                    }
+                                }
+                                if (countWords > 0)
                                 {
                                     ConsumeResponse consume = service.GetWordConsume(countWords, UtilSystemVar.UserToken);
                                     if (consume != null)
                                     {
-                                        int index = 1;
-                                        //取得对象集合
-                                        Aspose.Words.NodeCollection shapes = doc.GetChildNodes(Aspose.Words.NodeType.Shape, true);
-                                        foreach (Aspose.Words.Drawing.Shape shape in shapes)
-                                        {
-                                            if (shape != null && shape.HasImage)
-                                            {
-                                                string imageName = String.Format(pathDir + "照片-{0}.png", index);
-                                                shape.ImageData.Save(imageName);
-                                                index++;
-                                            }
-                                        }
                                         foreach (Aspose.Words.Section section in doc.Sections)
                                         {
                                             foreach (Aspose.Words.Paragraph paragraph in section.Body.Paragraphs)
