@@ -569,6 +569,7 @@ namespace WordAndImgOperationApp
                 }
                 catch (Exception ex)
                 {
+                    WPFClientCheckWordUtil.Log.TextLog.SaveError(ex.Message);
                     //EventAggregatorRepository.EventAggregator.GetEvent<SendNotifyMessageEvent>().Publish("4002");
                 }
             }
@@ -1142,7 +1143,9 @@ namespace WordAndImgOperationApp
                 t.Start();
             }
             catch (Exception ex)
-            { }
+            {
+                WPFClientCheckWordUtil.Log.TextLog.SaveError(ex.Message);
+            }
         }
         private void SendProcessingMessageToBrowseSearchTXT(ExchangeBrowseTxTProcessingInfo exchangeBrowseTxTProcessingInfo)
         {
@@ -1253,7 +1256,9 @@ namespace WordAndImgOperationApp
                 }
             }
             catch (Exception ex)
-            { }
+            {
+                WPFClientCheckWordUtil.Log.TextLog.SaveError(ex.Message);
+            }
         }
         /// <summary>
         /// ORC自动分析图片
@@ -1324,7 +1329,9 @@ namespace WordAndImgOperationApp
                     ////////resultImgGeneral = JsonConvert.DeserializeObject<ImgGeneralInfo>(result.ToString().Replace("char", "Char"));
                 }
                 catch (Exception ex)
-                { }
+                {
+                    WPFClientCheckWordUtil.Log.TextLog.SaveError(ex.Message);
+                }
                 while (!isInitCompleted && countWhile < 10)
                 {
                     System.Threading.Thread.Sleep(100);
@@ -1405,7 +1412,9 @@ namespace WordAndImgOperationApp
                 }
             }
             catch (Exception ex)
-            { }
+            {
+                WPFClientCheckWordUtil.Log.TextLog.SaveError(ex.Message);
+            }
             return listResult;
         }
 
@@ -1520,12 +1529,16 @@ namespace WordAndImgOperationApp
                     DataParse.WriteToXmlPath(JsonConvert.SerializeObject(loginInOutInfo), loginInOutInfos);
                 }
                 catch (Exception ex)
-                { }
+                {
+                    WPFClientCheckWordUtil.Log.TextLog.SaveError(ex.Message);
+                }
                 string json = JsonConvert.SerializeObject(loginInOutInfo);
                 mService.ClientSendMessage(json);
             }
             catch (Exception ex)
-            { }
+            {
+                WPFClientCheckWordUtil.Log.TextLog.SaveError(ex.Message);
+            }
         }
         private void SendDealDataStateToSeachTxT(bool b)
         {

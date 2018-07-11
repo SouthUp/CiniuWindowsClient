@@ -54,6 +54,7 @@ namespace WPFClientCheckWordUtil
             }
             catch (Exception ex)
             {
+                WPFClientCheckWordUtil.Log.TextLog.SaveError(ex.Message);
                 WordModels = new List<WordModel>();
             }
             if (WordModels.Count > 0)

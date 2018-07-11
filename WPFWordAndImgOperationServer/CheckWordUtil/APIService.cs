@@ -36,7 +36,9 @@ namespace CheckWordUtil
                 resultToken = resultInfo.sessionToken;
             }
             catch (Exception ex)
-            { }
+            {
+                WPFClientCheckWordUtil.Log.TextLog.SaveError(ex.Message);
+            }
             return resultToken;
         }
         /// <summary>
@@ -56,7 +58,9 @@ namespace CheckWordUtil
                 result = HttpHelper.HttpUrlSend(apiName, "POST", json, token);
             }
             catch (Exception ex)
-            { }
+            {
+                WPFClientCheckWordUtil.Log.TextLog.SaveError(ex.Message);
+            }
             return result;
         }
         /// <summary>
@@ -108,6 +112,7 @@ namespace CheckWordUtil
             }
             catch (Exception ex)
             {
+                WPFClientCheckWordUtil.Log.TextLog.SaveError(ex.Message);
                 result = null;
             }
             return result;
@@ -126,7 +131,9 @@ namespace CheckWordUtil
                 }
             }
             catch (Exception ex)
-            { }
+            {
+                WPFClientCheckWordUtil.Log.TextLog.SaveError(ex.Message);
+            }
             return version;
         }
         public ConsumeResponse GetWordConsume(int count, string token)
@@ -146,7 +153,9 @@ namespace CheckWordUtil
                 }
             }
             catch (Exception ex)
-            { }
+            {
+                WPFClientCheckWordUtil.Log.TextLog.SaveError(ex.Message);
+            }
             return result;
         }
     }

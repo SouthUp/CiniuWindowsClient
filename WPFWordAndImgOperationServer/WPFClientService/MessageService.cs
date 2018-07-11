@@ -84,7 +84,9 @@ namespace WPFClientService
                 }
             }
             catch (Exception ex)
-            { }
+            {
+                WPFClientCheckWordUtil.Log.TextLog.SaveError(ex.Message);
+            }
         }
 
         /// <summary>

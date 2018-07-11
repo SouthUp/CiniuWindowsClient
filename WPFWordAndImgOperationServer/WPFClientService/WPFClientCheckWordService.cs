@@ -62,6 +62,7 @@ namespace WPFClientService
                 }
                 catch (Exception ex)
                 {
+                    WPFClientCheckWordUtil.Log.TextLog.SaveError(ex.Message);
                     result.Message = ex.Message;
                 }
             }
@@ -87,6 +88,7 @@ namespace WPFClientService
                 }
                 catch (Exception ex)
                 {
+                    WPFClientCheckWordUtil.Log.TextLog.SaveError(ex.Message);
                     result.Message = ex.Message;
                 }
             }
@@ -114,12 +116,16 @@ namespace WPFClientService
                             result = true;
                         }
                     }
-                    catch
-                    { }
+                    catch(Exception ex)
+                    {
+                        WPFClientCheckWordUtil.Log.TextLog.SaveError(ex.Message);
+                    }
                 }
             }
             catch (Exception ex)
-            { }
+            {
+                WPFClientCheckWordUtil.Log.TextLog.SaveError(ex.Message);
+            }
             return result;
         }
     }
