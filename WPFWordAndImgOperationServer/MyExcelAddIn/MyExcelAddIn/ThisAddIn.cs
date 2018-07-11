@@ -34,7 +34,9 @@ namespace MyExcelAddIn
                 EventAggregatorRepository.EventAggregator.GetEvent<SetMyControlVisibleEvent>().Subscribe(SetMyControlVisible);
             }
             catch (Exception ex)
-            { }
+            {
+                CheckWordUtil.Log.TextLog.SaveError(ex.Message);
+            }
         }
 
         private void Application_WorkbookActivate(Excel.Workbook Wb)
@@ -80,7 +82,9 @@ namespace MyExcelAddIn
                     CheckWordUtil.DataParse.WriteToXmlPath(JsonConvert.SerializeObject(addInStateInfo), addInStateInfos);
                 }
                 catch (Exception ex)
-                { }
+                {
+                    CheckWordUtil.Log.TextLog.SaveError(ex.Message);
+                }
                 if (HostSystemVar.CustomTaskPane.Visible == false)
                 {
                     wpfControl.CloseDetector();
@@ -93,7 +97,9 @@ namespace MyExcelAddIn
                 }
             }
             catch (Exception ex)
-            { }
+            {
+                CheckWordUtil.Log.TextLog.SaveError(ex.Message);
+            }
         }
         private void SetMyControlVisible(bool isVisible)
         {
@@ -116,7 +122,9 @@ namespace MyExcelAddIn
                 Globals.ThisAddIn.Application.WorkbookActivate -= Application_WorkbookActivate;
             }
             catch (Exception ex)
-            { }
+            {
+                CheckWordUtil.Log.TextLog.SaveError(ex.Message);
+            }
         }
 
         #region VSTO 生成的代码

@@ -551,7 +551,9 @@ namespace MyExcelAddIn
                 }
             }
             catch (Exception ex)
-            { }
+            {
+                CheckWordUtil.Log.TextLog.SaveError(ex.Message);
+            }
             try
             {
                 // 以原子操作的形式递减指定变量的值并存储结果。
@@ -606,7 +608,9 @@ namespace MyExcelAddIn
                 }
             }
             catch (Exception ex)
-            { }
+            {
+                CheckWordUtil.Log.TextLog.SaveError(ex.Message);
+            }
             return result;
         }
         #region ORC识别
@@ -720,7 +724,9 @@ namespace MyExcelAddIn
                     ////////resultImgGeneral = JsonConvert.DeserializeObject<ImgGeneralInfo>(result.ToString().Replace("char", "Char"));
                 }
                 catch (Exception ex)
-                { }
+                {
+                    CheckWordUtil.Log.TextLog.SaveError(ex.Message);
+                }
                 while (!isInitCompleted && countWhile < 10)
                 {
                     System.Threading.Thread.Sleep(100);
