@@ -128,10 +128,9 @@ namespace WPFClientCheckWordUtil
             { }
             try
             {
-                foreach(var item in WordModels)
+                foreach (var item in WordModels)
                 {
-                    var defaultObj = result.FirstOrDefault(x => x.Name == item.Name);
-                    if (text.Contains(item.Name) && defaultObj == null)
+                    if (text.Contains(item.Name))
                     {
                         result.Add(item);
                     }
