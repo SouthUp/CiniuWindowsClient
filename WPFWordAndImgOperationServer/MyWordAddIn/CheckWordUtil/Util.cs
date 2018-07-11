@@ -78,12 +78,16 @@ namespace CheckWordUtil
                                 result = true;
                         }
                     }
-                    catch
-                    { }
+                    catch (Exception ex)
+                    {
+                        CheckWordUtil.Log.TextLog.SaveError(ex.Message);
+                    }
                 }
             }
-            catch
-            { }
+            catch(Exception ex)
+            {
+                CheckWordUtil.Log.TextLog.SaveError(ex.Message);
+            }
             return result;
         }
         public static void CallWordAndImgApp()
@@ -125,7 +129,9 @@ namespace CheckWordUtil
                 }
             }
             catch (Exception ex)
-            { }
+            {
+                CheckWordUtil.Log.TextLog.SaveError(ex.Message);
+            }
         }
     }
 }

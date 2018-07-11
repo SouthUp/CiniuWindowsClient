@@ -42,6 +42,7 @@ namespace CheckWordUtil
             }
             catch (WebException ex)
             {
+                CheckWordUtil.Log.TextLog.SaveError(ex.Message);
                 return ex.Message;
             }
         }
@@ -68,6 +69,7 @@ namespace CheckWordUtil
             }
             catch (WebException ex)
             {
+                CheckWordUtil.Log.TextLog.SaveError(ex.Message);
                 return ex.Message;
             }
         }

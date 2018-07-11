@@ -64,7 +64,9 @@ namespace MyWordAddIn
                 EventAggregatorRepository.EventAggregator.GetEvent<OpenMyFloatingPanelEvent>().Subscribe(OpenMyFloatingPanel);
             }
             catch (Exception ex)
-            { }
+            {
+                CheckWordUtil.Log.TextLog.SaveError(ex.Message);
+            }
         }
         private void CreateMyControlCustomTaskPane()
         {
@@ -79,8 +81,10 @@ namespace MyWordAddIn
                 taskPane.VisibleChanged += TaskPane_VisibleChanged;
                 HostSystemVar.CustomTaskPane = taskPane;
             }
-            catch
-            { }
+            catch(Exception ex)
+            {
+                CheckWordUtil.Log.TextLog.SaveError(ex.Message);
+            }
         }
         private void SetMyControlVisible(bool isVisible)
         {
@@ -155,7 +159,9 @@ namespace MyWordAddIn
                     CheckWordUtil.DataParse.WriteToXmlPath(JsonConvert.SerializeObject(addInStateInfo), addInStateInfos);
                 }
                 catch (Exception ex)
-                { }
+                {
+                    CheckWordUtil.Log.TextLog.SaveError(ex.Message);
+                }
                 if (HostSystemVar.CustomTaskPane.Visible == false)
                 {
                     wpfControl.CloseDetector();
@@ -167,8 +173,10 @@ namespace MyWordAddIn
                     EventAggregatorRepository.EventAggregator.GetEvent<SetOpenMyControlEnableEvent>().Publish(false);
                 }
             }
-            catch
-            { }
+            catch(Exception ex)
+            {
+                CheckWordUtil.Log.TextLog.SaveError(ex.Message);
+            }
         }
         private void MyWordsDBTaskPane_VisibleChanged(object sender, EventArgs e)
         {
@@ -287,7 +295,9 @@ namespace MyWordAddIn
                 ////////hook.UnHook();
             }
             catch (Exception ex)
-            { }
+            {
+                CheckWordUtil.Log.TextLog.SaveError(ex.Message);
+            }
         }
         /// <summary>
         /// 删除并添加右键菜单

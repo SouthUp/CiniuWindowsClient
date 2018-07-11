@@ -34,12 +34,16 @@ namespace CheckWordUtil
                                 token = loginInOutInfo.Token;
                             }
                         }
-                        catch
-                        { }
+                        catch(Exception ex)
+                        {
+                            CheckWordUtil.Log.TextLog.SaveError(ex.Message);
+                        }
                     }
                 }
                 catch (Exception ex)
-                { }
+                {
+                    CheckWordUtil.Log.TextLog.SaveError(ex.Message);
+                }
                 string apiName = "ocr";
                 OCRRequest ocrRequest = new OCRRequest();
                 ocrRequest.image = System.Convert.ToBase64String(image);
@@ -47,7 +51,9 @@ namespace CheckWordUtil
                 result = HttpHelper.HttpUrlSend(apiName, "POST", json, token);
             }
             catch (Exception ex)
-            { }
+            {
+                CheckWordUtil.Log.TextLog.SaveError(ex.Message);
+            }
             return result;
         }
         /// <summary>
@@ -75,12 +81,16 @@ namespace CheckWordUtil
                                 token = loginInOutInfo.Token;
                             }
                         }
-                        catch
-                        { }
+                        catch (Exception ex)
+                        {
+                            CheckWordUtil.Log.TextLog.SaveError(ex.Message);
+                        }
                     }
                 }
                 catch (Exception ex)
-                { }
+                {
+                    CheckWordUtil.Log.TextLog.SaveError(ex.Message);
+                }
                 string apiName = "user";
                 string resultStr = HttpHelper.HttpUrlGet(apiName, "GET", token);
                 UserStateResponse resultInfo = JsonConvert.DeserializeObject<UserStateResponse>(resultStr);
@@ -94,6 +104,7 @@ namespace CheckWordUtil
             }
             catch (Exception ex)
             {
+                CheckWordUtil.Log.TextLog.SaveError(ex.Message);
                 result = false;
             }
             return result;
@@ -120,12 +131,16 @@ namespace CheckWordUtil
                             result = addInStateInfo.IsOpen;
                         }
                     }
-                    catch
-                    { }
+                    catch (Exception ex)
+                    {
+                        CheckWordUtil.Log.TextLog.SaveError(ex.Message);
+                    }
                 }
             }
             catch (Exception ex)
-            { }
+            {
+                CheckWordUtil.Log.TextLog.SaveError(ex.Message);
+            }
             return result;
         }
     }

@@ -66,6 +66,7 @@
     <Compile Include="FileOperateHelper.cs" />
     <Compile Include="HashHelper.cs" />
     <Compile Include="HttpHelper.cs" />
+    <Compile Include="Log\TextLog.cs" />
     <Compile Include="OCRHelp.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>

@@ -59,7 +59,9 @@ namespace CheckWordUtil
                 }
             }
             catch (Exception ex)
-            { }
+            {
+                CheckWordUtil.Log.TextLog.SaveError(ex.Message);
+            }
             return result;
         }
         /// <summary>
@@ -88,7 +90,9 @@ namespace CheckWordUtil
                 }
             }
             catch (Exception ex)
-            { }
+            {
+                CheckWordUtil.Log.TextLog.SaveError(ex.Message);
+            }
             return result;
         }
         public static string PostSend(string url, string json)
@@ -126,6 +130,7 @@ namespace CheckWordUtil
             }
             catch (WebException ex)
             {
+                CheckWordUtil.Log.TextLog.SaveError(ex.Message);
                 return ex.Message;
             }
         }
@@ -168,7 +173,7 @@ namespace CheckWordUtil
             }
             catch (Exception ex)
             {
-
+                CheckWordUtil.Log.TextLog.SaveError(ex.Message);
             }
             return result;
         }
@@ -194,7 +199,7 @@ namespace CheckWordUtil
             }
             catch (Exception ex)
             {
-
+                CheckWordUtil.Log.TextLog.SaveError(ex.Message);
             }
             return subIndex;
         }
