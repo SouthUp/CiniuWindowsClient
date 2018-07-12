@@ -32,6 +32,7 @@ namespace MyExcelAddIn
     /// </summary>
     public partial class MyControl : UserControl
     {
+        Dictionary<string, List<UnChekedWordInfo>> CurrentWordsDictionary = new Dictionary<string, List<UnChekedWordInfo>>();
         List<UnChekedWordInfo> listUnCheckWords = new List<UnChekedWordInfo>();
         Dictionary<string, List<UnChekedWordInfo>> CurrentImgsDictionary = new Dictionary<string, List<UnChekedWordInfo>>();
         MyControlViewModel viewModel = new MyControlViewModel();
@@ -522,7 +523,35 @@ namespace MyExcelAddIn
                 string str = CellGetStringValue(item);
                 if (!string.IsNullOrEmpty(str))
                 {
-                    var listUnChekedWord = CheckWordHelper.GetUnChekedWordInfoList(str).ToList();
+                    List<UnChekedWordInfo> listUnChekedWord = new List<UnChekedWordInfo>();
+                    string hashWord = HashHelper.ComputeSHA1ByStr(str);
+                    try
+                    {
+                        if (!CurrentWordsDictionary.ContainsKey(hashWord))
+                        {
+                            listUnChekedWord = CheckWordHelper.GetUnChekedWordInfoList(str).ToList();
+                            if (listUnChekedWord != null)
+                            {
+                                try
+                                {
+                                    lock (lockObject)
+                                    {
+                                        CurrentWordsDictionary.Add(hashWord, listUnChekedWord);
+                                    }
+                                }
+                                catch
+                                { }
+                            }
+                        }
+                        else
+                        {
+                            listUnChekedWord = CurrentWordsDictionary[hashWord];
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        CheckWordUtil.Log.TextLog.SaveError(ex.Message);
+                    }
                     if (listUnChekedWord != null && listUnChekedWord.Count > 0)
                     {
                         foreach (var strFind in listUnChekedWord.ToList())
