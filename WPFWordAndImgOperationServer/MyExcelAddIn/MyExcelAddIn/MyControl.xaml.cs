@@ -32,7 +32,7 @@ namespace MyExcelAddIn
     /// </summary>
     public partial class MyControl : UserControl
     {
-        ConcurrentBag<UnChekedWordInfo> listUnCheckWords = new ConcurrentBag<UnChekedWordInfo>();
+        List<UnChekedWordInfo> listUnCheckWords = new List<UnChekedWordInfo>();
         Dictionary<string, List<UnChekedWordInfo>> CurrentImgsDictionary = new Dictionary<string, List<UnChekedWordInfo>>();
         MyControlViewModel viewModel = new MyControlViewModel();
         //保存当前要修改的Range的行和列
@@ -401,7 +401,7 @@ namespace MyExcelAddIn
         /// </summary>
         private void FindTextAndHightLight()
         {
-            listUnCheckWords = new ConcurrentBag<UnChekedWordInfo>();
+            listUnCheckWords = new List<UnChekedWordInfo>();
             rangeCurrentDealingLists = new ConcurrentBag<Range>();
             var workBook = Globals.ThisAddIn.Application.ActiveWorkbook;
             var workSheet = (Worksheet)workBook.ActiveSheet;
@@ -452,11 +452,24 @@ namespace MyExcelAddIn
                     }
                     else
                     {
-                        foreach (var detail in item.UnChekedWordInLineDetailInfos)
+                        UnChekedWordInfo unChekedWordInfoExist = new UnChekedWordInfo();
+                        unChekedWordInfoExist.ID = infoExist.ID;
+                        unChekedWordInfoExist.Name = infoExist.Name;
+                        unChekedWordInfoExist.ErrorTotalCount = infoExist.ErrorTotalCount;
+                        unChekedWordInfoExist.UnChekedWordInLineDetailInfos = infoExist.UnChekedWordInLineDetailInfos;
+                        unChekedWordInfoExist.UnChekedWordDetailInfos = infoExist.UnChekedWordDetailInfos;
+                        unChekedWordInfoExist.TypeTextFrom = infoExist.TypeTextFrom;
+                        unChekedWordInfoExist.IsSelected = infoExist.IsSelected;
+                        Dispatcher.Invoke(new System.Action(() =>
                         {
-                            infoExist.UnChekedWordInLineDetailInfos.Add(detail);
-                            infoExist.ErrorTotalCount++;
-                        }
+                            foreach (var detail in item.UnChekedWordInLineDetailInfos)
+                            {
+                                unChekedWordInfoExist.UnChekedWordInLineDetailInfos.Add(detail);
+                                unChekedWordInfoExist.ErrorTotalCount++;
+                            }
+                            listUnCheckWords.Remove(infoExist);
+                            listUnCheckWords.Add(unChekedWordInfoExist);
+                        }));
                     }
                 }
             }
