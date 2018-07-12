@@ -32,6 +32,7 @@ namespace MyWordAddIn
     /// </summary>
     public partial class MyControl : UserControl
     {
+        Dictionary<string, List<UnChekedWordInfo>> CurrentWordsDictionary = new Dictionary<string, List<UnChekedWordInfo>>();
         List<UnChekedWordInfo> listUnCheckWords = new List<UnChekedWordInfo>();
         Dictionary<string, List<UnChekedWordInfo>> CurrentImgsDictionary = new Dictionary<string, List<UnChekedWordInfo>>();
         MyControlViewModel viewModel = new MyControlViewModel();
@@ -399,10 +400,38 @@ namespace MyWordAddIn
                 Microsoft.Office.Interop.Word.Paragraph paragraph = obj as Microsoft.Office.Interop.Word.Paragraph;
                 if (paragraph != null)
                 {
-                    string text = paragraph.Range.Text.Replace("\f", "").Replace("\r", "").Replace("\n", "");
+                    string text = paragraph.Range.Text;
                     if (!string.IsNullOrEmpty(text))
                     {
-                        var listUnChekedWord = CheckWordHelper.GetUnChekedWordInfoList(text).ToList();
+                        List<UnChekedWordInfo> listUnChekedWord = new List<UnChekedWordInfo>();
+                        string hashWord = HashHelper.ComputeSHA1ByStr(text);
+                        try
+                        {
+                            if (!CurrentWordsDictionary.ContainsKey(hashWord))
+                            {
+                                listUnChekedWord = CheckWordHelper.GetUnChekedWordInfoList(text).ToList();
+                                if (listUnChekedWord != null)
+                                {
+                                    try
+                                    {
+                                        lock (lockObject)
+                                        {
+                                            CurrentWordsDictionary.Add(hashWord, listUnChekedWord);
+                                        }
+                                    }
+                                    catch
+                                    { }
+                                }
+                            }
+                            else
+                            {
+                                listUnChekedWord = CurrentWordsDictionary[hashWord];
+                            }
+                        }
+                        catch (Exception ex)
+                        {
+                            CheckWordUtil.Log.TextLog.SaveError(ex.Message);
+                        }
                         if (listUnChekedWord != null && listUnChekedWord.Count > 0)
                         {
                             foreach (var strFind in listUnChekedWord.ToList())
