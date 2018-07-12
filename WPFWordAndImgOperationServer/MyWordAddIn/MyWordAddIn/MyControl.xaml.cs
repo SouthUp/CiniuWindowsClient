@@ -32,7 +32,7 @@ namespace MyWordAddIn
     /// </summary>
     public partial class MyControl : UserControl
     {
-        ConcurrentBag<UnChekedWordInfo> listUnCheckWords = new ConcurrentBag<UnChekedWordInfo>();
+        List<UnChekedWordInfo> listUnCheckWords = new List<UnChekedWordInfo>();
         Dictionary<string, List<UnChekedWordInfo>> CurrentImgsDictionary = new Dictionary<string, List<UnChekedWordInfo>>();
         MyControlViewModel viewModel = new MyControlViewModel();
         // 保存修改过的Range和之前的背景色，以便于恢复
@@ -299,7 +299,7 @@ namespace MyWordAddIn
         /// <param name="strFind"></param>
         private void FindTextAndHightLight()
         {
-            listUnCheckWords = new ConcurrentBag<UnChekedWordInfo>();
+            listUnCheckWords = new List<UnChekedWordInfo>();
             rangeSelectLists = new ConcurrentBag<Range>();
             //线程池处理数据
             ThreadPool.SetMaxThreads(500, 500);
@@ -321,11 +321,26 @@ namespace MyWordAddIn
                     }
                     else
                     {
-                        foreach (var detail in item.UnChekedWordInLineDetailInfos)
+                        UnChekedWordInfo unChekedWordInfoExist = new UnChekedWordInfo();
+                        unChekedWordInfoExist.ID = infoExist.ID;
+                        unChekedWordInfoExist.Name = infoExist.Name;
+                        unChekedWordInfoExist.ErrorTotalCount = infoExist.ErrorTotalCount;
+                        unChekedWordInfoExist.Range = infoExist.Range;
+                        unChekedWordInfoExist.UnCheckWordRange = infoExist.UnCheckWordRange;
+                        unChekedWordInfoExist.UnChekedWordInLineDetailInfos = infoExist.UnChekedWordInLineDetailInfos;
+                        unChekedWordInfoExist.UnChekedWordDetailInfos = infoExist.UnChekedWordDetailInfos;
+                        unChekedWordInfoExist.TypeTextFrom = infoExist.TypeTextFrom;
+                        unChekedWordInfoExist.IsSelected = infoExist.IsSelected;
+                        Dispatcher.Invoke(new Action(() =>
                         {
-                            infoExist.UnChekedWordInLineDetailInfos.Add(detail);
-                            infoExist.ErrorTotalCount++;
-                        }
+                            foreach (var detail in item.UnChekedWordInLineDetailInfos)
+                            {
+                                unChekedWordInfoExist.UnChekedWordInLineDetailInfos.Add(detail);
+                                unChekedWordInfoExist.ErrorTotalCount++;
+                            }
+                            listUnCheckWords.Remove(infoExist);
+                            listUnCheckWords.Add(unChekedWordInfoExist);
+                        }));
                     }
                 }
             }
