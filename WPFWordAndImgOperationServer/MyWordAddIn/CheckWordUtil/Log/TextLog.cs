@@ -171,6 +171,27 @@ namespace CheckWordUtil.Log
                 {
                     try
                     {
+                        if (Directory.Exists(ErrorLogDir))
+                        {
+                            foreach (string d in Directory.GetFileSystemEntries(ErrorLogDir))
+                            {
+                                if (File.Exists(d))
+                                {
+                                    FileInfo fi = new FileInfo(d);
+                                    if (fi.LastWriteTime < DateTime.Now.AddDays(-7))
+                                    {
+                                        if (fi.Attributes.ToString().IndexOf("ReadOnly") != -1)
+                                            fi.Attributes = FileAttributes.Normal;
+                                        File.Delete(d);//直接删除其中的文件 
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    catch
+                    { }
+                    try
+                    {
                         var maxB = MaxFileLengthOfMB * 1024 * 1024;
 
                         FileInfo fileInfo;
