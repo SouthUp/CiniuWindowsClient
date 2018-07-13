@@ -189,8 +189,9 @@ namespace MyExcelAddIn
             int result = 1;
             try
             {
+                result = workSheet.Cells.Find("*", Type.Missing, XlFindLookIn.xlValues, XlLookAt.xlWhole, XlSearchOrder.xlByRows, XlSearchDirection.xlPrevious, false, false, Type.Missing).Row;
                 //result = ((Range)(workSheet.Cells[workSheet.Rows.Count, 1])).End[XlDirection.xlUp].Row;
-                result = workSheet.UsedRange.Rows.Count;
+                //result = workSheet.UsedRange.Rows.Count;
             }
             catch (Exception ex)
             { }
@@ -201,8 +202,9 @@ namespace MyExcelAddIn
             int result = 1;
             try
             {
+                result = workSheet.Cells.Find("*", Type.Missing, XlFindLookIn.xlValues, XlLookAt.xlWhole, XlSearchOrder.xlByColumns, XlSearchDirection.xlPrevious, false, false, Type.Missing).Column;
                 //result = ((Range)(workSheet.Cells[1, workSheet.Columns.Count])).End[XlDirection.xlToLeft].Column;
-                result = workSheet.UsedRange.Columns.Count;
+                //result = workSheet.UsedRange.Columns.Count;
             }
             catch (Exception ex)
             { }
