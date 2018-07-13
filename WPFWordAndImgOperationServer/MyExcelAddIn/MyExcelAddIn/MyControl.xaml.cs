@@ -32,6 +32,7 @@ namespace MyExcelAddIn
     /// </summary>
     public partial class MyControl : UserControl
     {
+        private ConcurrentBag<UnChekedWordExcelRangeInfo> HasUnChenckedWordsParagraphs = new ConcurrentBag<UnChekedWordExcelRangeInfo>();
         Dictionary<string, List<UnChekedWordInfo>> CurrentWordsDictionary = new Dictionary<string, List<UnChekedWordInfo>>();
         List<UnChekedWordInfo> listUnCheckWords = new List<UnChekedWordInfo>();
         Dictionary<string, List<UnChekedWordInfo>> CurrentImgsDictionary = new Dictionary<string, List<UnChekedWordInfo>>();
@@ -406,6 +407,7 @@ namespace MyExcelAddIn
         {
             listUnCheckWords = new List<UnChekedWordInfo>();
             rangeCurrentDealingLists = new ConcurrentBag<Range>();
+            HasUnChenckedWordsParagraphs = new ConcurrentBag<UnChekedWordExcelRangeInfo>();
             var workBook = Globals.ThisAddIn.Application.ActiveWorkbook;
             var workSheet = (Worksheet)workBook.ActiveSheet;
             int MaxRow = GetMaxRow(workSheet);
@@ -421,6 +423,44 @@ namespace MyExcelAddIn
                 }
             }
             myEvent.WaitOne();
+            foreach (var ItemInfo in HasUnChenckedWordsParagraphs)
+            {
+                Microsoft.Office.Interop.Excel.Range item = ItemInfo.Range;
+                var listUnChekedWord = ItemInfo.UnChekedWordLists;
+                string str = ItemInfo.RangeText;
+                foreach (var strFind in listUnChekedWord.ToList())
+                {
+                    UnChekedWordInfo SelectUnCheckWord = new UnChekedWordInfo() { Name = strFind.Name, UnChekedWordDetailInfos = strFind.UnChekedWordDetailInfos };
+                    MatchCollection mc = Regex.Matches(str, strFind.Name, RegexOptions.IgnoreCase);
+                    if (mc.Count > 0)
+                    {
+                        rangeCurrentDealingLists.Add(item);
+                        foreach (Match m in mc)
+                        {
+                            try
+                            {
+                                SelectUnCheckWord.UnChekedWordInLineDetailInfos.Add(new UnChekedInLineDetailWordInfo() { InLineText = str, UnCheckWordExcelRange = item });
+                                SelectUnCheckWord.ErrorTotalCount++;
+                            }
+                            catch (Exception ex)
+                            { }
+                        }
+                        var infoExist = listUnCheckWords.AsParallel().FirstOrDefault(x => x.Name == SelectUnCheckWord.Name);
+                        if (infoExist == null)
+                        {
+                            listUnCheckWords.Add(SelectUnCheckWord);
+                        }
+                        else
+                        {
+                            foreach (var itemInfo in SelectUnCheckWord.UnChekedWordInLineDetailInfos)
+                            {
+                                infoExist.UnChekedWordInLineDetailInfos.Add(itemInfo);
+                                infoExist.ErrorTotalCount++;
+                            }
+                        }
+                    }
+                }
+            }
             List<ImagesDetailInfo> ImagesDetailInfos = GetPicsFromExcel();
             List<string> listHashs = new List<string>();
             foreach (var item in ImagesDetailInfos)
@@ -536,10 +576,7 @@ namespace MyExcelAddIn
                             {
                                 try
                                 {
-                                    lock (lockObject)
-                                    {
-                                        CurrentWordsDictionary.Add(hashWord, listUnChekedWord);
-                                    }
+                                    CurrentWordsDictionary.Add(hashWord, listUnChekedWord);
                                 }
                                 catch
                                 { }
@@ -556,41 +593,7 @@ namespace MyExcelAddIn
                     }
                     if (listUnChekedWord != null && listUnChekedWord.Count > 0)
                     {
-                        foreach (var strFind in listUnChekedWord.ToList())
-                        {
-                            UnChekedWordInfo SelectUnCheckWord = new UnChekedWordInfo() { Name = strFind.Name, UnChekedWordDetailInfos = strFind.UnChekedWordDetailInfos };
-                            MatchCollection mc = Regex.Matches(str, strFind.Name, RegexOptions.IgnoreCase);
-                            if (mc.Count > 0)
-                            {
-                                rangeCurrentDealingLists.Add(item);
-                                foreach (Match m in mc)
-                                {
-                                    try
-                                    {
-                                        SelectUnCheckWord.UnChekedWordInLineDetailInfos.Add(new UnChekedInLineDetailWordInfo() { InLineText = str, UnCheckWordExcelRange = item });
-                                        SelectUnCheckWord.ErrorTotalCount++;
-                                    }
-                                    catch (Exception ex)
-                                    { }
-                                }
-                                lock (lockObject)
-                                {
-                                    var infoExist = listUnCheckWords.AsParallel().FirstOrDefault(x => x.Name == SelectUnCheckWord.Name);
-                                    if (infoExist == null)
-                                    {
-                                        listUnCheckWords.Add(SelectUnCheckWord);
-                                    }
-                                    else
-                                    {
-                                        foreach (var itemInfo in SelectUnCheckWord.UnChekedWordInLineDetailInfos)
-                                        {
-                                            infoExist.UnChekedWordInLineDetailInfos.Add(itemInfo);
-                                            infoExist.ErrorTotalCount++;
-                                        }
-                                    }
-                                }
-                            }
-                        }
+                        HasUnChenckedWordsParagraphs.Add(new UnChekedWordExcelRangeInfo { Range = item, RangeText=str, UnChekedWordLists = listUnChekedWord });
                     }
                 }
             }
