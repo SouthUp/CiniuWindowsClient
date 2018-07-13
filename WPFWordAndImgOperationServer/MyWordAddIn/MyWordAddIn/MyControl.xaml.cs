@@ -32,6 +32,7 @@ namespace MyWordAddIn
     /// </summary>
     public partial class MyControl : UserControl
     {
+        private ConcurrentBag<UnChekedWordParagraphInfo> HasUnChenckedWordsParagraphs = new ConcurrentBag<UnChekedWordParagraphInfo>();
         Dictionary<string, List<UnChekedWordInfo>> CurrentWordsDictionary = new Dictionary<string, List<UnChekedWordInfo>>();
         List<UnChekedWordInfo> listUnCheckWords = new List<UnChekedWordInfo>();
         Dictionary<string, List<UnChekedWordInfo>> CurrentImgsDictionary = new Dictionary<string, List<UnChekedWordInfo>>();
@@ -302,6 +303,7 @@ namespace MyWordAddIn
         {
             listUnCheckWords = new List<UnChekedWordInfo>();
             rangeSelectLists = new ConcurrentBag<Range>();
+            HasUnChenckedWordsParagraphs = new ConcurrentBag<UnChekedWordParagraphInfo>();
             //线程池处理数据
             ThreadPool.SetMaxThreads(500, 500);
             countDealParagraph = Application.ActiveDocument.Paragraphs.Count;
@@ -311,6 +313,46 @@ namespace MyWordAddIn
                 ThreadPool.QueueUserWorkItem(DealSingleParagraph, paragraph);
             }
             myEvent.WaitOne();
+            foreach (var ItemInfo in HasUnChenckedWordsParagraphs)
+            {
+                Microsoft.Office.Interop.Word.Paragraph paragraph = ItemInfo.Paragraph;
+                var listUnChekedWord = ItemInfo.UnChekedWordLists;
+                foreach (var strFind in listUnChekedWord.ToList())
+                {
+                    UnChekedWordInfo SelectUnCheckWord = new UnChekedWordInfo() { Name = strFind.Name, UnChekedWordDetailInfos = strFind.UnChekedWordDetailInfos };
+                    MatchCollection mc = Regex.Matches(paragraph.Range.Text, strFind.Name, RegexOptions.IgnoreCase);
+                    if (mc.Count > 0)
+                    {
+                        foreach (Match m in mc)
+                        {
+                            try
+                            {
+                                int startIndex = paragraph.Range.Start + m.Index;
+                                int endIndex = paragraph.Range.Start + m.Index + m.Length;
+                                Range keywordRange = Application.ActiveDocument.Range(startIndex, endIndex);
+                                rangeSelectLists.Add(keywordRange);
+                                SelectUnCheckWord.UnChekedWordInLineDetailInfos.Add(new UnChekedInLineDetailWordInfo() { InLineText = paragraph.Range.Text, UnCheckWordRange = keywordRange });
+                                SelectUnCheckWord.ErrorTotalCount++;
+                            }
+                            catch (Exception ex)
+                            { }
+                        }
+                        var infoExist = listUnCheckWords.AsParallel().FirstOrDefault(x => x.Name == SelectUnCheckWord.Name);
+                        if (infoExist == null)
+                        {
+                            listUnCheckWords.Add(SelectUnCheckWord);
+                        }
+                        else
+                        {
+                            foreach (var item in SelectUnCheckWord.UnChekedWordInLineDetailInfos)
+                            {
+                                infoExist.UnChekedWordInLineDetailInfos.Add(item);
+                                infoExist.ErrorTotalCount++;
+                            }
+                        }
+                    }
+                }
+            }
             foreach (var Value in CurrentImgsDictionary.Values)
             {
                 foreach (var item in Value)
@@ -414,10 +456,7 @@ namespace MyWordAddIn
                                 {
                                     try
                                     {
-                                        lock (lockObject)
-                                        {
-                                            CurrentWordsDictionary.Add(hashWord, listUnChekedWord);
-                                        }
+                                        CurrentWordsDictionary.Add(hashWord, listUnChekedWord);
                                     }
                                     catch
                                     { }
@@ -434,44 +473,7 @@ namespace MyWordAddIn
                         }
                         if (listUnChekedWord != null && listUnChekedWord.Count > 0)
                         {
-                            foreach (var strFind in listUnChekedWord.ToList())
-                            {
-                                UnChekedWordInfo SelectUnCheckWord = new UnChekedWordInfo() { Name = strFind.Name, UnChekedWordDetailInfos = strFind.UnChekedWordDetailInfos };
-                                MatchCollection mc = Regex.Matches(text, strFind.Name, RegexOptions.IgnoreCase);
-                                if (mc.Count > 0)
-                                {
-                                    foreach (Match m in mc)
-                                    {
-                                        try
-                                        {
-                                            int startIndex = paragraph.Range.Start + m.Index;
-                                            int endIndex = paragraph.Range.Start + m.Index + m.Length;
-                                            Range keywordRange = Application.ActiveDocument.Range(startIndex, endIndex);
-                                            rangeSelectLists.Add(keywordRange);
-                                            SelectUnCheckWord.UnChekedWordInLineDetailInfos.Add(new UnChekedInLineDetailWordInfo() { InLineText = text, UnCheckWordRange = keywordRange });
-                                            SelectUnCheckWord.ErrorTotalCount++;
-                                        }
-                                        catch (Exception ex)
-                                        { }
-                                    }
-                                    lock (lockObject)
-                                    {
-                                        var infoExist = listUnCheckWords.AsParallel().FirstOrDefault(x => x.Name == SelectUnCheckWord.Name);
-                                        if (infoExist == null)
-                                        {
-                                            listUnCheckWords.Add(SelectUnCheckWord);
-                                        }
-                                        else
-                                        {
-                                            foreach (var item in SelectUnCheckWord.UnChekedWordInLineDetailInfos)
-                                            {
-                                                infoExist.UnChekedWordInLineDetailInfos.Add(item);
-                                                infoExist.ErrorTotalCount++;
-                                            }
-                                        }
-                                    }
-                                }
-                            }
+                            HasUnChenckedWordsParagraphs.Add(new UnChekedWordParagraphInfo { Paragraph = paragraph, UnChekedWordLists = listUnChekedWord });
                         }
                     }
                 }
