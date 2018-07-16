@@ -44,6 +44,16 @@ namespace WordAndImgOperationApp
                 RaisePropertyChanged("AxFramerControlVisibility");
             }
         }
+        private Visibility spreadsheetControlVisibility = Visibility.Collapsed;
+        public Visibility SpreadsheetControlVisibility
+        {
+            get { return spreadsheetControlVisibility; }
+            set
+            {
+                spreadsheetControlVisibility = value;
+                RaisePropertyChanged("SpreadsheetControlVisibility");
+            }
+        }
         private Visibility picGridVisibility = Visibility.Collapsed;
         public Visibility PicGridVisibility
         {

@@ -5,6 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:WordAndImgOperationApp"
         xmlns:dxre="http://schemas.devexpress.com/winfx/2008/xaml/richedit"
+        xmlns:dxsps="http://schemas.devexpress.com/winfx/2008/xaml/spreadsheet"
         xmlns:gifLib="clr-namespace:GifImageLib;assembly=GifImageLib"
         xmlns:control="clr-namespace:CheckWordControl;assembly=CheckWordControl"
         Style="{StaticResource NoresizeWindow}" AllowsTransparency="True"
@@ -104,6 +105,15 @@
                 </Grid.ColumnDefinitions>
                 <Grid Grid.Column="0">
                     <Border Background="Black" Opacity="0.06"></Border>
+                    <Grid Visibility="{Binding SpreadsheetControlVisibility}">
+                        <dxsps:SpreadsheetControl x:Name="spreadsheetControl1" 
+                                                  HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
+                                                  Background="White" ReadOnly="True"/>
+                        <Button Width="56" Height="56" Style="{StaticResource BlueCircleEditBtnButtonStyle}"
+                                Margin="0,0,95,24" Click="EditBtn_Click" 
+                                HorizontalAlignment="Right" VerticalAlignment="Bottom">
+                        </Button>
+                    </Grid>
                     <Grid Visibility="{Binding AxFramerControlVisibility}">
                         <dxre:RichEditControl x:Name="docViewer" 
                                               HorizontalAlignment="Stretch" VerticalAlignment="Stretch"

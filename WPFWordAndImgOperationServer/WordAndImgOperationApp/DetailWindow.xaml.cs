@@ -115,6 +115,10 @@ namespace WordAndImgOperationApp
                     {
                         OnlyLoadImg();
                     }
+                    else if (viewModel.CurrentMyFolderData.TypeSelectFile == SelectFileType.Xlsx)
+                    {
+                        OnlyLoadXlsx();
+                    }
                 }
             }
             catch (Exception ex)
@@ -133,7 +137,6 @@ namespace WordAndImgOperationApp
                 Dispatcher.Invoke(new Action(() => {
                     try
                     {
-                        docViewer.ReadOnly = false;
                         docViewer.HorizontalRuler.Visibility = System.Windows.Visibility.Hidden;
                         docViewer.VerticalRuler.Visibility = System.Windows.Visibility.Hidden;
                         foreach (var searchStr in viewModel.CurrentMyFolderData.UnChekedWordInfos.Select(y => y.Name).ToList())
@@ -156,7 +159,6 @@ namespace WordAndImgOperationApp
                                     itemDetailInfo.InLineKeyTextRangeStart = list[i].Start.ToInt();
                             }
                         }
-                        docViewer.ReadOnly = true;
                     }
                     catch (Exception ex)
                     { }
@@ -169,9 +171,32 @@ namespace WordAndImgOperationApp
         }
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
+            spreadsheetControl1.DocumentLoaded += SpreadsheetControl1_DocumentLoaded;
             docViewer.DocumentLoaded += RichEdit_DocumentLoaded;
             element.Source = AppDomain.CurrentDomain.BaseDirectory + @"Resources\Gif\loading.gif";
         }
+
+        private void SpreadsheetControl1_DocumentLoaded(object sender, EventArgs e)
+        {
+            System.Windows.Threading.Dispatcher x = System.Windows.Threading.Dispatcher.CurrentDispatcher;
+            System.Threading.ThreadStart start = delegate ()
+            {
+                System.Threading.Thread.Sleep(500);
+                Dispatcher.Invoke(new Action(() => {
+                    try
+                    {
+                        
+                    }
+                    catch (Exception ex)
+                    { }
+                    viewModel.BusyWindowVisibility = Visibility.Collapsed;
+                }));
+            };
+            System.Threading.Thread t = new System.Threading.Thread(start);
+            t.IsBackground = true;
+            t.Start();
+        }
+
         private void TitleGrid_MouseDown(object sender, MouseButtonEventArgs e)
         {
             this.DragMove();
@@ -207,6 +232,7 @@ namespace WordAndImgOperationApp
                     viewModel.BusyWindowVisibility = Visibility.Visible;
                     viewModel.PicGridVisibility = Visibility.Collapsed;
                     viewModel.AxFramerControlVisibility = Visibility.Visible;
+                    viewModel.SpreadsheetControlVisibility = Visibility.Collapsed;
                     Task task = Task.Run(() =>
                     {
                         System.Threading.Thread.Sleep(250);
@@ -245,6 +271,7 @@ namespace WordAndImgOperationApp
             {
                 viewModel.PicGridVisibility = Visibility.Visible;
                 viewModel.AxFramerControlVisibility = Visibility.Collapsed;
+                viewModel.SpreadsheetControlVisibility = Visibility.Collapsed;
             }
             catch (Exception ex)
             { }
@@ -374,6 +401,41 @@ namespace WordAndImgOperationApp
                     }
                 }
             }
+        }
+        /// <summary>
+        /// 仅仅加载显示xlsx
+        /// </summary>
+        private void OnlyLoadXlsx()
+        {
+            viewModel.BusyWindowVisibility = Visibility.Visible;
+            System.Threading.ThreadStart start = delegate ()
+            {
+                System.Threading.Thread.Sleep(20);
+                try
+                {
+                    viewModel.PicGridVisibility = Visibility.Collapsed;
+                    viewModel.AxFramerControlVisibility = Visibility.Collapsed;
+                    viewModel.SpreadsheetControlVisibility = Visibility.Visible;
+                    Task task = Task.Run(() =>
+                    {
+                        Dispatcher.BeginInvoke(new Action(() =>
+                        {
+                            DevExpress.Spreadsheet.IWorkbook workbook = spreadsheetControl1.Document;
+                            workbook.Options.Culture = new System.Globalization.CultureInfo("en-US");
+                            workbook.LoadDocument(viewModel.CurrentMyFolderData.FilePath);
+                        }));
+                    });
+                }
+                catch (Exception ex)
+                {
+                    Dispatcher.Invoke(new Action(() => {
+                        viewModel.BusyWindowVisibility = Visibility.Collapsed;
+                    }));
+                }
+            };
+            System.Threading.Thread t = new System.Threading.Thread(start);
+            t.IsBackground = true;
+            t.Start();
         }
     }
 }
