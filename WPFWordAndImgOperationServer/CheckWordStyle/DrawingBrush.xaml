@@ -654,6 +654,32 @@
             </DrawingGroup>
         </DrawingBrush.Drawing>
     </DrawingBrush>
+    <DrawingBrush x:Key="CircleXlsxTitleLogoBGLogo" Stretch="None">
+        <DrawingBrush.Drawing>
+            <DrawingGroup>
+                <DrawingGroup.ClipGeometry>
+                    <RectangleGeometry Rect="0,0,32,32" />
+                </DrawingGroup.ClipGeometry>
+                <GeometryDrawing Brush="#FF41A59C">
+                    <GeometryDrawing.Geometry>
+                        <PathGeometry FillRule="EvenOdd" Figures="M16,0C24.837,0 32,7.163 32,16 32,24.837 24.837,32 16,32 7.163,32 0,24.837 0,16 0,7.163 7.163,0 16,0z" />
+                    </GeometryDrawing.Geometry>
+                </GeometryDrawing>
+                <GeometryDrawing Brush="#FFFFFFFF">
+                    <GeometryDrawing.Geometry>
+                        <PathGeometry FillRule="EvenOdd" Figures="M15.896,5.995L15.817,6.021 6.646,8.053 5.995,8.21 5.995,23.79 6.646,23.947 15.817,25.979 15.896,26.005 17.667,26.005 17.667,23.504 26.005,23.504 26.005,8.496 17.667,8.496 17.667,5.995 15.896,5.995z M16,7.689L16,24.311 7.662,22.488 7.662,9.512 16,7.689z" />
+                    </GeometryDrawing.Geometry>
+                </GeometryDrawing>
+                <DrawingGroup Transform="0.5479,0,0,0.5479,9.534,19.561">
+                    <GeometryDrawing Brush="#FFFFFFFF">
+                        <GeometryDrawing.Geometry>
+                            <PathGeometry FillRule="Nonzero" Figures="M0.382471710443497,-11.9298620223999L3.1981143951416,-11.9298620223999 5.5905966758728,-8.09700679779053 7.93425321578979,-11.9298620223999 10.7254829406738,-11.9298620223999 7.01469373703003,-6.13582229614258 11.0916786193848,0 8.18652153015137,0 5.54177045822144,-4.12581157684326 2.88888192176819,0 1.51459573771717E-08,0 4.07698535919189,-6.22533702850342 0.382471710443497,-11.9298620223999z" />
+                        </GeometryDrawing.Geometry>
+                    </GeometryDrawing>
+                </DrawingGroup>
+            </DrawingGroup>
+        </DrawingBrush.Drawing>
+    </DrawingBrush>
     <DrawingBrush x:Key="ZheLineLogoBGLogo" Stretch="None">
         <DrawingBrush.Drawing>
             <DrawingGroup>

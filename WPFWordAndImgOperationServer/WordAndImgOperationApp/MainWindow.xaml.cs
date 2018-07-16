@@ -409,6 +409,134 @@ namespace WordAndImgOperationApp
             this.Hide();
         }
         /// <summary>
+        /// 解析校验Excel文档
+        /// </summary>
+        /// <param name="filePath"></param>
+        private List<UnChekedWordInfo> LoadXlsx(string filePath)
+        {
+            List<UnChekedWordInfo> listResult = new List<UnChekedWordInfo>();
+            try
+            {
+                string _documentName = filePath;
+                //获取文档内容进行解析
+                try
+                {
+                    string fileName = System.IO.Path.GetFileNameWithoutExtension(_documentName);
+                    string pathDir = CheckWordTempPath + "\\" + fileName + System.IO.Path.GetExtension(_documentName).Replace(".", "") + "-Xlsx\\";
+                    FileOperateHelper.DeleteFolder(pathDir);
+                    if (!Directory.Exists(pathDir))
+                    {
+                        Directory.CreateDirectory(pathDir);
+                    }
+                    Aspose.Cells.Workbook workbook = new Aspose.Cells.Workbook(_documentName);
+                    int countWords = 0;
+                    int sheetCount = workbook.Worksheets.Count;
+                    for (int k = 0; k < sheetCount; k++)
+                    {
+                        Aspose.Cells.Cells cells = workbook.Worksheets[k].Cells;
+                        for (int i = 0; i < cells.MaxDataRow + 1; i++)
+                        {
+                            for (int j = 0; j < cells.MaxDataColumn + 1; j++)
+                            {
+                                string s = cells[i, j].StringValue.Trim();
+                                if (!string.IsNullOrEmpty(s))
+                                    countWords += s.Count();
+                            }
+                        }
+                    }
+                    try
+                    {
+                        APIService service = new APIService();
+                        var userStateInfos = service.GetUserStateByToken(UtilSystemVar.UserToken);
+                        if (userStateInfos != null)
+                        {
+                            if (userStateInfos.WordCount < countWords)
+                            {
+                                EventAggregatorRepository.EventAggregator.GetEvent<SendNotifyMessageEvent>().Publish("500");
+                                return null;
+                            }
+                            else
+                            {
+                                int index = 1;
+                                for (int k = 0; k < sheetCount; k++)
+                                {
+                                    foreach (var item in workbook.Worksheets[k].Pictures)
+                                    {
+                                        Aspose.Cells.Drawing.Picture pic = item;
+                                        string imageName = String.Format(pathDir + "照片-{0}.jpg", index);
+                                        Aspose.Cells.Rendering.ImageOrPrintOptions printoption = new Aspose.Cells.Rendering.ImageOrPrintOptions();
+                                        printoption.ImageFormat = System.Drawing.Imaging.ImageFormat.Jpeg;
+                                        pic.ToImage(imageName, printoption);
+                                        index++;
+                                    }
+                                }
+                                if (countWords > 0)
+                                {
+                                    ConsumeResponse consume = service.GetWordConsume(countWords, UtilSystemVar.UserToken);
+                                    if (consume != null)
+                                    {
+                                        for (int k = 0; k < sheetCount; k++)
+                                        {
+                                            Aspose.Cells.Cells cells = workbook.Worksheets[k].Cells;
+                                            for (int i = 0; i < cells.MaxDataRow + 1; i++)
+                                            {
+                                                for (int j = 0; j < cells.MaxDataColumn + 1; j++)
+                                                {
+                                                    string textResult = cells[i, j].StringValue.Trim();
+                                                    if (!string.IsNullOrEmpty(textResult))
+                                                    {
+                                                        var list = CheckWordUtil.CheckWordHelper.GetUnChekedWordInfoList(textResult).ToList();
+                                                        foreach (var item in list)
+                                                        {
+                                                            MatchCollection mc = Regex.Matches(textResult, item.Name, RegexOptions.IgnoreCase);
+                                                            if (mc.Count > 0)
+                                                            {
+                                                                foreach (Match m in mc)
+                                                                {
+                                                                    var infoResult = listResult.FirstOrDefault(x => x.Name == item.Name);
+                                                                    if (infoResult == null)
+                                                                    {
+                                                                        item.UnChekedWordInLineDetailInfos.Add(new UnChekedInLineDetailWordInfo() { InLineKeyText = item.Name, InLineText = textResult });
+                                                                        item.ErrorTotalCount++;
+                                                                        listResult.Add(item);
+                                                                    }
+                                                                    else
+                                                                    {
+                                                                        infoResult.UnChekedWordInLineDetailInfos.Add(new UnChekedInLineDetailWordInfo() { InLineKeyText = item.Name, InLineText = textResult });
+                                                                        infoResult.ErrorTotalCount++;
+                                                                    }
+                                                                }
+                                                            }
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                    else
+                                    {
+                                        EventAggregatorRepository.EventAggregator.GetEvent<SendNotifyMessageEvent>().Publish("200");
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    catch
+                    {
+                        return null;
+                    }
+                }
+                catch (Exception ex)
+                {
+                    WPFClientCheckWordUtil.Log.TextLog.SaveError(ex.Message);
+                    //EventAggregatorRepository.EventAggregator.GetEvent<SendNotifyMessageEvent>().Publish("4002");
+                }
+            }
+            catch (Exception ex)
+            { }
+            return listResult;
+        }
+        /// <summary>
         /// 解析校验文档
         /// </summary>
         /// <param name="filePath"></param>
@@ -1249,6 +1377,74 @@ namespace WordAndImgOperationApp
                             string errorImgPath = CheckWordTempPath + " \\" + System.IO.Path.GetFileNameWithoutExtension(dealFilePath) + System.IO.Path.GetExtension(dealFilePath).Replace(".", "") + "-Img\\" + System.IO.Path.GetFileName(dealFilePath);
                             model.FileImgShowPath = errorImgPath;
                             model.UnChekedWordInfos = new ObservableCollection<UnChekedWordInfo>(listResult);
+                            model.ErrorWordsInfos = string.Join("   ", model.UnChekedWordInfos.Select(x => x.Name).Distinct().ToList());
+                            DealDataResultList.Add(model);
+                        }
+                    }
+                }
+                else if (".xls,.xlsx".Contains(System.IO.Path.GetExtension(dealFilePath).ToLower()))
+                {
+                    var listUncheckWordInfos = LoadXlsx(dealFilePath);
+                    if (listUncheckWordInfos != null)
+                    {
+                        MyFolderDataViewModel model = new MyFolderDataViewModel(System.IO.Path.GetFileName(dealFilePath), dealFilePath);
+                        model.TypeSelectFile = SelectFileType.Xlsx;
+                        model.FileImgShowPath = AppDomain.CurrentDomain.BaseDirectory + "Resources/ExcelIcon.png";
+                        model.UnChekedWordInfos = new ObservableCollection<UnChekedWordInfo>(listUncheckWordInfos);
+                        string fileName = System.IO.Path.GetFileNameWithoutExtension(dealFilePath);
+                        string pathDir = CheckWordTempPath + "\\" + fileName + System.IO.Path.GetExtension(dealFilePath).Replace(".", "") + "-Xlsx\\";
+                        if (Directory.Exists(pathDir))
+                        {
+                            DirectoryInfo dirDoc = new DirectoryInfo(pathDir);
+                            var filePicInfos = dirDoc.GetFiles();
+                            FileOperateHelper.SortAsFileCreationTime(ref filePicInfos);
+                            foreach (var picInfo in filePicInfos)
+                            {
+                                if (picInfo.FullName.Contains("jpg"))
+                                {
+                                    MyFolderDataViewModel modelPic = new MyFolderDataViewModel(System.IO.Path.GetFileName(picInfo.FullName), picInfo.FullName);
+                                    modelPic.TypeSelectFile = SelectFileType.Img;
+                                    var listResult = AutoExcutePicOCR(picInfo.FullName);
+                                    if (listResult != null)
+                                    {
+                                        foreach (var item in listResult)
+                                        {
+                                            modelPic.CountError += item.ErrorTotalCount;
+                                        }
+                                        if (modelPic.CountError > 0)
+                                        {
+                                            modelPic.UnChekedWordInfos = new ObservableCollection<UnChekedWordInfo>(listResult);
+                                            model.Children.Add(modelPic);
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                        foreach (var child in model.Children)
+                        {
+                            foreach (var item in child.UnChekedWordInfos)
+                            {
+                                var unChekedWordInfoExsit = model.UnChekedWordInfos.FirstOrDefault(x => x.Name == item.Name);
+                                if (unChekedWordInfoExsit == null)
+                                {
+                                    model.UnChekedWordInfos.Add(item);
+                                }
+                                else
+                                {
+                                    foreach (var itemInfo in item.UnChekedWordInLineDetailInfos)
+                                    {
+                                        unChekedWordInfoExsit.UnChekedWordInLineDetailInfos.Add(itemInfo);
+                                        unChekedWordInfoExsit.ErrorTotalCount++;
+                                    }
+                                }
+                            }
+                        }
+                        foreach (var item in model.UnChekedWordInfos)
+                        {
+                            model.CountError += item.ErrorTotalCount;
+                        }
+                        if (model.CountError > 0)
+                        {
                             model.ErrorWordsInfos = string.Join("   ", model.UnChekedWordInfos.Select(x => x.Name).Distinct().ToList());
                             DealDataResultList.Add(model);
                         }

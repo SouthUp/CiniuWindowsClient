@@ -35,7 +35,7 @@ namespace BrowseSearchTXT
         private static List<string> FilePathsList = new List<string>();
         private static List<string> UnCheckFilePathsList = new List<string>();
         private static List<string> UnReadFilePathsList = new List<string>();
-        List<string> listClass = new List<string>() { ".png", ".jpg", ".jpeg", ".doc", ".docx" };
+        List<string> listClass = new List<string>() { ".png", ".jpg", ".jpeg", ".doc", ".docx", ".xls", ".xlsx" };
         MainWindowViewModel viewModel;
         public MainWindow()
         {

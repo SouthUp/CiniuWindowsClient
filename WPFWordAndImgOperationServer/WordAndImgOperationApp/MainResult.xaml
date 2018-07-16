@@ -41,11 +41,16 @@
                                     </Grid.ColumnDefinitions>
                                     <Grid Grid.Row="0" Grid.RowSpan="2" Grid.Column="0" 
                                           Width="32" Height="32" Background="{StaticResource CircleWordTitleLogoBGLogo}"
-                                          Margin="16,0,0,0" VerticalAlignment="Center" HorizontalAlignment="Left"></Grid>
+                                          Margin="16,0,0,0" VerticalAlignment="Center" HorizontalAlignment="Left"
+                                          Visibility="{Binding ShowDocTitleLogo,Converter={StaticResource BoolToVisibilityConvert}}"></Grid>
                                     <Grid Grid.Row="0" Grid.RowSpan="2" Grid.Column="0" 
                                           Width="32" Height="32" Background="{StaticResource CircleImgTitleLogoBGLogo}"
                                           Margin="16,0,0,0" VerticalAlignment="Center" HorizontalAlignment="Left"
                                           Visibility="{Binding ShowImgTitleLogo,Converter={StaticResource BoolToVisibilityConvert}}"></Grid>
+                                    <Grid Grid.Row="0" Grid.RowSpan="2" Grid.Column="0" 
+                                          Width="32" Height="32" Background="{StaticResource CircleXlsxTitleLogoBGLogo}"
+                                          Margin="16,0,0,0" VerticalAlignment="Center" HorizontalAlignment="Left"
+                                          Visibility="{Binding ShowXlsxTitleLogo,Converter={StaticResource BoolToVisibilityConvert}}"></Grid>
                                     <StackPanel Grid.Row="0" Grid.Column="1" 
                                                 Orientation="Horizontal" HorizontalAlignment="Left" VerticalAlignment="Bottom">
                                         <Button Style="{StaticResource ErrorWordsNameInfoTextButtonStyle}"

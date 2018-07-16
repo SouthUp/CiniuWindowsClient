@@ -30,11 +30,25 @@ namespace CheckWordModel
                 _typeSelectFile = value;
                 if (_typeSelectFile == SelectFileType.Docx)
                 {
+                    ShowDocTitleLogo = true;
                     ShowImgTitleLogo = false;
+                    ShowXlsxTitleLogo = false;
+                }
+                else if (_typeSelectFile == SelectFileType.Img)
+                {
+                    ShowDocTitleLogo = false;
+                    ShowImgTitleLogo = true;
+                    ShowXlsxTitleLogo = false;
+                }
+                else if (_typeSelectFile == SelectFileType.Xlsx)
+                {
+                    ShowDocTitleLogo = false;
+                    ShowImgTitleLogo = false;
+                    ShowXlsxTitleLogo = true;
                 }
             }
         }
-        private bool _showImgTitleLogo = true;
+        private bool _showImgTitleLogo = false;
         public bool ShowImgTitleLogo
         {
             get { return _showImgTitleLogo; }
@@ -42,6 +56,26 @@ namespace CheckWordModel
             {
                 _showImgTitleLogo = value;
                 RaisePropertyChanged("ShowImgTitleLogo");
+            }
+        }
+        private bool _showDocTitleLogo = false;
+        public bool ShowDocTitleLogo
+        {
+            get { return _showDocTitleLogo; }
+            set
+            {
+                _showDocTitleLogo = value;
+                RaisePropertyChanged("ShowDocTitleLogo");
+            }
+        }
+        private bool _showXlsxTitleLogo = false;
+        public bool ShowXlsxTitleLogo
+        {
+            get { return _showXlsxTitleLogo; }
+            set
+            {
+                _showXlsxTitleLogo = value;
+                RaisePropertyChanged("ShowXlsxTitleLogo");
             }
         }
         private string _fileName = "";
