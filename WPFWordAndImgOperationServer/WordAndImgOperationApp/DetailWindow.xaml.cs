@@ -383,6 +383,7 @@ namespace WordAndImgOperationApp
                         {
                             spreadsheetControl1.ActiveSheetIndex = info.WorkSheetIndex;
                             spreadsheetControl1.SelectedCell = info.Cell;
+                            spreadsheetControl1.ActiveWorksheet.ScrollTo(info.Cell);
                         }
                         catch (Exception ex)
                         { }
