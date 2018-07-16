@@ -49,5 +49,17 @@ namespace CheckWordModel
                 RaisePropertyChanged("InLineKeyTextRangeStart");
             }
         }
+        public DevExpress.Spreadsheet.Cell Cell { get; set; }
+        public int WorkSheetIndex { get; set; }
+        private bool xlsxHasValue = false;
+        public bool XlsxHasValue
+        {
+            get { return xlsxHasValue; }
+            set
+            {
+                xlsxHasValue = value;
+                RaisePropertyChanged("XlsxHasValue");
+            }
+        }
     }
 }

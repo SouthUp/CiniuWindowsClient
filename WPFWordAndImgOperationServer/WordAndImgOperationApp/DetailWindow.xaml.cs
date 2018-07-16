@@ -185,7 +185,36 @@ namespace WordAndImgOperationApp
                 Dispatcher.Invoke(new Action(() => {
                     try
                     {
-                        
+                        DevExpress.Spreadsheet.IWorkbook workbook = spreadsheetControl1.Document;
+                        int sheetCount = workbook.Worksheets.Count;
+                        foreach (var searchStr in viewModel.CurrentMyFolderData.UnChekedWordInfos.Select(y => y.Name).ToList())
+                        {
+                            for (int k = 0; k < sheetCount; k++)
+                            {
+                                var worksheet = workbook.Worksheets[k];
+                                IEnumerable<DevExpress.Spreadsheet.Cell> searchResult = worksheet.Search(searchStr);
+                                foreach (DevExpress.Spreadsheet.Cell cell in searchResult)
+                                {
+                                    string str = cell.DisplayText;
+                                    cell.Fill.BackgroundColor = System.Drawing.ColorTranslator.FromHtml("#ffff00");
+                                    MatchCollection mc = Regex.Matches(cell.DisplayText, searchStr, RegexOptions.IgnoreCase);
+                                    if (mc.Count > 0)
+                                    {
+                                        foreach (System.Text.RegularExpressions.Match m in mc)
+                                        {
+                                            //赋值range
+                                            var itemDetailInfo = viewModel.CurrentMyFolderData.UnChekedWordInfos.FirstOrDefault(y => y.Name == searchStr).UnChekedWordInLineDetailInfos.Where(z => z.TypeTextFrom == "Text" && z.XlsxHasValue == false).FirstOrDefault();
+                                            if (itemDetailInfo != null)
+                                            {
+                                                itemDetailInfo.WorkSheetIndex = k;
+                                                itemDetailInfo.Cell = cell;
+                                                itemDetailInfo.XlsxHasValue = true;
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
                     }
                     catch (Exception ex)
                     { }
@@ -337,14 +366,27 @@ namespace WordAndImgOperationApp
                 var info = grid.Tag as UnChekedInLineDetailWordInfo;
                 if (info.TypeTextFrom == "Text")
                 {
-                    try
+                    if (viewModel.CurrentMyFolderData.TypeSelectFile == SelectFileType.Docx)
                     {
-                        string searchStr = info.InLineKeyText;
-                        ScrollToPosition(info.InLineKeyTextRangeStart);
-                        docViewer.Document.Selection = docViewer.Document.CreateRange(info.InLineKeyTextRangeStart, searchStr.Length);
+                        try
+                        {
+                            string searchStr = info.InLineKeyText;
+                            ScrollToPosition(info.InLineKeyTextRangeStart);
+                            docViewer.Document.Selection = docViewer.Document.CreateRange(info.InLineKeyTextRangeStart, searchStr.Length);
+                        }
+                        catch (Exception ex)
+                        { }
                     }
-                    catch (Exception ex)
-                    { }
+                    else if (viewModel.CurrentMyFolderData.TypeSelectFile == SelectFileType.Xlsx)
+                    {
+                        try
+                        {
+                            spreadsheetControl1.ActiveSheetIndex = info.WorkSheetIndex;
+                            spreadsheetControl1.SelectedCell = info.Cell;
+                        }
+                        catch (Exception ex)
+                        { }
+                    }
                 }
             }
         }
