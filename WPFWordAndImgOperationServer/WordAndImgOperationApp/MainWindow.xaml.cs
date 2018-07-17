@@ -127,6 +127,9 @@ namespace WordAndImgOperationApp
                     case "60020":
                         bodyText = "获取最新版本失败";
                         break;
+                    case "60030":
+                        bodyText = "检测到新版本";
+                        break;
                 }
                 if (!string.IsNullOrEmpty(bodyText))
                 {
@@ -262,6 +265,17 @@ namespace WordAndImgOperationApp
                 {
                     string version = FileVersionInfo.GetVersionInfo(System.Reflection.Assembly.GetEntryAssembly().Location).ProductVersion;
                     viewModel.CurrentVersionInfo = version;
+                    APIService service = new APIService();
+                    string newVersion = service.GetVersion();
+                    if (!string.IsNullOrEmpty(newVersion))
+                    {
+                        System.Threading.Thread.Sleep(1500);
+                        if (new Version(newVersion) > new Version(version))
+                        {
+                            viewModel.NewVersionInfo = newVersion;
+                            EventAggregatorRepository.EventAggregator.GetEvent<SendNotifyMessageEvent>().Publish("60030");
+                        }
+                    }
                 }
                 catch (Exception ex)
                 { }

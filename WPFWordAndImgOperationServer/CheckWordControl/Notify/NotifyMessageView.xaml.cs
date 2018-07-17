@@ -59,6 +59,11 @@ namespace CheckWordControl.Notify
                 {
                     ErrorCodeStackPanel.Visibility = Visibility.Collapsed;
                 }
+                else if (viewModel != null && viewModel.Message.ErrorCode == "60030")
+                {
+                    DownLoadVersionBtn.Visibility = Visibility.Visible;
+                    ErrorCodeStackPanel.Visibility = Visibility.Collapsed;
+                }
             }
             catch
             { }
@@ -77,6 +82,15 @@ namespace CheckWordControl.Notify
             catch (Exception ex)
             { }
             this.Close();
+        }
+        private void DownLoadVersionBtn_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                System.Diagnostics.Process.Start("http://www.ciniuwang.com/download");
+            }
+            catch (Exception ex)
+            { }
         }
     }
 }

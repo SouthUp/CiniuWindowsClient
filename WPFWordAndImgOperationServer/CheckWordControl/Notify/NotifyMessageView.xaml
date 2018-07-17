@@ -74,14 +74,19 @@
             <TextBlock Grid.Row="0" Grid.Column="1" Style="{StaticResource headerTextStyle}" 
                        Text="{Binding Message.HeaderText}" Margin="0,0,0,5"></TextBlock>
             <TextBlock Grid.Row="1" Grid.Column="1" Style="{StaticResource bodyTextStyle}" 
-                       Text="{Binding Message.BodyText}" Margin="0,0,10,0"></TextBlock>
+                       Text="{Binding Message.BodyText}" Margin="0,0,10,0" VerticalAlignment="Center"></TextBlock>
             <Button x:Name="RechargeBtn" Grid.Row="1" Grid.Column="1" Width="40" Margin="0,0,40,0"
-                    HorizontalAlignment="Right" VerticalAlignment="Top" 
+                    HorizontalAlignment="Right" VerticalAlignment="Center" 
                     Content="充值" Foreground="#6ab1f7" FontSize="14"
                     Style="{StaticResource TextButtonStyle}"
                     Click="RechargeBtn_Click" Visibility="Collapsed"></Button>
+            <Button x:Name="DownLoadVersionBtn" Grid.Row="1" Grid.Column="1" Width="80" Margin="0,0,20,0"
+                    HorizontalAlignment="Right" VerticalAlignment="Center" 
+                    Content="立即下载" Foreground="#6ab1f7" FontSize="14"
+                    Style="{StaticResource TextButtonStyle}"
+                    Click="DownLoadVersionBtn_Click" Visibility="Collapsed"></Button>
             <StackPanel x:Name="ErrorCodeStackPanel" Grid.Row="1" Grid.Column="1" Orientation="Horizontal" 
-                        HorizontalAlignment="Left" VerticalAlignment="Bottom">
+                        HorizontalAlignment="Left" VerticalAlignment="Bottom" Margin="0,0,0,-10">
                 <TextBlock Style="{StaticResource bodyTextStyle}" FontSize="12" Text="错误码: "></TextBlock>
                 <TextBlock Style="{StaticResource bodyTextStyle}" FontSize="12" Text="{Binding Message.ErrorCode}"></TextBlock>
             </StackPanel>
