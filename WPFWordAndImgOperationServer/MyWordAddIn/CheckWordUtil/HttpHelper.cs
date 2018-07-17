@@ -42,7 +42,7 @@ namespace CheckWordUtil
             }
             catch (WebException ex)
             {
-                CheckWordUtil.Log.TextLog.SaveError(ex.Message);
+                CheckWordUtil.Log.TextLog.SaveError("状态码：" + ex.Status + "异常信息:" + ex.Message);
                 return ex.Message;
             }
         }
@@ -69,7 +69,7 @@ namespace CheckWordUtil
             }
             catch (WebException ex)
             {
-                CheckWordUtil.Log.TextLog.SaveError(ex.Message);
+                CheckWordUtil.Log.TextLog.SaveError("状态码：" + ex.Status + "异常信息:" + ex.Message);
                 return ex.Message;
             }
         }
