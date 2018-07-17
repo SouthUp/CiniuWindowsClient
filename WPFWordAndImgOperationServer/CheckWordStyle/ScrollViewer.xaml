@@ -56,7 +56,29 @@
             </Setter.Value>
         </Setter>
     </Style>
+    <Style x:Key="ScrollBar_HorizontalLineButton" TargetType="{x:Type RepeatButton}">
+        <Setter Property="OverridesDefaultStyle" Value="true" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type RepeatButton}">
 
+                    <Path x:Name="arrow" HorizontalAlignment="Center" Stroke="Transparent" Fill="LightGray" VerticalAlignment="Center" Data="{Binding Path=Content,
+                       RelativeSource={RelativeSource TemplatedParent}}"  />
+
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver" Value="true">
+                            <Setter TargetName="arrow" Property="Stroke" Value="Transparent">
+                            </Setter>
+                        </Trigger>
+                        <Trigger Property="IsPressed" Value="true">
+                            <Setter TargetName="arrow" Property="Stroke" Value="Transparent">
+                            </Setter>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
     <Style x:Key="ScrollBar_PageButton" TargetType="{x:Type RepeatButton}">
         <Setter Property="OverridesDefaultStyle" Value="true" />
         <Setter Property="IsTabStop" Value="false" />
@@ -79,6 +101,16 @@
             </Setter.Value>
         </Setter>
     </Style>
+    <Style x:Key="ScrollBar_HorizontalThumb" TargetType="{x:Type Thumb}">
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type Thumb}">
+                    <Border CornerRadius="6" Background="LightGray" Height="12" BorderThickness="0">
+                    </Border>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
     <Style TargetType="{x:Type ScrollBar}">
         <Setter Property="Stylus.IsFlicksEnabled" Value="false" />
         <Setter Property="Background" Value="Transparent" />
@@ -87,7 +119,7 @@
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type ScrollBar}">
-                    <Grid>
+                    <Grid Background="White">
                         <Grid.RowDefinitions>
                             <RowDefinition Height="16" />
                             <RowDefinition Height="*"/>
@@ -112,6 +144,42 @@
                 </ControlTemplate>
             </Setter.Value>
         </Setter>
-
+        <Style.Triggers>
+            <Trigger Property="Orientation" Value="Horizontal">
+                <Setter Property="Width" Value="Auto"/>
+                <Setter Property="MinWidth" Value="0"/>
+                <Setter Property="Height" Value="{DynamicResource {x:Static SystemParameters.HorizontalScrollBarHeightKey}}"/>
+                <Setter Property="MinHeight" Value="{DynamicResource {x:Static SystemParameters.HorizontalScrollBarHeightKey}}"/>
+                <Setter Property="Background" Value="{StaticResource HorizontalScrollBarBackground}"/>
+                <Setter Property="Template">
+                    <Setter.Value>
+                        <ControlTemplate TargetType="{x:Type ScrollBar}">
+                            <Grid Background="White">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="16" />
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="16" />
+                                </Grid.ColumnDefinitions>
+                                <RepeatButton Grid.Column="0" Style="{DynamicResource ScrollBar_HorizontalLineButton}" Command="ScrollBar.LineLeftCommand" 
+                                      Content="M 10 12 L 0 6 L 10 0 Z" />
+                                <Track Grid.Column="1" Name="PART_Track" IsDirectionReversed="False">
+                                    <Track.DecreaseRepeatButton>
+                                        <RepeatButton Style="{StaticResource ScrollBar_PageButton}"/>
+                                    </Track.DecreaseRepeatButton>
+                                    <Track.Thumb>
+                                        <Thumb Style="{StaticResource ScrollBar_HorizontalThumb}" MinWidth="4"/>
+                                    </Track.Thumb>
+                                    <Track.IncreaseRepeatButton>
+                                        <RepeatButton Style="{StaticResource ScrollBar_PageButton}"/>
+                                    </Track.IncreaseRepeatButton>
+                                </Track>
+                                <RepeatButton Grid.Column="2" Style="{DynamicResource ScrollBar_HorizontalLineButton}" Command="ScrollBar.LineRightCommand" 
+                                      Content="M 0 12 L 0 0 L 10 6 Z" />
+                            </Grid>
+                        </ControlTemplate>
+                    </Setter.Value>
+                </Setter>
+            </Trigger>
+        </Style.Triggers>
     </Style>
 </ResourceDictionary>
