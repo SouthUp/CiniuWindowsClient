@@ -36,6 +36,8 @@ namespace WordAndImgOperationApp
         {
             try
             {
+                string version = System.Diagnostics.FileVersionInfo.GetVersionInfo(System.Reflection.Assembly.GetEntryAssembly().Location).ProductVersion;
+                viewModel.CurrentVersionInfo = version;
                 string loginInOutInfos = string.Format(@"{0}\UserLoginInfo.xml", Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + "\\WordAndImgOCR\\LoginInOutInfo\\");
                 var ui = CheckWordUtil.DataParse.ReadFromXmlPath<string>(loginInOutInfos);
                 if (ui != null && ui.ToString() != "")

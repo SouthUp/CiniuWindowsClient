@@ -63,5 +63,15 @@ namespace WordAndImgOperationApp
                 }
             }
         }
+        private string _currentVersionInfo = "";
+        public string CurrentVersionInfo
+        {
+            get { return _currentVersionInfo; }
+            set
+            {
+                _currentVersionInfo = value;
+                RaisePropertyChanged("CurrentVersionInfo");
+            }
+        }
     }
 }
