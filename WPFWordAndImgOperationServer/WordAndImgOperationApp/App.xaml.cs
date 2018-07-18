@@ -26,12 +26,7 @@ namespace WordAndImgOperationApp
             //两个进程的话就杀掉一个
             if (proc.Length > 1)
             {
-                try
-                {
-                    proc[1].Kill();
-                }
-                catch
-                { }
+                Application.Current.Dispatcher.Invoke((Action)(() => Application.Current.Shutdown()));
                 return;
             }
             StartService();
@@ -44,6 +39,8 @@ namespace WordAndImgOperationApp
             }
             catch (Exception ex)
             { }
+            MainWindow window = new MainWindow();
+            window.Show();
         }
         void App_DispatcherUnhandledException(object sender, System.Windows.Threading.DispatcherUnhandledExceptionEventArgs e)
         {

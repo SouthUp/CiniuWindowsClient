@@ -6,8 +6,7 @@
              xmlns:avalonEdit="http://icsharpcode.net/sharpdevelop/avalonedit"
              xmlns:smtxAe="clr-namespace:ShowMeTheXAML.AvalonEdit;assembly=ShowMeTheXAML.AvalonEdit"
              xmlns:system="clr-namespace:System;assembly=mscorlib"
-             xmlns:local="clr-namespace:WordAndImgOperationApp"
-             StartupUri="MainWindow.xaml">
+             xmlns:local="clr-namespace:WordAndImgOperationApp">
     <Application.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
