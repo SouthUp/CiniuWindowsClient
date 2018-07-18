@@ -93,7 +93,7 @@ namespace BrowseSearchTXT
                             if (!path.ToString().Contains("~$"))
                             {
                                 FilePathsList.Add(path.ToString());
-                                if (IsFileOpen(path.ToString()))
+                                if (IsFileOpen(path.ToString()) && ".doc,.docx".Contains(System.IO.Path.GetExtension(path.ToString()).ToLower()))
                                 {
                                     UnReadFilePathsList.Add(path.ToString());
                                 }
@@ -160,7 +160,7 @@ namespace BrowseSearchTXT
                     if (!fi.FullName.Contains("~$"))
                     {
                         FilePathsList.Add(fi.FullName);
-                        if (IsFileOpen(fi.FullName))
+                        if (IsFileOpen(fi.FullName) && ".doc,.docx".Contains(System.IO.Path.GetExtension(fi.FullName).ToLower()))
                         {
                             UnReadFilePathsList.Add(fi.FullName);
                         }
