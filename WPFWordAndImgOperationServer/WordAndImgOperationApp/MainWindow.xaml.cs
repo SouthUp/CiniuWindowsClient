@@ -264,7 +264,14 @@ namespace WordAndImgOperationApp
                 try
                 {
                     string version = FileVersionInfo.GetVersionInfo(System.Reflection.Assembly.GetEntryAssembly().Location).ProductVersion;
-                    viewModel.CurrentVersionInfo = version;
+                    try
+                    {
+                        viewModel.CurrentVersionInfo = version.Substring(0, version.Length - 2);
+                    }
+                    catch
+                    {
+                        viewModel.CurrentVersionInfo = version;
+                    }
                     APIService service = new APIService();
                     string newVersion = service.GetVersion();
                     if (!string.IsNullOrEmpty(newVersion))
