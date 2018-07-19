@@ -15,6 +15,46 @@ namespace CheckWordUtil
 {
     public class Util
     {
+        /// <summary>
+        /// 保存图片到文件
+        /// </summary>
+        /// <param name="image">图片数据</param>
+        /// <param name="filePath">保存路径</param>
+        public static void SaveImageToFile(BitmapSource image, string filePath)
+        {
+            try
+            {
+                BitmapEncoder encoder = GetBitmapEncoder(filePath);
+                encoder.Frames.Add(BitmapFrame.Create(image));
+
+                using (var stream = new FileStream(filePath, FileMode.Create))
+                {
+                    encoder.Save(stream);
+                }
+            }
+            catch (Exception ex)
+            {
+                CheckWordUtil.Log.TextLog.SaveError(ex.Message);
+            }
+        }
+
+        /// <summary>
+        /// 根据文件扩展名获取图片编码器
+        /// </summary>
+        /// <param name="filePath">文件路径</param>
+        /// <returns>图片编码器</returns>
+        private static BitmapEncoder GetBitmapEncoder(string filePath)
+        {
+            var extName = Path.GetExtension(filePath).ToLower();
+            if (extName.Equals(".png"))
+            {
+                return new PngBitmapEncoder();
+            }
+            else
+            {
+                return new JpegBitmapEncoder();
+            }
+        }
         public static Byte[] GetBytesByPicture(string picPath)
         {
             try

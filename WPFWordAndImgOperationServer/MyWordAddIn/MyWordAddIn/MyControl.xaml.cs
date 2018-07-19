@@ -666,22 +666,52 @@ namespace MyWordAddIn
                         {
                             if (ils.Type == WdInlineShapeType.wdInlineShapePicture)
                             {
-                                ils.Range.Copy();
-                                System.Drawing.Image image = null;
-                                Dispatcher.Invoke(new Action(() =>
+                                //ils.Range.Copy();
+                                //System.Drawing.Image image = null;
+                                //Dispatcher.Invoke(new Action(() =>
+                                //{
+                                //    image = System.Windows.Forms.Clipboard.GetImage();
+                                //}));
+                                //if (image != null)
+                                //{
+                                //    image.Save(savePathGetImage + "照片-" + index + ".jpg");
+                                //    result.Add(new ImagesDetailInfo() { ImgResultPath = savePathGetImage + "照片-" + index + ".jpg", UnCheckWordRange = ils.Range });
+                                //    index++;
+                                //}
+                                //Dispatcher.Invoke(new Action(() =>
+                                //{
+                                //    System.Windows.Forms.Clipboard.Clear();
+                                //}));
+                                try
                                 {
-                                    image = System.Windows.Forms.Clipboard.GetImage();
-                                }));
-                                if (image != null)
-                                {
-                                    image.Save(savePathGetImage + "照片-" + index + ".jpg");
-                                    result.Add(new ImagesDetailInfo() { ImgResultPath = savePathGetImage + "照片-" + index + ".jpg", UnCheckWordRange = ils.Range });
-                                    index++;
+                                    ils.Select();
+                                    IDataObject ido = null;
+                                    Dispatcher.Invoke(new Action(() =>
+                                    {
+                                        Application.Selection.CopyAsPicture();
+                                        ido = Clipboard.GetDataObject();
+                                    }));
+                                    if (ido != null && ido.GetDataPresent(DataFormats.Bitmap))
+                                    {
+                                        System.Windows.Interop.InteropBitmap bmp = (System.Windows.Interop.InteropBitmap)ido.GetData(DataFormats.Bitmap);
+                                        if (bmp != null)
+                                        {
+                                            if (!Directory.Exists(savePathGetImage))
+                                            {
+                                                Directory.CreateDirectory(savePathGetImage);
+                                            }
+                                            Util.SaveImageToFile(bmp.Clone(), savePathGetImage + "照片-" + index + ".jpg");
+                                            result.Add(new ImagesDetailInfo() { ImgResultPath = savePathGetImage + "照片-" + index + ".jpg", UnCheckWordRange = ils.Range });
+                                            index++;
+                                        }
+                                    }
+                                    Dispatcher.Invoke(new Action(() =>
+                                    {
+                                        System.Windows.Forms.Clipboard.Clear();
+                                    }));
                                 }
-                                Dispatcher.Invoke(new Action(() =>
-                                {
-                                    System.Windows.Forms.Clipboard.Clear();
-                                }));
+                                catch
+                                { }
                             }
                         }
                     }
