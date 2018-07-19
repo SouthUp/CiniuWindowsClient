@@ -418,11 +418,26 @@ namespace WordAndImgOperationApp
                     int sheetCount = workbook.Worksheets.Count;
                     for (int k = 0; k < sheetCount; k++)
                     {
+                        if (IsCancelDeal)
+                        {
+                            DealDataResultList = new ObservableCollection<MyFolderDataViewModel>();
+                            return null;
+                        }
                         Aspose.Cells.Cells cells = workbook.Worksheets[k].Cells;
                         for (int i = 0; i < cells.MaxDataRow + 1; i++)
                         {
+                            if (IsCancelDeal)
+                            {
+                                DealDataResultList = new ObservableCollection<MyFolderDataViewModel>();
+                                return null;
+                            }
                             for (int j = 0; j < cells.MaxDataColumn + 1; j++)
                             {
+                                if (IsCancelDeal)
+                                {
+                                    DealDataResultList = new ObservableCollection<MyFolderDataViewModel>();
+                                    return null;
+                                }
                                 string s = cells[i, j].StringValue.Trim();
                                 if (!string.IsNullOrEmpty(s))
                                     countWords += s.Count();
@@ -445,8 +460,18 @@ namespace WordAndImgOperationApp
                                 int index = 1;
                                 for (int k = 0; k < sheetCount; k++)
                                 {
+                                    if (IsCancelDeal)
+                                    {
+                                        DealDataResultList = new ObservableCollection<MyFolderDataViewModel>();
+                                        return null;
+                                    }
                                     foreach (var item in workbook.Worksheets[k].Pictures)
                                     {
+                                        if (IsCancelDeal)
+                                        {
+                                            DealDataResultList = new ObservableCollection<MyFolderDataViewModel>();
+                                            return null;
+                                        }
                                         Aspose.Cells.Drawing.Picture pic = item;
                                         string imageName = String.Format(pathDir + "照片-{0}.jpg", index);
                                         Aspose.Cells.Rendering.ImageOrPrintOptions printoption = new Aspose.Cells.Rendering.ImageOrPrintOptions();
@@ -462,22 +487,47 @@ namespace WordAndImgOperationApp
                                     {
                                         for (int k = 0; k < sheetCount; k++)
                                         {
+                                            if (IsCancelDeal)
+                                            {
+                                                DealDataResultList = new ObservableCollection<MyFolderDataViewModel>();
+                                                return null;
+                                            }
                                             Aspose.Cells.Cells cells = workbook.Worksheets[k].Cells;
                                             for (int i = 0; i < cells.MaxDataRow + 1; i++)
                                             {
+                                                if (IsCancelDeal)
+                                                {
+                                                    DealDataResultList = new ObservableCollection<MyFolderDataViewModel>();
+                                                    return null;
+                                                }
                                                 for (int j = 0; j < cells.MaxDataColumn + 1; j++)
                                                 {
+                                                    if (IsCancelDeal)
+                                                    {
+                                                        DealDataResultList = new ObservableCollection<MyFolderDataViewModel>();
+                                                        return null;
+                                                    }
                                                     string textResult = cells[i, j].StringValue.Trim();
                                                     if (!string.IsNullOrEmpty(textResult))
                                                     {
                                                         var list = CheckWordUtil.CheckWordHelper.GetUnChekedWordInfoList(textResult).ToList();
                                                         foreach (var item in list)
                                                         {
+                                                            if (IsCancelDeal)
+                                                            {
+                                                                DealDataResultList = new ObservableCollection<MyFolderDataViewModel>();
+                                                                return null;
+                                                            }
                                                             MatchCollection mc = Regex.Matches(textResult, item.Name, RegexOptions.IgnoreCase);
                                                             if (mc.Count > 0)
                                                             {
                                                                 foreach (Match m in mc)
                                                                 {
+                                                                    if (IsCancelDeal)
+                                                                    {
+                                                                        DealDataResultList = new ObservableCollection<MyFolderDataViewModel>();
+                                                                        return null;
+                                                                    }
                                                                     var infoResult = listResult.FirstOrDefault(x => x.Name == item.Name);
                                                                     if (infoResult == null)
                                                                     {
@@ -545,8 +595,18 @@ namespace WordAndImgOperationApp
                     int countWords = 0;
                     foreach (Aspose.Words.Section section in doc.Sections)
                     {
+                        if (IsCancelDeal)
+                        {
+                            DealDataResultList = new ObservableCollection<MyFolderDataViewModel>();
+                            return null;
+                        }
                         foreach (Aspose.Words.Paragraph paragraph in section.Body.Paragraphs)
                         {
+                            if (IsCancelDeal)
+                            {
+                                DealDataResultList = new ObservableCollection<MyFolderDataViewModel>();
+                                return null;
+                            }
                             string textResult = paragraph.GetText();
                             if (!string.IsNullOrEmpty(textResult))
                             {
@@ -574,6 +634,11 @@ namespace WordAndImgOperationApp
                                 Aspose.Words.NodeCollection shapes = doc.GetChildNodes(Aspose.Words.NodeType.Shape, true);
                                 foreach (Aspose.Words.Drawing.Shape shape in shapes)
                                 {
+                                    if (IsCancelDeal)
+                                    {
+                                        DealDataResultList = new ObservableCollection<MyFolderDataViewModel>();
+                                        return null;
+                                    }
                                     if (shape != null && shape.HasImage)
                                     {
                                         string imageName = String.Format(pathDir + "照片-{0}.png", index);
@@ -583,22 +648,47 @@ namespace WordAndImgOperationApp
                                 }
                                 if (countWords > 0)
                                 {
+                                    if (IsCancelDeal)
+                                    {
+                                        DealDataResultList = new ObservableCollection<MyFolderDataViewModel>();
+                                        return null;
+                                    }
                                     ConsumeResponse consume = service.GetWordConsume(countWords, UtilSystemVar.UserToken);
                                     if (consume != null)
                                     {
                                         foreach (Aspose.Words.Section section in doc.Sections)
                                         {
+                                            if (IsCancelDeal)
+                                            {
+                                                DealDataResultList = new ObservableCollection<MyFolderDataViewModel>();
+                                                return null;
+                                            }
                                             foreach (Aspose.Words.Paragraph paragraph in section.Body.Paragraphs)
                                             {
+                                                if (IsCancelDeal)
+                                                {
+                                                    DealDataResultList = new ObservableCollection<MyFolderDataViewModel>();
+                                                    return null;
+                                                }
                                                 string textResult = paragraph.GetText();
                                                 var list = CheckWordUtil.CheckWordHelper.GetUnChekedWordInfoList(textResult).ToList();
                                                 foreach (var item in list)
                                                 {
+                                                    if (IsCancelDeal)
+                                                    {
+                                                        DealDataResultList = new ObservableCollection<MyFolderDataViewModel>();
+                                                        return null;
+                                                    }
                                                     MatchCollection mc = Regex.Matches(textResult, item.Name, RegexOptions.IgnoreCase);
                                                     if (mc.Count > 0)
                                                     {
                                                         foreach (Match m in mc)
                                                         {
+                                                            if (IsCancelDeal)
+                                                            {
+                                                                DealDataResultList = new ObservableCollection<MyFolderDataViewModel>();
+                                                                return null;
+                                                            }
                                                             var infoResult = listResult.FirstOrDefault(x => x.Name == item.Name);
                                                             if (infoResult == null)
                                                             {
@@ -669,6 +759,11 @@ namespace WordAndImgOperationApp
                                     }
                                     else
                                     {
+                                        if (IsCancelDeal)
+                                        {
+                                            DealDataResultList = new ObservableCollection<MyFolderDataViewModel>();
+                                            return null;
+                                        }
                                         EventAggregatorRepository.EventAggregator.GetEvent<SendNotifyMessageEvent>().Publish("200");
                                     }
                                 }
@@ -1314,6 +1409,11 @@ namespace WordAndImgOperationApp
                             FileOperateHelper.SortAsFileCreationTime(ref filePicInfos);
                             foreach (var picInfo in filePicInfos)
                             {
+                                if (IsCancelDeal)
+                                {
+                                    DealDataResultList = new ObservableCollection<MyFolderDataViewModel>();
+                                    return;
+                                }
                                 if (picInfo.FullName.Contains("png"))
                                 {
                                     MyFolderDataViewModel modelPic = new MyFolderDataViewModel(System.IO.Path.GetFileName(picInfo.FullName), picInfo.FullName);
@@ -1323,10 +1423,20 @@ namespace WordAndImgOperationApp
                                     {
                                         foreach (var item in listResult)
                                         {
+                                            if (IsCancelDeal)
+                                            {
+                                                DealDataResultList = new ObservableCollection<MyFolderDataViewModel>();
+                                                return;
+                                            }
                                             modelPic.CountError += item.ErrorTotalCount;
                                         }
                                         if (modelPic.CountError > 0)
                                         {
+                                            if (IsCancelDeal)
+                                            {
+                                                DealDataResultList = new ObservableCollection<MyFolderDataViewModel>();
+                                                return;
+                                            }
                                             modelPic.UnChekedWordInfos = new ObservableCollection<UnChekedWordInfo>(listResult);
                                             model.Children.Add(modelPic);
                                         }
@@ -1336,8 +1446,18 @@ namespace WordAndImgOperationApp
                         }
                         foreach (var child in model.Children)
                         {
+                            if (IsCancelDeal)
+                            {
+                                DealDataResultList = new ObservableCollection<MyFolderDataViewModel>();
+                                return;
+                            }
                             foreach (var item in child.UnChekedWordInfos)
                             {
+                                if (IsCancelDeal)
+                                {
+                                    DealDataResultList = new ObservableCollection<MyFolderDataViewModel>();
+                                    return;
+                                }
                                 var unChekedWordInfoExsit = model.UnChekedWordInfos.FirstOrDefault(x => x.Name == item.Name);
                                 if (unChekedWordInfoExsit == null)
                                 {
@@ -1347,6 +1467,11 @@ namespace WordAndImgOperationApp
                                 {
                                     foreach (var itemInfo in item.UnChekedWordInLineDetailInfos)
                                     {
+                                        if (IsCancelDeal)
+                                        {
+                                            DealDataResultList = new ObservableCollection<MyFolderDataViewModel>();
+                                            return;
+                                        }
                                         unChekedWordInfoExsit.UnChekedWordInLineDetailInfos.Add(itemInfo);
                                         unChekedWordInfoExsit.ErrorTotalCount++;
                                     }
@@ -1355,10 +1480,20 @@ namespace WordAndImgOperationApp
                         }
                         foreach (var item in model.UnChekedWordInfos)
                         {
+                            if (IsCancelDeal)
+                            {
+                                DealDataResultList = new ObservableCollection<MyFolderDataViewModel>();
+                                return;
+                            }
                             model.CountError += item.ErrorTotalCount;
                         }
                         if (model.CountError > 0)
                         {
+                            if (IsCancelDeal)
+                            {
+                                DealDataResultList = new ObservableCollection<MyFolderDataViewModel>();
+                                return;
+                            }
                             model.ErrorWordsInfos = string.Join("   ", model.UnChekedWordInfos.Select(x => x.Name).Distinct().ToList());
                             DealDataResultList.Add(model);
                         }
@@ -1373,10 +1508,20 @@ namespace WordAndImgOperationApp
                     {
                         foreach (var item in listResult)
                         {
+                            if (IsCancelDeal)
+                            {
+                                DealDataResultList = new ObservableCollection<MyFolderDataViewModel>();
+                                return;
+                            }
                             model.CountError += item.ErrorTotalCount;
                         }
                         if (model.CountError > 0)
                         {
+                            if (IsCancelDeal)
+                            {
+                                DealDataResultList = new ObservableCollection<MyFolderDataViewModel>();
+                                return;
+                            }
                             string errorImgPath = CheckWordTempPath + " \\" + System.IO.Path.GetFileNameWithoutExtension(dealFilePath) + System.IO.Path.GetExtension(dealFilePath).Replace(".", "") + "-Img\\" + System.IO.Path.GetFileName(dealFilePath);
                             model.FileImgShowPath = errorImgPath;
                             model.UnChekedWordInfos = new ObservableCollection<UnChekedWordInfo>(listResult);
@@ -1403,6 +1548,11 @@ namespace WordAndImgOperationApp
                             FileOperateHelper.SortAsFileCreationTime(ref filePicInfos);
                             foreach (var picInfo in filePicInfos)
                             {
+                                if (IsCancelDeal)
+                                {
+                                    DealDataResultList = new ObservableCollection<MyFolderDataViewModel>();
+                                    return;
+                                }
                                 if (picInfo.FullName.Contains("jpg"))
                                 {
                                     MyFolderDataViewModel modelPic = new MyFolderDataViewModel(System.IO.Path.GetFileName(picInfo.FullName), picInfo.FullName);
@@ -1412,10 +1562,20 @@ namespace WordAndImgOperationApp
                                     {
                                         foreach (var item in listResult)
                                         {
+                                            if (IsCancelDeal)
+                                            {
+                                                DealDataResultList = new ObservableCollection<MyFolderDataViewModel>();
+                                                return;
+                                            }
                                             modelPic.CountError += item.ErrorTotalCount;
                                         }
                                         if (modelPic.CountError > 0)
                                         {
+                                            if (IsCancelDeal)
+                                            {
+                                                DealDataResultList = new ObservableCollection<MyFolderDataViewModel>();
+                                                return;
+                                            }
                                             modelPic.UnChekedWordInfos = new ObservableCollection<UnChekedWordInfo>(listResult);
                                             model.Children.Add(modelPic);
                                         }
@@ -1425,8 +1585,18 @@ namespace WordAndImgOperationApp
                         }
                         foreach (var child in model.Children)
                         {
+                            if (IsCancelDeal)
+                            {
+                                DealDataResultList = new ObservableCollection<MyFolderDataViewModel>();
+                                return;
+                            }
                             foreach (var item in child.UnChekedWordInfos)
                             {
+                                if (IsCancelDeal)
+                                {
+                                    DealDataResultList = new ObservableCollection<MyFolderDataViewModel>();
+                                    return;
+                                }
                                 var unChekedWordInfoExsit = model.UnChekedWordInfos.FirstOrDefault(x => x.Name == item.Name);
                                 if (unChekedWordInfoExsit == null)
                                 {
@@ -1436,6 +1606,11 @@ namespace WordAndImgOperationApp
                                 {
                                     foreach (var itemInfo in item.UnChekedWordInLineDetailInfos)
                                     {
+                                        if (IsCancelDeal)
+                                        {
+                                            DealDataResultList = new ObservableCollection<MyFolderDataViewModel>();
+                                            return;
+                                        }
                                         unChekedWordInfoExsit.UnChekedWordInLineDetailInfos.Add(itemInfo);
                                         unChekedWordInfoExsit.ErrorTotalCount++;
                                     }
@@ -1444,10 +1619,20 @@ namespace WordAndImgOperationApp
                         }
                         foreach (var item in model.UnChekedWordInfos)
                         {
+                            if (IsCancelDeal)
+                            {
+                                DealDataResultList = new ObservableCollection<MyFolderDataViewModel>();
+                                return;
+                            }
                             model.CountError += item.ErrorTotalCount;
                         }
                         if (model.CountError > 0)
                         {
+                            if (IsCancelDeal)
+                            {
+                                DealDataResultList = new ObservableCollection<MyFolderDataViewModel>();
+                                return;
+                            }
                             model.ErrorWordsInfos = string.Join("   ", model.UnChekedWordInfos.Select(x => x.Name).Distinct().ToList());
                             DealDataResultList.Add(model);
                         }
@@ -1510,6 +1695,11 @@ namespace WordAndImgOperationApp
                     var result = service.GetOCRResultByToken(UtilSystemVar.UserToken, image);
                     //反序列化
                     resultImgGeneral = JsonConvert.DeserializeObject<ImgGeneralInfo>(result.ToString().Replace("char", "Char"));
+                    if (IsCancelDeal)
+                    {
+                        DealDataResultList = new ObservableCollection<MyFolderDataViewModel>();
+                        return null;
+                    }
                     ////////var options = new Dictionary<string, object>{
                     ////////                    {"recognize_granularity", "small"},
                     ////////                    {"vertexes_location", "true"}
@@ -1541,22 +1731,42 @@ namespace WordAndImgOperationApp
                     List<WordInfo> listUnValidInfos = new List<WordInfo>();
                     foreach (var item in resultImgGeneral.words_result)
                     {
+                        if (IsCancelDeal)
+                        {
+                            DealDataResultList = new ObservableCollection<MyFolderDataViewModel>();
+                            return null;
+                        }
                         string lineWord = "";
                         List<Rect> rects = new List<Rect>();
                         foreach (var charInfo in item.Chars)
                         {
+                            if (IsCancelDeal)
+                            {
+                                DealDataResultList = new ObservableCollection<MyFolderDataViewModel>();
+                                return null;
+                            }
                             lineWord += charInfo.Char;
                             rects.Add(new Rect() { X = charInfo.location.left * xScale, Y = charInfo.location.top * yScale, Width = charInfo.location.width * xScale, Height = charInfo.location.height * yScale });
                         }
                         var listUnChekedWordInfo = CheckWordUtil.CheckWordHelper.GetUnChekedWordInfoList(lineWord);
                         foreach (var itemInfo in listUnChekedWordInfo)
                         {
+                            if (IsCancelDeal)
+                            {
+                                DealDataResultList = new ObservableCollection<MyFolderDataViewModel>();
+                                return null;
+                            }
                             listUnValidInfos.Add(new WordInfo() { UnValidText = itemInfo.Name, AllText = lineWord, Rects = rects });
                             MatchCollection mc = Regex.Matches(lineWord, itemInfo.Name, RegexOptions.IgnoreCase);
                             if (mc.Count > 0)
                             {
                                 foreach (Match m in mc)
                                 {
+                                    if (IsCancelDeal)
+                                    {
+                                        DealDataResultList = new ObservableCollection<MyFolderDataViewModel>();
+                                        return null;
+                                    }
                                     var infoResult = listResult.FirstOrDefault(x => x.Name == itemInfo.Name);
                                     if (infoResult == null)
                                     {
@@ -1586,6 +1796,11 @@ namespace WordAndImgOperationApp
                     var list = CheckWordUtil.CheckWordHelper.GetUnValidRects(listUnValidInfos);
                     foreach (var item in list)
                     {
+                        if (IsCancelDeal)
+                        {
+                            DealDataResultList = new ObservableCollection<MyFolderDataViewModel>();
+                            return null;
+                        }
                         try
                         {
                             Dispatcher.Invoke(new Action(() => {
@@ -1605,6 +1820,11 @@ namespace WordAndImgOperationApp
                     }
                     if (listUnValidInfos.Count > 0)
                     {
+                        if (IsCancelDeal)
+                        {
+                            DealDataResultList = new ObservableCollection<MyFolderDataViewModel>();
+                            return null;
+                        }
                         System.Threading.Thread.Sleep(50);
                         SavePic(desiredFolderName + System.IO.Path.GetFileName(filePath));
                     }
