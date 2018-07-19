@@ -32,6 +32,7 @@ namespace MyWordAddIn
     /// </summary>
     public partial class MyControl : UserControl
     {
+        List<UnChekedWordInfo> listUnCheckWordsImages = new List<UnChekedWordInfo>();
         private ConcurrentBag<UnChekedWordParagraphInfo> HasUnChenckedWordsParagraphs = new ConcurrentBag<UnChekedWordParagraphInfo>();
         Dictionary<string, List<UnChekedWordInfo>> CurrentWordsDictionary = new Dictionary<string, List<UnChekedWordInfo>>();
         List<UnChekedWordInfo> listUnCheckWords = new List<UnChekedWordInfo>();
@@ -353,38 +354,45 @@ namespace MyWordAddIn
                     }
                 }
             }
-            foreach (var Value in CurrentImgsDictionary.Values)
+            foreach (var item in listUnCheckWordsImages.ToList())
             {
-                foreach (var item in Value)
+                var infoExist = listUnCheckWords.AsParallel().FirstOrDefault(x => x.Name == item.Name);
+                if (infoExist == null)
                 {
-                    var infoExist = listUnCheckWords.AsParallel().FirstOrDefault(x => x.Name == item.Name);
-                    if (infoExist == null)
+                    UnChekedWordInfo unChekedWordInfoNoExist = new UnChekedWordInfo();
+                    unChekedWordInfoNoExist.ID = item.ID;
+                    unChekedWordInfoNoExist.Name = item.Name;
+                    unChekedWordInfoNoExist.ErrorTotalCount = item.ErrorTotalCount;
+                    unChekedWordInfoNoExist.Range = item.Range;
+                    unChekedWordInfoNoExist.UnCheckWordRange = item.UnCheckWordRange;
+                    unChekedWordInfoNoExist.UnChekedWordInLineDetailInfos = new ObservableCollection<UnChekedInLineDetailWordInfo>(item.UnChekedWordInLineDetailInfos.ToList());
+                    unChekedWordInfoNoExist.UnChekedWordDetailInfos = new ObservableCollection<UnChekedDetailWordInfo>(item.UnChekedWordDetailInfos.ToList());
+                    unChekedWordInfoNoExist.TypeTextFrom = item.TypeTextFrom;
+                    unChekedWordInfoNoExist.IsSelected = item.IsSelected;
+                    listUnCheckWords.Add(unChekedWordInfoNoExist);
+                }
+                else
+                {
+                    UnChekedWordInfo unChekedWordInfoExist = new UnChekedWordInfo();
+                    unChekedWordInfoExist.ID = infoExist.ID;
+                    unChekedWordInfoExist.Name = infoExist.Name;
+                    unChekedWordInfoExist.ErrorTotalCount = infoExist.ErrorTotalCount;
+                    unChekedWordInfoExist.Range = infoExist.Range;
+                    unChekedWordInfoExist.UnCheckWordRange = infoExist.UnCheckWordRange;
+                    unChekedWordInfoExist.UnChekedWordInLineDetailInfos = new ObservableCollection<UnChekedInLineDetailWordInfo>(infoExist.UnChekedWordInLineDetailInfos.ToList());
+                    unChekedWordInfoExist.UnChekedWordDetailInfos = new ObservableCollection<UnChekedDetailWordInfo>(infoExist.UnChekedWordDetailInfos.ToList());
+                    unChekedWordInfoExist.TypeTextFrom = infoExist.TypeTextFrom;
+                    unChekedWordInfoExist.IsSelected = infoExist.IsSelected;
+                    Dispatcher.Invoke(new Action(() =>
                     {
-                        listUnCheckWords.Add(item);
-                    }
-                    else
-                    {
-                        UnChekedWordInfo unChekedWordInfoExist = new UnChekedWordInfo();
-                        unChekedWordInfoExist.ID = infoExist.ID;
-                        unChekedWordInfoExist.Name = infoExist.Name;
-                        unChekedWordInfoExist.ErrorTotalCount = infoExist.ErrorTotalCount;
-                        unChekedWordInfoExist.Range = infoExist.Range;
-                        unChekedWordInfoExist.UnCheckWordRange = infoExist.UnCheckWordRange;
-                        unChekedWordInfoExist.UnChekedWordInLineDetailInfos = infoExist.UnChekedWordInLineDetailInfos;
-                        unChekedWordInfoExist.UnChekedWordDetailInfos = infoExist.UnChekedWordDetailInfos;
-                        unChekedWordInfoExist.TypeTextFrom = infoExist.TypeTextFrom;
-                        unChekedWordInfoExist.IsSelected = infoExist.IsSelected;
-                        Dispatcher.Invoke(new Action(() =>
+                        foreach (var detail in item.UnChekedWordInLineDetailInfos.ToList())
                         {
-                            foreach (var detail in item.UnChekedWordInLineDetailInfos)
-                            {
-                                unChekedWordInfoExist.UnChekedWordInLineDetailInfos.Add(detail);
-                                unChekedWordInfoExist.ErrorTotalCount++;
-                            }
-                            listUnCheckWords.Remove(infoExist);
-                            listUnCheckWords.Add(unChekedWordInfoExist);
-                        }));
-                    }
+                            unChekedWordInfoExist.UnChekedWordInLineDetailInfos.Add(detail);
+                            unChekedWordInfoExist.ErrorTotalCount++;
+                        }
+                        listUnCheckWords.Remove(infoExist);
+                        listUnCheckWords.Add(unChekedWordInfoExist);
+                    }));
                 }
             }
             foreach (var SelectUnCheckWord in listUnCheckWords)
@@ -505,6 +513,7 @@ namespace MyWordAddIn
                 {
                     viewModel.IsBusyVisibility = Visibility.Visible;
                 }));
+                listUnCheckWordsImages = new List<UnChekedWordInfo>();
             }
             catch (Exception ex)
             { }
@@ -517,26 +526,21 @@ namespace MyWordAddIn
                 try
                 {
                     List<ImagesDetailInfo> ImagesDetailInfos = GetImagesFromWord();
-                    List<string> listHashs = new List<string>();
                     foreach (var item in ImagesDetailInfos)
                     {
                         string hashPic = HashHelper.ComputeSHA1(item.ImgResultPath);
-                        listHashs.Add(hashPic);
                         if (!CurrentImgsDictionary.ContainsKey(hashPic))
                         {
                             var listResult = AutoExcutePicOCR(item.ImgResultPath, item.UnCheckWordRange);
                             if (listResult != null)
                             {
-                                CurrentImgsDictionary.Add(hashPic, listResult);
+                                listUnCheckWordsImages.AddRange(listResult.ToList());
+                                CurrentImgsDictionary.Add(hashPic, listResult.ToList());
                             }
                         }
-                    }
-                    string[] keyArr = CurrentImgsDictionary.Keys.ToArray<string>();
-                    for (int p = keyArr.Count() - 1; p > -1; p--)
-                    {
-                        if (!listHashs.Contains(keyArr[p]))
+                        else
                         {
-                            CurrentImgsDictionary.Remove(keyArr[p]);
+                            listUnCheckWordsImages.AddRange(CurrentImgsDictionary[hashPic].ToList());
                         }
                     }
                 }
@@ -597,8 +601,13 @@ namespace MyWordAddIn
                 }
                 else
                 {
-                    if (unChekedWordInfo.UnCheckWordRange != null)
-                        unChekedWordInfo.UnCheckWordRange.Select();
+                    try
+                    {
+                        if (unChekedWordInfo.UnCheckWordRange != null)
+                            unChekedWordInfo.UnCheckWordRange.Select();
+                    }
+                    catch (Exception ex)
+                    { }
                     if (File.Exists(unChekedWordInfo.ImgResultPath))
                     {
                         CheckWordControl.ImageDetailForm imageDetailForm = new CheckWordControl.ImageDetailForm();
@@ -688,8 +697,13 @@ namespace MyWordAddIn
                                     IDataObject ido = null;
                                     Dispatcher.Invoke(new Action(() =>
                                     {
-                                        Application.Selection.CopyAsPicture();
-                                        ido = Clipboard.GetDataObject();
+                                        try
+                                        {
+                                            Application.Selection.CopyAsPicture();
+                                            ido = Clipboard.GetDataObject();
+                                        }
+                                        catch
+                                        { }
                                     }));
                                     if (ido != null && ido.GetDataPresent(DataFormats.Bitmap))
                                     {
