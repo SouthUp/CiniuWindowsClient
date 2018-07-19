@@ -644,6 +644,10 @@ namespace MyExcelAddIn
                         }));
                         if (image != null)
                         {
+                            if (!Directory.Exists(savePathGetImage))
+                            {
+                                Directory.CreateDirectory(savePathGetImage);
+                            }
                             image.Save(savePathGetImage + pic.Name + ".jpg");
                             result.Add(new ImagesDetailInfo() { ImgResultPath = savePathGetImage + pic.Name + ".jpg", UnCheckWordExcelRange = pic });
                         }
