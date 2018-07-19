@@ -251,7 +251,6 @@ namespace WordAndImgOperationApp
             Handle = new WindowInteropHelper(this).Handle;  //获取窗口句柄
             RunHotKey();
             element.Source = AppDomain.CurrentDomain.BaseDirectory + @"Resources\Gif\loading.gif";
-            CheckWordUtil.Win32Helper.ShowHideWindow("WPF服务程序");
             RegisterWcfService();
             EventAggregatorRepository.EventAggregator.GetEvent<InitContentGridViewEvent>().Publish("Login");
             GetVersionInfo();

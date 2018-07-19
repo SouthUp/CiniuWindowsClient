@@ -4,12 +4,14 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{587D6527-0390-438F-A1DC-83EAF2C44E92}</ProjectGuid>
-    <OutputType>Exe</OutputType>
+    <ProjectGuid>{83D197DF-BFCC-40C6-9C6E-C19805510625}</ProjectGuid>
+    <OutputType>WinExe</OutputType>
     <RootNamespace>ConsoleWPFClientServer</RootNamespace>
     <AssemblyName>ConsoleWPFClientServer</AssemblyName>
     <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
+    <ProjectTypeGuids>{60dc8134-eba5-43b8-bcc9-bb4bc16c2548};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+    <WarningLevel>4</WarningLevel>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
@@ -42,40 +44,67 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
-    <Reference Include="System.Core" />
+    <Reference Include="System.Data" />
     <Reference Include="System.ServiceModel" />
+    <Reference Include="System.Xml" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
-    <Reference Include="Microsoft.CSharp" />
-    <Reference Include="System.Data" />
     <Reference Include="System.Net.Http" />
-    <Reference Include="System.Xml" />
+    <Reference Include="System.Xaml">
+      <RequiredTargetFramework>4.0</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="WindowsBase" />
+    <Reference Include="PresentationCore" />
+    <Reference Include="PresentationFramework" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Program.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs" />
+    <ApplicationDefinition Include="App.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </ApplicationDefinition>
+    <Page Include="MainWindow.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Compile Include="App.xaml.cs">
+      <DependentUpon>App.xaml</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="MainWindow.xaml.cs">
+      <DependentUpon>MainWindow.xaml</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Properties\AssemblyInfo.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Properties\Settings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Settings.settings</DependentUpon>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+    </Compile>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <None Include="Properties\app.manifest" />
+    <None Include="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
-    <None Include="Properties\app.manifest" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\CheckWordUtil\CheckWordUtil.csproj">
-      <Project>{7ade6cf2-1cc9-46f6-8bce-f2f475e00e9f}</Project>
-      <Name>CheckWordUtil</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\IWPFClientService\IWPFClientService.csproj">
-      <Project>{ccbaf7e2-a23c-4459-a7bf-cbb7a08471e4}</Project>
-      <Name>IWPFClientService</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\WPFClientCheckWordModel\WPFClientCheckWordModel.csproj">
-      <Project>{b92f769c-c517-4261-8c03-f58c8cd79651}</Project>
-      <Name>WPFClientCheckWordModel</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\WPFClientCheckWordUtil\WPFClientCheckWordUtil.csproj">
-      <Project>{36085f13-48fd-4326-a717-39c5274f530a}</Project>
-      <Name>WPFClientCheckWordUtil</Name>
-    </ProjectReference>
     <ProjectReference Include="..\WPFClientService\WPFClientService.csproj">
       <Project>{b3493fe6-b75d-4d5d-bf3d-992ef7f09c76}</Project>
       <Name>WPFClientService</Name>
