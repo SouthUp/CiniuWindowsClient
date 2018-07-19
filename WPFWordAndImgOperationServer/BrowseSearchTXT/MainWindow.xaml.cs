@@ -250,8 +250,6 @@ namespace BrowseSearchTXT
                             if (viewModel.CurrentProcessingInfo.IsDealFinished)
                             {
                                 System.Threading.Thread.Sleep(500);
-                                this.IsDealingData = false;
-                                SendDealDataStateToApp();
                                 viewModel.DataProcessGridVisibility = Visibility.Collapsed;
                                 viewModel.DataProcessResultGridVisibility = Visibility.Visible;
                                 viewModel.TitleLogoVisibility = Visibility.Collapsed;
@@ -297,6 +295,8 @@ namespace BrowseSearchTXT
                                     viewModel.SinggleWordCheckResultNoUncheckVisibility = Visibility.Collapsed;
                                     viewModel.CommonCheckResultVisibility = Visibility.Collapsed;
                                 }
+                                this.IsDealingData = false;
+                                SendDealDataStateToApp();
                             }
                             else
                             {
