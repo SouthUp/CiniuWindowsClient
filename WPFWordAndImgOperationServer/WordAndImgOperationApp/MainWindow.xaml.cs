@@ -55,8 +55,6 @@ namespace WordAndImgOperationApp
             this.DataContext = viewModel;
             EventAggregatorRepository.EventAggregator.GetEvent<AppBusyIndicatorEvent>().Subscribe(ReceiveBusyIndicator);
             EventAggregatorRepository.EventAggregator.GetEvent<InitContentGridViewEvent>().Subscribe(InitContentGridView);
-            EventAggregatorRepository.EventAggregator.GetEvent<DealCheckBtnDataEvent>().Subscribe(DealCheckBtnData);
-            EventAggregatorRepository.EventAggregator.GetEvent<CancelDealCheckBtnDataEvent>().Subscribe(CancelDealCheckBtnData);
             EventAggregatorRepository.EventAggregator.GetEvent<LoginInOrOutEvent>().Subscribe(LoginInOrOut);
             EventAggregatorRepository.EventAggregator.GetEvent<IsCanOpenSearchPopWindowEvent>().Subscribe(IsCanOpenSearchPopWindow);
             EventAggregatorRepository.EventAggregator.GetEvent<SendDealDataStateToSeachTxTEvent>().Subscribe(SendDealDataStateToSeachTxT);
@@ -353,40 +351,6 @@ namespace WordAndImgOperationApp
                                 EventAggregatorRepository.EventAggregator.GetEvent<SendNotifyMessageEvent>().Publish("300");
                             }
                         }
-                    }
-                    //检测会员状态
-                    if (result)
-                    {
-                        if (count == 0 || count == 60)
-                        {
-                            try
-                            {
-                                APIService service = new APIService();
-                                var userStateInfos = service.GetUserStateByToken(UtilSystemVar.UserToken);
-                                if (userStateInfos != null)
-                                {
-                                    if (userStateInfos.Active)
-                                    {
-                                        if (this.notifyIcon.Text.Contains("会员过期"))
-                                        {
-                                            SetIconToolTip("词牛（已登录）");
-                                        }
-                                    }
-                                    else
-                                    {
-                                        if (!this.notifyIcon.Text.Contains("会员过期"))
-                                        {
-                                            SetIconToolTip("词牛（会员过期）", "MyAppError.ico");
-                                        }
-                                    }
-                                    viewModel.CurrentUserInfo = userStateInfos;
-                                }
-                            }
-                            catch
-                            { }
-                            count = 0;
-                        }
-                        count++;
                     }
                 }
                 catch (Exception ex)
@@ -942,20 +906,20 @@ namespace WordAndImgOperationApp
                     var userStateInfos = service.GetUserStateByToken(UtilSystemVar.UserToken);
                     if (userStateInfos != null)
                     {
-                        if (userStateInfos.Active)
-                        {
-                            if (this.notifyIcon.Text.Contains("会员过期"))
-                            {
-                                SetIconToolTip("词牛（已登录）");
-                            }
-                        }
-                        else
-                        {
-                            if (!this.notifyIcon.Text.Contains("会员过期"))
-                            {
-                                SetIconToolTip("词牛（会员过期）", "MyAppError.ico");
-                            }
-                        }
+                        //////if (userStateInfos.Active)
+                        //////{
+                        //////    if (this.notifyIcon.Text.Contains("会员过期"))
+                        //////    {
+                        //////        SetIconToolTip("词牛（已登录）");
+                        //////    }
+                        //////}
+                        //////else
+                        //////{
+                        //////    if (!this.notifyIcon.Text.Contains("会员过期"))
+                        //////    {
+                        //////        SetIconToolTip("词牛（会员过期）", "MyAppError.ico");
+                        //////    }
+                        //////}
                         viewModel.CurrentUserInfo = userStateInfos;
                     }
                 }
@@ -1057,8 +1021,7 @@ namespace WordAndImgOperationApp
                             }
                             else if (result.Code == "ExchangeBrowseTxTCancelDeal")
                             {
-                                IsCancelDeal = true;
-                                UtilSystemVar.IsDealingData = false;
+                                CancelDealData();
                             }
                             else if (result.Code == "ExchangeBrowseTxTGoLook")
                             {
@@ -1237,6 +1200,19 @@ namespace WordAndImgOperationApp
                 hwndSource.AddHook(new HwndSourceHook(WndProc));
             }
         }
+        private void CancelDealData()
+        {
+            try
+            {
+                IsCancelDeal = true;
+                UtilSystemVar.IsDealingData = false;
+                DealDataResultList = new ObservableCollection<MyFolderDataViewModel>();
+            }
+            catch (Exception ex)
+            {
+                WPFClientCheckWordUtil.Log.TextLog.SaveError(ex.Message);
+            }
+        }
         private static bool IsCancelDeal = false;
         private static ObservableCollection<MyFolderDataViewModel> DealDataResultList = new ObservableCollection<MyFolderDataViewModel>();
         /// <summary>
@@ -1257,19 +1233,25 @@ namespace WordAndImgOperationApp
                 for (int i = 0; i < pathsInfo.Paths.Count; i++)
                 {
                     if (IsCancelDeal)
-                        return;
-                    try
                     {
-                        ExchangeBrowseTxTProcessingInfo info = new ExchangeBrowseTxTProcessingInfo();
-                        info.IsDealFinished = false;
-                        info.CurrentIndex = i;
-                        info.TotalCount = pathsInfo.Paths.Count;
-                        info.CurrentFileName = System.IO.Path.GetFileName(pathsInfo.Paths[i]);
-                        SendProcessingMessageToBrowseSearchTXT(info);
+                        DealDataResultList = new ObservableCollection<MyFolderDataViewModel>();
+                        return;
                     }
-                    catch (Exception ex)
-                    { }
-                    DealMyPathsDataSource(pathsInfo.Paths[i]);
+                    else
+                    {
+                        try
+                        {
+                            ExchangeBrowseTxTProcessingInfo info = new ExchangeBrowseTxTProcessingInfo();
+                            info.IsDealFinished = false;
+                            info.CurrentIndex = i;
+                            info.TotalCount = pathsInfo.Paths.Count;
+                            info.CurrentFileName = System.IO.Path.GetFileName(pathsInfo.Paths[i]);
+                            SendProcessingMessageToBrowseSearchTXT(info);
+                        }
+                        catch (Exception ex)
+                        { }
+                        DealMyPathsDataSource(pathsInfo.Paths[i]);
+                    }
                 }
                 foreach (var item in DealDataResultList)
                 {
@@ -1639,62 +1621,6 @@ namespace WordAndImgOperationApp
         {
             EventAggregatorRepository.EventAggregator.GetEvent<HideDetailWindowEvent>().Publish(true);
             EventAggregatorRepository.EventAggregator.GetEvent<InitContentGridViewEvent>().Publish("MainSet");
-        }
-        /// <summary>
-        /// 点击检查按钮检查数据
-        /// </summary>
-        public void DealCheckBtnData(ObservableCollection<ChekedWordSettingsInfo> pathsInfos)
-        {
-            try
-            {
-                IsCancelDeal = false;
-                DealDataResultList = new ObservableCollection<MyFolderDataViewModel>();
-                try
-                {
-                    FileOperateHelper.DeleteFolder(CheckWordTempPath);
-                    if (!Directory.Exists(CheckWordTempPath))
-                    {
-                        Directory.CreateDirectory(CheckWordTempPath);
-                    }
-                }
-                catch (Exception ex)
-                { }
-                foreach (var item in pathsInfos.Where(x => x.IsChecked))
-                {
-                    if (IsCancelDeal)
-                        return;
-                    for (int i = 0; i < item.FilePathsList.Count; i++)
-                    {
-                        if (IsCancelDeal)
-                            return;
-                        item.CurrentIndex = i + 1;
-                        //System.Threading.Thread.Sleep(1000);
-                        DealMyPathsDataSource(item.FilePathsList[i]);
-                    }
-                    item.IsCheckedFinished = true;
-                }
-                System.Threading.ThreadStart start = delegate ()
-                {
-                    System.Threading.Thread.Sleep(500);
-                    UtilSystemVar.IsDealingData = false;
-                    EventAggregatorRepository.EventAggregator.GetEvent<SendDealDataStateToSeachTxTEvent>().Publish(true);
-                    EventAggregatorRepository.EventAggregator.GetEvent<DealCheckBtnDataFinishedEvent>().Publish(true);
-                };
-                System.Threading.Thread t = new System.Threading.Thread(start);
-                t.IsBackground = true;
-                t.Start();
-            }
-            catch (Exception ex)
-            { }
-        }
-        private void CancelDealCheckBtnData(bool b)
-        {
-            if (b)
-            {
-                IsCancelDeal = true;
-                UtilSystemVar.IsDealingData = false;
-                EventAggregatorRepository.EventAggregator.GetEvent<SendDealDataStateToSeachTxTEvent>().Publish(true);
-            }
         }
         private MessageServiceClient mService = null;
         private void RegisterWcfService()
