@@ -12,7 +12,5 @@ namespace CheckWordUtil
         public static bool IsDealingData { get; set; }
         public static string UserToken { get; set; }
         public static string UserName { get; set; }
-
-        public static bool IsCallWebApi = Boolean.Parse(ConfigurationManager.AppSettings["IsCallWebApi"].ToString());
     }
 }

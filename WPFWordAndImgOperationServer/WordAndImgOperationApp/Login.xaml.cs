@@ -147,7 +147,17 @@ namespace WordAndImgOperationApp
         {
             try
             {
-                System.Diagnostics.Process.Start("http://www.ciniuwang.com/register");
+                string urlStr = "http://www.ciniuwang.com/register";
+                string saleID = "";
+                try
+                {
+                    saleID = ConfigurationManager.AppSettings["SaleID"].ToString();
+                }
+                catch
+                { }
+                if (!string.IsNullOrEmpty(saleID))
+                    urlStr += "?ID=" + saleID;
+                System.Diagnostics.Process.Start(urlStr);
             }
             catch (Exception ex)
             { }

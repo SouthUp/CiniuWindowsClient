@@ -19,12 +19,6 @@ namespace CheckWordUtil
         /// <returns></returns>
         public string LoginIn(string userName,string password)
         {
-            #region 不调用接口假数据
-            if (!UtilSystemVar.IsCallWebApi)
-            {
-                return "seicjoe5rp6wkkba0sxox3oa3";
-            }
-            #endregion
             string resultToken = "";
             try
             {
