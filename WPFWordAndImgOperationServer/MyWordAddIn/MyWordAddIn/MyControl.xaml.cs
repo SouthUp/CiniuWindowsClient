@@ -719,10 +719,6 @@ namespace MyWordAddIn
                                             index++;
                                         }
                                     }
-                                    Dispatcher.Invoke(new Action(() =>
-                                    {
-                                        System.Windows.Forms.Clipboard.Clear();
-                                    }));
                                 }
                                 catch
                                 { }
@@ -730,6 +726,10 @@ namespace MyWordAddIn
                         }
                     }
                 }
+                Dispatcher.Invoke(new Action(() =>
+                {
+                    System.Windows.Forms.Clipboard.Clear();
+                }));
             }
             catch (Exception ex)
             {

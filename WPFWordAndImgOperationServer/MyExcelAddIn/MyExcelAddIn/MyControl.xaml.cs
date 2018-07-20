@@ -643,32 +643,43 @@ namespace MyExcelAddIn
                     var pic = workSheet.Shapes.Item(i);
                     if (pic != null && pic.Type == Microsoft.Office.Core.MsoShapeType.msoPicture)
                     {
-                        pic.Copy();
-                        System.Drawing.Image image = null;
-                        Dispatcher.Invoke(new System.Action(() =>
+                        try
                         {
-                            try
+                            pic.Copy();
+                            IDataObject ido = null;
+                            Dispatcher.Invoke(new System.Action(() =>
                             {
-                                image = System.Windows.Forms.Clipboard.GetImage();
-                            }
-                            catch
-                            { }
-                        }));
-                        if (image != null)
-                        {
-                            if (!Directory.Exists(savePathGetImage))
+                                try
+                                {
+                                    ido = Clipboard.GetDataObject();
+                                }
+                                catch
+                                { }
+                            }));
+                            if (ido != null && ido.GetDataPresent(DataFormats.Bitmap))
                             {
-                                Directory.CreateDirectory(savePathGetImage);
+                                System.Windows.Interop.InteropBitmap bmp = (System.Windows.Interop.InteropBitmap)ido.GetData(DataFormats.Bitmap);
+                                if (bmp != null)
+                                {
+                                    if (!Directory.Exists(savePathGetImage))
+                                    {
+                                        Directory.CreateDirectory(savePathGetImage);
+                                    }
+                                    Util.SaveImageToFile(bmp.Clone(), savePathGetImage + pic.Name + ".jpg");
+                                    result.Add(new ImagesDetailInfo() { ImgResultPath = savePathGetImage + pic.Name + ".jpg", UnCheckWordExcelRange = pic });
+                                }
                             }
-                            image.Save(savePathGetImage + pic.Name + ".jpg");
-                            result.Add(new ImagesDetailInfo() { ImgResultPath = savePathGetImage + pic.Name + ".jpg", UnCheckWordExcelRange = pic });
                         }
-                        Dispatcher.Invoke(new System.Action(() =>
+                        catch (Exception ex)
                         {
-                            System.Windows.Forms.Clipboard.Clear();
-                        }));
+                            CheckWordUtil.Log.TextLog.SaveError(ex.Message);
+                        }
                     }
                 }
+                Dispatcher.Invoke(new System.Action(() =>
+                {
+                    System.Windows.Forms.Clipboard.Clear();
+                }));
             }
             catch (Exception ex)
             {
