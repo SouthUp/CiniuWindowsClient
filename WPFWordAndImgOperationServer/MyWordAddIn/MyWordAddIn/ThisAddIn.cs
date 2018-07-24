@@ -32,15 +32,6 @@ namespace MyWordAddIn
                 ////////屏蔽右键菜单，快捷键和替换词
                 ////////hook = new KeyboardHook();
                 ////////hook.InitHook();
-                #region 加载自定义控件(WinForm)
-                //////// ExcelHelp 是一个自定义控件类 
-                //////myControlTaskPane = Globals.ThisAddIn.CustomTaskPanes.Add(new TaskPaneWpfControlHost(), "违禁词查询");
-                //////// 使任务窗体可见 
-                //////myControlTaskPane.Visible = true;
-                //////// 通过DockPosition属性来控制任务窗体的停靠位置， 
-                //////// 设置为 MsoCTPDockPosition.msoCTPDockPositionRight这个代表停靠到右边，这个值也是默认值 
-                //////myControlTaskPane.DockPosition = MsoCTPDockPosition.msoCTPDockPositionRight;
-                #endregion
                 try
                 {
                     APIService service = new APIService();
@@ -59,8 +50,6 @@ namespace MyWordAddIn
                 ////////屏蔽右键菜单，快捷键和替换词
                 ////////this.Application.WindowBeforeRightClick += new Word.ApplicationEvents4_WindowBeforeRightClickEventHandler(Application_WindowBeforeRightClick);
                 EventAggregatorRepository.EventAggregator.GetEvent<SetMyControlVisibleEvent>().Subscribe(SetMyControlVisible);
-                EventAggregatorRepository.EventAggregator.GetEvent<SetMyWordsDBVisibleEvent>().Subscribe(SetMyWordsDBVisible);
-                EventAggregatorRepository.EventAggregator.GetEvent<SetMySynonymDBVisibleEvent>().Subscribe(SetMySynonymDBVisible);
                 EventAggregatorRepository.EventAggregator.GetEvent<OpenMyFloatingPanelEvent>().Subscribe(OpenMyFloatingPanel);
             }
             catch (Exception ex)
@@ -102,50 +91,6 @@ namespace MyWordAddIn
             catch (Exception ex)
             { }
         }
-        private void SetMyWordsDBVisible(bool isVisible)
-        {
-            try
-            {
-                if (HostSystemVar.MyWordsDBTaskPane == null)
-                {
-                    var wpfHost = new TaskPaneWpfControlHost();
-                    var taskPane = this.CustomTaskPanes.Add(wpfHost, "违禁词词库");
-                    taskPane.Visible = true;
-                    taskPane.DockPosition = MsoCTPDockPosition.msoCTPDockPositionRight;
-                    taskPane.VisibleChanged += MyWordsDBTaskPane_VisibleChanged;
-                    HostSystemVar.MyWordsDBTaskPane = taskPane;
-                }
-                else
-                {
-                    HostSystemVar.MyWordsDBTaskPane.Visible = isVisible;
-                }
-                EventAggregatorRepository.EventAggregator.GetEvent<SetOpenWordsDBEnableEvent>().Publish(false);
-            }
-            catch (Exception ex)
-            { }
-        }
-        private void SetMySynonymDBVisible(bool isVisible)
-        {
-            try
-            {
-                if (HostSystemVar.MySynonymDBTaskPane == null)
-                {
-                    var wpfHost = new TaskPaneWpfControlHost();
-                    var taskPane = this.CustomTaskPanes.Add(wpfHost, "推荐词词库");
-                    taskPane.Visible = true;
-                    taskPane.DockPosition = MsoCTPDockPosition.msoCTPDockPositionRight;
-                    taskPane.VisibleChanged += MySynonymDBTaskPane_VisibleChanged;
-                    HostSystemVar.MySynonymDBTaskPane = taskPane;
-                }
-                else
-                {
-                    HostSystemVar.MySynonymDBTaskPane.Visible = isVisible;
-                }
-                EventAggregatorRepository.EventAggregator.GetEvent<SetOpenSynonymDBEnableEvent>().Publish(false);
-            }
-            catch (Exception ex)
-            { }
-        }
         private void TaskPane_VisibleChanged(object sender, EventArgs e)
         {
             try
@@ -176,28 +121,6 @@ namespace MyWordAddIn
             catch(Exception ex)
             {
                 CheckWordUtil.Log.TextLog.SaveError(ex.Message);
-            }
-        }
-        private void MyWordsDBTaskPane_VisibleChanged(object sender, EventArgs e)
-        {
-            if (HostSystemVar.MyWordsDBTaskPane.Visible == false)
-            {
-                EventAggregatorRepository.EventAggregator.GetEvent<SetOpenWordsDBEnableEvent>().Publish(true);
-            }
-            else
-            {
-                EventAggregatorRepository.EventAggregator.GetEvent<SetOpenWordsDBEnableEvent>().Publish(false);
-            }
-        }
-        private void MySynonymDBTaskPane_VisibleChanged(object sender, EventArgs e)
-        {
-            if (HostSystemVar.MySynonymDBTaskPane.Visible == false)
-            {
-                EventAggregatorRepository.EventAggregator.GetEvent<SetOpenSynonymDBEnableEvent>().Publish(true);
-            }
-            else
-            {
-                EventAggregatorRepository.EventAggregator.GetEvent<SetOpenSynonymDBEnableEvent>().Publish(false);
             }
         }
         void Application_WindowBeforeRightClick(Word.Selection Sel, ref bool Cancel)

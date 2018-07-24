@@ -10,7 +10,5 @@ namespace MyWordAddIn
     public class HostSystemVar
     {
         public static CustomTaskPane CustomTaskPane { get; set; }
-        public static CustomTaskPane MyWordsDBTaskPane { get; set; }
-        public static CustomTaskPane MySynonymDBTaskPane { get; set; }
     }
 }

@@ -30,34 +30,6 @@ namespace CheckWordEvent
 
     }
     /// <summary>
-    ///  设置打开违禁词库按钮是否可用事件
-    /// </summary>
-    public class SetOpenWordsDBEnableEvent : PubSubEvent<bool>
-    {
-
-    }
-    /// <summary>
-    ///  设置违禁词库模块窗体是否可见事件
-    /// </summary>
-    public class SetMyWordsDBVisibleEvent : PubSubEvent<bool>
-    {
-
-    }
-    /// <summary>
-    ///  设置打开推荐词库按钮是否可用事件
-    /// </summary>
-    public class SetOpenSynonymDBEnableEvent : PubSubEvent<bool>
-    {
-
-    }
-    /// <summary>
-    ///  设置推荐词库模块窗体是否可见事件
-    /// </summary>
-    public class SetMySynonymDBVisibleEvent : PubSubEvent<bool>
-    {
-
-    }
-    /// <summary>
     ///  快捷键触发同义词替换事件
     /// </summary>
     public class OpenMyFloatingPanelEvent : PubSubEvent<bool>
