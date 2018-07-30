@@ -36,7 +36,6 @@ namespace MyWordAddIn
         private ConcurrentBag<UnChekedWordParagraphInfo> HasUnChenckedWordsParagraphs = new ConcurrentBag<UnChekedWordParagraphInfo>();
         Dictionary<string, List<UnChekedWordInfo>> CurrentWordsDictionary = new Dictionary<string, List<UnChekedWordInfo>>();
         List<UnChekedWordInfo> listUnCheckWords = new List<UnChekedWordInfo>();
-        Dictionary<string, List<UnChekedWordInfo>> CurrentImgsDictionary = new Dictionary<string, List<UnChekedWordInfo>>();
         MyControlViewModel viewModel = new MyControlViewModel();
         // 保存修改过的Range和之前的背景色，以便于恢复
         private ConcurrentBag<Range> rangeSelectLists = new ConcurrentBag<Range>();
@@ -94,21 +93,7 @@ namespace MyWordAddIn
         }
         private void UserControl_Unloaded(object sender, RoutedEventArgs e)
         {
-            try
-            {
-                if (detector != null)
-                {
-                    detector.OnTextChanged -= detector_OnTextChanged;
-                    detector.Stop();
-                }
-                if (detectorImages != null)
-                {
-                    detectorImages.OnImagesChanged -= detector_OnImagesChanged;
-                    detectorImages.Stop();
-                }
-            }
-            catch (Exception ex)
-            { }
+            CloseDetector();
         }
         public static Thread tDetector;
         private static object lockObject = new Object();
@@ -278,7 +263,6 @@ namespace MyWordAddIn
                     {
                         viewModel.WarningTotalCount = 0;
                         viewModel.UncheckedWordLists.Clear();
-                        CurrentImgsDictionary = new Dictionary<string, List<UnChekedWordInfo>>();
                     }));
                 }
             }
@@ -529,18 +513,18 @@ namespace MyWordAddIn
                     foreach (var item in ImagesDetailInfos)
                     {
                         string hashPic = HashHelper.ComputeSHA1(item.ImgResultPath);
-                        if (!CurrentImgsDictionary.ContainsKey(hashPic))
+                        if (!HostSystemVar.CurrentImgsDictionary.ContainsKey(hashPic))
                         {
                             var listResult = AutoExcutePicOCR(item.ImgResultPath, item.UnCheckWordRange);
                             if (listResult != null)
                             {
                                 listUnCheckWordsImages.AddRange(listResult.ToList());
-                                CurrentImgsDictionary.Add(hashPic, listResult.ToList());
+                                HostSystemVar.CurrentImgsDictionary.Add(hashPic, listResult.ToList());
                             }
                         }
                         else
                         {
-                            listUnCheckWordsImages.AddRange(CurrentImgsDictionary[hashPic].ToList());
+                            listUnCheckWordsImages.AddRange(HostSystemVar.CurrentImgsDictionary[hashPic].ToList());
                         }
                     }
                 }
@@ -562,7 +546,6 @@ namespace MyWordAddIn
                     {
                         viewModel.WarningTotalCount = 0;
                         viewModel.UncheckedWordLists.Clear();
-                        CurrentImgsDictionary = new Dictionary<string, List<UnChekedWordInfo>>();
                     }));
                 }
                 catch (Exception ex)

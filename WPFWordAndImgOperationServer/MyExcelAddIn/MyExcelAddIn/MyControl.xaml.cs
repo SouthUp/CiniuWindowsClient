@@ -36,7 +36,6 @@ namespace MyExcelAddIn
         private ConcurrentBag<UnChekedWordExcelRangeInfo> HasUnChenckedWordsParagraphs = new ConcurrentBag<UnChekedWordExcelRangeInfo>();
         Dictionary<string, List<UnChekedWordInfo>> CurrentWordsDictionary = new Dictionary<string, List<UnChekedWordInfo>>();
         List<UnChekedWordInfo> listUnCheckWords = new List<UnChekedWordInfo>();
-        Dictionary<string, List<UnChekedWordInfo>> CurrentImgsDictionary = new Dictionary<string, List<UnChekedWordInfo>>();
         MyControlViewModel viewModel = new MyControlViewModel();
         //保存当前要修改的Range的行和列
         private ConcurrentBag<Range> rangeCurrentDealingLists = new ConcurrentBag<Range>();
@@ -92,60 +91,12 @@ namespace MyExcelAddIn
         }
         private void UserControl_Loaded(object sender, RoutedEventArgs e)
         {
-            try
-            {
-                APIService service = new APIService();
-                bool isOpen = service.GetCurrentAddIn("Excel");
-                if (isOpen)
-                {
-                    StartDetector();
-                }
-                else
-                {
-                    EventAggregatorRepository.EventAggregator.GetEvent<SetMyControlVisibleEvent>().Publish(false);
-                }
-            }
-            catch
-            { }
+            StartDetector();
         }
         
         private void UserControl_Unloaded(object sender, RoutedEventArgs e)
         {
-            if (detectorImages != null)
-            {
-                detectorImages.OnImagesChanged -= detector_OnImagesChanged;
-                detectorImages.Stop();
-            }
-        }
-        /// <summary>
-        /// 初始化数据
-        /// </summary>
-        public void InitData()
-        {
-            try
-            {
-                if (!IsChecking)
-                {
-                    lock (lockObject)
-                    {
-                        IsChecking = true;
-                    }
-                    viewModel.UncheckedWordLists = new ObservableCollection<UnChekedWordInfo>();
-                    viewModel.WarningTotalCount = 0;
-                    viewModel.IsBusyVisibility = Visibility.Hidden;
-                    CurrentImgsDictionary = new Dictionary<string, List<UnChekedWordInfo>>();
-                    Thread tGetUncheckedWord = new Thread(GetUncheckedWordLists);
-                    tGetUncheckedWord.IsBackground = true;
-                    tGetUncheckedWord.Start();
-                }
-            }
-            catch (Exception ex)
-            {
-                lock (lockObject)
-                {
-                    IsChecking = false;
-                }
-            }
+            CloseDetector();
         }
         /// <summary>
         /// 获取违禁词数据
@@ -174,7 +125,6 @@ namespace MyExcelAddIn
                     {
                         viewModel.WarningTotalCount = 0;
                         viewModel.UncheckedWordLists.Clear();
-                        CurrentImgsDictionary = new Dictionary<string, List<UnChekedWordInfo>>();
                     }));
                 }
             }
@@ -472,18 +422,18 @@ namespace MyExcelAddIn
             foreach (var item in ImagesDetailInfos)
             {
                 string hashPic = HashHelper.ComputeSHA1(item.ImgResultPath);
-                if (!CurrentImgsDictionary.ContainsKey(hashPic))
+                if (!MyWordAddIn.HostSystemVar.CurrentImgsDictionary.ContainsKey(hashPic))
                 {
                     var listResult = AutoExcutePicOCR(item.ImgResultPath, item.UnCheckWordExcelRange);
                     if (listResult != null)
                     {
                         listUnCheckWordsImages.AddRange(listResult.ToList());
-                        CurrentImgsDictionary.Add(hashPic, listResult.ToList());
+                        MyWordAddIn.HostSystemVar.CurrentImgsDictionary.Add(hashPic, listResult.ToList());
                     }
                 }
                 else
                 {
-                    listUnCheckWordsImages.AddRange(CurrentImgsDictionary[hashPic].ToList());
+                    listUnCheckWordsImages.AddRange(MyWordAddIn.HostSystemVar.CurrentImgsDictionary[hashPic].ToList());
                 }
             }
             foreach (var item in listUnCheckWordsImages.ToList())

@@ -20,55 +20,91 @@ namespace MyWordAddIn
 {
     public partial class ThisAddIn
     {
+        bool isCloseDoc = false;
         ////////屏蔽右键菜单，快捷键和替换词
         ////////KeyboardHook hook;
-        MyControl wpfControl;
-        // 定义一个任务窗体 
-        //////internal Microsoft.Office.Tools.CustomTaskPane myControlTaskPane;
         private void ThisAddIn_Startup(object sender, System.EventArgs e)
         {
             try
             {
+                HostSystemVar.CurrentImgsDictionary = new Dictionary<string, List<CheckWordModel.UnChekedWordInfo>>();
                 ////////屏蔽右键菜单，快捷键和替换词
                 ////////hook = new KeyboardHook();
                 ////////hook.InitHook();
-                try
-                {
-                    APIService service = new APIService();
-                    bool isOpen = service.GetCurrentAddIn("Word");
-                    if (isOpen)
-                    {
-                        CreateMyControlCustomTaskPane();
-                    }
-                    else
-                    {
-                        EventAggregatorRepository.EventAggregator.GetEvent<SetOpenMyControlEnableEvent>().Publish(true);
-                    }
-                }
-                catch
-                { }
                 ////////屏蔽右键菜单，快捷键和替换词
                 ////////this.Application.WindowBeforeRightClick += new Word.ApplicationEvents4_WindowBeforeRightClickEventHandler(Application_WindowBeforeRightClick);
                 EventAggregatorRepository.EventAggregator.GetEvent<SetMyControlVisibleEvent>().Subscribe(SetMyControlVisible);
                 EventAggregatorRepository.EventAggregator.GetEvent<OpenMyFloatingPanelEvent>().Subscribe(OpenMyFloatingPanel);
+                Globals.ThisAddIn.Application.WindowActivate += Application_WindowActivate;
+                Globals.ThisAddIn.Application.DocumentBeforeClose += Application_DocumentBeforeClose;
+                CreateCiNiuTaskPane();
             }
             catch (Exception ex)
             {
                 CheckWordUtil.Log.TextLog.SaveError(ex.Message);
             }
         }
+
+        private void Application_DocumentBeforeClose(Word.Document Doc, ref bool Cancel)
+        {
+            isCloseDoc = true;
+        }
+
+        private void Application_WindowActivate(Microsoft.Office.Interop.Word.Document Doc, Microsoft.Office.Interop.Word.Window Wn)
+        {
+            try
+            {
+                CreateCiNiuTaskPane();
+            }
+            catch (Exception ex)
+            { }
+        }
+        private void CreateCiNiuTaskPane()
+        {
+            RemoveCiNiuTaskPanes();
+            try
+            {
+                APIService service = new APIService();
+                bool isOpen = service.GetCurrentAddIn("Word");
+                if (isOpen)
+                {
+                    CreateMyControlCustomTaskPane();
+                }
+                else
+                {
+                    EventAggregatorRepository.EventAggregator.GetEvent<SetOpenMyControlEnableEvent>().Publish(true);
+                }
+            }
+            catch
+            { }
+        }
+        private void RemoveCiNiuTaskPanes()
+        {
+            try
+            {
+                for (int i = Globals.ThisAddIn.CustomTaskPanes.Count; i > 0; i--)
+                {
+                    Microsoft.Office.Tools.CustomTaskPane ctp = Globals.ThisAddIn.CustomTaskPanes[i - 1];
+                    if (ctp.Title == "违禁词检查")
+                    {
+                        Globals.ThisAddIn.CustomTaskPanes.Remove(ctp);
+                    }
+                }
+            }
+            catch (Exception ex)
+            { }
+        }
         private void CreateMyControlCustomTaskPane()
         {
             try
             {
                 var wpfHost = new TaskPaneWpfControlHost();
-                wpfControl = new MyControl();
+                MyControl wpfControl = new MyControl();
                 wpfHost.WpfElementHost.HostContainer.Children.Add(wpfControl);
-                var taskPane = this.CustomTaskPanes.Add(wpfHost, "违禁词检查");
-                taskPane.Visible = true;
+                var taskPane = this.CustomTaskPanes.Add(wpfHost, "违禁词检查", Globals.ThisAddIn.Application.ActiveWindow);
                 taskPane.DockPosition = MsoCTPDockPosition.msoCTPDockPositionRight;
                 taskPane.VisibleChanged += TaskPane_VisibleChanged;
-                HostSystemVar.CustomTaskPane = taskPane;
+                taskPane.Visible = true;
             }
             catch(Exception ex)
             {
@@ -79,13 +115,13 @@ namespace MyWordAddIn
         {
             try
             {
-                if (HostSystemVar.CustomTaskPane != null)
+                if (isVisible)
                 {
-                    HostSystemVar.CustomTaskPane.Visible = isVisible;
+                    CreateMyControlCustomTaskPane();
                 }
                 else
                 {
-                    CreateMyControlCustomTaskPane();
+                    RemoveCiNiuTaskPanes();
                 }
             }
             catch (Exception ex)
@@ -95,27 +131,34 @@ namespace MyWordAddIn
         {
             try
             {
-                try
+                var customTaskPane = sender as Microsoft.Office.Tools.CustomTaskPane;
+                if (!isCloseDoc)
                 {
-                    AddInStateInfo addInStateInfo = new AddInStateInfo();
-                    addInStateInfo.IsOpen = HostSystemVar.CustomTaskPane.Visible;
-                    //保存用户操作信息到本地
-                    string addInStateInfos = string.Format(@"{0}\WordAddInStateInfo.xml", Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + "\\WordAndImgOCR\\LoginInOutInfo\\");
-                    CheckWordUtil.DataParse.WriteToXmlPath(JsonConvert.SerializeObject(addInStateInfo), addInStateInfos);
-                }
-                catch (Exception ex)
-                {
-                    CheckWordUtil.Log.TextLog.SaveError(ex.Message);
-                }
-                if (HostSystemVar.CustomTaskPane.Visible == false)
-                {
-                    wpfControl.CloseDetector();
-                    EventAggregatorRepository.EventAggregator.GetEvent<SetOpenMyControlEnableEvent>().Publish(true);
+                    try
+                    {
+                        AddInStateInfo addInStateInfo = new AddInStateInfo();
+                        addInStateInfo.IsOpen = customTaskPane.Visible;
+                        //保存用户操作信息到本地
+                        string addInStateInfos = string.Format(@"{0}\WordAddInStateInfo.xml", Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + "\\WordAndImgOCR\\LoginInOutInfo\\");
+                        CheckWordUtil.DataParse.WriteToXmlPath(JsonConvert.SerializeObject(addInStateInfo), addInStateInfos);
+                    }
+                    catch (Exception ex)
+                    {
+                        CheckWordUtil.Log.TextLog.SaveError(ex.Message);
+                    }
+                    if (customTaskPane.Visible == false)
+                    {
+                        RemoveCiNiuTaskPanes();
+                        EventAggregatorRepository.EventAggregator.GetEvent<SetOpenMyControlEnableEvent>().Publish(true);
+                    }
+                    else
+                    {
+                        EventAggregatorRepository.EventAggregator.GetEvent<SetOpenMyControlEnableEvent>().Publish(false);
+                    }
                 }
                 else
                 {
-                    wpfControl.StartDetector();
-                    EventAggregatorRepository.EventAggregator.GetEvent<SetOpenMyControlEnableEvent>().Publish(false);
+                    isCloseDoc = false;
                 }
             }
             catch(Exception ex)
@@ -211,9 +254,6 @@ namespace MyWordAddIn
             {
                 CheckWordUtil.FileOperateHelper.DeleteFolder(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + "\\WordAndImgOCR\\CheckWordResultTempWord");
                 CheckWordUtil.FileOperateHelper.DeleteFolder(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + "\\WordAndImgOCR\\MyWordAddIn\\");
-                if (wpfControl != null)
-                    wpfControl.CloseDetector();
-                EventAggregatorRepository.EventAggregator.GetEvent<SetOpenMyControlEnableEvent>().Publish(true);
                 ////////屏蔽右键菜单，快捷键和替换词
                 ////////hook.UnHook();
             }

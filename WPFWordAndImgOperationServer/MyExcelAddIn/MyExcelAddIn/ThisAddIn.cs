@@ -11,27 +11,23 @@ using Microsoft.Office.Core;
 using CheckWordEvent;
 using WPFClientCheckWordModel;
 using Newtonsoft.Json;
+using CheckWordUtil;
 
 namespace MyExcelAddIn
 {
     public partial class ThisAddIn
     {
-        MyControl wpfControl;
+        bool isCloseDoc = false;
         private void ThisAddIn_Startup(object sender, System.EventArgs e)
         {
             try
             {
-                var wpfHost = new TaskPaneWpfControlHost();
-                wpfControl = new MyControl();
-                wpfHost.WpfElementHost.HostContainer.Children.Add(wpfControl);
-                var taskPane = this.CustomTaskPanes.Add(wpfHost, "违禁词检查");
-                taskPane.Visible = true;
-                taskPane.DockPosition = MsoCTPDockPosition.msoCTPDockPositionRight;
-                taskPane.VisibleChanged += TaskPane_VisibleChanged;
-                HostSystemVar.CustomTaskPane = taskPane;
+                HostSystemVar.CurrentImgsDictionary = new Dictionary<string, List<CheckWordModel.UnChekedWordInfo>>();
                 Globals.ThisAddIn.Application.SheetActivate += Application_SheetActivate;
                 Globals.ThisAddIn.Application.WorkbookActivate += Application_WorkbookActivate;
                 EventAggregatorRepository.EventAggregator.GetEvent<SetMyControlVisibleEvent>().Subscribe(SetMyControlVisible);
+                Globals.ThisAddIn.Application.WorkbookBeforeClose += Application_WorkbookBeforeClose; ;
+                CreateCiNiuTaskPane();
             }
             catch (Exception ex)
             {
@@ -39,19 +35,72 @@ namespace MyExcelAddIn
             }
         }
 
+        private void Application_WorkbookBeforeClose(Excel.Workbook Wb, ref bool Cancel)
+        {
+            isCloseDoc = true;
+        }
+
         private void Application_WorkbookActivate(Excel.Workbook Wb)
         {
             try
             {
-                if (wpfControl != null && HostSystemVar.CustomTaskPane.Visible)
+                CreateCiNiuTaskPane();
+            }
+            catch (Exception ex)
+            { }
+        }
+        private void CreateCiNiuTaskPane()
+        {
+            RemoveCiNiuTaskPanes();
+            try
+            {
+                APIService service = new APIService();
+                bool isOpen = service.GetCurrentAddIn("Excel");
+                if (isOpen)
                 {
-                    wpfControl.InitData();
+                    CreateMyControlCustomTaskPane();
+                }
+                else
+                {
+                    EventAggregatorRepository.EventAggregator.GetEvent<SetOpenMyControlEnableEvent>().Publish(true);
+                }
+            }
+            catch
+            { }
+        }
+        private void RemoveCiNiuTaskPanes()
+        {
+            try
+            {
+                for (int i = Globals.ThisAddIn.CustomTaskPanes.Count; i > 0; i--)
+                {
+                    Microsoft.Office.Tools.CustomTaskPane ctp = Globals.ThisAddIn.CustomTaskPanes[i - 1];
+                    if (ctp.Title == "违禁词检查")
+                    {
+                        Globals.ThisAddIn.CustomTaskPanes.Remove(ctp);
+                    }
                 }
             }
             catch (Exception ex)
             { }
         }
-
+        private void CreateMyControlCustomTaskPane()
+        {
+            try
+            {
+                var wpfHost = new TaskPaneWpfControlHost();
+                MyControl wpfControl = new MyControl();
+                wpfHost.WpfElementHost.HostContainer.Children.Add(wpfControl);
+                var taskPane = this.CustomTaskPanes.Add(wpfHost, "违禁词检查");
+                taskPane.DockPosition = MsoCTPDockPosition.msoCTPDockPositionRight;
+                taskPane.VisibleChanged += TaskPane_VisibleChanged;
+                taskPane.Visible = true;
+            }
+            catch (Exception ex)
+            {
+                CheckWordUtil.Log.TextLog.SaveError(ex.Message);
+            }
+        }
         /// <summary>
         /// Sheet表单切换事件
         /// </summary>
@@ -60,10 +109,7 @@ namespace MyExcelAddIn
         {
             try
             {
-                if (wpfControl != null && HostSystemVar.CustomTaskPane.Visible)
-                {
-                    wpfControl.InitData();
-                }
+                CreateCiNiuTaskPane();
             }
             catch (Exception ex)
             { }
@@ -73,27 +119,34 @@ namespace MyExcelAddIn
         {
             try
             {
-                try
+                var customTaskPane = sender as Microsoft.Office.Tools.CustomTaskPane;
+                if (!isCloseDoc)
                 {
-                    AddInStateInfo addInStateInfo = new AddInStateInfo();
-                    addInStateInfo.IsOpen = HostSystemVar.CustomTaskPane.Visible;
-                    //保存用户操作信息到本地
-                    string addInStateInfos = string.Format(@"{0}\ExcelAddInStateInfo.xml", Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + "\\WordAndImgOCR\\LoginInOutInfo\\");
-                    CheckWordUtil.DataParse.WriteToXmlPath(JsonConvert.SerializeObject(addInStateInfo), addInStateInfos);
-                }
-                catch (Exception ex)
-                {
-                    CheckWordUtil.Log.TextLog.SaveError(ex.Message);
-                }
-                if (HostSystemVar.CustomTaskPane.Visible == false)
-                {
-                    wpfControl.CloseDetector();
-                    EventAggregatorRepository.EventAggregator.GetEvent<SetOpenMyControlEnableEvent>().Publish(true);
+                    try
+                    {
+                        AddInStateInfo addInStateInfo = new AddInStateInfo();
+                        addInStateInfo.IsOpen = customTaskPane.Visible;
+                        //保存用户操作信息到本地
+                        string addInStateInfos = string.Format(@"{0}\ExcelAddInStateInfo.xml", Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + "\\WordAndImgOCR\\LoginInOutInfo\\");
+                        CheckWordUtil.DataParse.WriteToXmlPath(JsonConvert.SerializeObject(addInStateInfo), addInStateInfos);
+                    }
+                    catch (Exception ex)
+                    {
+                        CheckWordUtil.Log.TextLog.SaveError(ex.Message);
+                    }
+                    if (customTaskPane.Visible == false)
+                    {
+                        RemoveCiNiuTaskPanes();
+                        EventAggregatorRepository.EventAggregator.GetEvent<SetOpenMyControlEnableEvent>().Publish(true);
+                    }
+                    else
+                    {
+                        EventAggregatorRepository.EventAggregator.GetEvent<SetOpenMyControlEnableEvent>().Publish(false);
+                    }
                 }
                 else
                 {
-                    wpfControl.StartDetector();
-                    EventAggregatorRepository.EventAggregator.GetEvent<SetOpenMyControlEnableEvent>().Publish(false);
+                    isCloseDoc = false;
                 }
             }
             catch (Exception ex)
@@ -105,7 +158,14 @@ namespace MyExcelAddIn
         {
             try
             {
-                HostSystemVar.CustomTaskPane.Visible = isVisible;
+                if (isVisible)
+                {
+                    CreateMyControlCustomTaskPane();
+                }
+                else
+                {
+                    RemoveCiNiuTaskPanes();
+                }
             }
             catch (Exception ex)
             { }
@@ -116,8 +176,6 @@ namespace MyExcelAddIn
             {
                 CheckWordUtil.FileOperateHelper.DeleteFolder(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + "\\WordAndImgOCR\\CheckWordResultTempExcel");
                 CheckWordUtil.FileOperateHelper.DeleteFolder(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + "\\WordAndImgOCR\\MyExcelAddIn\\");
-                wpfControl.CloseDetector();
-                EventAggregatorRepository.EventAggregator.GetEvent<SetOpenMyControlEnableEvent>().Publish(true);
                 Globals.ThisAddIn.Application.SheetActivate -= Application_SheetActivate;
                 Globals.ThisAddIn.Application.WorkbookActivate -= Application_WorkbookActivate;
             }
