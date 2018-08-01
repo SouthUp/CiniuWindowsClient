@@ -149,7 +149,7 @@ namespace WordAndImgOperationApp
                 catch
                 { }
                 if (!string.IsNullOrEmpty(saleID))
-                    urlStr += "?ID=" + saleID;
+                    urlStr += "?id=" + saleID;
                 System.Diagnostics.Process.Start(urlStr);
             }
             catch (Exception ex)
