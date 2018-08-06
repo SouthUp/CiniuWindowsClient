@@ -1,0 +1,255 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{E5CDCD22-8D33-42CA-BB17-9406281CEF15}</ProjectGuid>
+    <OutputType>WinExe</OutputType>
+    <RootNamespace>WordAndImgOperationApp</RootNamespace>
+    <AssemblyName>WordAndImgOperationApp</AssemblyName>
+    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <ProjectTypeGuids>{60dc8134-eba5-43b8-bcc9-bb4bc16c2548};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+    <WarningLevel>4</WarningLevel>
+    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>x86</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>..\bin\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x86'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>..\bin\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DebugType>full</DebugType>
+    <PlatformTarget>x86</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+    <Prefer32Bit>true</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x86'">
+    <OutputPath>bin\x86\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <Optimize>true</Optimize>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>x86</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+    <Prefer32Bit>true</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup>
+    <TargetZone>LocalIntranet</TargetZone>
+  </PropertyGroup>
+  <PropertyGroup>
+    <GenerateManifests>false</GenerateManifests>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationManifest>Properties\app.manifest</ApplicationManifest>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationIcon>MyApp.ico</ApplicationIcon>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Aspose.Cells">
+      <HintPath>..\Dll\Aspose.Cells.dll</HintPath>
+    </Reference>
+    <Reference Include="Aspose.Words">
+      <HintPath>..\Dll\Aspose.Words.dll</HintPath>
+    </Reference>
+    <Reference Include="GifImageLib">
+      <HintPath>..\Dll\GifImageLib.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Practices.Prism.Composition">
+      <HintPath>..\Dll\Microsoft.Practices.Prism.Composition.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Practices.Prism.Mvvm">
+      <HintPath>..\Dll\Microsoft.Practices.Prism.Mvvm.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Practices.Prism.PubSubEvents">
+      <HintPath>..\Dll\Microsoft.Practices.Prism.PubSubEvents.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Practices.Prism.UnityExtensions">
+      <HintPath>..\Dll\Microsoft.Practices.Prism.UnityExtensions.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Practices.ServiceLocation">
+      <HintPath>..\Dll\Microsoft.Practices.ServiceLocation.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Practices.Unity">
+      <HintPath>..\Dll\Microsoft.Practices.Unity.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Practices.Unity.Configuration">
+      <HintPath>..\Dll\Microsoft.Practices.Unity.Configuration.dll</HintPath>
+    </Reference>
+    <Reference Include="Newtonsoft.Json, Version=6.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Dll\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="ReachFramework" />
+    <Reference Include="System" />
+    <Reference Include="System.ComponentModel.Composition" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.ServiceModel" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Xaml">
+      <RequiredTargetFramework>4.0</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="WindowsBase" />
+    <Reference Include="PresentationCore" />
+    <Reference Include="PresentationFramework" />
+  </ItemGroup>
+  <ItemGroup>
+    <ApplicationDefinition Include="App.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </ApplicationDefinition>
+    <Compile Include="FindPsw.xaml.cs">
+      <DependentUpon>FindPsw.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="FindPswViewModel.cs" />
+    <Compile Include="IShell.cs" />
+    <Compile Include="Login.xaml.cs">
+      <DependentUpon>Login.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="LoginViewModel.cs" />
+    <Compile Include="LoginWindowViewModel.cs" />
+    <Compile Include="LoginWindow.xaml.cs">
+      <DependentUpon>LoginWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="MainWindowViewModel.cs" />
+    <Compile Include="MessageProxy.cs" />
+    <Compile Include="Register.xaml.cs">
+      <DependentUpon>Register.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="RegisterViewModel.cs" />
+    <Page Include="FindPsw.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Login.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="LoginWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="MainWindow.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Compile Include="App.xaml.cs">
+      <DependentUpon>App.xaml</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="MainWindow.xaml.cs">
+      <DependentUpon>MainWindow.xaml</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
+    <Page Include="Register.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="MetroBootstrapper.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Properties\Settings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Settings.settings</DependentUpon>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+    </Compile>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <None Include="Properties\app.manifest" />
+    <None Include="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.config">
+      <SubType>Designer</SubType>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\CheckWordControl\CheckWordControl.csproj">
+      <Project>{0ba50c86-3d12-4db3-98d9-ab157ee40366}</Project>
+      <Name>CheckWordControl</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\CheckWordEvent\CheckWordEvent.csproj">
+      <Project>{730a09eb-1742-45f8-aa9c-37f25be50af4}</Project>
+      <Name>CheckWordEvent</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\CheckWordModel\CheckWordModel.csproj">
+      <Project>{882975e9-f754-4f88-93c0-e461387d003d}</Project>
+      <Name>CheckWordModel</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\CheckWordStyle\CheckWordStyle.csproj">
+      <Project>{19e705fb-46df-4f8e-a334-14a8d2e7babb}</Project>
+      <Name>CheckWordStyle</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\CheckWordUtil\CheckWordUtil.csproj">
+      <Project>{7ade6cf2-1cc9-46f6-8bce-f2f475e00e9f}</Project>
+      <Name>CheckWordUtil</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\ConsoleWPFClientServer\ConsoleWPFClientServer.csproj">
+      <Project>{587d6527-0390-438f-a1dc-83eaf2c44e92}</Project>
+      <Name>ConsoleWPFClientServer</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\IWPFClientService\IWPFClientService.csproj">
+      <Project>{ccbaf7e2-a23c-4459-a7bf-cbb7a08471e4}</Project>
+      <Name>IWPFClientService</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\WPFClientCheckWordModel\WPFClientCheckWordModel.csproj">
+      <Project>{b92f769c-c517-4261-8c03-f58c8cd79651}</Project>
+      <Name>WPFClientCheckWordModel</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\WPFClientCheckWordUtil\WPFClientCheckWordUtil.csproj">
+      <Project>{36085f13-48fd-4326-a717-39c5274f530a}</Project>
+      <Name>WPFClientCheckWordUtil</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\WPFClientService\WPFClientService.csproj">
+      <Project>{b3493fe6-b75d-4d5d-bf3d-992ef7f09c76}</Project>
+      <Name>WPFClientService</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="MyApp.ico">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+</Project>

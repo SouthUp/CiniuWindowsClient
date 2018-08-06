@@ -1,0 +1,95 @@
+﻿<Window x:Class="CheckWordControl.Notify.NotifyMessageView"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        AllowsTransparency="True" Background="Transparent" WindowStyle="None" WindowStartupLocation="Manual"
+        Title="NotifyMessageView" Height="100" Width="300" Topmost="True" Loaded="Window_Loaded">
+    <Window.Resources>
+        <Storyboard x:Key="flyinStoryboard">
+            <DoubleAnimation From="{Binding Location.FromLeft}" To="{Binding Location.ToLeft}"
+                    Storyboard.TargetProperty="(Window.Left)" Duration="0:0:0.5"></DoubleAnimation>
+            <DoubleAnimation From="{Binding Location.FromTop}" To="{Binding Location.ToTop}"
+                    Storyboard.TargetProperty="(Window.Top)" Duration="0:0:0.5"></DoubleAnimation>
+        </Storyboard>
+        <Style x:Key="headerTextStyle" TargetType="TextBlock">
+            <Setter Property="FontSize" Value="14" />
+            <Setter Property="Foreground" Value="White" />
+            <Setter Property="FontWeight" Value="Bold" />
+            <Setter Property="HorizontalAlignment" Value="Left" />
+            <Setter Property="VerticalAlignment" Value="Bottom" />
+            <Setter Property="TextTrimming" Value="CharacterEllipsis" />
+        </Style>
+        <Style x:Key="bodyTextStyle" TargetType="TextBlock">
+            <Setter Property="FontSize" Value="13" />
+            <Setter Property="Foreground" Value="White" />
+            <Setter Property="Opacity" Value="0.7" />
+            <Setter Property="HorizontalAlignment" Value="Left" />
+            <Setter Property="VerticalAlignment" Value="Top" />
+            <Setter Property="TextWrapping" Value="Wrap" />
+            <Setter Property="TextTrimming" Value="CharacterEllipsis" />
+        </Style>
+        <DrawingBrush x:Key="CloseBtnLogo" Stretch="Fill">
+            <DrawingBrush.Drawing>
+                <DrawingGroup>
+                    <DrawingGroup.ClipGeometry>
+                        <RectangleGeometry Rect="0,0,28,28" />
+                    </DrawingGroup.ClipGeometry>
+                    <GeometryDrawing Brush="#FFF44336">
+                        <GeometryDrawing.Geometry>
+                            <PathGeometry FillRule="EvenOdd" Figures="M14,28C21.728,28 28,21.728 28,14 28,6.272 21.728,0 14,0 6.272,0 0,6.272 0,14 0,21.728 6.272,28 14,28z M12.6,7L15.4,7 15.4,15.4 12.6,15.4 12.6,7z M12.6,18.2L15.4,18.2 15.4,21 12.6,21 12.6,18.2z" />
+                        </GeometryDrawing.Geometry>
+                    </GeometryDrawing>
+                </DrawingGroup>
+            </DrawingBrush.Drawing>
+        </DrawingBrush>
+    </Window.Resources>
+    <Window.Triggers>
+        <EventTrigger RoutedEvent="Window.Loaded">
+            <BeginStoryboard Storyboard="{StaticResource flyinStoryboard}" />
+        </EventTrigger>
+    </Window.Triggers>
+    <Grid Background="#464646" Cursor="Hand" Height="95" VerticalAlignment="Bottom">
+        <Grid Background="Transparent" MouseLeftButtonDown="Grid_MouseLeftButtonDownDrag">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="100"></ColumnDefinition>
+                <ColumnDefinition Width="200"></ColumnDefinition>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="40"></RowDefinition>
+                <RowDefinition Height="*"></RowDefinition>
+                <RowDefinition Height="20"></RowDefinition>
+            </Grid.RowDefinitions>
+            <Button Grid.Row="0" Grid.Column="1"
+                    Width="24" Height="24" Click="CloseBtn_Click"
+                    Style="{StaticResource CloseBtnButtonStyle}"
+                    HorizontalAlignment="Right" VerticalAlignment="Top">
+            </Button>
+            <Grid Grid.Row="0" Grid.RowSpan="3" Grid.Column="0"
+                  Background="Transparent">
+                <Grid Width="40" Height="40" Background="{StaticResource CloseBtnLogo}"
+                      HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,30,20,0">
+                </Grid>
+            </Grid>
+            <TextBlock Grid.Row="0" Grid.Column="1" Style="{StaticResource headerTextStyle}" 
+                       Text="{Binding Message.HeaderText}" Margin="0,0,0,5"></TextBlock>
+            <TextBlock Grid.Row="1" Grid.Column="1" Style="{StaticResource bodyTextStyle}" 
+                       Text="{Binding Message.BodyText}" Margin="0,0,10,0" VerticalAlignment="Center"></TextBlock>
+            <Button x:Name="RechargeBtn" Grid.Row="1" Grid.Column="1" Width="40" Margin="0,0,40,0"
+                    HorizontalAlignment="Right" VerticalAlignment="Center" 
+                    Content="充值" Foreground="#6ab1f7" FontSize="14"
+                    Style="{StaticResource TextButtonStyle}"
+                    Click="RechargeBtn_Click" Visibility="Collapsed"></Button>
+            <Button x:Name="DownLoadVersionBtn" Grid.Row="1" Grid.Column="1" Width="80" Margin="0,0,20,0"
+                    HorizontalAlignment="Right" VerticalAlignment="Center" 
+                    Content="立即下载" Foreground="#6ab1f7" FontSize="14"
+                    Style="{StaticResource TextButtonStyle}"
+                    Click="DownLoadVersionBtn_Click" Visibility="Collapsed"></Button>
+            <StackPanel x:Name="ErrorCodeStackPanel" Grid.Row="1" Grid.Column="1" Orientation="Horizontal" 
+                        HorizontalAlignment="Left" VerticalAlignment="Bottom" Margin="0,0,0,-10">
+                <TextBlock Style="{StaticResource bodyTextStyle}" FontSize="12" Text="错误码: "></TextBlock>
+                <TextBlock Style="{StaticResource bodyTextStyle}" FontSize="12" Text="{Binding Message.ErrorCode}"></TextBlock>
+            </StackPanel>
+        </Grid>
+    </Grid>
+</Window>

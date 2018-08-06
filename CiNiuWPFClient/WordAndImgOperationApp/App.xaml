@@ -1,0 +1,17 @@
+﻿<Application x:Class="WordAndImgOperationApp.App"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <Application.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="/CheckWordStyle;component/DrawingBrush.xaml"/>
+                <ResourceDictionary Source="/CheckWordStyle;component/TextBlock.xaml"/>
+                <ResourceDictionary Source="/CheckWordStyle;component/ListBox.xaml"/>
+                <ResourceDictionary Source="/CheckWordStyle;component/Button.xaml"/>
+                <ResourceDictionary Source="/CheckWordStyle;component/Menu.xaml"/>
+                <ResourceDictionary Source="/CheckWordStyle;component/TreeView.xaml"/>
+                <ResourceDictionary Source="/CheckWordStyle;component/ScrollViewer.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </Application.Resources>
+</Application>
