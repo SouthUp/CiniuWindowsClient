@@ -723,5 +723,32 @@ namespace WordAndImgOperationApp
             this.Topmost = false;
             viewModel.PinBtnToolTip = "点击固定";
         }
+
+        private void SearchTextBox_KeyDown(object sender, System.Windows.Input.KeyEventArgs e)
+        {
+            if (e.Key == Key.Enter)
+            {
+                
+            }
+        }
+
+        private void GoBtn_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+        private void MoreMenueBtn_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void SelectHistoryBtn_Checked(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void SelectHistoryBtn_Unchecked(object sender, RoutedEventArgs e)
+        {
+
+        }
     }
 }

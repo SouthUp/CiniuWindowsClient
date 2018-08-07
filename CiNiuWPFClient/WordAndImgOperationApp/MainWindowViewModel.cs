@@ -104,5 +104,38 @@ namespace WordAndImgOperationApp
                 RaisePropertyChanged("PinBtnToolTip");
             }
         }
+        private string _searchText;
+        public string SearchText
+        {
+            get { return _searchText; }
+            set
+            {
+                if (_searchText != value)
+                {
+                    _searchText = value;
+                    RaisePropertyChanged("SearchText");
+                }
+            }
+        }
+        private Visibility inputGridVisibility = Visibility.Visible;
+        public Visibility InputGridVisibility
+        {
+            get { return inputGridVisibility; }
+            set
+            {
+                inputGridVisibility = value;
+                RaisePropertyChanged("InputGridVisibility");
+            }
+        }
+        private Visibility dealingGridVisibility = Visibility.Collapsed;
+        public Visibility DealingGridVisibility
+        {
+            get { return dealingGridVisibility; }
+            set
+            {
+                dealingGridVisibility = value;
+                RaisePropertyChanged("DealingGridVisibility");
+            }
+        }
     }
 }

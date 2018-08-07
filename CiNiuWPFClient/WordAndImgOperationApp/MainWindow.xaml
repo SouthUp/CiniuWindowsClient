@@ -183,6 +183,45 @@
                 <Border Height="1" BorderBrush="#a2b5b9" Opacity="0.12" BorderThickness="1"
                         HorizontalAlignment="Stretch" VerticalAlignment="Bottom"></Border>
             </Grid>
+            <Grid Grid.Row="1">
+                <StackPanel Orientation="Horizontal" Margin="10,0,0,0"
+                            HorizontalAlignment="Left" VerticalAlignment="Center">
+                    <Grid Width="286" Height="36" Visibility="{Binding InputGridVisibility}"
+                          VerticalAlignment="Center" HorizontalAlignment="Left">
+                        <Border Width="248" Height="36" BorderThickness="0" Background="Black" 
+                                CornerRadius="2" Opacity="0.04"
+                                VerticalAlignment="Center" HorizontalAlignment="Left">
+                        </Border>
+                        <Grid Width="248" Height="36" HorizontalAlignment="Left" VerticalAlignment="Center">
+                            <control:WatermarkTextBox x:Name="SearchTextBox" Text="{Binding SearchText}"
+                                                  Style="{StaticResource SearchWatermarkTextBox}"
+                                                  Width="206" Height="36" FontSize="14" Foreground="Black"
+                                                  VerticalContentAlignment="Center" VerticalAlignment="Center"
+                                                  BorderThickness="0" Background="Transparent" Margin="10,0,0,0"
+                                                  HorizontalAlignment="Left" KeyDown="SearchTextBox_KeyDown"
+                                                  control:WatermarkTextBox.Watermark="拖入文件，文件夹或输入词，句"
+                                                      MaxLength="1000"/>
+                            <ToggleButton Width="16" Height="16" Margin="0,0,8,0"
+                                          Style="{StaticResource HistoryExpandToggleStyle}"
+                                          VerticalAlignment="Center" HorizontalAlignment="Right"
+                                          Checked="SelectHistoryBtn_Checked" Unchecked="SelectHistoryBtn_Unchecked">
+                            </ToggleButton>
+                        </Grid>
+                        <Button Width="36" Height="36" HorizontalAlignment="Right"
+                                Style="{StaticResource GoBtnStyle}" VerticalAlignment="Center"
+                                Click="GoBtn_Click"  Margin="2,0,0,0">
+                        </Button>
+                    </Grid>
+                    <Grid Width="286" Height="36" Visibility="{Binding DealingGridVisibility}"
+                          VerticalAlignment="Center" HorizontalAlignment="Left">
+                        
+                    </Grid>
+                    <Button Width="24" Height="24" HorizontalAlignment="Center"
+                            Style="{StaticResource MoreMenueBtnStyle}" VerticalAlignment="Center"
+                            Click="MoreMenueBtn_Click"  Margin="10,0,10,0">
+                    </Button>
+                </StackPanel>
+            </Grid>
         </Grid>
     </Grid>
 </Window>
