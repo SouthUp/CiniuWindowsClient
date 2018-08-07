@@ -711,5 +711,17 @@ namespace WordAndImgOperationApp
                 windowState = this.WindowState;
             }
         }
+
+        private void PinBtn_Checked(object sender, RoutedEventArgs e)
+        {
+            this.Topmost = true;
+            viewModel.PinBtnToolTip = "取消固定";
+        }
+
+        private void PinBtn_Unchecked(object sender, RoutedEventArgs e)
+        {
+            this.Topmost = false;
+            viewModel.PinBtnToolTip = "点击固定";
+        }
     }
 }

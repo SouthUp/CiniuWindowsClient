@@ -94,5 +94,15 @@ namespace WordAndImgOperationApp
                 RaisePropertyChanged("NewVersionInfo");
             }
         }
+        private string pinBtnToolTip = "点击固定";
+        public string PinBtnToolTip
+        {
+            get { return pinBtnToolTip; }
+            set
+            {
+                pinBtnToolTip = value;
+                RaisePropertyChanged("PinBtnToolTip");
+            }
+        }
     }
 }
