@@ -68,22 +68,6 @@ namespace WordAndImgOperationApp
             try
             {
                 string newVersion = await GetNewVersionInfo();
-                if (!string.IsNullOrEmpty(newVersion))
-                {
-                    if(new Version(newVersion) > new Version(viewModel.CurrentVersionInfo))
-                    {
-                        viewModel.NewVersionInfo = newVersion;
-                        viewModel.IsVersionInfoPopWindowOpen = true;
-                    }
-                    else
-                    {
-                        EventAggregatorRepository.EventAggregator.GetEvent<SendNotifyMessageEvent>().Publish("60010");
-                    }
-                }
-                else
-                {
-                    EventAggregatorRepository.EventAggregator.GetEvent<SendNotifyMessageEvent>().Publish("60020");
-                }
             }
             catch (Exception ex)
             { }
@@ -667,16 +651,6 @@ namespace WordAndImgOperationApp
             { }
         }
 
-        private void DownLoadVersionBtn_Click(object sender, RoutedEventArgs e)
-        {
-            try
-            {
-                System.Diagnostics.Process.Start("http://www.ciniuwang.com/download");
-            }
-            catch (Exception ex)
-            { }
-        }
-
         private void MenuLogin_Click(object sender, RoutedEventArgs e)
         {
             viewModel.IsSysMenuePopWindowOpen = false;
@@ -738,7 +712,7 @@ namespace WordAndImgOperationApp
         }
         private void MoreMenueBtn_Click(object sender, RoutedEventArgs e)
         {
-
+            viewModel.IsMoreMenuePopWindowOpen = true;
         }
 
         private void SelectHistoryBtn_Checked(object sender, RoutedEventArgs e)
@@ -749,6 +723,18 @@ namespace WordAndImgOperationApp
         private void SelectHistoryBtn_Unchecked(object sender, RoutedEventArgs e)
         {
 
+        }
+        private void GoUserInfoBtn_Click(object sender, RoutedEventArgs e)
+        {
+            viewModel.IsMoreMenuePopWindowOpen = false;
+        }
+        private void GoCustumCiBtn_Click(object sender, RoutedEventArgs e)
+        {
+            viewModel.IsMoreMenuePopWindowOpen = false;
+        }
+        private void GoSettingBtn_Click(object sender, RoutedEventArgs e)
+        {
+            viewModel.IsMoreMenuePopWindowOpen = false;
         }
     }
 }

@@ -453,6 +453,23 @@
             </DrawingGroup>
         </DrawingBrush.Drawing>
     </DrawingBrush>
+    <DrawingBrush x:Key="CustumCiIconLogo" Stretch="None">
+        <DrawingBrush.Drawing>
+            <DrawingGroup>
+                <DrawingGroup.ClipGeometry>
+                    <RectangleGeometry Rect="0,0,18,18" />
+                </DrawingGroup.ClipGeometry>
+                <GeometryDrawing>
+                    <GeometryDrawing.Brush>
+                        <SolidColorBrush Color="#FF000000" Opacity="0.541" />
+                    </GeometryDrawing.Brush>
+                    <GeometryDrawing.Geometry>
+                        <PathGeometry FillRule="EvenOdd" Figures="M15,14L15,16 13,16 13,14 11,14 11,12 13,12 13,10 15,10 15,12 17,12 17,14 15,14z M10.996,10.147C10.996,11.671 9.881,12.902 8.501,12.902 8.115,12.902 7.898,12.59 7.596,12.384 7.189,13.294 6.488,14.004 5.506,14.004 4.126,14.004 3.011,12.773 3.011,11.249L3.011,6.29 1.014,6.29 1.014,4.086 5.007,4.086 5.007,11.249C5.007,11.488 5.289,11.8 5.506,11.8 5.723,11.8 6.005,11.488 6.005,11.249L6.005,6.29 8.001,6.29 8.001,8.494C8.001,8.494 8.007,9.212 8.158,9.871 8.232,10.201 8.356,10.507 8.438,10.628 8.52,10.751 8.459,10.698 8.501,10.698 8.717,10.698 9,10.386 9,10.147L9,2.984 12.992,2.984 12.992,5.188 10.996,5.188 10.996,10.147z" />
+                    </GeometryDrawing.Geometry>
+                </GeometryDrawing>
+            </DrawingGroup>
+        </DrawingBrush.Drawing>
+    </DrawingBrush>
     <DrawingBrush x:Key="ChangeUserLogo" Stretch="None">
         <DrawingBrush.Drawing>
             <DrawingGroup>

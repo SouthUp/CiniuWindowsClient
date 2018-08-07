@@ -64,14 +64,14 @@ namespace WordAndImgOperationApp
                 RaisePropertyChanged("CurrentUserInfo");
             }
         }
-        private bool _isVersionInfoPopWindowOpen = false;
-        public bool IsVersionInfoPopWindowOpen
+        private bool _isMoreMenuePopWindowOpen = false;
+        public bool IsMoreMenuePopWindowOpen
         {
-            get { return _isVersionInfoPopWindowOpen; }
+            get { return _isMoreMenuePopWindowOpen; }
             set
             {
-                _isVersionInfoPopWindowOpen = value;
-                RaisePropertyChanged("IsVersionInfoPopWindowOpen");
+                _isMoreMenuePopWindowOpen = value;
+                RaisePropertyChanged("IsMoreMenuePopWindowOpen");
             }
         }
         private string _currentVersionInfo = "";
