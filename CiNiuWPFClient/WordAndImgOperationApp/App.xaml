@@ -12,6 +12,27 @@
                 <ResourceDictionary Source="/CheckWordStyle;component/TreeView.xaml"/>
                 <ResourceDictionary Source="/CheckWordStyle;component/ScrollViewer.xaml"/>
             </ResourceDictionary.MergedDictionaries>
+            <Style TargetType="ToolTip">
+                <Setter Property="Background" Value="Black"/>
+                <Setter Property="BorderThickness" Value="0"/>
+                <Setter Property="Height" Value="28"/>
+                <Setter Property="FontSize" Value="13"/>
+                <Setter Property="Foreground" Value="White"/>
+                <Setter Property="FontFamily" Value="Microsoft YaHei"/>
+                <Setter Property="BorderBrush" Value="Transparent"/>
+                <Setter Property="Template">
+                    <Setter.Value>
+                        <ControlTemplate TargetType="ToolTip">
+                            <Border CornerRadius="2" BorderThickness="{TemplateBinding BorderThickness}" 
+                                    Background="Black" Opacity="0.87" BorderBrush="{TemplateBinding BorderBrush}">
+                                <ContentPresenter TextBlock.Foreground="White" TextBlock.FontFamily="Microsoft YaHei"
+                                                  Content="{TemplateBinding Content}" ContentTemplate="{TemplateBinding ContentTemplate}"
+                                                  Cursor="{TemplateBinding Cursor}" Margin="{TemplateBinding Padding}"/>
+                            </Border>
+                        </ControlTemplate>
+                    </Setter.Value>
+                </Setter>
+            </Style>
         </ResourceDictionary>
     </Application.Resources>
 </Application>
