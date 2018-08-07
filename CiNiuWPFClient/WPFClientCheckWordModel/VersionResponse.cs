@@ -10,5 +10,6 @@ namespace WPFClientCheckWordModel
     {
         public string latestClient { get; set; }
         public string minimumApi { get; set; }
+        public List<string> descriptionInfos { get; set; }
     }
 }
