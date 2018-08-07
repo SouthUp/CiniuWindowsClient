@@ -8,6 +8,7 @@ namespace WPFClientCheckWordModel
 {
     public class VersionResponse
     {
-        public string version { get; set; }
+        public string latestClient { get; set; }
+        public string minimumApi { get; set; }
     }
 }

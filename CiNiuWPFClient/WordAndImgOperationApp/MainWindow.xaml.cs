@@ -128,7 +128,10 @@ namespace WordAndImgOperationApp
                         bodyText = "获取最新版本失败";
                         break;
                     case "60030":
-                        bodyText = "检测到新版本";
+                        bodyText = "检测到新版本，请升级";
+                        break;
+                    case "60040":
+                        bodyText = "当前版本已不可用，请升级";
                         break;
                 }
                 if (!string.IsNullOrEmpty(bodyText))
@@ -193,15 +196,27 @@ namespace WordAndImgOperationApp
                     string version = FileVersionInfo.GetVersionInfo(System.Reflection.Assembly.GetEntryAssembly().Location).ProductVersion;
                     viewModel.CurrentVersionInfo = version;
                     APIService service = new APIService();
-                    string newVersion = service.GetVersion();
+                    string apiMinVersion = "";
+                    string newVersion = service.GetVersion(out apiMinVersion);
                     if (!string.IsNullOrEmpty(newVersion))
                     {
                         System.Threading.Thread.Sleep(1500);
-                        if (new Version(newVersion) > new Version(version))
+                        if (new Version(apiMinVersion) > new Version(ConfigurationManager.AppSettings["APIVersion"].ToString()))
                         {
-                            viewModel.NewVersionInfo = newVersion;
-                            EventAggregatorRepository.EventAggregator.GetEvent<SendNotifyMessageEvent>().Publish("60030");
+                            EventAggregatorRepository.EventAggregator.GetEvent<SendNotifyMessageEvent>().Publish("60040");
                         }
+                        else
+                        {
+                            if (new Version(newVersion) > new Version(version))
+                            {
+                                viewModel.NewVersionInfo = newVersion;
+                                EventAggregatorRepository.EventAggregator.GetEvent<SendNotifyMessageEvent>().Publish("60030");
+                            }
+                        }
+                    }
+                    else
+                    {
+                        EventAggregatorRepository.EventAggregator.GetEvent<SendNotifyMessageEvent>().Publish("60020");
                     }
                 }
                 catch (Exception ex)
@@ -214,7 +229,8 @@ namespace WordAndImgOperationApp
             string result = "";
             Task<string> task = new Task<string>(() => {
                 APIService service = new APIService();
-                string versionInfo = service.GetVersion();
+                string apiMinVersion = "";
+                string versionInfo = service.GetVersion(out apiMinVersion);
                 return versionInfo;
             });
             task.Start();

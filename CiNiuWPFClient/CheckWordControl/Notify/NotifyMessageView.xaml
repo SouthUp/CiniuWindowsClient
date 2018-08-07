@@ -62,7 +62,7 @@
             </Grid.RowDefinitions>
             <Button Grid.Row="0" Grid.Column="1"
                     Width="24" Height="24" Click="CloseBtn_Click"
-                    Style="{StaticResource CloseBtnButtonStyle}"
+                    Style="{StaticResource WhiteCloseBtnButtonStyle}"
                     HorizontalAlignment="Right" VerticalAlignment="Top">
             </Button>
             <Grid Grid.Row="0" Grid.RowSpan="3" Grid.Column="0"
@@ -80,16 +80,16 @@
                     Content="充值" Foreground="#6ab1f7" FontSize="14"
                     Style="{StaticResource TextButtonStyle}"
                     Click="RechargeBtn_Click" Visibility="Collapsed"></Button>
-            <Button x:Name="DownLoadVersionBtn" Grid.Row="1" Grid.Column="1" Width="80" Margin="0,0,20,0"
-                    HorizontalAlignment="Right" VerticalAlignment="Center" 
-                    Content="立即下载" Foreground="#6ab1f7" FontSize="14"
-                    Style="{StaticResource TextButtonStyle}"
-                    Click="DownLoadVersionBtn_Click" Visibility="Collapsed"></Button>
             <StackPanel x:Name="ErrorCodeStackPanel" Grid.Row="1" Grid.Column="1" Orientation="Horizontal" 
                         HorizontalAlignment="Left" VerticalAlignment="Bottom" Margin="0,0,0,-10">
                 <TextBlock Style="{StaticResource bodyTextStyle}" FontSize="12" Text="错误码: "></TextBlock>
                 <TextBlock Style="{StaticResource bodyTextStyle}" FontSize="12" Text="{Binding Message.ErrorCode}"></TextBlock>
             </StackPanel>
+            <Button x:Name="DownLoadVersionBtn" Grid.Row="1" Grid.RowSpan="2" Grid.Column="1" Width="80" Margin="-10,0,0,5"
+                    HorizontalAlignment="Left" VerticalAlignment="Bottom" 
+                    Content="立即下载" Foreground="#6ab1f7" FontSize="14"
+                    Style="{StaticResource TextButtonStyle}"
+                    Click="DownLoadVersionBtn_Click" Visibility="Collapsed"></Button>
         </Grid>
     </Grid>
 </Window>

@@ -189,17 +189,20 @@ namespace CheckWordUtil
             }
             return result;
         }
-        public string GetVersion()
+        public string GetVersion(out string apiMinVersion)
         {
             string version = "";
+            apiMinVersion = "";
             try
             {
                 string apiName = "version";
                 string resultStr = HttpHelper.HttpUrlGet(apiName, "GET");
-                VersionResponse resultInfo = JsonConvert.DeserializeObject<VersionResponse>(resultStr);
-                if (resultInfo != null)
+                CommonResponse resultResponse = JsonConvert.DeserializeObject<CommonResponse>(resultStr);
+                if (resultResponse.state)
                 {
-                    version = resultInfo.version;
+                    VersionResponse versionResponse = JsonConvert.DeserializeObject<VersionResponse>(resultResponse.result);
+                    version = versionResponse.latestClient;
+                    apiMinVersion = versionResponse.minimumApi;
                 }
             }
             catch (Exception ex)

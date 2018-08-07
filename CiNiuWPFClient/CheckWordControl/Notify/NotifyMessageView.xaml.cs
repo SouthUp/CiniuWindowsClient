@@ -64,6 +64,11 @@ namespace CheckWordControl.Notify
                     DownLoadVersionBtn.Visibility = Visibility.Visible;
                     ErrorCodeStackPanel.Visibility = Visibility.Collapsed;
                 }
+                else if (viewModel != null && viewModel.Message.ErrorCode == "60040")
+                {
+                    DownLoadVersionBtn.Visibility = Visibility.Visible;
+                    ErrorCodeStackPanel.Visibility = Visibility.Collapsed;
+                }
             }
             catch
             { }
