@@ -269,7 +269,7 @@
             </Setter.Value>
         </Setter>
     </Style>
-    <Style x:Key="PinBtnToggleButtonStyle" TargetType="{x:Type ToggleButton}">
+    <Style x:Key="PinBtnButtonStyle" TargetType="{x:Type Button}">
         <Setter Property="FocusVisualStyle" Value="{StaticResource ButtonFocusVisual}" />
         <Setter Property="HorizontalContentAlignment" Value="Center" />
         <Setter Property="VerticalContentAlignment" Value="Center" />
@@ -278,7 +278,7 @@
         <Setter Property="Cursor" Value="Hand" />
         <Setter Property="Template">
             <Setter.Value>
-                <ControlTemplate TargetType="{x:Type ToggleButton}">
+                <ControlTemplate TargetType="{x:Type Button}">
                     <Grid>
                         <Border Background="{TemplateBinding Background}"
                                     BorderBrush="{TemplateBinding BorderBrush}"
@@ -289,26 +289,39 @@
                                               VerticalAlignment="{TemplateBinding VerticalContentAlignment}" />
                     </Grid>
                     <ControlTemplate.Triggers>
-                        <Trigger Property="IsChecked" Value="True" >
-                            <Setter Property="Background" Value="{StaticResource CheckedPinBtnLogo}">
-                            </Setter>
-                        </Trigger>
-                        <MultiTrigger>
-                            <MultiTrigger.Conditions>
-                                <Condition Property="IsMouseOver " Value="true" />
-                                <Condition Property="IsChecked" Value="false" />
-                            </MultiTrigger.Conditions>
+                        <Trigger Property="IsMouseOver" Value="True" >
                             <Setter Property="Background" Value="{StaticResource HoverPinBtnLogo}">
                             </Setter>
-                        </MultiTrigger>
-                        <MultiTrigger>
-                            <MultiTrigger.Conditions>
-                                <Condition Property="IsMouseOver " Value="true" />
-                                <Condition Property="IsChecked" Value="true" />
-                            </MultiTrigger.Conditions>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+    <Style x:Key="CheckedPinBtnButtonStyle" TargetType="{x:Type Button}">
+        <Setter Property="FocusVisualStyle" Value="{StaticResource ButtonFocusVisual}" />
+        <Setter Property="HorizontalContentAlignment" Value="Center" />
+        <Setter Property="VerticalContentAlignment" Value="Center" />
+        <Setter Property="BorderThickness" Value="0" />
+        <Setter Property="Background" Value="{StaticResource CheckedPinBtnLogo}" />
+        <Setter Property="Cursor" Value="Hand" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type Button}">
+                    <Grid>
+                        <Border Background="{TemplateBinding Background}"
+                                    BorderBrush="{TemplateBinding BorderBrush}"
+                                    BorderThickness="{TemplateBinding BorderThickness}" />
+                        <ContentPresenter HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                              Margin="{TemplateBinding Padding}" RecognizesAccessKey="True"
+                                              SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"
+                                              VerticalAlignment="{TemplateBinding VerticalContentAlignment}" />
+                    </Grid>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True" >
                             <Setter Property="Background" Value="{StaticResource HoverCheckedPinBtnLogo}">
                             </Setter>
-                        </MultiTrigger>
+                        </Trigger>
                     </ControlTemplate.Triggers>
                 </ControlTemplate>
             </Setter.Value>

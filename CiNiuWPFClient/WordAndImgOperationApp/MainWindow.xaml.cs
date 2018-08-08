@@ -686,18 +686,6 @@ namespace WordAndImgOperationApp
             }
         }
 
-        private void PinBtn_Checked(object sender, RoutedEventArgs e)
-        {
-            this.Topmost = true;
-            viewModel.PinBtnToolTip = "取消固定";
-        }
-
-        private void PinBtn_Unchecked(object sender, RoutedEventArgs e)
-        {
-            this.Topmost = false;
-            viewModel.PinBtnToolTip = "点击固定";
-        }
-
         private void SearchTextBox_KeyDown(object sender, System.Windows.Input.KeyEventArgs e)
         {
             if (e.Key == Key.Enter)
@@ -735,6 +723,22 @@ namespace WordAndImgOperationApp
         private void GoSettingBtn_Click(object sender, RoutedEventArgs e)
         {
             viewModel.IsMoreMenuePopWindowOpen = false;
+        }
+
+        private void PinBtn_Click(object sender, RoutedEventArgs e)
+        {
+            CheckedPinBtn.Visibility = Visibility.Visible;
+            PinBtn.Visibility = Visibility.Collapsed;
+            this.Topmost = true;
+            viewModel.PinBtnToolTip = "取消固定";
+        }
+
+        private void CheckedPinBtn_Click(object sender, RoutedEventArgs e)
+        {
+            CheckedPinBtn.Visibility = Visibility.Collapsed;
+            PinBtn.Visibility = Visibility.Visible;
+            this.Topmost = false;
+            viewModel.PinBtnToolTip = "点击固定";
         }
     }
 }
