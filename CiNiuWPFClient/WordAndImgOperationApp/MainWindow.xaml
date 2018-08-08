@@ -5,10 +5,13 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:control="clr-namespace:CheckWordControl;assembly=CheckWordControl"
         AllowsTransparency="True" Background="Transparent"
-        WindowStyle="None" Topmost="False"
+        WindowStyle="None" Topmost="False" AllowDrop="True" 
         Height="99" Width="359" Loaded="Window_Loaded" Unloaded="Window_Unloaded"
         Closed="Window_Closed" Title="WordAndImgOperationApp"
-        Visibility="Collapsed" StateChanged="Window_StateChanged">
+        Visibility="Collapsed" StateChanged="Window_StateChanged"
+        Drop="Window_Drop"
+        DragLeave="Window_DragLeave"
+        DragEnter="Window_DragEnter">
     <Grid x:Name="MainGrid" Height="80" Width="340">
         <Border BorderThickness="0">
             <Border.Background>
@@ -148,7 +151,7 @@
             </Grid.RowDefinitions>
             <Grid Grid.Row="0" x:Name="TitleGrid" Background="Transparent" 
                   Cursor="Hand" MouseDown="TitleGrid_MouseDown">
-                <Grid Background="{StaticResource AppTitleLogo}" 
+                <Grid x:Name="AppTitleLogoGrid" Background="{StaticResource AppTitleLogo}" 
                       HorizontalAlignment="Left" VerticalAlignment="Center"
                       Width="18" Height="14" Margin="10,0,0,0">
                 </Grid>
@@ -289,5 +292,34 @@
 
             </Grid>
         </Grid>
+        <Grid x:Name="DragTipGrid" Visibility="Collapsed">
+            <Border BorderThickness="0" Background="#000000" Opacity="0.54">
+                <Rectangle RadiusX="1" RadiusY="1"
+                           Width="{Binding ElementName=DragTipGrid, Path=ActualWidth}"
+                           Height="{Binding ElementName=DragTipGrid, Path=ActualHeight}"
+                           Stroke="#C4C4C4" StrokeDashArray="5,2" StrokeThickness="1"/>
+            </Border>
+            <TextBlock FontSize="16" Text="支持拖入文档和文件夹" Foreground="White"
+                       HorizontalAlignment="Center" VerticalAlignment="Center"></TextBlock>
+        </Grid>
+        <Grid x:Name="DragDealingTipGrid" Visibility="Collapsed">
+            <Border BorderThickness="0" Background="#000000" Opacity="0.54">
+                <Rectangle RadiusX="1" RadiusY="1"
+                           Width="{Binding ElementName=DragDealingTipGrid, Path=ActualWidth}"
+                           Height="{Binding ElementName=DragDealingTipGrid, Path=ActualHeight}"
+                           Stroke="#C4C4C4" StrokeDashArray="5,2" StrokeThickness="1"/>
+            </Border>
+            <TextBlock FontSize="16" Text="处理中,请稍等..." Foreground="White"
+                       HorizontalAlignment="Center" VerticalAlignment="Center"></TextBlock>
+        </Grid>
+        <control:PopupEx IsOpen="{Binding IsMessageTipPopWindowOpen}" AllowsTransparency="True"
+               VerticalOffset="-10" HorizontalOffset="-10" PopupAnimation="Fade" Placement="Top"
+               PlacementTarget="{Binding ElementName=AppTitleLogoGrid}">
+            <Grid Width="340" Height="40" Background="{StaticResource MessageTipBGLogo}">
+                <TextBlock Text="{Binding MessageTipInfo}" Margin="15,0,0,0"
+                               FontSize="14" Foreground="White" 
+                               Style="{StaticResource CommonLeftTextBlock}"></TextBlock>
+            </Grid>
+        </control:PopupEx>
     </Grid>
 </Window>

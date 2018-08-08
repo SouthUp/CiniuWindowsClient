@@ -177,5 +177,28 @@ namespace WordAndImgOperationApp
                 RaisePropertyChanged("AddToCustumCiTiaoVisibility");
             }
         }
+        private bool _isMessageTipPopWindowOpen = false;
+        public bool IsMessageTipPopWindowOpen
+        {
+            get { return _isMessageTipPopWindowOpen; }
+            set
+            {
+                _isMessageTipPopWindowOpen = value;
+                RaisePropertyChanged("IsMessageTipPopWindowOpen");
+            }
+        }
+        private string _messageTipInfo= "";
+        public string MessageTipInfo
+        {
+            get { return _messageTipInfo; }
+            set
+            {
+                if (_messageTipInfo != value)
+                {
+                    _messageTipInfo = value;
+                    RaisePropertyChanged("MessageTipInfo");
+                }
+            }
+        }
     }
 }

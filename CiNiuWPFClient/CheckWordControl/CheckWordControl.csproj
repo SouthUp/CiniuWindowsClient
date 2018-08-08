@@ -65,6 +65,7 @@
     </Compile>
     <Compile Include="Notify\NotifyMessageViewModel.cs" />
     <Compile Include="Notify\Screen.cs" />
+    <Compile Include="Popup\PopupEx.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>

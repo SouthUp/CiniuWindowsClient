@@ -1030,6 +1030,23 @@
             </DrawingGroup>
         </DrawingBrush.Drawing>
     </DrawingBrush>
+    <DrawingBrush x:Key="MessageTipBGLogo" Stretch="None">
+        <DrawingBrush.Drawing>
+            <DrawingGroup>
+                <DrawingGroup.ClipGeometry>
+                    <RectangleGeometry Rect="0,0,340,40" />
+                </DrawingGroup.ClipGeometry>
+                <GeometryDrawing>
+                    <GeometryDrawing.Brush>
+                        <SolidColorBrush Color="#FF000000" Opacity="0.871" />
+                    </GeometryDrawing.Brush>
+                    <GeometryDrawing.Geometry>
+                        <PathGeometry FillRule="EvenOdd" Figures="M338,34L24,34 19.414,38.485A2,2,0,0,1,16.586,38.485L13,34 2,34A2,2,0,0,1,0,32L0,2A2,2,0,0,1,2,0L338,0A2,2,0,0,1,340,2L340,32A2,2,0,0,1,338,34z" />
+                    </GeometryDrawing.Geometry>
+                </GeometryDrawing>
+            </DrawingGroup>
+        </DrawingBrush.Drawing>
+    </DrawingBrush>
     <DrawingBrush x:Key="DeletePathButtonBGLogo" Stretch="None">
         <DrawingBrush.Drawing>
             <DrawingGroup>

@@ -38,6 +38,7 @@ namespace WordAndImgOperationApp
     /// </summary>
     public partial class MainWindow : Window, ICallBackServices, IShell
     {
+        private bool IsDealingData = false;
         WindowState windowState;
         private string CheckWordTempPath = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + "\\WordAndImgOCR\\CheckWordResultTemp";
         NotifyIcon notifyIcon;
@@ -761,6 +762,37 @@ namespace WordAndImgOperationApp
             viewModel.AddToCustumCiTiaoVisibility = Visibility.Collapsed;
             MainGrid.Height = 80 + 75;
             this.Height = 99 + 75;
+        }
+
+        private void Window_Drop(object sender, System.Windows.DragEventArgs e)
+        {
+            DragDealingTipGrid.Visibility = Visibility.Collapsed;
+            DragTipGrid.Visibility = Visibility.Collapsed;
+            if (this.IsDealingData)
+            {
+                return;
+            }
+            this.IsDealingData = true;
+        }
+
+        private void Window_DragLeave(object sender, System.Windows.DragEventArgs e)
+        {
+            DragDealingTipGrid.Visibility = Visibility.Collapsed;
+            DragTipGrid.Visibility = Visibility.Collapsed;
+        }
+
+        private void Window_DragEnter(object sender, System.Windows.DragEventArgs e)
+        {
+            if (this.IsDealingData)
+            {
+                DragDealingTipGrid.Visibility = Visibility.Visible;
+                DragTipGrid.Visibility = Visibility.Collapsed;
+            }
+            else
+            {
+                DragTipGrid.Visibility = Visibility.Visible;
+                DragDealingTipGrid.Visibility = Visibility.Collapsed;
+            }
         }
     }
 }
