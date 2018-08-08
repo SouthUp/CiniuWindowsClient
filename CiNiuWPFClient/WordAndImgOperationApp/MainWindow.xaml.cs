@@ -323,6 +323,7 @@ namespace WordAndImgOperationApp
         {
             this.WindowState = WindowState.Minimized;
             this.Hide();
+            EventAggregatorRepository.EventAggregator.GetEvent<MainAppShowTipsInfoEvent>().Publish(new AppBusyIndicator() { IsBusy = false, BusyContent = "" });
         }
         private void Window_Unloaded(object sender, RoutedEventArgs e)
         {
@@ -371,6 +372,10 @@ namespace WordAndImgOperationApp
                 this.Show();
                 this.Activate();
                 this.WindowState = windowState;
+                if (this.IsDealingData)
+                {
+                    EventAggregatorRepository.EventAggregator.GetEvent<MainAppShowTipsInfoEvent>().Publish(new AppBusyIndicator() { IsBusy = true, BusyContent = "" });
+                }
             }
         }
         /// <summary>    
@@ -787,6 +792,9 @@ namespace WordAndImgOperationApp
                 return;
             }
             this.IsDealingData = true;
+            viewModel.InputGridVisibility = Visibility.Collapsed;
+            viewModel.DealingGridVisibility = Visibility.Visible;
+            EventAggregatorRepository.EventAggregator.GetEvent<MainAppShowTipsInfoEvent>().Publish(new AppBusyIndicator() { IsBusy = true, BusyContent = "正在检测中，请稍后添加" });
         }
 
         private void Window_DragLeave(object sender, System.Windows.DragEventArgs e)
@@ -807,6 +815,13 @@ namespace WordAndImgOperationApp
                 DragTipGrid.Visibility = Visibility.Visible;
                 DragDealingTipGrid.Visibility = Visibility.Collapsed;
             }
+        }
+        private void CancelDealingBtn_Click(object sender, RoutedEventArgs e)
+        {
+            EventAggregatorRepository.EventAggregator.GetEvent<MainAppShowTipsInfoEvent>().Publish(new AppBusyIndicator() { IsBusy = false, BusyContent = "" });
+            viewModel.DealingGridVisibility = Visibility.Collapsed;
+            viewModel.InputGridVisibility = Visibility.Visible;
+            this.IsDealingData = false;
         }
     }
 }

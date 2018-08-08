@@ -200,5 +200,44 @@ namespace WordAndImgOperationApp
                 }
             }
         }
+        private string _checkFilesInfosText = "正在检测5个文件，12张图片";
+        public string CheckFilesInfosText
+        {
+            get { return _checkFilesInfosText; }
+            set
+            {
+                if (_checkFilesInfosText != value)
+                {
+                    _checkFilesInfosText = value;
+                    RaisePropertyChanged("CheckFilesInfosText");
+                }
+            }
+        }
+        private int _dealTotalCount = 10;
+        public int DealTotalCount
+        {
+            get { return _dealTotalCount; }
+            set
+            {
+                if (_dealTotalCount != value)
+                {
+                    _dealTotalCount = value;
+                    RaisePropertyChanged("DealTotalCount");
+                }
+            }
+        }
+        private int _dealCurrentIndex = 5;
+        public int DealCurrentIndex
+        {
+            get { return _dealCurrentIndex; }
+            set
+            {
+                if (_dealCurrentIndex != value)
+                {
+                    _dealCurrentIndex = value;
+                    RaisePropertyChanged("DealCurrentIndex");
+                }
+            }
+        }
     }
 }
