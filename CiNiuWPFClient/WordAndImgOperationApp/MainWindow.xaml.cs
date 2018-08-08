@@ -690,13 +690,21 @@ namespace WordAndImgOperationApp
         {
             if (e.Key == Key.Enter)
             {
-                
+                viewModel.SearchText = SearchTextBox.Text;
+                CheckInputText(viewModel.SearchText);
             }
         }
 
         private void GoBtn_Click(object sender, RoutedEventArgs e)
         {
-
+            CheckInputText(viewModel.SearchText);
+        }
+        private void CheckInputText(string textSearch)
+        {
+            //不包含违禁词
+            viewModel.WordNoUnchekResultVisibility = Visibility.Visible;
+            MainGrid.Height = 80 + 75;
+            this.Height = 99 + 75;
         }
         private void MoreMenueBtn_Click(object sender, RoutedEventArgs e)
         {
@@ -739,6 +747,20 @@ namespace WordAndImgOperationApp
             PinBtn.Visibility = Visibility.Visible;
             this.Topmost = false;
             viewModel.PinBtnToolTip = "点击固定";
+        }
+
+        private void AddToCustumCiTiaoBtn_Click(object sender, RoutedEventArgs e)
+        {
+            viewModel.AddToCustumCiTiaoVisibility = Visibility.Visible;
+            MainGrid.Height = 80 + 200;
+            this.Height = 99 + 200;
+        }
+
+        private void SureToCustumCiTiaoBtn_Click(object sender, RoutedEventArgs e)
+        {
+            viewModel.AddToCustumCiTiaoVisibility = Visibility.Collapsed;
+            MainGrid.Height = 80 + 75;
+            this.Height = 99 + 75;
         }
     }
 }

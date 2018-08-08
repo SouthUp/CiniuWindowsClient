@@ -137,5 +137,45 @@ namespace WordAndImgOperationApp
                 RaisePropertyChanged("DealingGridVisibility");
             }
         }
+        private Visibility wordHasUnchekResultVisibility = Visibility.Collapsed;
+        public Visibility WordHasUnchekResultVisibility
+        {
+            get { return wordHasUnchekResultVisibility; }
+            set
+            {
+                wordHasUnchekResultVisibility = value;
+                RaisePropertyChanged("WordHasUnchekResultVisibility");
+            }
+        }
+        private Visibility wordNoUnchekResultVisibility = Visibility.Collapsed;
+        public Visibility WordNoUnchekResultVisibility
+        {
+            get { return wordNoUnchekResultVisibility; }
+            set
+            {
+                wordNoUnchekResultVisibility = value;
+                RaisePropertyChanged("WordNoUnchekResultVisibility");
+            }
+        }
+        private Visibility dragFilesResultVisibility = Visibility.Collapsed;
+        public Visibility DragFilesResultVisibility
+        {
+            get { return dragFilesResultVisibility; }
+            set
+            {
+                dragFilesResultVisibility = value;
+                RaisePropertyChanged("DragFilesResultVisibility");
+            }
+        }
+        private Visibility addToCustumCiTiaoVisibility = Visibility.Collapsed;
+        public Visibility AddToCustumCiTiaoVisibility
+        {
+            get { return addToCustumCiTiaoVisibility; }
+            set
+            {
+                addToCustumCiTiaoVisibility = value;
+                RaisePropertyChanged("AddToCustumCiTiaoVisibility");
+            }
+        }
     }
 }

@@ -9,7 +9,7 @@
         Height="99" Width="359" Loaded="Window_Loaded" Unloaded="Window_Unloaded"
         Closed="Window_Closed" Title="WordAndImgOperationApp"
         Visibility="Collapsed" StateChanged="Window_StateChanged">
-    <Grid Height="80" Width="340">
+    <Grid x:Name="MainGrid" Height="80" Width="340">
         <Border BorderThickness="0">
             <Border.Background>
                 <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
@@ -143,7 +143,7 @@
         <Grid>
             <Grid.RowDefinitions>
                 <RowDefinition Height="24"></RowDefinition>
-                <RowDefinition Height="*"></RowDefinition>
+                <RowDefinition Height="56"></RowDefinition>
                 <RowDefinition Height="Auto"></RowDefinition>
             </Grid.RowDefinitions>
             <Grid Grid.Row="0" x:Name="TitleGrid" Background="Transparent" 
@@ -209,6 +209,84 @@
                             Click="MoreMenueBtn_Click"  Margin="10,0,10,0">
                     </Button>
                 </StackPanel>
+            </Grid>
+            <Grid Grid.Row="2" Visibility="{Binding WordHasUnchekResultVisibility}">
+
+            </Grid>
+            <Grid Grid.Row="2" Visibility="{Binding WordNoUnchekResultVisibility}"
+                  HorizontalAlignment="Stretch" Background="White">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="8"></RowDefinition>
+                    <RowDefinition Height="32"></RowDefinition>
+                    <RowDefinition Height="Auto"></RowDefinition>
+                </Grid.RowDefinitions>
+                <Grid Grid.Row="1">
+                    <StackPanel Grid.Column="0" Orientation="Horizontal" Margin="20,0,0,0"
+                                    HorizontalAlignment="Left" VerticalAlignment="Center">
+                        <TextBlock Text="&quot; " Foreground="Black" FontSize="16" 
+                                   FontWeight="Bold" Opacity="0.87"
+                                   Style="{StaticResource CommonLeftTextBlock}">
+                        </TextBlock>
+                        <TextBlock Text="{Binding SearchText}" FontWeight="Bold"
+                                   Foreground="Black" FontSize="16" Opacity="0.87"
+                                   Style="{StaticResource CommonCenterTextBlock}" 
+                                   MaxWidth="175" TextTrimming="CharacterEllipsis">
+                        </TextBlock>
+                        <TextBlock Text=" &quot;" Foreground="Black" FontSize="16" 
+                                   FontWeight="Bold" Opacity="0.87"
+                                   Style="{StaticResource CommonLeftTextBlock}">
+                        </TextBlock>
+                    </StackPanel>
+                    <Button Width="104" Height="16" Margin="0,0,16,0" HorizontalAlignment="Right"
+                            Style="{StaticResource AddToCustumCiTiaoBtnButtonStyle}"
+                            Click="AddToCustumCiTiaoBtn_Click">
+                    </Button>
+                </Grid>
+                <Grid Grid.Row="2" Height="35">
+                    <TextBlock Text="不包含违禁词" Margin="20,0,0,0"
+                               FontSize="12" Foreground="Black" Opacity="0.54"
+                               Style="{StaticResource CommonLeftTextBlock}"></TextBlock>
+                </Grid>
+                <Grid Grid.Row="2" Height="160" Background="White"
+                      Visibility="{Binding AddToCustumCiTiaoVisibility}">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="8"></RowDefinition>
+                        <RowDefinition Height="40"></RowDefinition>
+                        <RowDefinition Height="64"></RowDefinition>
+                        <RowDefinition Height="48"></RowDefinition>
+                    </Grid.RowDefinitions>
+                    <Grid Grid.Row="1">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="54"></ColumnDefinition>
+                            <ColumnDefinition Width="*"></ColumnDefinition>
+                        </Grid.ColumnDefinitions>
+                        <TextBlock Grid.Column="0" Text="平台：" Margin="16,0,0,0"
+                                   FontSize="12" Foreground="Black" Opacity="0.38"
+                                   Style="{StaticResource CommonLeftTextBlock}"></TextBlock>
+                        <Grid Grid.Column="1" Margin="10,0,10,0">
+                            
+                        </Grid>
+                    </Grid>
+                    <Grid Grid.Row="2">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="54"></ColumnDefinition>
+                            <ColumnDefinition Width="*"></ColumnDefinition>
+                        </Grid.ColumnDefinitions>
+                        <TextBlock Grid.Column="0" Text="类目：" Margin="16,0,0,0"
+                                   FontSize="12" Foreground="Black" Opacity="0.38"
+                                   Style="{StaticResource CommonLeftTextBlock}"></TextBlock>
+                        <Grid Grid.Column="1" Margin="10,0,10,0">
+
+                        </Grid>
+                    </Grid>
+                    <Button Grid.Row="3" Width="64" Height="32" Content="确定"
+                            HorizontalAlignment="Right" Margin="0,0,16,0"
+                            Style="{StaticResource HsaBGHoverTextButtonStyle}"
+                            Click="SureToCustumCiTiaoBtn_Click"></Button>
+                </Grid>
+            </Grid>
+            <Grid Grid.Row="2" Visibility="{Binding DragFilesResultVisibility}">
+
             </Grid>
         </Grid>
     </Grid>
