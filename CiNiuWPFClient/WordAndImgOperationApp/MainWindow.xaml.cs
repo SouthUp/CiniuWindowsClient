@@ -57,8 +57,22 @@ namespace WordAndImgOperationApp
             EventAggregatorRepository.EventAggregator.GetEvent<SendNotifyMessageEvent>().Subscribe(SendNotifyMessage);
             EventAggregatorRepository.EventAggregator.GetEvent<CheckVersionMessageEvent>().Subscribe(CheckVersionMessage);
             EventAggregatorRepository.EventAggregator.GetEvent<CloseMyAppEvent>().Subscribe(CloseMyApp);
+            EventAggregatorRepository.EventAggregator.GetEvent<MainAppShowTipsInfoEvent>().Subscribe(MainAppShowTipsInfo);
             RegisterWcfService();
             GetVersionInfo();
+        }
+        private void MainAppShowTipsInfo(AppBusyIndicator busyindicator)
+        {
+            try
+            {
+                Dispatcher.Invoke(new Action(() => {
+                    if (!string.IsNullOrEmpty(busyindicator.BusyContent))
+                        this.viewModel.MessageTipInfo = busyindicator.BusyContent;
+                    viewModel.IsMessageTipPopWindowOpen = busyindicator.IsBusy;
+                }));
+            }
+            catch (Exception ex)
+            { }
         }
         private void CloseMyApp(bool b)
         {

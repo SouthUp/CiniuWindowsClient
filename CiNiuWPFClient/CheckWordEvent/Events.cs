@@ -17,6 +17,13 @@ namespace CheckWordEvent
 
     }
     /// <summary>
+    ///  主窗体显示提示信息事件
+    /// </summary>
+    public class MainAppShowTipsInfoEvent : PubSubEvent<AppBusyIndicator>
+    {
+
+    }
+    /// <summary>
     ///  应用程序关闭事件
     /// </summary>
     public class CloseMyAppEvent : PubSubEvent<bool>
