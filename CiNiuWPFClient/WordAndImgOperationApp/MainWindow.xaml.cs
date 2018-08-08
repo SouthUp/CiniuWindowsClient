@@ -50,7 +50,7 @@ namespace WordAndImgOperationApp
             windowState = this.WindowState;
             this.DataContext = viewModel;
             this.Left = SystemParameters.WorkArea.Width - 352;
-            this.Top = SystemParameters.WorkArea.Height - 130;
+            this.Top = SystemParameters.WorkArea.Height - 170;
             EventAggregatorRepository.EventAggregator.GetEvent<InitContentGridViewEvent>().Subscribe(InitContentGridView);
             EventAggregatorRepository.EventAggregator.GetEvent<LoginInOrOutEvent>().Subscribe(LoginInOrOut);
             EventAggregatorRepository.EventAggregator.GetEvent<SendNotifyMessageEvent>().Subscribe(SendNotifyMessage);
