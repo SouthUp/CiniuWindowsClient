@@ -50,6 +50,19 @@ namespace WordAndImgOperationApp
                 }
             }
         }
+        private string _newPassWord;
+        public string NewPassWord
+        {
+            get { return _newPassWord; }
+            set
+            {
+                if (_newPassWord != value)
+                {
+                    _newPassWord = value;
+                    RaisePropertyChanged("NewPassWord");
+                }
+            }
+        }
         private string _yzmStr;
         public string YZMStr
         {

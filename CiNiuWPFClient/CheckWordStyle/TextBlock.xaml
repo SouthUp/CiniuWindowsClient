@@ -403,4 +403,63 @@
             </Setter.Value>
         </Setter>
     </Style>
+    <Style x:Key="NoEyeWatermarkPasswordBox" TargetType="{x:Type PasswordBox}">
+        <Setter Property="Background" Value="{DynamicResource {x:Static SystemColors.WindowBrushKey}}" />
+        <Setter Property="BorderBrush" Value="{StaticResource TextBoxBorder}" />
+        <Setter Property="OverridesDefaultStyle" Value="True" />
+        <Setter Property="PasswordChar" Value="●" />
+        <Setter Property="Foreground" Value="{DynamicResource {x:Static SystemColors.ControlTextBrushKey}}" />
+        <Setter Property="KeyboardNavigation.TabNavigation" Value="None" />
+        <Setter Property="VerticalContentAlignment" Value="Center" />
+        <Setter Property="BorderThickness" Value="1" />
+        <Setter Property="HorizontalContentAlignment" Value="Left" />
+        <Setter Property="FocusVisualStyle" Value="{x:Null}" />
+        <Setter Property="AllowDrop" Value="true" />
+        <Setter Property="ScrollViewer.PanningMode" Value="VerticalFirst" />
+        <Setter Property="Stylus.IsFlicksEnabled" Value="False" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type PasswordBox}">
+                    <Microsoft_Windows_Themes:ListBoxChrome
+                        x:Name="Bd"
+                        Background="{TemplateBinding Background}"
+                        BorderBrush="{TemplateBinding BorderBrush}"
+                        BorderThickness="{TemplateBinding BorderThickness}"
+                        RenderFocused="{TemplateBinding IsKeyboardFocusWithin}"
+                        RenderMouseOver="{TemplateBinding IsMouseOver}"
+                        SnapsToDevicePixels="true">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition  Width="Auto"/>
+                            </Grid.ColumnDefinitions>
+                            <TextBlock
+                                x:Name="PART_PlaceHolder"
+                                Grid.Column="0" 
+                                Margin="{TemplateBinding Padding}"
+                                Padding="2,0,0,0"
+                                HorizontalAlignment="Left"
+                                VerticalAlignment="Center"
+                                FontStyle="Normal"
+                                Foreground="Black"
+                                Visibility="Collapsed"
+                                IsHitTestVisible="False"
+                                Opacity="0.26"
+                                Style="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(local:WatermarkTextBox.WatermarkStyle)}"
+                                Text="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(local:WatermarkTextBox.Watermark)}" />
+                            <ScrollViewer x:Name="PART_ContentHost" Grid.Column="0" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" VerticalAlignment="Center"/>
+                        </Grid>
+                    </Microsoft_Windows_Themes:ListBoxChrome>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="local:PasswordHelper.Password" Value="">
+                            <Setter TargetName="PART_PlaceHolder" Property="Visibility" Value="Visible"/>
+                        </Trigger>
+                        <Trigger Property="local:PasswordHelper.Password" Value="{x:Null}">
+                            <Setter TargetName="PART_PlaceHolder" Property="Visibility" Value="Visible"/>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
 </ResourceDictionary>

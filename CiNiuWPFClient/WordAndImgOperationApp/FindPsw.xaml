@@ -27,7 +27,9 @@
                              VerticalContentAlignment="Bottom" CaretBrush="Black"
                                               control:WatermarkTextBox.Watermark="用户名"
                                               MaxLength="11" IsOnlyNumber="True"
-                                              InputMethod.IsInputMethodEnabled="False"/>
+                                              InputMethod.IsInputMethodEnabled="False"
+                                              GotFocus="UserNameTextBox_GotFocus"
+                                              LostFocus="UserNameTextBox_LostFocus"/>
                     <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="0,0,5,0">
                         <TextBlock Text="{Binding SendYZMBtnContentTime}" FontSize="12" Foreground="Black" Opacity="0.54" 
                                    Style="{StaticResource CommonCenterTextBlock}">
@@ -39,7 +41,7 @@
                         </Button>
                     </StackPanel>
                 </Grid>
-                <Border Width="260" Height="1" BorderThickness="1" BorderBrush="Black" 
+                <Border x:Name="UserNameTextBoxBorder" Width="260" Height="1" BorderThickness="1" BorderBrush="Black" 
                     HorizontalAlignment="Center" Margin="0,8,0,0" Opacity="0.06"></Border>
             </StackPanel>
             <StackPanel Orientation="Vertical" Margin="0,18,0,0">
@@ -48,31 +50,50 @@
                              Width="260" Height="18" Background="Transparent" Foreground="Black" 
                              Text="{Binding YZMStr}" FontSize="12" 
                              VerticalContentAlignment="Bottom" CaretBrush="Black"
-                                              control:WatermarkTextBox.Watermark="输入验证码"/>
-                <Border Width="260" Height="1" BorderThickness="1" BorderBrush="Black" 
+                                              control:WatermarkTextBox.Watermark="输入验证码"
+                                          GotFocus="YZMTextBox_GotFocus"
+                                          LostFocus="YZMTextBox_LostFocus"/>
+                <Border x:Name="YZMTextBoxBorder" Width="260" Height="1" BorderThickness="1" BorderBrush="Black" 
                     HorizontalAlignment="Center" Margin="0,8,0,0" Opacity="0.06"></Border>
             </StackPanel>
             <StackPanel Orientation="Vertical" Margin="0,18,0,0">
-                <PasswordBox x:Name="Password" Style="{StaticResource WatermarkPasswordBox}" 
+                <PasswordBox x:Name="NewPassword" Style="{StaticResource NoEyeWatermarkPasswordBox}" 
                                  input:InputMethod.IsInputMethodEnabled="False" 
                                  BorderThickness="0"  Width="260"  Opacity="0.87"
                                  Height="18" Background="Transparent"  Foreground="Black"
                                  FontSize="12" CaretBrush="Black"
                                  VerticalContentAlignment="Bottom"
-                                 control:WatermarkTextBox.Watermark="新密码" 
+                                 control:WatermarkTextBox.Watermark="重置密码（6-12位字母与数字组合）" 
                                  control:PasswordHelper.Attach="True" 
-                                 control:PasswordHelper.Password="{Binding PassWord,Mode=TwoWay}"/>
-                <Border Width="260" Height="1" BorderThickness="1" BorderBrush="Black" 
+                                 control:PasswordHelper.Password="{Binding NewPassWord,Mode=TwoWay}"
+                             GotFocus="NewPassword_GotFocus"
+                             LostFocus="NewPassword_LostFocus"/>
+                <Border x:Name="NewPasswordBorder" Width="260" Height="1" BorderThickness="1" BorderBrush="Black" 
+                    HorizontalAlignment="Center" Margin="0,8,0,0" Opacity="0.06"></Border>
+            </StackPanel>
+            <StackPanel Orientation="Vertical" Margin="0,18,0,0">
+                <PasswordBox x:Name="Password" Style="{StaticResource NoEyeWatermarkPasswordBox}" 
+                                 input:InputMethod.IsInputMethodEnabled="False" 
+                                 BorderThickness="0"  Width="260"  Opacity="0.87"
+                                 Height="18" Background="Transparent"  Foreground="Black"
+                                 FontSize="12" CaretBrush="Black"
+                                 VerticalContentAlignment="Bottom"
+                                 control:WatermarkTextBox.Watermark="确认密码" 
+                                 control:PasswordHelper.Attach="True" 
+                                 control:PasswordHelper.Password="{Binding PassWord,Mode=TwoWay}"
+                             GotFocus="Password_GotFocus"
+                             LostFocus="Password_LostFocus"/>
+                <Border x:Name="PasswordBorder" Width="260" Height="1" BorderThickness="1" BorderBrush="Black" 
                     HorizontalAlignment="Center" Margin="0,8,0,0" Opacity="0.06"></Border>
             </StackPanel>
         </StackPanel>
-        <Grid Width="260" Height="14" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0,197,0,0">
+        <Grid Width="260" Height="14" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0,240,0,0">
             <TextBlock Text="{Binding MessageInfo}" FontSize="12" Foreground="#f44336" 
                    Style="{StaticResource CommonCenterTextBlock}">
             </TextBlock>
         </Grid>
         <Button Width="260" Height="36" HorizontalAlignment="Center" VerticalAlignment="Top"
-                Margin="0,217,0,0" Content="确 认"
+                Margin="0,260,0,0" Content="确 认"
                 Style="{StaticResource LoginSurePurpleRoundButtonStyle}"
                 Click="LoginBtn_Click" KeyDown="LoginBtn_KeyDown">
         </Button>

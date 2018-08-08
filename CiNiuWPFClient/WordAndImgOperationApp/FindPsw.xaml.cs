@@ -61,7 +61,7 @@ namespace WordAndImgOperationApp
             viewModel.MessageInfo = "";
             viewModel.UserName = UserNameTextBox.Text;
             viewModel.YZMStr = YZMTextBox.Text;
-            if (!FindPswCheckPhoneAndCodePass(viewModel.UserName, viewModel.YZMStr, viewModel.PassWord)) return;
+            if (!FindPswCheckPhoneAndCodePass(viewModel.UserName, viewModel.YZMStr, viewModel.PassWord, viewModel.NewPassWord)) return;
             EventAggregatorRepository.EventAggregator.GetEvent<AppBusyIndicatorEvent>().Publish(new AppBusyIndicator() { IsBusy = true });
             System.Threading.ThreadStart startLogin = delegate ()
             {
@@ -149,7 +149,7 @@ namespace WordAndImgOperationApp
             }
             return true;
         }
-        private bool FindPswCheckPhoneAndCodePass(string userName, string code,string psw)
+        private bool FindPswCheckPhoneAndCodePass(string userName, string code,string psw,string newPsw)
         {
             if (String.IsNullOrWhiteSpace(userName))
             {
@@ -170,6 +170,21 @@ namespace WordAndImgOperationApp
                 viewModel.MessageInfo = "请输入验证码";
                 return false;
             }
+            if (String.IsNullOrWhiteSpace(newPsw))
+            {
+                viewModel.MessageInfo = "请输入重置密码";
+                return false;
+            }
+            if (String.IsNullOrWhiteSpace(psw))
+            {
+                viewModel.MessageInfo = "请输入确认密码";
+                return false;
+            }
+            if (psw != newPsw)
+            {
+                viewModel.MessageInfo = "确认密码与重置密码不一致";
+                return false;
+            }
             return true;
         }
 
@@ -179,6 +194,53 @@ namespace WordAndImgOperationApp
             {
                 LoginIn();
             }
+        }
+
+        private void UserNameTextBox_GotFocus(object sender, RoutedEventArgs e)
+        {
+            UserNameTextBoxBorder.BorderBrush = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#673ab7"));
+            UserNameTextBoxBorder.Opacity = 0.54;
+        }
+
+        private void UserNameTextBox_LostFocus(object sender, RoutedEventArgs e)
+        {
+            UserNameTextBoxBorder.BorderBrush = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#000000"));
+            UserNameTextBoxBorder.Opacity = 0.06;
+        }
+
+        private void YZMTextBox_GotFocus(object sender, RoutedEventArgs e)
+        {
+            YZMTextBoxBorder.BorderBrush = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#673ab7"));
+            YZMTextBoxBorder.Opacity = 0.54;
+        }
+
+        private void YZMTextBox_LostFocus(object sender, RoutedEventArgs e)
+        {
+            YZMTextBoxBorder.BorderBrush = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#000000"));
+            YZMTextBoxBorder.Opacity = 0.06;
+        }
+
+        private void Password_GotFocus(object sender, RoutedEventArgs e)
+        {
+            PasswordBorder.BorderBrush = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#673ab7"));
+            PasswordBorder.Opacity = 0.54;
+        }
+
+        private void Password_LostFocus(object sender, RoutedEventArgs e)
+        {
+            PasswordBorder.BorderBrush = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#000000"));
+            PasswordBorder.Opacity = 0.06;
+        }
+        private void NewPassword_GotFocus(object sender, RoutedEventArgs e)
+        {
+            NewPasswordBorder.BorderBrush = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#673ab7"));
+            NewPasswordBorder.Opacity = 0.54;
+        }
+
+        private void NewPassword_LostFocus(object sender, RoutedEventArgs e)
+        {
+            NewPasswordBorder.BorderBrush = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#000000"));
+            NewPasswordBorder.Opacity = 0.06;
         }
     }
 }
