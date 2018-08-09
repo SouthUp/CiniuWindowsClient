@@ -48,6 +48,7 @@
   <ItemGroup>
     <Compile Include="Communication\CommonExchangeInfo.cs" />
     <Compile Include="ImgGeneralInfo.cs" />
+    <Compile Include="MyFolderDataViewModel.cs" />
     <Compile Include="SelectFileType.cs" />
     <Compile Include="UnChekedDetailWordInfo.cs" />
     <Compile Include="UnChekedWordInfo.cs" />

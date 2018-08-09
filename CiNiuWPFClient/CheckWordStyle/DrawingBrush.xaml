@@ -1124,16 +1124,11 @@
         <DrawingBrush.Drawing>
             <DrawingGroup>
                 <DrawingGroup.ClipGeometry>
-                    <RectangleGeometry Rect="0,0,32,32" />
+                    <RectangleGeometry Rect="0,0,18,18" />
                 </DrawingGroup.ClipGeometry>
                 <GeometryDrawing Brush="#FF68A0CD">
                     <GeometryDrawing.Geometry>
-                        <PathGeometry FillRule="EvenOdd" Figures="M16,0C24.837,0 32,7.163 32,16 32,24.837 24.837,32 16,32 7.163,32 0,24.837 0,16 0,7.163 7.163,0 16,0z" />
-                    </GeometryDrawing.Geometry>
-                </GeometryDrawing>
-                <GeometryDrawing Brush="#FFFFFFFF">
-                    <GeometryDrawing.Geometry>
-                        <PathGeometry FillRule="EvenOdd" Figures="M15.906,7L15.836,7.023 7.586,8.852 7,8.992 7,23.008 7.586,23.148 15.836,24.977 15.906,25 17.5,25 17.5,22.75 25,22.75 25,9.25 17.5,9.25 17.5,7 15.906,7z M16,8.523L16,23.477 8.5,21.836 8.5,10.164 16,8.523z M17.5,21.25L17.5,19.75 M17.5,18.25L17.5,17.5 M17.5,16L17.5,15.25 M17.5,13.75L17.5,13 M17.5,11.5L17.5,10.75 M15.25,12.25L14.078,12.344C13.99,12.938,13.524,16.146,13.516,16.398L13.023,12.484 11.43,12.719 10.797,16.773 10.375,12.859 9.25,13 10,19 11.453,19.234 12.273,14.43C12.279,14.699,12.842,18.414,13,19.492L14.101,19.68 15.25,12.25z" />
+                        <PathGeometry FillRule="EvenOdd" Figures="M10.334,15.003L10.334,17.004 8.916,17.004 8.854,16.983 1.517,15.357 0.996000000000001,15.232 0.996000000000001,2.768 1.517,2.643 8.854,1.017 8.916,0.996 10.334,0.996 10.334,2.997 17.004,2.997 17.004,15.003 10.334,15.003z M9,2.351L2.33,3.81 2.33,14.19 9,15.649 9,2.351z M4.412,10.74L5.136,6.728 5.944,6.728 6.719,10.761 7.282,6.728 8.292,6.728 7.309,11.969 6.132,11.969 5.531,8.714 4.948,11.969 3.771,11.969 2.788,6.728 3.798,6.728 4.412,10.74z" />
                     </GeometryDrawing.Geometry>
                 </GeometryDrawing>
             </DrawingGroup>
@@ -1143,16 +1138,11 @@
         <DrawingBrush.Drawing>
             <DrawingGroup>
                 <DrawingGroup.ClipGeometry>
-                    <RectangleGeometry Rect="0,0,32,32" />
+                    <RectangleGeometry Rect="0,0,18,18" />
                 </DrawingGroup.ClipGeometry>
                 <GeometryDrawing Brush="#FF8BC34A">
                     <GeometryDrawing.Geometry>
-                        <PathGeometry FillRule="EvenOdd" Figures="M16,0C24.837,0 32,7.163 32,16 32,24.837 24.837,32 16,32 7.163,32 0,24.837 0,16 0,7.163 7.163,0 16,0z" />
-                    </GeometryDrawing.Geometry>
-                </GeometryDrawing>
-                <GeometryDrawing Brush="#FFFFFFFF">
-                    <GeometryDrawing.Geometry>
-                        <PathGeometry FillRule="EvenOdd" Figures="M25,23L25,9C25,7.9,24.1,7,23,7L9,7C7.9,7,7,7.9,7,9L7,23C7,24.1,7.9,25,9,25L23,25C24.1,25,25,24.1,25,23z M12.5,17.5L15,20.51 18.5,16 23,22 9,22 12.5,17.5z" />
+                        <PathGeometry FillRule="EvenOdd" Figures="M16,14.444L16,3.555C16,2.7,15.3,2,14.444,2L3.555,2C2.7,2,2,2.7,2,3.555L2,14.444C2,15.3,2.7,16,3.555,16L14.444,16C15.3,16,16,15.3,16,14.444z M6.278,10.167L8.222,12.508 10.944,9 14.444,13.667 3.555,13.667 6.278,10.167z" />
                     </GeometryDrawing.Geometry>
                 </GeometryDrawing>
             </DrawingGroup>
@@ -1162,25 +1152,54 @@
         <DrawingBrush.Drawing>
             <DrawingGroup>
                 <DrawingGroup.ClipGeometry>
-                    <RectangleGeometry Rect="0,0,32,32" />
+                    <RectangleGeometry Rect="0,0,18,18" />
                 </DrawingGroup.ClipGeometry>
                 <GeometryDrawing Brush="#FF41A59C">
                     <GeometryDrawing.Geometry>
-                        <PathGeometry FillRule="EvenOdd" Figures="M16,0C24.837,0 32,7.163 32,16 32,24.837 24.837,32 16,32 7.163,32 0,24.837 0,16 0,7.163 7.163,0 16,0z" />
+                        <PathGeometry FillRule="EvenOdd" Figures="M10.334,15.003L10.334,17.004 8.916,17.004 8.854,16.983 1.517,15.357 0.996000000000001,15.232 0.996000000000001,2.768 1.517,2.643 8.854,1.017 8.916,0.996 10.334,0.996 10.334,2.997 17.004,2.997 17.004,15.003 10.334,15.003z M9,2.351L2.33,3.81 2.33,14.19 9,15.649 9,2.351z M3.702,6.49L4.854,6.49 5.635,8.202 6.385,6.49 7.537,6.49 6.203,9.186 7.583,11.969 6.442,11.969 5.61,10.149 4.776,11.969 3.656,11.969 5.015,9.165 3.702,6.49z" />
                     </GeometryDrawing.Geometry>
                 </GeometryDrawing>
-                <GeometryDrawing Brush="#FFFFFFFF">
+            </DrawingGroup>
+        </DrawingBrush.Drawing>
+    </DrawingBrush>
+    <DrawingBrush x:Key="WeiJinLogoBGLogo" Stretch="None">
+        <DrawingBrush.Drawing>
+            <DrawingGroup>
+                <DrawingGroup.ClipGeometry>
+                    <RectangleGeometry Rect="0,0,16,16" />
+                </DrawingGroup.ClipGeometry>
+                <GeometryDrawing Brush="#FFF44336">
                     <GeometryDrawing.Geometry>
-                        <PathGeometry FillRule="EvenOdd" Figures="M15.896,5.995L15.817,6.021 6.646,8.053 5.995,8.21 5.995,23.79 6.646,23.947 15.817,25.979 15.896,26.005 17.667,26.005 17.667,23.504 26.005,23.504 26.005,8.496 17.667,8.496 17.667,5.995 15.896,5.995z M16,7.689L16,24.311 7.662,22.488 7.662,9.512 16,7.689z" />
+                        <PathGeometry FillRule="EvenOdd" Figures="M8,0A8,8,0,1,1,8,16A8,8,0,0,1,8,0z" />
                     </GeometryDrawing.Geometry>
                 </GeometryDrawing>
-                <DrawingGroup Transform="0.5479,0,0,0.5479,9.534,19.561">
-                    <GeometryDrawing Brush="#FFFFFFFF">
+                <DrawingGroup>
+                    <GeometryDrawing>
+                        <GeometryDrawing.Brush>
+                            <SolidColorBrush Color="#FFFFFFFF" Opacity="0.678" />
+                        </GeometryDrawing.Brush>
                         <GeometryDrawing.Geometry>
-                            <PathGeometry FillRule="Nonzero" Figures="M0.382471710443497,-11.9298620223999L3.1981143951416,-11.9298620223999 5.5905966758728,-8.09700679779053 7.93425321578979,-11.9298620223999 10.7254829406738,-11.9298620223999 7.01469373703003,-6.13582229614258 11.0916786193848,0 8.18652153015137,0 5.54177045822144,-4.12581157684326 2.88888192176819,0 1.51459573771717E-08,0 4.07698535919189,-6.22533702850342 0.382471710443497,-11.9298620223999z" />
+                            <PathGeometry FillRule="Nonzero" Figures="M2.24609375,6.181640625L4.54296875,6.181640625 4.54296875,11.1796875C5.015625,11.9453125,5.8046875,12.337890625,6.91015625,12.357421875L9.734375,12.404296875 13.8125,12.310546875C13.6796875,12.662109375,13.5703125,12.970703125,13.484375,13.236328125L9.5,13.248046875 6.78125,13.189453125C5.4921875,13.173828125 4.57421875,12.720703125 4.02734375,11.830078125 3.50390625,12.314453125 3.03515625,12.837890625 2.62109375,13.400390625L2.140625,12.427734375C2.83203125,11.759765625,3.33203125,11.28125,3.640625,10.9921875L3.640625,7.048828125 2.24609375,7.048828125 2.24609375,6.181640625z M3.546875,2.255859375C4.21875,3.123046875,4.765625,3.857421875,5.1875,4.458984375L4.35546875,5.044921875C3.80078125,4.15429735183716,3.28125,3.388671875,2.796875,2.748046875L3.546875,2.255859375z M8.703125,2.021484375L9.6171875,2.021484375 9.6171875,3.404296875 13.4609375,3.404296875 13.4609375,4.212890625 9.6171875,4.212890625 9.6171875,5.513671875 12.72265625,5.513671875 12.72265625,6.298828125 9.6171875,6.298828125 9.6171875,7.669921875 13.51953125,7.669921875C13.47265625,8.537109375 13.4296875,9.169921875 13.390625,9.568359375 13.3125,10.568359375 12.78125,11.068359375 11.796875,11.068359375 11.421875,11.068359375 11.015625,11.064453125 10.578125,11.056640625 10.53125,10.728515625 10.46484375,10.419921875 10.37890625,10.130859375 10.83984375,10.169921875 11.28515625,10.189453125 11.71484375,10.189453125 12.19921875,10.189453125 12.46484375,9.951171875 12.51171875,9.474609375 12.54296875,9.193359375 12.5703125,8.861328125 12.59375,8.478515625L9.6171875,8.478515625 9.6171875,12.005859375 8.703125,12.005859375 8.703125,8.478515625 5.1875,8.478515625 5.1875,7.669921875 8.703125,7.669921875 8.703125,6.298828125 6.06640625,6.298828125 6.06640625,5.513671875 8.703125,5.513671875 8.703125,4.212890625 5.57421875,4.212890625 5.57421875,3.404296875 8.703125,3.404296875 8.703125,2.021484375z" />
                         </GeometryDrawing.Geometry>
                     </GeometryDrawing>
                 </DrawingGroup>
+            </DrawingGroup>
+        </DrawingBrush.Drawing>
+    </DrawingBrush>
+    <DrawingBrush x:Key="NoWeiJinLogoBGLogo" Stretch="None">
+        <DrawingBrush.Drawing>
+            <DrawingGroup>
+                <DrawingGroup.ClipGeometry>
+                    <RectangleGeometry Rect="0,0,18,18" />
+                </DrawingGroup.ClipGeometry>
+                <GeometryDrawing>
+                    <GeometryDrawing.Brush>
+                        <SolidColorBrush Color="#FF000000" Opacity="0.541" />
+                    </GeometryDrawing.Brush>
+                    <GeometryDrawing.Geometry>
+                        <PathGeometry FillRule="EvenOdd" Figures="M7.054,11.883L3.966,8.771 2.915,9.823 7.054,13.996 15.94,5.039 14.896,3.986 7.054,11.883z" />
+                    </GeometryDrawing.Geometry>
+                </GeometryDrawing>
             </DrawingGroup>
         </DrawingBrush.Drawing>
     </DrawingBrush>

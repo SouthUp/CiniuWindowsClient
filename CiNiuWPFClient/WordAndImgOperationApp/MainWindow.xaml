@@ -12,6 +12,10 @@
         Drop="Window_Drop"
         DragLeave="Window_DragLeave"
         DragEnter="Window_DragEnter">
+    <Window.Resources>
+        <control:BoolToVisibilityConvert x:Key="BoolToVisibilityConvert"></control:BoolToVisibilityConvert>
+        <control:BoolToVisibilityOppositeConvert x:Key="BoolToVisibilityOppositeConvert"></control:BoolToVisibilityOppositeConvert>
+    </Window.Resources>
     <Grid x:Name="MainGrid" Height="80" Width="340">
         <Border BorderThickness="0">
             <Border.Background>
@@ -175,8 +179,8 @@
                         HorizontalAlignment="Stretch" VerticalAlignment="Bottom"></Border>
             </Grid>
             <Grid Grid.Row="1">
-                <Grid Width="286" Height="36" Visibility="{Binding InputGridVisibility}"
-                          VerticalAlignment="Center" HorizontalAlignment="Left" Margin="10,0,0,0">
+                <Grid Width="286" Height="36"
+                      VerticalAlignment="Center" HorizontalAlignment="Left" Margin="10,0,0,0">
                     <Border Width="248" Height="36" BorderThickness="0" Background="Black" 
                                 CornerRadius="2" Opacity="0.04"
                                 VerticalAlignment="Center" HorizontalAlignment="Left">
@@ -198,19 +202,21 @@
                     </Grid>
                     <Button Width="36" Height="36" HorizontalAlignment="Right"
                                 Style="{StaticResource GoBtnStyle}" VerticalAlignment="Center"
-                                Click="GoBtn_Click"  Margin="2,0,0,0">
+                                Click="GoBtn_Click">
                     </Button>
                 </Grid>
-                <Grid Width="286" Height="36" Visibility="{Binding DealingGridVisibility}"
+                <Grid Width="286" Height="36" Visibility="{Binding DealingGridVisibility}" Margin="10,0,0,0"
                           VerticalAlignment="Center" HorizontalAlignment="Left" Background="White">
                     <TextBlock Text="{Binding CheckFilesInfosText}" Foreground="Black" 
-                                   FontSize="14" Opacity="0.87" Margin="20,0,0,0"
+                                   FontSize="14" Opacity="0.87" Margin="10,0,0,0"
                                    Style="{StaticResource CommonLeftTextBlock}" 
                                    MaxWidth="240" TextTrimming="CharacterEllipsis">
                     </TextBlock>
-                    <Button Width="36" Height="32" Content="取消" FontSize="14"
+                    <Grid Width="36" Height="36" HorizontalAlignment="Right" Background="White">
+                        <Button Width="36" Height="32" Content="取消" FontSize="14"
                                 HorizontalAlignment="Right" Style="{StaticResource HsaBGHoverTextButtonStyle}"
                                 Click="CancelDealingBtn_Click"></Button>
+                    </Grid>
                 </Grid>
                 <Button Width="24" Height="24" HorizontalAlignment="Right"
                             Style="{StaticResource MoreMenueBtnStyle}" VerticalAlignment="Center"
@@ -381,8 +387,63 @@
                             Click="SureToCustumCiTiaoBtn_Click"></Button>
                 </Grid>
             </Grid>
-            <Grid Grid.Row="2" Visibility="{Binding DragFilesResultVisibility}">
-
+            <Grid Grid.Row="2" Visibility="{Binding DragFilesResultVisibility}" 
+                  Background="White">
+                <ListBox x:Name="listBox3" BorderThickness="0" Background="Transparent"
+                         ItemsSource="{Binding DealDataResultList}"
+                         ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+                         ScrollViewer.VerticalScrollBarVisibility="Auto" SelectedIndex="-1"
+                         ItemContainerStyle="{StaticResource DealResultListBoxItemContainerStyle}"
+                         VerticalAlignment="Top" HorizontalAlignment="Stretch"
+                         ScrollViewer.CanContentScroll="False">
+                    <ListBox.ItemTemplate>
+                        <DataTemplate>
+                            <Grid Height="32" Width="{Binding ElementName=listBox3,Path=ActualWidth}" Cursor="Hand"
+                                  Background="Transparent" Tag="{Binding}" MouseLeftButtonDown="DealDataResultGrid_MouseLeftButtonDown">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="50"></ColumnDefinition>
+                                    <ColumnDefinition Width="*"></ColumnDefinition>
+                                    <ColumnDefinition Width="34"></ColumnDefinition>
+                                </Grid.ColumnDefinitions>
+                                <Grid Grid.Column="0" Margin="20,0,0,0">
+                                    <Grid Width="18" Height="18" Background="{StaticResource CircleWordTitleLogoBGLogo}"
+                                          HorizontalAlignment="Left" VerticalAlignment="Center"
+                                          Visibility="{Binding ShowDocTitleLogo,Converter={StaticResource BoolToVisibilityConvert}}">
+                                    </Grid>
+                                    <Grid Width="18" Height="18" Background="{StaticResource CircleImgTitleLogoBGLogo}"
+                                          HorizontalAlignment="Left" VerticalAlignment="Center"
+                                          Visibility="{Binding ShowImgTitleLogo,Converter={StaticResource BoolToVisibilityConvert}}">
+                                    </Grid>
+                                    <Grid Width="18" Height="18" Background="{StaticResource CircleXlsxTitleLogoBGLogo}"
+                                          HorizontalAlignment="Left" VerticalAlignment="Center"
+                                          Visibility="{Binding ShowXlsxTitleLogo,Converter={StaticResource BoolToVisibilityConvert}}">
+                                    </Grid>
+                                </Grid>
+                                <Grid Grid.Column="1">
+                                    <TextBlock Text="{Binding FileName}" FontSize="12" Opacity="0.87"
+                                               Style="{StaticResource CommonLeftTextBlock}"
+                                               MaxWidth="260" TextTrimming="CharacterEllipsis">
+                                    </TextBlock>
+                                </Grid>
+                                <Grid Grid.Column="2">
+                                    <Grid Width="16" Height="16" Background="{StaticResource WeiJinLogoBGLogo}"
+                                          HorizontalAlignment="Right" VerticalAlignment="Center" Margin="0,0,16,0"
+                                          Visibility="{Binding HasError,Converter={StaticResource BoolToVisibilityConvert}}">
+                                    </Grid>
+                                    <Grid Width="18" Height="18" Background="{StaticResource NoWeiJinLogoBGLogo}"
+                                          HorizontalAlignment="Right" VerticalAlignment="Center" Margin="0,0,16,0"
+                                          Visibility="{Binding HasError,Converter={StaticResource BoolToVisibilityOppositeConvert}}">
+                                    </Grid>
+                                </Grid>
+                            </Grid>
+                        </DataTemplate>
+                    </ListBox.ItemTemplate>
+                    <ListBox.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <WrapPanel Orientation="Vertical"/>
+                        </ItemsPanelTemplate>
+                    </ListBox.ItemsPanel>
+                </ListBox>
             </Grid>
         </Grid>
         <Grid x:Name="DragTipGrid" Visibility="Collapsed">

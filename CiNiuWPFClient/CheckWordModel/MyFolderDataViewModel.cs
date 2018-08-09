@@ -95,16 +95,6 @@ namespace CheckWordModel
                 RaisePropertyChanged("FilePath");
             }
         }
-        private string _fileImgShowPath = "";
-        public string FileImgShowPath
-        {
-            get { return _fileImgShowPath; }
-            set
-            {
-                _fileImgShowPath = value;
-                RaisePropertyChanged("FileImgShowPath");
-            }
-        }
         private bool _hasError = false;
         public bool HasError
         {
@@ -113,6 +103,16 @@ namespace CheckWordModel
             {
                 _hasError = value;
                 RaisePropertyChanged("HasError");
+            }
+        }
+        private string _dealImageFilePath = "";
+        public string DealImageFilePath
+        {
+            get { return _dealImageFilePath; }
+            set
+            {
+                _dealImageFilePath = value;
+                RaisePropertyChanged("DealImageFilePath");
             }
         }
     }

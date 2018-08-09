@@ -117,16 +117,6 @@ namespace WordAndImgOperationApp
                 }
             }
         }
-        private Visibility inputGridVisibility = Visibility.Visible;
-        public Visibility InputGridVisibility
-        {
-            get { return inputGridVisibility; }
-            set
-            {
-                inputGridVisibility = value;
-                RaisePropertyChanged("InputGridVisibility");
-            }
-        }
         private Visibility dealingGridVisibility = Visibility.Collapsed;
         public Visibility DealingGridVisibility
         {
@@ -213,7 +203,7 @@ namespace WordAndImgOperationApp
                 }
             }
         }
-        private int _dealTotalCount = 10;
+        private int _dealTotalCount = 1;
         public int DealTotalCount
         {
             get { return _dealTotalCount; }
@@ -226,7 +216,7 @@ namespace WordAndImgOperationApp
                 }
             }
         }
-        private int _dealCurrentIndex = 5;
+        private int _dealCurrentIndex = 0;
         public int DealCurrentIndex
         {
             get { return _dealCurrentIndex; }
@@ -247,6 +237,16 @@ namespace WordAndImgOperationApp
             {
                 _currentWordInfoResults = value;
                 RaisePropertyChanged("CurrentWordInfoResults");
+            }
+        }
+        private ObservableCollection<MyFolderDataViewModel> _dealDataResultList = new ObservableCollection<MyFolderDataViewModel>();
+        public ObservableCollection<MyFolderDataViewModel> DealDataResultList
+        {
+            get { return _dealDataResultList; }
+            set
+            {
+                _dealDataResultList = value;
+                RaisePropertyChanged("DealDataResultList");
             }
         }
     }

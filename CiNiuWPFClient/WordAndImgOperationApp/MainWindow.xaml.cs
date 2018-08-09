@@ -38,6 +38,10 @@ namespace WordAndImgOperationApp
     /// </summary>
     public partial class MainWindow : Window, ICallBackServices, IShell
     {
+        private static List<string> FilePathsList = new List<string>();
+        private static List<string> UnCheckFilePathsList = new List<string>();
+        private static List<string> UnReadFilePathsList = new List<string>();
+        List<string> listClass = new List<string>() { ".png", ".jpg", ".jpeg", ".doc", ".docx", ".xls", ".xlsx" };
         private int heightAddMax = 328;
         private bool IsDealingData = false;
         WindowState windowState;
@@ -70,6 +74,14 @@ namespace WordAndImgOperationApp
                     if (!string.IsNullOrEmpty(busyindicator.BusyContent))
                         this.viewModel.MessageTipInfo = busyindicator.BusyContent;
                     viewModel.IsMessageTipPopWindowOpen = busyindicator.IsBusy;
+                    if (busyindicator.IsBusy)
+                    {
+                        Task task = new Task(() => {
+                            System.Threading.Thread.Sleep(3000);
+                            viewModel.IsMessageTipPopWindowOpen = false;
+                        });
+                        task.Start();
+                    }
                 }));
             }
             catch (Exception ex)
@@ -373,10 +385,6 @@ namespace WordAndImgOperationApp
                 this.Show();
                 this.Activate();
                 this.WindowState = windowState;
-                if (this.IsDealingData)
-                {
-                    EventAggregatorRepository.EventAggregator.GetEvent<MainAppShowTipsInfoEvent>().Publish(new AppBusyIndicator() { IsBusy = true, BusyContent = "" });
-                }
             }
         }
         /// <summary>    
@@ -803,6 +811,14 @@ namespace WordAndImgOperationApp
                 }
                 catch
                 { }
+                System.Threading.ThreadStart start = delegate ()
+                {
+                    //记录历史
+
+                };
+                System.Threading.Thread t = new System.Threading.Thread(start);
+                t.IsBackground = true;
+                t.Start();
             }
         }
         private void MoreMenueBtn_Click(object sender, RoutedEventArgs e)
@@ -861,7 +877,6 @@ namespace WordAndImgOperationApp
             MainGrid.Height = 80 + 75;
             this.Height = 99 + 75;
         }
-
         private void Window_Drop(object sender, System.Windows.DragEventArgs e)
         {
             DragDealingTipGrid.Visibility = Visibility.Collapsed;
@@ -871,11 +886,71 @@ namespace WordAndImgOperationApp
                 return;
             }
             this.IsDealingData = true;
-            viewModel.InputGridVisibility = Visibility.Collapsed;
             viewModel.DealingGridVisibility = Visibility.Visible;
             EventAggregatorRepository.EventAggregator.GetEvent<MainAppShowTipsInfoEvent>().Publish(new AppBusyIndicator() { IsBusy = true, BusyContent = "正在检测中，请稍后添加" });
+            viewModel.CheckFilesInfosText = "正在解析中...";
+            viewModel.DealCurrentIndex = 0;
+            FilePathsList = new List<string>();
+            UnCheckFilePathsList = new List<string>();
+            UnReadFilePathsList = new List<string>();
+            if (e.Data.GetDataPresent(System.Windows.DataFormats.FileDrop))
+            {
+                foreach (var path in ((System.Array)e.Data.GetData(System.Windows.DataFormats.FileDrop)))
+                {
+                    if (File.Exists(path.ToString()))
+                    {
+                        if (listClass.Contains(System.IO.Path.GetExtension(path.ToString()).ToLower()))
+                        {
+                            if (!path.ToString().Contains("~$"))
+                            {
+                                FilePathsList.Add(path.ToString());
+                                if (Win32Helper.IsFileOpen(path.ToString()) && ".doc,.docx".Contains(System.IO.Path.GetExtension(path.ToString()).ToLower()))
+                                {
+                                    UnReadFilePathsList.Add(path.ToString());
+                                }
+                            }
+                        }
+                        else
+                        {
+                            UnCheckFilePathsList.Add(path.ToString());
+                        }
+                    }
+                    else if (Directory.Exists(path.ToString()))
+                    {
+                        DirectoryInfo dir = new DirectoryInfo(path.ToString());
+                        GetAllFiles(dir);
+                    }
+                }
+                DealDragDatas();
+            }
         }
-
+        private void GetAllFiles(DirectoryInfo dir)
+        {
+            FileInfo[] allFile = dir.GetFiles();
+            foreach (FileInfo fi in allFile)
+            {
+                if (listClass.Contains(System.IO.Path.GetExtension(fi.FullName).ToLower()))
+                {
+                    if (!fi.FullName.Contains("~$"))
+                    {
+                        FilePathsList.Add(fi.FullName);
+                        if (Win32Helper.IsFileOpen(fi.FullName) && ".doc,.docx".Contains(System.IO.Path.GetExtension(fi.FullName).ToLower()))
+                        {
+                            UnReadFilePathsList.Add(fi.FullName);
+                        }
+                    }
+                }
+                else
+                {
+                    UnCheckFilePathsList.Add(fi.FullName);
+                }
+            }
+            DirectoryInfo[] allDir = dir.GetDirectories();
+            foreach (DirectoryInfo d in allDir)
+            {
+                GetAllFiles(d);
+            }
+        }
         private void Window_DragLeave(object sender, System.Windows.DragEventArgs e)
         {
             DragDealingTipGrid.Visibility = Visibility.Collapsed;
@@ -897,12 +972,144 @@ namespace WordAndImgOperationApp
         }
         private void CancelDealingBtn_Click(object sender, RoutedEventArgs e)
         {
-            EventAggregatorRepository.EventAggregator.GetEvent<MainAppShowTipsInfoEvent>().Publish(new AppBusyIndicator() { IsBusy = false, BusyContent = "" });
-            viewModel.DealingGridVisibility = Visibility.Collapsed;
-            viewModel.InputGridVisibility = Visibility.Visible;
-            this.IsDealingData = false;
+            //取消检查数据
+            CloseDealingGrid();
         }
+        private void CloseDealingGrid()
+        {
+            viewModel.DealingGridVisibility = Visibility.Collapsed;
+            this.IsDealingData = false;
+            EventAggregatorRepository.EventAggregator.GetEvent<MainAppShowTipsInfoEvent>().Publish(new AppBusyIndicator() { IsBusy = false, BusyContent = "" });
+        }
+        private ObservableCollection<MyFolderDataViewModel> _dealDataResultList = new ObservableCollection<MyFolderDataViewModel>();
+        /// <summary>
+        /// 处理拖拽文件
+        /// </summary>
+        private async void DealDragDatas()
+        {
+            try
+            {
+                if (FilePathsList.Count > 0)
+                {
+                    if (!IsDealingData)
+                    {
+                        _dealDataResultList = new ObservableCollection<MyFolderDataViewModel>();
+                        return;
+                    }
+                    _dealDataResultList = new ObservableCollection<MyFolderDataViewModel>();
+                    FileOperateHelper.DeleteFolder(CheckWordTempPath);
+                    if (!Directory.Exists(CheckWordTempPath))
+                    {
+                        Directory.CreateDirectory(CheckWordTempPath);
+                    }
+                    //解析数据
+                    Task taskJieXi = new Task(() => {
+                        System.Threading.Thread.Sleep(500);
+                        viewModel.CheckFilesInfosText = "正在检测5个文件，12张图片";
+                    });
+                    taskJieXi.Start();
+                    await taskJieXi;
+                    if (!IsDealingData)
+                    {
+                        _dealDataResultList = new ObservableCollection<MyFolderDataViewModel>();
+                        return;
+                    }
+                    for (int i = 0; i < FilePathsList.Count; i++)
+                    {
+                        Task task = new Task(() => {
+                            if (!IsDealingData)
+                            {
+                                Dispatcher.Invoke(new Action(() => {
+                                    _dealDataResultList = new ObservableCollection<MyFolderDataViewModel>();
+                                }));
+                                return;
+                            }
+                            viewModel.DealTotalCount = FilePathsList.Count;
+                            viewModel.DealCurrentIndex = i;
+                            DealMyPathsDataSource(FilePathsList[i]);
+                        });
+                        task.Start();
+                        await task;
+                    }
+                    Task taskFinish = new Task(() => {
+                        viewModel.DealTotalCount = FilePathsList.Count;
+                        viewModel.DealCurrentIndex = FilePathsList.Count;
+                        System.Threading.Thread.Sleep(300);
+                    });
+                    taskFinish.Start();
+                    await taskFinish;
+                    if (!IsDealingData)
+                    {
+                        _dealDataResultList = new ObservableCollection<MyFolderDataViewModel>();
+                        return;
+                    }
+                    int heightAdd = 32 * FilePathsList.Count + 5;
+                    if (heightAdd > heightAddMax)
+                    {
+                        heightAdd = heightAddMax;
+                    }
+                    MainGrid.Height = 80 + heightAdd;
+                    this.Height = 99 + heightAdd;
+                    //检查完成
+                    viewModel.DealDataResultList = _dealDataResultList;
+                    CloseDealingGrid();
+                    viewModel.DragFilesResultVisibility = Visibility.Visible;
+                    System.Threading.ThreadStart start = delegate ()
+                    {
+                        //记录历史
 
+                    };
+                    System.Threading.Thread t = new System.Threading.Thread(start);
+                    t.IsBackground = true;
+                    t.Start();
+                }
+                else
+                {
+                    CloseDealingGrid();
+                    if (UnCheckFilePathsList.Count > 0)
+                    {
+                        EventAggregatorRepository.EventAggregator.GetEvent<MainAppShowTipsInfoEvent>().Publish(new AppBusyIndicator() { IsBusy = true, BusyContent = UnCheckFilePathsList.Count + "个文件类型不支持." });
+                    }
+                    else
+                    {
+                        EventAggregatorRepository.EventAggregator.GetEvent<MainAppShowTipsInfoEvent>().Publish(new AppBusyIndicator() { IsBusy = true, BusyContent = "未发现支持的文件类型." });
+                    }
+                }
+            }
+            catch
+            { }
+        }
+        /// <summary>
+        /// 处理检查数据
+        /// </summary>
+        private void DealMyPathsDataSource(string dealFilePath)
+        {
+            try
+            {
+                System.Threading.Thread.Sleep(1000);
+                MyFolderDataViewModel model = new MyFolderDataViewModel(System.IO.Path.GetFileName(dealFilePath), dealFilePath);
+                if (".doc,.docx".Contains(System.IO.Path.GetExtension(dealFilePath).ToLower()))
+                {
+                    model.TypeSelectFile = SelectFileType.Docx;
+                    model.HasError = true;              
+                }
+                else if (".png,.jpg,.jpeg".Contains(System.IO.Path.GetExtension(dealFilePath).ToLower()))
+                {
+                    model.TypeSelectFile = SelectFileType.Img;
+                    model.HasError = true;
+                }
+                else if (".xls,.xlsx".Contains(System.IO.Path.GetExtension(dealFilePath).ToLower()))
+                {
+                    model.TypeSelectFile = SelectFileType.Xlsx;
+                    model.HasError = false;
+                }
+                Dispatcher.Invoke(new Action(() => {
+                    _dealDataResultList.Add(model);
+                }));
+            }
+            catch (Exception ex)
+            { }
+        }
         private void listBox2_PreviewMouseWheel(object sender, MouseWheelEventArgs e)
         {
             try
@@ -918,6 +1125,33 @@ namespace WordAndImgOperationApp
             }
             catch (Exception ex)
             { }
+        }
+
+        private void DealDataResultGrid_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            var grid = sender as Grid;
+            if (grid != null)
+            {
+                var myFolderDataViewModel = grid.Tag as MyFolderDataViewModel;
+                if (myFolderDataViewModel.TypeSelectFile == SelectFileType.Img)
+                {
+                    try
+                    {
+                        System.Diagnostics.Process.Start(myFolderDataViewModel.DealImageFilePath); //打开此文件。
+                    }
+                    catch (Exception ex)
+                    { }
+                }
+                else
+                {
+                    try
+                    {
+                        System.Diagnostics.Process.Start(myFolderDataViewModel.FilePath); //打开此文件。
+                    }
+                    catch (Exception ex)
+                    { }
+                }
+            }
         }
     }
 }
