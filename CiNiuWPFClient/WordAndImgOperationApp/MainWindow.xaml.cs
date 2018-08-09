@@ -38,6 +38,7 @@ namespace WordAndImgOperationApp
     /// </summary>
     public partial class MainWindow : Window, ICallBackServices, IShell
     {
+        private int heightAddMax = 328;
         private bool IsDealingData = false;
         WindowState windowState;
         private string CheckWordTempPath = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + "\\WordAndImgOCR\\CheckWordResultTemp";
@@ -721,10 +722,88 @@ namespace WordAndImgOperationApp
         }
         private void CheckInputText(string textSearch)
         {
-            //不包含违禁词
-            viewModel.WordNoUnchekResultVisibility = Visibility.Visible;
-            MainGrid.Height = 80 + 75;
-            this.Height = 99 + 75;
+            if (!string.IsNullOrEmpty(textSearch))
+            {
+                int countWords = 0;
+                countWords = textSearch.Count();
+                try
+                {
+                    APIService service = new APIService();
+                    var userStateInfos = service.GetUserStateByToken(UtilSystemVar.UserToken);
+                    if (userStateInfos != null)
+                    {
+                        if (userStateInfos.WordCount < countWords)
+                        {
+                            EventAggregatorRepository.EventAggregator.GetEvent<SendNotifyMessageEvent>().Publish("500");
+                        }
+                        else
+                        {
+                            ConsumeResponse consume = service.GetWordConsume(countWords, UtilSystemVar.UserToken);
+                            if (consume != null)
+                            {
+                                try
+                                {
+                                    //处理逻辑
+                                    var resultInfo = CheckWordUtil.CheckWordHelper.GetUnChekedWordInfoList(textSearch);
+                                    viewModel.CurrentWordInfoResults = new ObservableCollection<CheckWordModel.UnChekedWordInfo>(resultInfo);
+                                    if (viewModel.CurrentWordInfoResults.Count > 0)
+                                    {
+                                        int heightAdd = 0;
+                                        foreach (var item in viewModel.CurrentWordInfoResults)
+                                        {
+                                            foreach (var infoDetail in item.UnChekedWordDetailInfos)
+                                            {
+                                                if (!string.IsNullOrEmpty(infoDetail.SourceDBID))
+                                                {
+                                                    infoDetail.SourceDBImgPath = AppDomain.CurrentDomain.BaseDirectory + "Resources/DBTypeLogo/" + infoDetail.SourceDBID + ".png";
+                                                }
+                                                else
+                                                {
+                                                    infoDetail.SourceDBImgPath = AppDomain.CurrentDomain.BaseDirectory + "Resources/DBTypeLogo/Default.png";
+                                                }
+                                            }
+                                            heightAdd += 32 * (1 + item.UnChekedWordDetailInfos.Count) + 16;
+                                        }
+                                        if (heightAdd > heightAddMax)
+                                        {
+                                            heightAdd = heightAddMax;
+                                        }
+                                        //包含违禁词
+                                        viewModel.WordNoUnchekResultVisibility = Visibility.Collapsed;
+                                        viewModel.WordHasUnchekResultVisibility = Visibility.Visible;
+                                        viewModel.DragFilesResultVisibility = Visibility.Collapsed;
+                                        viewModel.AddToCustumCiTiaoVisibility = Visibility.Collapsed;
+                                        MainGrid.Height = 80 + heightAdd;
+                                        this.Height = 99 + heightAdd;
+                                    }
+                                    else
+                                    {
+                                        //不包含违禁词
+                                        viewModel.WordNoUnchekResultVisibility = Visibility.Visible;
+                                        viewModel.WordHasUnchekResultVisibility = Visibility.Collapsed;
+                                        viewModel.DragFilesResultVisibility = Visibility.Collapsed;
+                                        viewModel.AddToCustumCiTiaoVisibility = Visibility.Collapsed;
+                                        MainGrid.Height = 80 + 75;
+                                        this.Height = 99 + 75;
+                                    }
+                                }
+                                catch (Exception ex)
+                                { }
+                            }
+                            else
+                            {
+                                EventAggregatorRepository.EventAggregator.GetEvent<SendNotifyMessageEvent>().Publish("200");
+                            }
+                        }
+                    }
+                    else
+                    {
+                        EventAggregatorRepository.EventAggregator.GetEvent<SendNotifyMessageEvent>().Publish("200");
+                    }
+                }
+                catch
+                { }
+            }
         }
         private void MoreMenueBtn_Click(object sender, RoutedEventArgs e)
         {
@@ -822,6 +901,23 @@ namespace WordAndImgOperationApp
             viewModel.DealingGridVisibility = Visibility.Collapsed;
             viewModel.InputGridVisibility = Visibility.Visible;
             this.IsDealingData = false;
+        }
+
+        private void listBox2_PreviewMouseWheel(object sender, MouseWheelEventArgs e)
+        {
+            try
+            {
+                var listBox = sender as System.Windows.Controls.ListBox;
+                if (listBox != null)
+                {
+                    var eventArg = new MouseWheelEventArgs(e.MouseDevice, e.Timestamp, e.Delta);
+                    eventArg.RoutedEvent = UIElement.MouseWheelEvent;
+                    eventArg.Source = sender;
+                    listBox.RaiseEvent(eventArg);
+                }
+            }
+            catch (Exception ex)
+            { }
         }
     }
 }

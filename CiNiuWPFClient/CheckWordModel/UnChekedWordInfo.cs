@@ -29,26 +29,6 @@ namespace CheckWordModel
                 RaisePropertyChanged("Name");
             }
         }
-        private bool _IsChecked = false;
-        public bool IsChecked
-        {
-            get { return _IsChecked; }
-            set
-            {
-                _IsChecked = value;
-                RaisePropertyChanged("IsChecked");
-            }
-        }
-        private int errorCount = 0;
-        public int ErrorTotalCount
-        {
-            get { return errorCount; }
-            set
-            {
-                errorCount = value;
-                RaisePropertyChanged("ErrorTotalCount");
-            }
-        }
         private ObservableCollection<UnChekedDetailWordInfo> _unChekedWordDetailInfos = new ObservableCollection<UnChekedDetailWordInfo>();
         public ObservableCollection<UnChekedDetailWordInfo> UnChekedWordDetailInfos
         {

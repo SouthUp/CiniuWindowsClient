@@ -222,8 +222,92 @@
                              Value="{Binding DealCurrentIndex}"
                              Maximum="{Binding DealTotalCount}"></ProgressBar>
             </Grid>
-            <Grid Grid.Row="2" Visibility="{Binding WordHasUnchekResultVisibility}">
-
+            <Grid Grid.Row="2" Visibility="{Binding WordHasUnchekResultVisibility}" 
+                  MinHeight="80" MaxHeight="328">
+                <ListBox x:Name="listBox" BorderThickness="0" Background="Transparent" ItemsSource="{Binding CurrentWordInfoResults}"
+                                         ScrollViewer.HorizontalScrollBarVisibility="Disabled" ScrollViewer.VerticalScrollBarVisibility="Auto" SelectedIndex="-1"
+                                         ItemContainerStyle="{StaticResource ListBoxItemContainerStyle}" VerticalAlignment="Top" HorizontalAlignment="Stretch"
+                                         ScrollViewer.CanContentScroll="True">
+                    <ListBox.ItemTemplate>
+                        <DataTemplate>
+                            <Grid>
+                                <Grid Width="{Binding ElementName=listBox,Path=ActualWidth}" Background="Transparent"
+                                      Margin="0,-2,0,0">
+                                    <Grid Background="Transparent" MinHeight="48">
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition Height="10"></RowDefinition>
+                                            <RowDefinition Height="32"></RowDefinition>
+                                            <RowDefinition Height="Auto"></RowDefinition>
+                                        </Grid.RowDefinitions>
+                                        <Border Grid.Row="0" Height="1" BorderBrush="Black" Opacity="0.12" BorderThickness="1"
+                                                HorizontalAlignment="Stretch" VerticalAlignment="Top"></Border>
+                                        <Grid Grid.Row="1" Background="Transparent" Margin="16,0,0,0">
+                                            <StackPanel Orientation="Horizontal"
+                                                        VerticalAlignment="Center" HorizontalAlignment="Left">
+                                                <TextBlock Text="&quot;" FontWeight="Bold"
+                                                           Foreground="Black" FontSize="16" Opacity="0.87"
+                                                           Style="{StaticResource CommonCenterTextBlock}">
+                                                </TextBlock>
+                                                <TextBlock Text="{Binding Name}" FontWeight="Bold"
+                                                           Foreground="Black" FontSize="16" Opacity="0.87"
+                                                           Style="{StaticResource CommonCenterTextBlock}"
+                                                           MaxWidth="250" TextTrimming="CharacterEllipsis">
+                                                </TextBlock>
+                                                <TextBlock Text="&quot;" FontWeight="Bold"
+                                                           Foreground="Black" FontSize="16" Opacity="0.87"
+                                                           Style="{StaticResource CommonCenterTextBlock}">
+                                                </TextBlock>
+                                            </StackPanel>
+                                        </Grid>
+                                        <Grid Grid.Row="2" Margin="16,0,0,0">
+                                            <ListBox x:Name="listBox2" BorderThickness="0" Background="Transparent"
+                                                                     ItemsSource="{Binding UnChekedWordDetailInfos}"
+                                                                     ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+                                                                     ScrollViewer.VerticalScrollBarVisibility="Auto" SelectedIndex="-1"
+                                                                     ItemContainerStyle="{StaticResource ListBoxItemContainerStyle}"
+                                                                     VerticalAlignment="Top" HorizontalAlignment="Stretch"
+                                                                     ScrollViewer.CanContentScroll="False"
+                                                                     PreviewMouseWheel="listBox2_PreviewMouseWheel">
+                                                <ListBox.ItemTemplate>
+                                                    <DataTemplate>
+                                                        <Grid Height="32" Width="{Binding ElementName=listBox2,Path=ActualWidth}">
+                                                            <Grid.ColumnDefinitions>
+                                                                <ColumnDefinition Width="30"></ColumnDefinition>
+                                                                <ColumnDefinition Width="*"></ColumnDefinition>
+                                                            </Grid.ColumnDefinitions>
+                                                            <Grid Grid.Column="0">
+                                                                <Image Width="18" Height="18" Stretch="Fill"
+                                                                       HorizontalAlignment="Left" VerticalAlignment="Center"
+                                                                       control:ImageDecoder.Source="{Binding SourceDBImgPath}">
+                                                                </Image>
+                                                            </Grid>
+                                                            <Grid Grid.Column="1">
+                                                                <TextBlock Text="{Binding NameType}" FontSize="12" Opacity="0.54"
+                                                                           Style="{StaticResource CommonLeftTextBlock}" 
+                                                                           MaxWidth="250" TextTrimming="CharacterEllipsis">
+                                                                </TextBlock>
+                                                            </Grid>
+                                                        </Grid>
+                                                    </DataTemplate>
+                                                </ListBox.ItemTemplate>
+                                                <ListBox.ItemsPanel>
+                                                    <ItemsPanelTemplate>
+                                                        <WrapPanel Orientation="Vertical"/>
+                                                    </ItemsPanelTemplate>
+                                                </ListBox.ItemsPanel>
+                                            </ListBox>
+                                        </Grid>
+                                    </Grid>
+                                </Grid>
+                            </Grid>
+                        </DataTemplate>
+                    </ListBox.ItemTemplate>
+                    <ListBox.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <WrapPanel Orientation="Vertical"/>
+                        </ItemsPanelTemplate>
+                    </ListBox.ItemsPanel>
+                </ListBox>
             </Grid>
             <Grid Grid.Row="2" Visibility="{Binding WordNoUnchekResultVisibility}"
                   HorizontalAlignment="Stretch" Background="White">

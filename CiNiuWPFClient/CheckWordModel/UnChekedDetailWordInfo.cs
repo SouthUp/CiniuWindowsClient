@@ -29,16 +29,6 @@ namespace CheckWordModel
                 RaisePropertyChanged("SourceDBID");
             }
         }
-        private bool isUnCheckWord;
-        public bool IsUnCheckWord
-        {
-            get { return isUnCheckWord; }
-            set
-            {
-                isUnCheckWord = value;
-                RaisePropertyChanged("IsUnCheckWord");
-            }
-        }
         private string name = "";
         public string Name
         {

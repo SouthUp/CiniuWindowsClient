@@ -239,5 +239,15 @@ namespace WordAndImgOperationApp
                 }
             }
         }
+        private ObservableCollection<UnChekedWordInfo> _currentWordInfoResults = new ObservableCollection<UnChekedWordInfo>();
+        public ObservableCollection<UnChekedWordInfo> CurrentWordInfoResults
+        {
+            get { return _currentWordInfoResults; }
+            set
+            {
+                _currentWordInfoResults = value;
+                RaisePropertyChanged("CurrentWordInfoResults");
+            }
+        }
     }
 }
