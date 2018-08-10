@@ -95,14 +95,14 @@ namespace CheckWordModel
                 RaisePropertyChanged("FilePath");
             }
         }
-        private string _dealImageFilePath = "";
-        public string DealImageFilePath
+        private ImgGeneralInfo _resultImgGeneral;
+        public ImgGeneralInfo ResultImgGeneral
         {
-            get { return _dealImageFilePath; }
+            get { return _resultImgGeneral; }
             set
             {
-                _dealImageFilePath = value;
-                RaisePropertyChanged("DealImageFilePath");
+                _resultImgGeneral = value;
+                RaisePropertyChanged("ResultImgGeneral");
             }
         }
         private string _fileToolTip = "";
