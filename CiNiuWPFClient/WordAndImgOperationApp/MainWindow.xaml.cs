@@ -508,7 +508,7 @@ namespace WordAndImgOperationApp
                             }
                             else if (result.Code == "HideNotifyMessageView")
                             {
-                                if (result.Data == "4003" && this.notifyIcon.Text.Contains("词库获取错误"))
+                                if (result.Data == "4003" && this.notifyIcon.Text.Contains("数据异常"))
                                 {
                                     SetIconToolTip("词牛（已登录）");
                                     try
@@ -728,7 +728,7 @@ namespace WordAndImgOperationApp
         {
             CheckInputText(viewModel.SearchText);
         }
-        private void CheckInputText(string textSearch)
+        private async void CheckInputText(string textSearch)
         {
             if (!string.IsNullOrEmpty(textSearch))
             {
@@ -737,7 +737,12 @@ namespace WordAndImgOperationApp
                 try
                 {
                     APIService service = new APIService();
-                    var userStateInfos = service.GetUserStateByToken(UtilSystemVar.UserToken);
+                    UserStateInfos userStateInfos = null;
+                    Task task = new Task(() => {
+                        userStateInfos = service.GetUserStateByToken(UtilSystemVar.UserToken);
+                    });
+                    task.Start();
+                    await task;
                     if (userStateInfos != null)
                     {
                         if (userStateInfos.WordCount < countWords)
@@ -746,13 +751,23 @@ namespace WordAndImgOperationApp
                         }
                         else
                         {
-                            ConsumeResponse consume = service.GetWordConsume(countWords, UtilSystemVar.UserToken);
+                            ConsumeResponse consume = null;
+                            Task taskConsume = new Task(() => {
+                                consume = service.GetWordConsume(countWords, UtilSystemVar.UserToken);
+                            });
+                            taskConsume.Start();
+                            await taskConsume;
                             if (consume != null)
                             {
                                 try
                                 {
                                     //处理逻辑
-                                    var resultInfo = CheckWordUtil.CheckWordHelper.GetUnChekedWordInfoList(textSearch);
+                                    List<UnChekedWordInfo> resultInfo = new List<UnChekedWordInfo>();
+                                    Task taskGetUnChekedWord = new Task(() => {
+                                        resultInfo = CheckWordUtil.CheckWordHelper.GetUnChekedWordInfoList(textSearch);
+                                    });
+                                    taskGetUnChekedWord.Start();
+                                    await taskGetUnChekedWord;
                                     viewModel.CurrentWordInfoResults = new ObservableCollection<CheckWordModel.UnChekedWordInfo>(resultInfo);
                                     if (viewModel.CurrentWordInfoResults.Count > 0)
                                     {
