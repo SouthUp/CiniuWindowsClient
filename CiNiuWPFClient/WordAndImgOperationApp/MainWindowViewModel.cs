@@ -190,7 +190,7 @@ namespace WordAndImgOperationApp
                 }
             }
         }
-        private string _checkFilesInfosText = "正在检测5个文件，12张图片";
+        private string _checkFilesInfosText = "";
         public string CheckFilesInfosText
         {
             get { return _checkFilesInfosText; }

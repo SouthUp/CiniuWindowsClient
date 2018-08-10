@@ -398,7 +398,7 @@
                          ScrollViewer.CanContentScroll="False">
                     <ListBox.ItemTemplate>
                         <DataTemplate>
-                            <Grid Height="32" Width="{Binding ElementName=listBox3,Path=ActualWidth}" Cursor="Hand"
+                            <Grid Height="32" Width="{Binding ElementName=listBox3,Path=ActualWidth}" Cursor="Hand" ToolTip="{Binding FileToolTip}"
                                   Background="Transparent" Tag="{Binding}" MouseLeftButtonDown="DealDataResultGrid_MouseLeftButtonDown">
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="50"></ColumnDefinition>
@@ -422,18 +422,23 @@
                                 <Grid Grid.Column="1">
                                     <TextBlock Text="{Binding FileName}" FontSize="12" Opacity="0.87"
                                                Style="{StaticResource CommonLeftTextBlock}"
-                                               MaxWidth="260" TextTrimming="CharacterEllipsis">
+                                               MaxWidth="200" TextTrimming="CharacterEllipsis">
                                     </TextBlock>
                                 </Grid>
-                                <Grid Grid.Column="2">
+                                <Grid Grid.Column="0" Grid.ColumnSpan="3">
                                     <Grid Width="16" Height="16" Background="{StaticResource WeiJinLogoBGLogo}"
                                           HorizontalAlignment="Right" VerticalAlignment="Center" Margin="0,0,16,0"
-                                          Visibility="{Binding HasError,Converter={StaticResource BoolToVisibilityConvert}}">
+                                          Visibility="{Binding ShowWeiJinTitleLogo,Converter={StaticResource BoolToVisibilityConvert}}">
                                     </Grid>
                                     <Grid Width="18" Height="18" Background="{StaticResource NoWeiJinLogoBGLogo}"
                                           HorizontalAlignment="Right" VerticalAlignment="Center" Margin="0,0,16,0"
-                                          Visibility="{Binding HasError,Converter={StaticResource BoolToVisibilityOppositeConvert}}">
+                                          Visibility="{Binding ShowNoWeiJinTitleLogo,Converter={StaticResource BoolToVisibilityConvert}}">
                                     </Grid>
+                                    <TextBlock Text="未能检测" Foreground="Black" FontSize="12" Opacity="0.54"
+                                               Style="{StaticResource CommonCenterTextBlock}"
+                                               HorizontalAlignment="Right" Margin="0,0,16,0"
+                                               Visibility="{Binding ShowNoCheckTitleLogo,Converter={StaticResource BoolToVisibilityConvert}}">
+                                    </TextBlock>
                                 </Grid>
                             </Grid>
                         </DataTemplate>

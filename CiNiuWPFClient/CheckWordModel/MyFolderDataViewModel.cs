@@ -95,16 +95,6 @@ namespace CheckWordModel
                 RaisePropertyChanged("FilePath");
             }
         }
-        private bool _hasError = false;
-        public bool HasError
-        {
-            get { return _hasError; }
-            set
-            {
-                _hasError = value;
-                RaisePropertyChanged("HasError");
-            }
-        }
         private string _dealImageFilePath = "";
         public string DealImageFilePath
         {
@@ -113,6 +103,79 @@ namespace CheckWordModel
             {
                 _dealImageFilePath = value;
                 RaisePropertyChanged("DealImageFilePath");
+            }
+        }
+        private string _fileToolTip = "";
+        public string FileToolTip
+        {
+            get { return _fileToolTip; }
+            set
+            {
+                _fileToolTip = value;
+                RaisePropertyChanged("FileToolTip");
+            }
+        }
+        private bool _showWeiJinTitleLogo = false;
+        public bool ShowWeiJinTitleLogo
+        {
+            get { return _showWeiJinTitleLogo; }
+            set
+            {
+                _showWeiJinTitleLogo = value;
+                RaisePropertyChanged("ShowWeiJinTitleLogo");
+            }
+        }
+        private bool _showNoWeiJinTitleLogo = false;
+        public bool ShowNoWeiJinTitleLogo
+        {
+            get { return _showNoWeiJinTitleLogo; }
+            set
+            {
+                _showNoWeiJinTitleLogo = value;
+                RaisePropertyChanged("ShowNoWeiJinTitleLogo");
+            }
+        }
+        private bool _showNoCheckTitleLogo = false;
+        public bool ShowNoCheckTitleLogo
+        {
+            get { return _showNoCheckTitleLogo; }
+            set
+            {
+                _showNoCheckTitleLogo = value;
+                RaisePropertyChanged("ShowNoCheckTitleLogo");
+            }
+        }
+        public string _checkResultInfo = "0";//0:无违禁词,1:有违禁词，2:未检测
+        public string CheckResultInfo
+        {
+            get
+            {
+                return _checkResultInfo;
+            }
+            set
+            {
+                _checkResultInfo = value;
+                if (_checkResultInfo == "0")
+                {
+                    ShowNoWeiJinTitleLogo = true;
+                    ShowWeiJinTitleLogo = false;
+                    ShowNoCheckTitleLogo = false;
+                    FileToolTip = "不包含违禁词";
+                }
+                else if (_checkResultInfo == "1")
+                {
+                    ShowNoWeiJinTitleLogo = false;
+                    ShowWeiJinTitleLogo = true;
+                    ShowNoCheckTitleLogo = false;
+                    FileToolTip = "点击查看详情";
+                }
+                else if (_checkResultInfo == "2")
+                {
+                    ShowNoWeiJinTitleLogo = false;
+                    ShowWeiJinTitleLogo = false;
+                    ShowNoCheckTitleLogo = true;
+                    FileToolTip = "文件已打开，未能检测";
+                }
             }
         }
     }

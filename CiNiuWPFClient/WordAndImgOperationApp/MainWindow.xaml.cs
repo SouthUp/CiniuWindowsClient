@@ -1004,8 +1004,48 @@ namespace WordAndImgOperationApp
                     }
                     //解析数据
                     Task taskJieXi = new Task(() => {
-                        System.Threading.Thread.Sleep(500);
-                        viewModel.CheckFilesInfosText = "正在检测5个文件，12张图片";
+                        int fileCount = FilePathsList.Count;
+                        int imagesCount = 0;
+                        foreach (var item in FilePathsList)
+                        {
+                            if (".png,.jpg,.jpeg".Contains(System.IO.Path.GetExtension(item).ToLower()))
+                            {
+                                imagesCount++;
+                            }
+                            else if (".doc,.docx".Contains(System.IO.Path.GetExtension(item).ToLower()))
+                            {
+                                try
+                                {
+                                    Aspose.Words.Document doc = new Aspose.Words.Document(item);
+                                    //取得对象集合
+                                    Aspose.Words.NodeCollection shapes = doc.GetChildNodes(Aspose.Words.NodeType.Shape, true);
+                                    foreach (Aspose.Words.Drawing.Shape shape in shapes)
+                                    {
+                                        if (shape != null && shape.HasImage)
+                                        {
+                                            imagesCount++;
+                                        }
+                                    }
+                                }
+                                catch (Exception ex)
+                                { }
+                            }
+                            else if (".xls,.xlsx".Contains(System.IO.Path.GetExtension(item).ToLower()))
+                            {
+                                try
+                                {
+                                    Aspose.Cells.Workbook workbook = new Aspose.Cells.Workbook(item);
+                                    int sheetCount = workbook.Worksheets.Count;
+                                    for (int k = 0; k < sheetCount; k++)
+                                    {
+                                        imagesCount += workbook.Worksheets[k].Pictures.Count;
+                                    }
+                                }
+                                catch (Exception ex)
+                                { }
+                            }
+                        }
+                        viewModel.CheckFilesInfosText = "正在检测" + fileCount + "个文件，" + imagesCount + "张图片";
                     });
                     taskJieXi.Start();
                     await taskJieXi;
@@ -1086,22 +1126,18 @@ namespace WordAndImgOperationApp
         {
             try
             {
-                System.Threading.Thread.Sleep(1000);
-                MyFolderDataViewModel model = new MyFolderDataViewModel(System.IO.Path.GetFileName(dealFilePath), dealFilePath);
+                MyFolderDataViewModel model = null;
                 if (".doc,.docx".Contains(System.IO.Path.GetExtension(dealFilePath).ToLower()))
                 {
-                    model.TypeSelectFile = SelectFileType.Docx;
-                    model.HasError = true;              
+                    model = LoadDocx(dealFilePath);
                 }
                 else if (".png,.jpg,.jpeg".Contains(System.IO.Path.GetExtension(dealFilePath).ToLower()))
                 {
-                    model.TypeSelectFile = SelectFileType.Img;
-                    model.HasError = true;
+                    model = AutoExcutePicOCR(dealFilePath);
                 }
                 else if (".xls,.xlsx".Contains(System.IO.Path.GetExtension(dealFilePath).ToLower()))
                 {
-                    model.TypeSelectFile = SelectFileType.Xlsx;
-                    model.HasError = false;
+                    model = LoadXlsx(dealFilePath);
                 }
                 Dispatcher.Invoke(new Action(() => {
                     _dealDataResultList.Add(model);
@@ -1109,6 +1145,57 @@ namespace WordAndImgOperationApp
             }
             catch (Exception ex)
             { }
+        }
+        /// <summary>
+        /// 解析校验文档
+        /// </summary>
+        /// <param name="filePath"></param>
+        private MyFolderDataViewModel LoadDocx(string dealFilePath)
+        {
+            MyFolderDataViewModel model = new MyFolderDataViewModel(System.IO.Path.GetFileName(dealFilePath), dealFilePath);
+            model.TypeSelectFile = SelectFileType.Docx;
+            try
+            {
+                model.CheckResultInfo = "0";
+            }
+            catch (Exception ex)
+            {
+            }
+            return model;
+        }
+        /// <summary>
+        /// 解析校验Xlsx
+        /// </summary>
+        /// <param name="filePath"></param>
+        private MyFolderDataViewModel LoadXlsx(string dealFilePath)
+        {
+            MyFolderDataViewModel model = new MyFolderDataViewModel(System.IO.Path.GetFileName(dealFilePath), dealFilePath);
+            model.TypeSelectFile = SelectFileType.Xlsx;
+            try
+            {
+                model.CheckResultInfo = "2";
+            }
+            catch (Exception ex)
+            {
+            }
+            return model;
+        }
+        /// <summary>
+        /// 解析校验Img
+        /// </summary>
+        /// <param name="filePath"></param>
+        private MyFolderDataViewModel AutoExcutePicOCR(string dealFilePath)
+        {
+            MyFolderDataViewModel model = new MyFolderDataViewModel(System.IO.Path.GetFileName(dealFilePath), dealFilePath);
+            model.TypeSelectFile = SelectFileType.Img;
+            try
+            {
+                model.CheckResultInfo = "1";
+            }
+            catch (Exception ex)
+            {
+            }
+            return model;
         }
         private void listBox2_PreviewMouseWheel(object sender, MouseWheelEventArgs e)
         {
