@@ -1140,7 +1140,8 @@ namespace WordAndImgOperationApp
                     model = LoadXlsx(dealFilePath);
                 }
                 Dispatcher.Invoke(new Action(() => {
-                    _dealDataResultList.Add(model);
+                    if (model != null)
+                        _dealDataResultList.Add(model);
                 }));
             }
             catch (Exception ex)
@@ -1156,11 +1157,163 @@ namespace WordAndImgOperationApp
             model.TypeSelectFile = SelectFileType.Docx;
             try
             {
-                model.CheckResultInfo = "0";
+                string fileName = System.IO.Path.GetFileNameWithoutExtension(dealFilePath);
+                string pathDir = CheckWordTempPath + "\\" + fileName + System.IO.Path.GetExtension(dealFilePath).Replace(".", "") + "-Docx\\";
+                FileOperateHelper.DeleteFolder(pathDir);
+                if (!Directory.Exists(pathDir))
+                {
+                    Directory.CreateDirectory(pathDir);
+                }
+                Aspose.Words.Document doc = new Aspose.Words.Document(dealFilePath);
+                int countWords = 0;
+                foreach (Aspose.Words.Section section in doc.Sections)
+                {
+                    if (!IsDealingData)
+                    {
+                        _dealDataResultList = new ObservableCollection<MyFolderDataViewModel>();
+                        return null;
+                    }
+                    foreach (Aspose.Words.Paragraph paragraph in section.Body.Paragraphs)
+                    {
+                        if (!IsDealingData)
+                        {
+                            _dealDataResultList = new ObservableCollection<MyFolderDataViewModel>();
+                            return null;
+                        }
+                        string textResult = paragraph.GetText();
+                        if (!string.IsNullOrEmpty(textResult))
+                        {
+                            textResult = textResult.Replace("\f", "").Replace("\r", "").Replace("\n", "");
+                            if (!string.IsNullOrEmpty(textResult))
+                                countWords += textResult.Count();
+                        }
+                    }
+                }
+                try
+                {
+                    APIService service = new APIService();
+                    var userStateInfos = service.GetUserStateByToken(UtilSystemVar.UserToken);
+                    if (userStateInfos != null)
+                    {
+                        if (userStateInfos.WordCount < countWords)
+                        {
+                            EventAggregatorRepository.EventAggregator.GetEvent<SendNotifyMessageEvent>().Publish("500");
+                            model.CheckResultInfo = "2";
+                            model.FileToolTip = "剩余点数不足,未能检测";
+                            return model;
+                        }
+                        else
+                        {
+                            int index = 1;
+                            //取得对象集合
+                            Aspose.Words.NodeCollection shapes = doc.GetChildNodes(Aspose.Words.NodeType.Shape, true);
+                            foreach (Aspose.Words.Drawing.Shape shape in shapes)
+                            {
+                                if (!IsDealingData)
+                                {
+                                    _dealDataResultList = new ObservableCollection<MyFolderDataViewModel>();
+                                    return null;
+                                }
+                                if (shape != null && shape.HasImage)
+                                {
+                                    string imageName = String.Format(pathDir + "照片-{0}.png", index);
+                                    shape.ImageData.Save(imageName);
+                                    index++;
+                                }
+                            }
+                            if (countWords > 0)
+                            {
+                                if (!IsDealingData)
+                                {
+                                    _dealDataResultList = new ObservableCollection<MyFolderDataViewModel>();
+                                    return null;
+                                }
+                                ConsumeResponse consume = service.GetWordConsume(countWords, UtilSystemVar.UserToken);
+                                if (consume != null)
+                                {
+                                    foreach (Aspose.Words.Section section in doc.Sections)
+                                    {
+                                        if (!IsDealingData)
+                                        {
+                                            _dealDataResultList = new ObservableCollection<MyFolderDataViewModel>();
+                                            return null;
+                                        }
+                                        foreach (Aspose.Words.Paragraph paragraph in section.Body.Paragraphs)
+                                        {
+                                            if (!IsDealingData)
+                                            {
+                                                _dealDataResultList = new ObservableCollection<MyFolderDataViewModel>();
+                                                return null;
+                                            }
+                                            string textResult = paragraph.GetText();
+                                            var list = CheckWordUtil.CheckWordHelper.GetUnChekedWordInfoList(textResult).ToList();
+                                            if (list.Count > 0)
+                                            {
+                                                model.CheckResultInfo = "1";
+                                                return model;
+                                            }
+                                        }
+                                    }
+                                }
+                                else
+                                {
+                                    if (!IsDealingData)
+                                    {
+                                        _dealDataResultList = new ObservableCollection<MyFolderDataViewModel>();
+                                        return null;
+                                    }
+                                    EventAggregatorRepository.EventAggregator.GetEvent<SendNotifyMessageEvent>().Publish("200");
+                                    model.CheckResultInfo = "2";
+                                    model.FileToolTip = "服务器接口异常,未能检测";
+                                    return model;
+                                }
+                            }
+                            //如果包含图片，检测图片
+                            if (Directory.Exists(pathDir))
+                            {
+                                DirectoryInfo dirDoc = new DirectoryInfo(pathDir);
+                                var filePicInfos = dirDoc.GetFiles();
+                                FileOperateHelper.SortAsFileCreationTime(ref filePicInfos);
+                                foreach (var picInfo in filePicInfos)
+                                {
+                                    if (!IsDealingData)
+                                    {
+                                        _dealDataResultList = new ObservableCollection<MyFolderDataViewModel>();
+                                        return null;
+                                    }
+                                    if (picInfo.FullName.Contains("png"))
+                                    {
+                                        var picResult = AutoExcutePicOCR(picInfo.FullName);
+                                        if (picResult != null && picResult.CheckResultInfo == "1")
+                                        {
+                                            model.CheckResultInfo = "1";
+                                            return model;
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    else
+                    {
+                        EventAggregatorRepository.EventAggregator.GetEvent<SendNotifyMessageEvent>().Publish("200");
+                        model.CheckResultInfo = "2";
+                        model.FileToolTip = "服务器接口异常,未能检测";
+                        return model;
+                    }
+                }
+                catch
+                {
+                    model.CheckResultInfo = "2";
+                    model.FileToolTip = "程序异常,未能检测";
+                    return model;
+                }
             }
             catch (Exception ex)
             {
+                model.CheckResultInfo = "2";
             }
+            model.CheckResultInfo = "0";
             return model;
         }
         /// <summary>
@@ -1173,11 +1326,11 @@ namespace WordAndImgOperationApp
             model.TypeSelectFile = SelectFileType.Xlsx;
             try
             {
-                model.CheckResultInfo = "2";
+                
             }
             catch (Exception ex)
-            {
-            }
+            { }
+            model.CheckResultInfo = "0";
             return model;
         }
         /// <summary>
@@ -1190,11 +1343,11 @@ namespace WordAndImgOperationApp
             model.TypeSelectFile = SelectFileType.Img;
             try
             {
-                model.CheckResultInfo = "1";
+                
             }
             catch (Exception ex)
-            {
-            }
+            { }
+            model.CheckResultInfo = "0";
             return model;
         }
         private void listBox2_PreviewMouseWheel(object sender, MouseWheelEventArgs e)
