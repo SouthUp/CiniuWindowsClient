@@ -11,6 +11,7 @@ namespace CheckWordModel
     {
         public DateTime LastWriteTime { get; set; }
         public string Type { get; set; }
+        public DateTime CheckTime { get; set; }
 
         private string fileFullPath = "";
         public string FileFullPath
@@ -20,6 +21,16 @@ namespace CheckWordModel
             {
                 fileFullPath = value;
                 RaisePropertyChanged("FileFullPath");
+            }
+        }
+        private string fileName = "";
+        public string FileName
+        {
+            get { return fileName; }
+            set
+            {
+                fileName = value;
+                RaisePropertyChanged("FileName");
             }
         }
         private bool isDelete = false;

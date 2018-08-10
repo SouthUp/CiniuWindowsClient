@@ -249,5 +249,35 @@ namespace WordAndImgOperationApp
                 RaisePropertyChanged("DealDataResultList");
             }
         }
+        private ObservableCollection<HistoryCheckInfo> _historyCheckInfoList = new ObservableCollection<HistoryCheckInfo>();
+        public ObservableCollection<HistoryCheckInfo> HistoryCheckInfoList
+        {
+            get { return _historyCheckInfoList; }
+            set
+            {
+                _historyCheckInfoList = value;
+                RaisePropertyChanged("HistoryCheckInfoList");
+            }
+        }
+        private Visibility historyFilesGridVisibility = Visibility.Collapsed;
+        public Visibility HistoryFilesGridVisibility
+        {
+            get { return historyFilesGridVisibility; }
+            set
+            {
+                historyFilesGridVisibility = value;
+                RaisePropertyChanged("HistoryFilesGridVisibility");
+            }
+        }
+        private bool isSelectHistoryChecked = false;
+        public bool IsSelectHistoryChecked
+        {
+            get { return isSelectHistoryChecked; }
+            set
+            {
+                isSelectHistoryChecked = value;
+                RaisePropertyChanged("IsSelectHistoryChecked");
+            }
+        }
     }
 }

@@ -38,6 +38,7 @@ namespace WordAndImgOperationApp
     /// </summary>
     public partial class MainWindow : Window, ICallBackServices, IShell
     {
+        private List<HistoryCheckInfo> listCheckHistory = new List<HistoryCheckInfo>();
         private static List<string> FilePathsList = new List<string>();
         private static List<string> UnCheckFilePathsList = new List<string>();
         private static List<string> UnReadFilePathsList = new List<string>();
@@ -795,6 +796,8 @@ namespace WordAndImgOperationApp
                                         viewModel.WordNoUnchekResultVisibility = Visibility.Collapsed;
                                         viewModel.WordHasUnchekResultVisibility = Visibility.Visible;
                                         viewModel.DragFilesResultVisibility = Visibility.Collapsed;
+                                        viewModel.HistoryFilesGridVisibility = Visibility.Collapsed;
+                                        viewModel.IsSelectHistoryChecked = false;
                                         viewModel.AddToCustumCiTiaoVisibility = Visibility.Collapsed;
                                         MainGrid.Height = 80 + heightAdd;
                                         this.Height = 99 + heightAdd;
@@ -805,6 +808,8 @@ namespace WordAndImgOperationApp
                                         viewModel.WordNoUnchekResultVisibility = Visibility.Visible;
                                         viewModel.WordHasUnchekResultVisibility = Visibility.Collapsed;
                                         viewModel.DragFilesResultVisibility = Visibility.Collapsed;
+                                        viewModel.HistoryFilesGridVisibility = Visibility.Collapsed;
+                                        viewModel.IsSelectHistoryChecked = false;
                                         viewModel.AddToCustumCiTiaoVisibility = Visibility.Collapsed;
                                         MainGrid.Height = 80 + 75;
                                         this.Height = 99 + 75;
@@ -829,26 +834,111 @@ namespace WordAndImgOperationApp
                 System.Threading.ThreadStart start = delegate ()
                 {
                     //记录历史
-
+                    HistoryCheckInfo info = new HistoryCheckInfo { Type = "TxT", FileName = textSearch, FileFullPath = textSearch, CheckTime = DateTime.Now };
+                    WriteToHistory(info);
                 };
                 System.Threading.Thread t = new System.Threading.Thread(start);
                 t.IsBackground = true;
                 t.Start();
             }
         }
+        /// <summary>
+        /// 用户记录写入历史
+        /// </summary>
+        /// <param name="list"></param>
+        private void WriteToHistory(HistoryCheckInfo item)
+        {
+            try
+            {
+                string historyCheckInfos = string.Format(@"{0}\HistoryCheckInfo.xml", Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + "\\WordAndImgOCR\\LoginInOutInfo\\");
+                var ui = CheckWordUtil.DataParse.ReadFromXmlPath<string>(historyCheckInfos);
+                if (ui != null && ui.ToString() != "")
+                {
+                    listCheckHistory = JsonConvert.DeserializeObject<List<HistoryCheckInfo>>(ui.ToString()).OrderByDescending(x => x.CheckTime).ToList();
+                }
+                var existHistory = listCheckHistory.FirstOrDefault(x => x.FileFullPath == item.FileFullPath && x.Type == item.Type);
+                if (listCheckHistory.Count < 10)
+                {
+                    if (existHistory != null)
+                    {
+                        listCheckHistory.Remove(existHistory);
+                    }
+                    listCheckHistory.Insert(0, item);
+                }
+                else
+                {
+                    if (existHistory != null)
+                    {
+                        listCheckHistory.Remove(existHistory);
+                    }
+                    else
+                    {
+                        listCheckHistory.RemoveAt(9);
+                    }
+                    listCheckHistory.Insert(0, item);
+                }
+                viewModel.HistoryCheckInfoList = new ObservableCollection<HistoryCheckInfo>(listCheckHistory);
+                //保存历史记录信息到本地
+                DataParse.WriteToXmlPath(JsonConvert.SerializeObject(listCheckHistory), historyCheckInfos);
+            }
+            catch (Exception ex)
+            {
+                WPFClientCheckWordUtil.Log.TextLog.SaveError(ex.Message);
+            }
+        }
         private void MoreMenueBtn_Click(object sender, RoutedEventArgs e)
         {
             viewModel.IsMoreMenuePopWindowOpen = true;
         }
-
+        double oldHeight = 99;
+        double oldMainGrid = 80;
         private void SelectHistoryBtn_Checked(object sender, RoutedEventArgs e)
         {
-
+            oldMainGrid = MainGrid.Height;
+            oldHeight = this.Height;
+            try
+            {
+                //检测变化
+                string historyCheckInfos = string.Format(@"{0}\HistoryCheckInfo.xml", Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + "\\WordAndImgOCR\\LoginInOutInfo\\");
+                var ui = CheckWordUtil.DataParse.ReadFromXmlPath<string>(historyCheckInfos);
+                if (ui != null && ui.ToString() != "")
+                {
+                    listCheckHistory = JsonConvert.DeserializeObject<List<HistoryCheckInfo>>(ui.ToString()).OrderByDescending(x => x.CheckTime).ToList();
+                    foreach (var item in listCheckHistory)
+                    {
+                        if (item.Type == "File")
+                        {
+                            if (!File.Exists(item.FileFullPath))
+                            {
+                                item.IsDelete = true;
+                            }
+                            else
+                            {
+                                item.IsDelete = false;
+                                if (new FileInfo(item.FileFullPath).LastWriteTime > item.LastWriteTime)
+                                {
+                                    item.IsModify = true;
+                                }
+                            }
+                        }
+                    }
+                }
+                viewModel.HistoryCheckInfoList = new ObservableCollection<HistoryCheckInfo>(listCheckHistory);
+                //保存历史记录信息到本地
+                DataParse.WriteToXmlPath(JsonConvert.SerializeObject(listCheckHistory), historyCheckInfos);
+            }
+            catch (Exception ex)
+            { }
+            viewModel.HistoryFilesGridVisibility = Visibility.Visible;
+            MainGrid.Height = 80 + heightAddMax;
+            this.Height = 99 + heightAddMax;
         }
 
         private void SelectHistoryBtn_Unchecked(object sender, RoutedEventArgs e)
         {
-
+            viewModel.HistoryFilesGridVisibility = Visibility.Collapsed;
+            MainGrid.Height = oldMainGrid;
+            this.Height = oldHeight;
         }
         private void GoUserInfoBtn_Click(object sender, RoutedEventArgs e)
         {
@@ -1109,10 +1199,31 @@ namespace WordAndImgOperationApp
                     viewModel.DealDataResultList = _dealDataResultList;
                     CloseDealingGrid();
                     viewModel.DragFilesResultVisibility = Visibility.Visible;
+                    viewModel.HistoryFilesGridVisibility = Visibility.Collapsed;
+                    viewModel.IsSelectHistoryChecked = false;
                     System.Threading.ThreadStart start = delegate ()
                     {
                         //记录历史
-
+                        foreach (var item in FilePathsList)
+                        {
+                            HistoryCheckInfo info = new HistoryCheckInfo { Type = "File", FileFullPath = item, CheckTime = DateTime.Now };
+                            if (!File.Exists(item))
+                            {
+                                info.IsDelete = true;
+                            }
+                            else
+                            {
+                                FileInfo fileInfo = new FileInfo(item);
+                                try
+                                {
+                                    info.FileName = fileInfo.Name;
+                                    info.LastWriteTime = fileInfo.LastWriteTime;
+                                }
+                                catch
+                                { }
+                            }
+                            WriteToHistory(info);
+                        }
                     };
                     System.Threading.Thread t = new System.Threading.Thread(start);
                     t.IsBackground = true;
@@ -1635,6 +1746,47 @@ namespace WordAndImgOperationApp
                     { }
                 }
             }
+        }
+
+        private void HistoryGrid_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            var grid = sender as Grid;
+            if (grid != null)
+            {
+                var historyCheckInfo = grid.Tag as HistoryCheckInfo;
+                if (historyCheckInfo.Type == "TxT")
+                {
+                    viewModel.IsSelectHistoryChecked = false;
+                    viewModel.SearchText = historyCheckInfo.FileName;
+                    CheckInputText(viewModel.SearchText);
+                }
+                else
+                {
+                    if (File.Exists(historyCheckInfo.FileFullPath))
+                    {
+                        viewModel.IsSelectHistoryChecked = false;
+                        DealHistoryDragFiles(historyCheckInfo.FileFullPath);
+                    }
+                }
+            }
+        }
+        private void DealHistoryDragFiles(string fileFullName)
+        {
+            try
+            {
+                this.IsDealingData = true;
+                viewModel.DealingGridVisibility = Visibility.Visible;
+                EventAggregatorRepository.EventAggregator.GetEvent<MainAppShowTipsInfoEvent>().Publish(new AppBusyIndicator() { IsBusy = true, BusyContent = "正在检测中，请稍后添加" });
+                viewModel.CheckFilesInfosText = "正在解析中...";
+                viewModel.DealCurrentIndex = 0;
+                FilePathsList = new List<string>();
+                UnCheckFilePathsList = new List<string>();
+                UnReadFilePathsList = new List<string>();
+                FilePathsList.Add(fileFullName);
+                DealDragDatas();
+            }
+            catch (Exception ex)
+            { }
         }
     }
 }

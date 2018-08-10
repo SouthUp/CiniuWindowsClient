@@ -194,7 +194,7 @@
                                                   HorizontalAlignment="Left" KeyDown="SearchTextBox_KeyDown"
                                                   control:WatermarkTextBox.Watermark="拖入文件，文件夹或输入词，句"
                                                       MaxLength="1000"/>
-                        <ToggleButton Width="16" Height="16" Margin="0,0,8,0"
+                        <ToggleButton Width="16" Height="16" Margin="0,0,8,0" IsChecked="{Binding IsSelectHistoryChecked}"
                                           Style="{StaticResource HistoryExpandToggleStyle}"
                                           VerticalAlignment="Center" HorizontalAlignment="Right"
                                           Checked="SelectHistoryBtn_Checked" Unchecked="SelectHistoryBtn_Unchecked">
@@ -395,7 +395,7 @@
                          ScrollViewer.VerticalScrollBarVisibility="Auto" SelectedIndex="-1"
                          ItemContainerStyle="{StaticResource DealResultListBoxItemContainerStyle}"
                          VerticalAlignment="Top" HorizontalAlignment="Stretch"
-                         ScrollViewer.CanContentScroll="False">
+                         ScrollViewer.CanContentScroll="True">
                     <ListBox.ItemTemplate>
                         <DataTemplate>
                             <Grid Height="32" Width="{Binding ElementName=listBox3,Path=ActualWidth}" Cursor="Hand" ToolTip="{Binding FileToolTip}"
@@ -438,6 +438,57 @@
                                                Style="{StaticResource CommonCenterTextBlock}"
                                                HorizontalAlignment="Right" Margin="0,0,16,0"
                                                Visibility="{Binding ShowNoCheckTitleLogo,Converter={StaticResource BoolToVisibilityConvert}}">
+                                    </TextBlock>
+                                </Grid>
+                            </Grid>
+                        </DataTemplate>
+                    </ListBox.ItemTemplate>
+                    <ListBox.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <WrapPanel Orientation="Vertical"/>
+                        </ItemsPanelTemplate>
+                    </ListBox.ItemsPanel>
+                </ListBox>
+            </Grid>
+            <Grid Grid.Row="2" Visibility="{Binding HistoryFilesGridVisibility}" 
+                  Background="White" Height="328">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="15"></RowDefinition>
+                    <RowDefinition Height="*"></RowDefinition>
+                </Grid.RowDefinitions>
+                <TextBlock Text="历史筛查" Foreground="Black" 
+                           FontSize="10" Opacity="0.38"
+                           Style="{StaticResource CommonLeftTextBlock}"
+                           Margin="16,0,0,0">
+                </TextBlock>
+                <ListBox x:Name="listBox4" Grid.Row="1" BorderThickness="0" Background="Transparent"
+                         ItemsSource="{Binding HistoryCheckInfoList}"
+                         ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+                         ScrollViewer.VerticalScrollBarVisibility="Auto" SelectedIndex="-1"
+                         ItemContainerStyle="{StaticResource HistoryListBoxItemContainerStyle}"
+                         VerticalAlignment="Top" HorizontalAlignment="Stretch"
+                         ScrollViewer.CanContentScroll="True">
+                    <ListBox.ItemTemplate>
+                        <DataTemplate>
+                            <Grid Height="30" Width="{Binding ElementName=listBox4,Path=ActualWidth}">
+                                <Grid Height="30" Width="{Binding ElementName=listBox4,Path=ActualWidth}"
+                                      Background="Transparent" ToolTip="文件已删除">
+                                    <TextBlock Text="{Binding FileName}" FontSize="12" Opacity="0.26"
+                                               Style="{StaticResource CommonLeftTextBlock}" Margin="20,0,0,0"
+                                               MaxWidth="250" TextTrimming="CharacterEllipsis">
+                                    </TextBlock>
+                                </Grid>
+                                <Grid Height="30" Width="{Binding ElementName=listBox4,Path=ActualWidth}" Cursor="Hand"
+                                      Background="Transparent" Tag="{Binding}" MouseLeftButtonDown="HistoryGrid_MouseLeftButtonDown"
+                                      Visibility="{Binding IsDelete,Converter={StaticResource BoolToVisibilityOppositeConvert}}">
+                                    <TextBlock Text="{Binding FileName}" FontSize="12" Opacity="0.87"
+                                               Style="{StaticResource CommonLeftTextBlock}" Margin="20,0,0,0"
+                                               MaxWidth="250" TextTrimming="CharacterEllipsis">
+                                    </TextBlock>
+                                    <TextBlock Text="已修改" Foreground="Black" FontSize="12" Opacity="0.38"
+                                               Style="{StaticResource CommonCenterTextBlock}"
+                                               HorizontalAlignment="Right" Margin="0,0,16,0"
+                                               Visibility="{Binding IsModify,Converter={StaticResource BoolToVisibilityConvert}}">
                                     </TextBlock>
                                 </Grid>
                             </Grid>
