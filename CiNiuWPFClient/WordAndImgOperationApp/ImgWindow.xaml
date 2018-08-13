@@ -1,0 +1,57 @@
+﻿<Window x:Class="WordAndImgOperationApp.ImgWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:WordAndImgOperationApp"
+        xmlns:gifLib="clr-namespace:GifImageLib;assembly=GifImageLib"
+        mc:Ignorable="d"
+        AllowsTransparency="True" Background="Transparent"
+        WindowStyle="None" WindowStartupLocation="CenterScreen"
+        Title="ImgWindow" Height="710" Width="910" Loaded="Window_Loaded">
+    <Grid Height="700" Width="900">
+        <Border BorderThickness="0">
+            <Border.Background>
+                <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                    <GradientStop Color="White" Offset="1" />
+                    <GradientStop Color="White" Offset="0" />
+                </LinearGradientBrush>
+            </Border.Background>
+            <Border.Effect>
+                <DropShadowEffect ShadowDepth="0" />
+            </Border.Effect>
+        </Border>
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="24"></RowDefinition>
+                <RowDefinition Height="*"></RowDefinition>
+            </Grid.RowDefinitions>
+            <Grid Grid.Row="0" Background="Transparent" 
+                  Cursor="Hand" MouseDown="TitleGrid_MouseDown">
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Center">
+                    <ToggleButton Width="24" Height="24" Margin="0,0,8,0" Style="{StaticResource GrayMaxToggleButtonStyle}"
+                                  Checked="MaxBtn_Checked"  Unchecked="MaxBtn_Unchecked">
+                    </ToggleButton>
+                    <Button x:Name="CloseBtn" Width="24" Height="24" Click="CloseBtn_Click" 
+                            Style="{StaticResource CloseBtnButtonStyle}"
+                            Margin="16,0,0,0" Focusable="False">
+                    </Button>
+                </StackPanel>
+            </Grid>
+            <Grid Grid.Row="1" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+
+            </Grid>
+        </Grid>
+        <Grid HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Visibility="{Binding BusyWindowVisibility}">
+            <Grid Background="White" Opacity="0.9"></Grid>
+            <Grid>
+                <StackPanel Orientation="Vertical" HorizontalAlignment="Center" VerticalAlignment="Center">
+                    <gifLib:GifImage x:Name="element" Width="100" Height="20" HorizontalAlignment="Center"/>
+                    <TextBlock Text="{Binding BusyContent}" Width="200" Height="50" TextAlignment="Center" TextWrapping="Wrap" 
+                                       HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="14" Foreground="#2196f3" 
+                                       FontFamily="Microsoft YaHei" Margin="0,5,0,0"/>
+                </StackPanel>
+            </Grid>
+        </Grid>
+    </Grid>
+</Window>
