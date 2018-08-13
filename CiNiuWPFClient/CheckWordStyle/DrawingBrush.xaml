@@ -540,6 +540,40 @@
             </DrawingGroup>
         </DrawingBrush.Drawing>
     </DrawingBrush>
+    <DrawingBrush x:Key="VersionIconLogo" Stretch="None">
+        <DrawingBrush.Drawing>
+            <DrawingGroup>
+                <DrawingGroup.ClipGeometry>
+                    <RectangleGeometry Rect="0,0,18,18" />
+                </DrawingGroup.ClipGeometry>
+                <GeometryDrawing>
+                    <GeometryDrawing.Brush>
+                        <SolidColorBrush Color="#FF160536" Opacity="0.541" />
+                    </GeometryDrawing.Brush>
+                    <GeometryDrawing.Geometry>
+                        <PathGeometry FillRule="EvenOdd" Figures="M11.857,7.007L14.8,7.007 9.649,1.588 4.499,7.007 7.516,7.007C7.516,10.878 6.338,13.588 3.763,15.523 7.442,14.749 11.121,12.427 11.857,7.007z" />
+                    </GeometryDrawing.Geometry>
+                </GeometryDrawing>
+            </DrawingGroup>
+        </DrawingBrush.Drawing>
+    </DrawingBrush>
+    <DrawingBrush x:Key="AboutIconLogo" Stretch="None">
+        <DrawingBrush.Drawing>
+            <DrawingGroup>
+                <DrawingGroup.ClipGeometry>
+                    <RectangleGeometry Rect="0,0,18,18" />
+                </DrawingGroup.ClipGeometry>
+                <GeometryDrawing>
+                    <GeometryDrawing.Brush>
+                        <SolidColorBrush Color="#FF160536" Opacity="0.541" />
+                    </GeometryDrawing.Brush>
+                    <GeometryDrawing.Geometry>
+                        <PathGeometry FillRule="EvenOdd" Figures="M9.5,2C5.36,2 2,5.36 2,9.5 2,13.64 5.36,17 9.5,17 13.64,17 17,13.64 17,9.5 17,5.36 13.64,2 9.5,2z M10.25,13.25L8.75,13.25 8.75,8.75 10.25,8.75 10.25,13.25z M10.25,7.25L8.75,7.25 8.75,5.75 10.25,5.75 10.25,7.25z" />
+                    </GeometryDrawing.Geometry>
+                </GeometryDrawing>
+            </DrawingGroup>
+        </DrawingBrush.Drawing>
+    </DrawingBrush>
     <DrawingBrush x:Key="ChangeUserLogo" Stretch="None">
         <DrawingBrush.Drawing>
             <DrawingGroup>

@@ -166,6 +166,7 @@ namespace WordAndImgOperationApp
                         CloseBtn_Click(null, null);
                         CloseLoginView();
                         CloseImgWindow();
+                        CloseSettingWindow();
                         LoginWindow loginWindow = new LoginWindow();
                         loginWindow.Show();
                         loginWindow.Activate();
@@ -437,10 +438,12 @@ namespace WordAndImgOperationApp
             CloseNotifyMessageView();
             CloseLoginView();
             CloseImgWindow();
+            CloseSettingWindow();
         }
         private void MenuSetting_Click(object sender, RoutedEventArgs e)
         {
             viewModel.IsSysMenuePopWindowOpen = false;
+            OpenSettingWindow("Setting");
         }
         private void MenuLoginOut_Click(object sender, RoutedEventArgs e)
         {
@@ -945,16 +948,24 @@ namespace WordAndImgOperationApp
         private void GoUserInfoBtn_Click(object sender, RoutedEventArgs e)
         {
             viewModel.IsMoreMenuePopWindowOpen = false;
+            OpenSettingWindow("UserInfo");
         }
         private void GoCustumCiBtn_Click(object sender, RoutedEventArgs e)
         {
             viewModel.IsMoreMenuePopWindowOpen = false;
+            OpenSettingWindow("CustumCi");
         }
         private void GoSettingBtn_Click(object sender, RoutedEventArgs e)
         {
             viewModel.IsMoreMenuePopWindowOpen = false;
+            OpenSettingWindow("Setting");
         }
-
+        private void OpenSettingWindow(string type)
+        {
+            CloseSettingWindow();
+            SettingWindow settingWindow = new SettingWindow(type);
+            settingWindow.Show();
+        }
         private void PinBtn_Click(object sender, RoutedEventArgs e)
         {
             CheckedPinBtn.Visibility = Visibility.Visible;
@@ -1767,7 +1778,21 @@ namespace WordAndImgOperationApp
             catch (Exception ex)
             { }
         }
-
+        private void CloseSettingWindow()
+        {
+            try
+            {
+                foreach (Window win in App.Current.Windows)
+                {
+                    if (win != this && win.Title == "SettingWindow")
+                    {
+                        win.Close();
+                    }
+                }
+            }
+            catch (Exception ex)
+            { }
+        }
         private void HistoryGrid_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
             var grid = sender as Grid;
