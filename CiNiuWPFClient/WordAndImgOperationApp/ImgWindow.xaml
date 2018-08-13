@@ -5,11 +5,25 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:WordAndImgOperationApp"
         xmlns:gifLib="clr-namespace:GifImageLib;assembly=GifImageLib"
-        mc:Ignorable="d"
-        AllowsTransparency="True" Background="Transparent"
-        WindowStyle="None" WindowStartupLocation="CenterScreen"
-        Title="ImgWindow" Height="710" Width="910" Loaded="Window_Loaded">
-    <Grid Height="700" Width="900">
+        mc:Ignorable="d" Style="{StaticResource NoresizeWindow}" 
+        AllowsTransparency="True" WindowStyle="None" WindowStartupLocation="CenterScreen"
+        Title="ImgWindow" Height="650" Width="900" Loaded="Window_Loaded">
+    <Window.Resources>
+        <Style x:Key="HighlightedWordBox" TargetType="Border">
+            <Setter Property="HorizontalAlignment" Value="Left"/>
+            <Setter Property="VerticalAlignment" Value="Top" />
+            <Setter Property="BorderThickness" Value="3" />
+            <Setter Property="BorderBrush" Value="Red" />
+        </Style>
+        <Style x:Key="HighlightedWordBoxHorizontalLine" TargetType="Border" BasedOn="{StaticResource HighlightedWordBox}">
+            <Setter Property="Background">
+                <Setter.Value>
+                    <SolidColorBrush Color="Blue" Opacity="0" />
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </Window.Resources>
+    <Grid>
         <Border BorderThickness="0">
             <Border.Background>
                 <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
@@ -28,18 +42,27 @@
             </Grid.RowDefinitions>
             <Grid Grid.Row="0" Background="Transparent" 
                   Cursor="Hand" MouseDown="TitleGrid_MouseDown">
+                <Grid Background="{StaticResource AppTitleLogo}" 
+                      HorizontalAlignment="Left" VerticalAlignment="Center"
+                      Width="18" Height="14" Margin="10,0,0,0">
+                </Grid>
                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Center">
-                    <ToggleButton Width="24" Height="24" Margin="0,0,8,0" Style="{StaticResource GrayMaxToggleButtonStyle}"
+                    <ToggleButton Width="24" Height="24" Style="{StaticResource GrayMaxToggleButtonStyle}"
                                   Checked="MaxBtn_Checked"  Unchecked="MaxBtn_Unchecked">
                     </ToggleButton>
                     <Button x:Name="CloseBtn" Width="24" Height="24" Click="CloseBtn_Click" 
                             Style="{StaticResource CloseBtnButtonStyle}"
-                            Margin="16,0,0,0" Focusable="False">
+                            Margin="8,0,0,0" Focusable="False">
                     </Button>
                 </StackPanel>
+                <Border Height="1" BorderBrush="#a2b5b9" Opacity="0.12" BorderThickness="1"
+                        HorizontalAlignment="Stretch" VerticalAlignment="Bottom"></Border>
             </Grid>
-            <Grid Grid.Row="1" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
-
+            <Grid Grid.Row="1" Background="Transparent">
+                <Image x:Name="img" SizeChanged="img_SizeChanged" Stretch="Uniform"/>
+                <Grid x:Name="TextOverlay" 
+                      Width="{Binding ElementName=img,Path=ActualWidth}"
+                      Height="{Binding ElementName=img,Path=ActualHeight}"/>
             </Grid>
         </Grid>
         <Grid HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Visibility="{Binding BusyWindowVisibility}">
@@ -47,7 +70,7 @@
             <Grid>
                 <StackPanel Orientation="Vertical" HorizontalAlignment="Center" VerticalAlignment="Center">
                     <gifLib:GifImage x:Name="element" Width="100" Height="20" HorizontalAlignment="Center"/>
-                    <TextBlock Text="{Binding BusyContent}" Width="200" Height="50" TextAlignment="Center" TextWrapping="Wrap" 
+                    <TextBlock Text="loading..." Width="200" Height="50" TextAlignment="Center" TextWrapping="Wrap" 
                                        HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="14" Foreground="#2196f3" 
                                        FontFamily="Microsoft YaHei" Margin="0,5,0,0"/>
                 </StackPanel>

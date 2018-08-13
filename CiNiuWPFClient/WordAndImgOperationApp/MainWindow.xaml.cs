@@ -165,6 +165,7 @@ namespace WordAndImgOperationApp
                     {
                         CloseBtn_Click(null, null);
                         CloseLoginView();
+                        CloseImgWindow();
                         LoginWindow loginWindow = new LoginWindow();
                         loginWindow.Show();
                         loginWindow.Activate();
@@ -435,6 +436,7 @@ namespace WordAndImgOperationApp
             CloseConsoleWPFClientServer();
             CloseNotifyMessageView();
             CloseLoginView();
+            CloseImgWindow();
         }
         private void MenuSetting_Click(object sender, RoutedEventArgs e)
         {
@@ -1735,6 +1737,9 @@ namespace WordAndImgOperationApp
                 if (myFolderDataViewModel.TypeSelectFile == SelectFileType.Img)
                 {
                     //打开图片，加载框选标记
+                    CloseImgWindow();
+                    ImgWindow imgWindow = new ImgWindow(myFolderDataViewModel);
+                    imgWindow.Show();
                 }
                 else
                 {
@@ -1746,6 +1751,21 @@ namespace WordAndImgOperationApp
                     { }
                 }
             }
+        }
+        private void CloseImgWindow()
+        {
+            try
+            {
+                foreach (Window win in App.Current.Windows)
+                {
+                    if (win != this && win.Title == "ImgWindow")
+                    {
+                        win.Close();
+                    }
+                }
+            }
+            catch (Exception ex)
+            { }
         }
 
         private void HistoryGrid_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)

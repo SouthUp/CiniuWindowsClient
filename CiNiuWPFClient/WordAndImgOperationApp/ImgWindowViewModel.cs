@@ -14,7 +14,7 @@ namespace WordAndImgOperationApp
 {
     public class ImgWindowViewModel : NotificationObject
     {
-        private System.Windows.Visibility _busyWindowVisibility = System.Windows.Visibility.Collapsed;
+        private System.Windows.Visibility _busyWindowVisibility = System.Windows.Visibility.Visible;
         public System.Windows.Visibility BusyWindowVisibility
         {
             get { return _busyWindowVisibility; }

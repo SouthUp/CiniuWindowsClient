@@ -57,6 +57,75 @@ namespace CheckWordUtil
             { }
             return result;
         }
+        /// <summary>
+        /// 获取所有验证不通过区域集合
+        /// </summary>
+        /// <param name="list"></param>
+        /// <returns></returns>
+        public static List<Rect> GetUnValidRects(List<WordInfo> list)
+        {
+            List<Rect> result = new List<Rect>();
+            try
+            {
+                if (list != null && list.Count > 0)
+                {
+                    foreach (var item in list)
+                    {
+                        List<int> subIndex = GetStrIndexsFromAllText(item);
+                        foreach (var index in subIndex)
+                        {
+                            Rect rect = new Rect();
+                            rect.X = item.Rects[index].X - 2;
+                            rect.Y = item.Rects[index].Y - 2;
+                            double widthRect = 0;
+                            double heightRect = 0;
+                            widthRect = item.Rects[index + item.UnValidText.Length - 1].Width + item.Rects[index + item.UnValidText.Length - 1].X - item.Rects[index].X;
+                            for (int i = 0; i < item.UnValidText.Length; i++)
+                            {
+                                if (item.Rects[i].Height > heightRect)
+                                {
+                                    heightRect = item.Rects[i].Height;
+                                }
+                            }
+                            rect.Width = widthRect + 4;
+                            rect.Height = heightRect + 4;
+                            result.Add(rect);
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+
+            }
+            return result;
+        }
+        /// <summary>
+        /// 获取特定字符串在整个字符串位置集合
+        /// </summary>
+        /// <param name="wordInfo"></param>
+        /// <returns></returns>
+        private static List<int> GetStrIndexsFromAllText(WordInfo wordInfo)
+        {
+            List<int> subIndex = new List<int>();
+            try
+            {
+                if (wordInfo != null && !string.IsNullOrEmpty(wordInfo.AllText) && !string.IsNullOrEmpty(wordInfo.UnValidText))
+                {
+                    int ii = wordInfo.AllText.IndexOf(wordInfo.UnValidText);
+                    while (ii >= 0 && ii < wordInfo.AllText.Length)
+                    {
+                        subIndex.Add(ii);
+                        ii = wordInfo.AllText.IndexOf(wordInfo.UnValidText, ii + 1);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+
+            }
+            return subIndex;
+        }
         public static string PostSend(string url, string json)
         {
             byte[] postBytes = Encoding.UTF8.GetBytes(json);

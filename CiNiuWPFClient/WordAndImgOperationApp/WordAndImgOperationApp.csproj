@@ -130,6 +130,10 @@
       <DependentUpon>FindPsw.xaml</DependentUpon>
     </Compile>
     <Compile Include="FindPswViewModel.cs" />
+    <Compile Include="ImgWindow.xaml.cs">
+      <DependentUpon>ImgWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ImgWindowViewModel.cs" />
     <Compile Include="IShell.cs" />
     <Compile Include="Login.xaml.cs">
       <DependentUpon>Login.xaml</DependentUpon>
@@ -146,6 +150,10 @@
     </Compile>
     <Compile Include="RegisterViewModel.cs" />
     <Page Include="FindPsw.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="ImgWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>

@@ -33,6 +33,17 @@
                     </Setter.Value>
                 </Setter>
             </Style>
+            <Style x:Key="NoresizeWindow" TargetType="{x:Type Window}">
+                <Setter Property="Template">
+                    <Setter.Value>
+                        <ControlTemplate TargetType="{x:Type Window}">
+                            <Grid Margin="5">
+                                <ContentPresenter />
+                            </Grid>
+                        </ControlTemplate>
+                    </Setter.Value>
+                </Setter>
+            </Style>
         </ResourceDictionary>
     </Application.Resources>
 </Application>
