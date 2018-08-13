@@ -32,6 +32,42 @@ namespace WordAndImgOperationApp
             InitializeComponent();
             this.DataContext = viewModel;
             this.typeBtn = type;
+            EventAggregatorRepository.EventAggregator.GetEvent<SettingWindowBusyIndicatorEvent>().Subscribe(SettingWindowBusyIndicator);
+            EventAggregatorRepository.EventAggregator.GetEvent<LoadSettingWindowGridViewEvent>().Subscribe(LoadSettingWindowGridView);
+        }
+        private void SettingWindowBusyIndicator(AppBusyIndicator busyindicator)
+        {
+            try
+            {
+                Dispatcher.Invoke(new Action(() => {
+                    if (busyindicator.IsBusy)
+                    {
+                        viewModel.BusyWindowVisibility = Visibility.Visible;
+                    }
+                    else
+                    {
+                        viewModel.BusyWindowVisibility = Visibility.Collapsed;
+                    }
+                }));
+            }
+            catch (Exception ex)
+            { }
+        }
+        private void LoadSettingWindowGridView(string typeName)
+        {
+            Dispatcher.Invoke(new Action(() => {
+                try
+                {
+                    ContentGrid.Children.Clear();
+                    if (typeName == "VersionControl")
+                    {
+                        VersionControl versionControl = new VersionControl();
+                        ContentGrid.Children.Add(versionControl);
+                    }
+                }
+                catch (Exception ex)
+                { }
+            }));
         }
         private void TitleGrid_MouseDown(object sender, MouseButtonEventArgs e)
         {
@@ -61,24 +97,24 @@ namespace WordAndImgOperationApp
 
         private void UserInfoBtn_Click(object sender, RoutedEventArgs e)
         {
-            SelectInfoTextBlock.Text = "用户信息";
+            EventAggregatorRepository.EventAggregator.GetEvent<LoadSettingWindowGridViewEvent>().Publish("UserInfoControl");
         }
 
         private void CustumCiBtn_Click(object sender, RoutedEventArgs e)
         {
-            SelectInfoTextBlock.Text = "自建词条";
+            EventAggregatorRepository.EventAggregator.GetEvent<LoadSettingWindowGridViewEvent>().Publish("CustumCiControl");
         }
         private void VersionBtn_Click(object sender, RoutedEventArgs e)
         {
-            SelectInfoTextBlock.Text = "升级";
+            EventAggregatorRepository.EventAggregator.GetEvent<LoadSettingWindowGridViewEvent>().Publish("VersionControl");
         }
         private void AboutBtn_Click(object sender, RoutedEventArgs e)
         {
-            SelectInfoTextBlock.Text = "关于";
+            EventAggregatorRepository.EventAggregator.GetEvent<LoadSettingWindowGridViewEvent>().Publish("AboutControl");
         }
         private void SettingBtn_Click(object sender, RoutedEventArgs e)
         {
-            SelectInfoTextBlock.Text = "设置";
+            EventAggregatorRepository.EventAggregator.GetEvent<LoadSettingWindowGridViewEvent>().Publish("SettingControl");
         }
     }
 }

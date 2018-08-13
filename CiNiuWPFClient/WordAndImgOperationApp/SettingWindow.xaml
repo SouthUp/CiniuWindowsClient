@@ -73,21 +73,14 @@
             <Border Grid.Column="0" Width="1" BorderBrush="#673ab7" Opacity="0.12" BorderThickness="1"
                         HorizontalAlignment="Right" VerticalAlignment="Stretch"></Border>
             <Grid Grid.Column="1">
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="24"></RowDefinition>
-                    <RowDefinition Height="*"></RowDefinition>
-                </Grid.RowDefinitions>
-                <Border Grid.Row="0" Grid.RowSpan="2" 
-                        Background="#673AB7" BorderThickness="0" Opacity="0.02"></Border>
-                <Button Grid.Row="0" Width="24" Height="24" Click="CloseBtn_Click" 
-                            Style="{StaticResource CloseBtnButtonStyle}"
-                            Margin="8,0,0,0" Focusable="False" HorizontalAlignment="Right" >
-                </Button>
-                <Grid Grid.Row="1" x:Name="ContentGrid" Background="Transparent">
-                    <TextBlock x:Name="SelectInfoTextBlock" Foreground="#160536" Opacity="0.22" FontSize="18"
-                               Style="{StaticResource CommonCenterTextBlock}">
-                    </TextBlock>
+                <Border Background="#673AB7" BorderThickness="0" Opacity="0.02"></Border>
+                <Grid x:Name="ContentGrid" Background="Transparent">
+                    
                 </Grid>
+                <Button Width="24" Height="24" Click="CloseBtn_Click"
+                        Style="{StaticResource CloseBtnButtonStyle}" Focusable="False"
+                        HorizontalAlignment="Right" VerticalAlignment="Top">
+                </Button>
             </Grid>
         </Grid>
         <Grid HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Visibility="{Binding BusyWindowVisibility}">

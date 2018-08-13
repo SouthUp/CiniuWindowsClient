@@ -64,5 +64,25 @@ namespace WordAndImgOperationApp
                 RaisePropertyChanged("DiscriptionInfos");
             }
         }
+        private Visibility _updateBtnVisibility = Visibility.Collapsed;
+        public Visibility UpdateBtnVisibility
+        {
+            get { return _updateBtnVisibility; }
+            set
+            {
+                _updateBtnVisibility = value;
+                RaisePropertyChanged("UpdateBtnVisibility");
+            }
+        }
+        private Visibility _updateTipsVisibility = Visibility.Visible;
+        public Visibility UpdateTipsVisibility
+        {
+            get { return _updateTipsVisibility; }
+            set
+            {
+                _updateTipsVisibility = value;
+                RaisePropertyChanged("UpdateTipsVisibility");
+            }
+        }
     }
 }

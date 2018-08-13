@@ -2,6 +2,7 @@
 using CheckWordUtil;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -14,6 +15,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using WPFClientCheckWordModel;
 
 namespace WordAndImgOperationApp
 {
@@ -36,12 +38,56 @@ namespace WordAndImgOperationApp
         {
             Task task = new Task(() => {
                 EventAggregatorRepository.EventAggregator.GetEvent<SettingWindowBusyIndicatorEvent>().Publish(new AppBusyIndicator { IsBusy = true });
-                APIService service = new APIService();
-                string apiMinVersion = "";
-                string versionInfo = service.GetVersion(out apiMinVersion);
+                try
+                {
+                    string version = FileVersionInfo.GetVersionInfo(System.Reflection.Assembly.GetEntryAssembly().Location).ProductVersion;
+                    viewModel.CurrentVersionInfo = version;
+                    viewModel.CurrentVersionTimeInfo = System.IO.File.GetLastWriteTime(System.Reflection.Assembly.GetEntryAssembly().Location).ToString("yyyy.MM.dd");
+                    APIService service = new APIService();
+                    VersionResponse versionResponse = service.GetVersionInfo();
+                    if (versionResponse != null && !string.IsNullOrEmpty(versionResponse.latestClient))
+                    {
+                        viewModel.NewVersionInfo = versionResponse.latestClient;
+                        if(versionResponse.descriptionInfos !=null)
+                        {
+                            foreach (var itemInfo in versionResponse.descriptionInfos)
+                            {
+                                Dispatcher.Invoke(new Action(() => {
+                                    viewModel.DiscriptionInfos.Add(new CheckWordModel.VersionInfo { DiscriptionInfo = itemInfo });
+                                }));
+                            }
+                        }
+                        if (versionResponse.time != null)
+                        {
+                            viewModel.NewVersionTimeInfo = versionResponse.time.ToString("yyyy.MM.dd");
+                        }
+                        if (new Version(viewModel.NewVersionInfo) > new Version(version))
+                        {
+                            viewModel.UpdateBtnVisibility = Visibility.Visible;
+                            viewModel.UpdateTipsVisibility = Visibility.Collapsed;
+                        }
+                    }
+                    else
+                    {
+                        EventAggregatorRepository.EventAggregator.GetEvent<SendNotifyMessageEvent>().Publish("60020");
+                    }
+                }
+                catch (Exception ex)
+                { }
+                EventAggregatorRepository.EventAggregator.GetEvent<SettingWindowBusyIndicatorEvent>().Publish(new AppBusyIndicator { IsBusy = false });
             });
             task.Start();
             await task;
+        }
+
+        private void UpdateBtn_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                System.Diagnostics.Process.Start("http://www.ciniuwang.com/download");
+            }
+            catch (Exception ex)
+            { }
         }
     }
 }

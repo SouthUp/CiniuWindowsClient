@@ -61,7 +61,6 @@ namespace WordAndImgOperationApp
             EventAggregatorRepository.EventAggregator.GetEvent<InitContentGridViewEvent>().Subscribe(InitContentGridView);
             EventAggregatorRepository.EventAggregator.GetEvent<LoginInOrOutEvent>().Subscribe(LoginInOrOut);
             EventAggregatorRepository.EventAggregator.GetEvent<SendNotifyMessageEvent>().Subscribe(SendNotifyMessage);
-            EventAggregatorRepository.EventAggregator.GetEvent<CheckVersionMessageEvent>().Subscribe(CheckVersionMessage);
             EventAggregatorRepository.EventAggregator.GetEvent<CloseMyAppEvent>().Subscribe(CloseMyApp);
             EventAggregatorRepository.EventAggregator.GetEvent<MainAppShowTipsInfoEvent>().Subscribe(MainAppShowTipsInfo);
             RegisterWcfService();
@@ -91,15 +90,6 @@ namespace WordAndImgOperationApp
         private void CloseMyApp(bool b)
         {
             MenuExit_Click(null, null);
-        }
-        private async void CheckVersionMessage(bool b)
-        {
-            try
-            {
-                string newVersion = await GetNewVersionInfo();
-            }
-            catch (Exception ex)
-            { }
         }
         private void SendNotifyMessage(string errorCode)
         {
@@ -212,19 +202,20 @@ namespace WordAndImgOperationApp
                     viewModel.CurrentVersionInfo = version;
                     APIService service = new APIService();
                     string apiMinVersion = "";
-                    string newVersion = service.GetVersion(out apiMinVersion);
-                    if (!string.IsNullOrEmpty(newVersion))
+                    VersionResponse versionResponse = service.GetVersionInfo();
+                    if (versionResponse != null && !string.IsNullOrEmpty(versionResponse.latestClient))
                     {
                         System.Threading.Thread.Sleep(1500);
+                        viewModel.NewVersionInfo = versionResponse.latestClient;
+                        apiMinVersion = versionResponse.minimumApi;
                         if (new Version(apiMinVersion) > new Version(ConfigurationManager.AppSettings["APIVersion"].ToString()))
                         {
                             EventAggregatorRepository.EventAggregator.GetEvent<SendNotifyMessageEvent>().Publish("60040");
                         }
                         else
                         {
-                            if (new Version(newVersion) > new Version(version))
+                            if (new Version(viewModel.NewVersionInfo) > new Version(version))
                             {
-                                viewModel.NewVersionInfo = newVersion;
                                 EventAggregatorRepository.EventAggregator.GetEvent<SendNotifyMessageEvent>().Publish("60030");
                             }
                         }
@@ -238,23 +229,6 @@ namespace WordAndImgOperationApp
                 { }
             });
             task.Start();
-        }
-        private async Task<string> GetNewVersionInfo()
-        {
-            string result = "";
-            Task<string> task = new Task<string>(() => {
-                APIService service = new APIService();
-                string apiMinVersion = "";
-                string versionInfo = service.GetVersion(out apiMinVersion);
-                return versionInfo;
-            });
-            task.Start();
-            await task;
-            if (!string.IsNullOrEmpty(task.Result))
-            {
-                result = task.Result;
-            }
-            return result;
         }
         private void CheckNetConn()
         {

@@ -24,6 +24,13 @@ namespace CheckWordEvent
 
     }
     /// <summary>
+    ///  设置窗体繁忙事件
+    /// </summary>
+    public class SettingWindowBusyIndicatorEvent : PubSubEvent<AppBusyIndicator>
+    {
+
+    }
+    /// <summary>
     ///  应用程序关闭事件
     /// </summary>
     public class CloseMyAppEvent : PubSubEvent<bool>
@@ -52,13 +59,6 @@ namespace CheckWordEvent
 
     }
     /// <summary>
-    /// 检查版本事件
-    /// </summary>
-    public class CheckVersionMessageEvent : PubSubEvent<bool>
-    {
-
-    }
-    /// <summary>
     ///  登录窗体加载项事件
     /// </summary>
     public class LoadLoginContentGridViewEvent : PubSubEvent<string>
@@ -69,6 +69,13 @@ namespace CheckWordEvent
     ///  关闭登录窗体事件
     /// </summary>
     public class CloseLoginWindowViewEvent : PubSubEvent<bool>
+    {
+
+    }
+    /// <summary>
+    ///  设置窗体加载项事件
+    /// </summary>
+    public class LoadSettingWindowGridViewEvent : PubSubEvent<string>
     {
 
     }

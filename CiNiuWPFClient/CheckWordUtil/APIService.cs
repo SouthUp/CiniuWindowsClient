@@ -189,10 +189,9 @@ namespace CheckWordUtil
             }
             return result;
         }
-        public string GetVersion(out string apiMinVersion)
+        public VersionResponse GetVersionInfo()
         {
-            string version = "";
-            apiMinVersion = "";
+            VersionResponse versionResponse = null;
             try
             {
                 string apiName = "version";
@@ -200,16 +199,14 @@ namespace CheckWordUtil
                 CommonResponse resultResponse = JsonConvert.DeserializeObject<CommonResponse>(resultStr);
                 if (resultResponse.state)
                 {
-                    VersionResponse versionResponse = JsonConvert.DeserializeObject<VersionResponse>(resultResponse.result);
-                    version = versionResponse.latestClient;
-                    apiMinVersion = versionResponse.minimumApi;
+                    versionResponse = JsonConvert.DeserializeObject<VersionResponse>(resultResponse.result);
                 }
             }
             catch (Exception ex)
             {
                 WPFClientCheckWordUtil.Log.TextLog.SaveError(ex.Message);
             }
-            return version;
+            return versionResponse;
         }
         public ConsumeResponse GetWordConsume(int count, string token)
         {
