@@ -64,6 +64,11 @@ namespace WordAndImgOperationApp
                         VersionControl versionControl = new VersionControl();
                         ContentGrid.Children.Add(versionControl);
                     }
+                    else if (typeName == "SettingControl")
+                    {
+                        SettingControl settingControl = new SettingControl();
+                        ContentGrid.Children.Add(settingControl);
+                    }
                 }
                 catch (Exception ex)
                 { }

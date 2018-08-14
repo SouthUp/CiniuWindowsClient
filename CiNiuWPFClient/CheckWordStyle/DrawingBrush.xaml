@@ -1237,6 +1237,37 @@
             </DrawingGroup>
         </DrawingBrush.Drawing>
     </DrawingBrush>
+    <DrawingBrush x:Key="RightLogoBGLogo" Stretch="None">
+        <DrawingBrush.Drawing>
+            <DrawingGroup>
+                <DrawingGroup.ClipGeometry>
+                    <RectangleGeometry Rect="0,0,18,18" />
+                </DrawingGroup.ClipGeometry>
+                <GeometryDrawing>
+                    <GeometryDrawing.Brush>
+                        <SolidColorBrush Color="#673ab7"/>
+                    </GeometryDrawing.Brush>
+                    <GeometryDrawing.Geometry>
+                        <PathGeometry FillRule="EvenOdd" Figures="M7.054,11.883L3.966,8.771 2.915,9.823 7.054,13.996 15.94,5.039 14.896,3.986 7.054,11.883z" />
+                    </GeometryDrawing.Geometry>
+                </GeometryDrawing>
+            </DrawingGroup>
+        </DrawingBrush.Drawing>
+    </DrawingBrush>
+    <DrawingBrush x:Key="WrongLogoBGLogo" Stretch="None">
+        <DrawingBrush.Drawing>
+            <DrawingGroup>
+                <DrawingGroup.ClipGeometry>
+                    <RectangleGeometry Rect="0,0,18,18" />
+                </DrawingGroup.ClipGeometry>
+                <GeometryDrawing Brush="#FFF44336">
+                    <GeometryDrawing.Geometry>
+                        <PathGeometry FillRule="EvenOdd" Figures="M16,3.41L14.59,2 9,7.59 3.41,2 2,3.41 7.59,9 2,14.59 3.41,16 9,10.41 14.59,16 16,14.59 10.41,9 16,3.41z" />
+                    </GeometryDrawing.Geometry>
+                </GeometryDrawing>
+            </DrawingGroup>
+        </DrawingBrush.Drawing>
+    </DrawingBrush>
     <DrawingBrush x:Key="ZheLineLogoBGLogo" Stretch="None">
         <DrawingBrush.Drawing>
             <DrawingGroup>

@@ -150,6 +150,10 @@
       <DependentUpon>Register.xaml</DependentUpon>
     </Compile>
     <Compile Include="RegisterViewModel.cs" />
+    <Compile Include="SettingControl.xaml.cs">
+      <DependentUpon>SettingControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="SettingControlViewModel.cs" />
     <Compile Include="SettingWindow.xaml.cs">
       <DependentUpon>SettingWindow.xaml</DependentUpon>
     </Compile>
@@ -187,6 +191,10 @@
       <SubType>Code</SubType>
     </Compile>
     <Page Include="Register.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="SettingControl.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>

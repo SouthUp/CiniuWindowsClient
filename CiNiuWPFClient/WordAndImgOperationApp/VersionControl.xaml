@@ -19,7 +19,7 @@
                         HorizontalAlignment="Left" VerticalAlignment="Bottom">
                 <Border BorderThickness="2" Width="2" Height="18" 
                         BorderBrush="#160536" Opacity="0.54"></Border>
-                <TextBlock Text="升级更新" Foreground="Black" Opacity="0.87" FontSize="18"
+                <TextBlock Text="升级更新" Foreground="#160536" Opacity="0.87" FontSize="18"
                            Style="{StaticResource CommonLeftTextBlock}" Margin="16,0,0,0"></TextBlock>
             </StackPanel>
         </Grid>
