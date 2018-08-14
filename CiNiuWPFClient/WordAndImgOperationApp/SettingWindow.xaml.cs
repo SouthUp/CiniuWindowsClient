@@ -74,6 +74,11 @@ namespace WordAndImgOperationApp
                         UserInfoControl userInfoControl = new UserInfoControl();
                         ContentGrid.Children.Add(userInfoControl);
                     }
+                    else if (typeName == "SettingFindPsw")
+                    {
+                        SettingFindPsw settingFindPsw = new SettingFindPsw();
+                        ContentGrid.Children.Add(settingFindPsw);
+                    }
                 }
                 catch (Exception ex)
                 { }

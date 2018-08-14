@@ -1530,4 +1530,18 @@
             </DrawingGroup>
         </DrawingBrush.Drawing>
     </DrawingBrush>
+    <DrawingBrush x:Key="PurleCircleRightIconLogo" Stretch="None">
+        <DrawingBrush.Drawing>
+            <DrawingGroup>
+                <DrawingGroup.ClipGeometry>
+                    <RectangleGeometry Rect="0,0,60,60" />
+                </DrawingGroup.ClipGeometry>
+                <GeometryDrawing Brush="#FF673AB7">
+                    <GeometryDrawing.Geometry>
+                        <PathGeometry FillRule="EvenOdd" Figures="M30,0C13.44,0 0,13.44 0,30 0,46.56 13.44,60 30,60 46.56,60 60,46.56 60,30 60,13.44 46.56,0 30,0z M24,45L9,30 13.23,25.77 24,36.51 46.77,13.74 51,18 24,45z" />
+                    </GeometryDrawing.Geometry>
+                </GeometryDrawing>
+            </DrawingGroup>
+        </DrawingBrush.Drawing>
+    </DrawingBrush>
 </ResourceDictionary>

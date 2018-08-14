@@ -51,6 +51,7 @@ namespace WordAndImgOperationApp
                 }
                 catch (Exception ex)
                 { }
+                System.Threading.Thread.Sleep(500);
                 EventAggregatorRepository.EventAggregator.GetEvent<SettingWindowBusyIndicatorEvent>().Publish(new AppBusyIndicator { IsBusy = false });
             });
             task.Start();
@@ -59,7 +60,7 @@ namespace WordAndImgOperationApp
 
         private void FindPasswordBtn_Click(object sender, RoutedEventArgs e)
         {
-
+            EventAggregatorRepository.EventAggregator.GetEvent<LoadSettingWindowGridViewEvent>().Publish("SettingFindPsw");
         }
 
         private void ConsumeSeachBtn_Click(object sender, RoutedEventArgs e)

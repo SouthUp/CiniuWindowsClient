@@ -154,6 +154,10 @@
       <DependentUpon>SettingControl.xaml</DependentUpon>
     </Compile>
     <Compile Include="SettingControlViewModel.cs" />
+    <Compile Include="SettingFindPsw.xaml.cs">
+      <DependentUpon>SettingFindPsw.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="SettingFindPswViewModel.cs" />
     <Compile Include="SettingWindow.xaml.cs">
       <DependentUpon>SettingWindow.xaml</DependentUpon>
     </Compile>
@@ -199,6 +203,10 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="SettingControl.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="SettingFindPsw.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>

@@ -74,6 +74,7 @@ namespace WordAndImgOperationApp
                 }
                 catch (Exception ex)
                 { }
+                System.Threading.Thread.Sleep(500);
                 EventAggregatorRepository.EventAggregator.GetEvent<SettingWindowBusyIndicatorEvent>().Publish(new AppBusyIndicator { IsBusy = false });
             });
             task.Start();

@@ -620,6 +620,7 @@ namespace WordAndImgOperationApp
                 loginInOutInfo.Type = typeInfo;
                 loginInOutInfo.UrlStr = UtilSystemVar.UrlStr;
                 loginInOutInfo.Token = UtilSystemVar.UserToken;
+                viewModel.UserName = UtilSystemVar.UserName;
                 try
                 {
                     //保存用户登录信息到本地

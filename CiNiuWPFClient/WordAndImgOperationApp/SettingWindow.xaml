@@ -84,9 +84,13 @@
             </Grid>
         </Grid>
         <Grid HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Visibility="{Binding BusyWindowVisibility}">
-            <Grid Background="White" Opacity="0.9"></Grid>
+            <Grid Background="White" Opacity="0.75"></Grid>
             <Grid>
-                <StackPanel Orientation="Vertical" HorizontalAlignment="Center" VerticalAlignment="Center">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="180"></ColumnDefinition>
+                    <ColumnDefinition Width="*"></ColumnDefinition>
+                </Grid.ColumnDefinitions>
+                <StackPanel Grid.Column="1" Orientation="Vertical" HorizontalAlignment="Center" VerticalAlignment="Center">
                     <gifLib:GifImage x:Name="element" Width="100" Height="20" HorizontalAlignment="Center"/>
                     <TextBlock Text="loading..." Width="200" Height="50" TextAlignment="Center" TextWrapping="Wrap" 
                                        HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="14" Foreground="#2196f3" 
