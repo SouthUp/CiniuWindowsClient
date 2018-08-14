@@ -1492,4 +1492,42 @@
             </DrawingGroup>
         </DrawingBrush.Drawing>
     </DrawingBrush>
+    <DrawingBrush x:Key="SwitchSelectBtnLogo" Stretch="None">
+        <DrawingBrush.Drawing>
+            <DrawingGroup>
+                <DrawingGroup.ClipGeometry>
+                    <RectangleGeometry Rect="0,0,34,18" />
+                </DrawingGroup.ClipGeometry>
+                <GeometryDrawing Brush="#FFB4B4B4">
+                    <GeometryDrawing.Geometry>
+                        <PathGeometry FillRule="EvenOdd" Figures="M9,0L25,0A9,9,0,0,1,25,18L9,18A9,9,0,0,1,0,9A9,9,0,0,1,9,0z" />
+                    </GeometryDrawing.Geometry>
+                </GeometryDrawing>
+                <GeometryDrawing Brush="#FFFFFFFF">
+                    <GeometryDrawing.Geometry>
+                        <PathGeometry FillRule="EvenOdd" Figures="M9,1A8,8,0,1,1,9,17A8,8,0,0,1,9,1z" />
+                    </GeometryDrawing.Geometry>
+                </GeometryDrawing>
+            </DrawingGroup>
+        </DrawingBrush.Drawing>
+    </DrawingBrush>
+    <DrawingBrush x:Key="CheckedSwitchSelectBtnLogo" Stretch="None">
+        <DrawingBrush.Drawing>
+            <DrawingGroup>
+                <DrawingGroup.ClipGeometry>
+                    <RectangleGeometry Rect="0,0,34,18" />
+                </DrawingGroup.ClipGeometry>
+                <GeometryDrawing Brush="#FF673AB7">
+                    <GeometryDrawing.Geometry>
+                        <PathGeometry FillRule="EvenOdd" Figures="M9,0L25,0A9,9,0,0,1,25,18L9,18A9,9,0,0,1,0,9A9,9,0,0,1,9,0z" />
+                    </GeometryDrawing.Geometry>
+                </GeometryDrawing>
+                <GeometryDrawing Brush="#FFFFFFFF">
+                    <GeometryDrawing.Geometry>
+                        <PathGeometry FillRule="EvenOdd" Figures="M25,1A8,8,0,1,1,25,17A8,8,0,0,1,25,1z" />
+                    </GeometryDrawing.Geometry>
+                </GeometryDrawing>
+            </DrawingGroup>
+        </DrawingBrush.Drawing>
+    </DrawingBrush>
 </ResourceDictionary>

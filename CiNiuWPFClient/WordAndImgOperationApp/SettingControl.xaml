@@ -106,6 +106,49 @@
                       Visibility="{Binding HasExcelOfficeAddIn,Converter={StaticResource BoolToVisibilityConvert}}">
                 </Grid>
             </Grid>
+            <Grid Margin="40,252,0,0">
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" VerticalAlignment="Top">
+                    <Border BorderThickness="2" Width="2" Height="18" 
+                        BorderBrush="#160536" Opacity="0.54"></Border>
+                    <TextBlock Text="批量检索" Foreground="#160536" Opacity="0.87" FontSize="18"
+                           Style="{StaticResource CommonLeftTextBlock}" Margin="16,0,0,0"></TextBlock>
+                </StackPanel>
+            </Grid>
+            <Grid Margin="56,285,0,0">
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" VerticalAlignment="Top">
+                    <TextBlock Text="开启文档中图片的违禁词检索" Foreground="#160536" Opacity="0.54" FontSize="14"
+                               Style="{StaticResource CommonLeftTextBlock}"></TextBlock>
+                </StackPanel>
+                <ToggleButton Width="34" Height="18" IsChecked="{Binding IsCheckPicInDucument}"
+                              Style="{StaticResource SwitchSelectToggleStyle}"
+                              HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,0,40,0"
+                              Checked="ToggleIsCheckPic_Checked" Unchecked="ToggleIsCheckPic_Unchecked">
+                </ToggleButton>
+            </Grid>
+            <Grid Margin="56,314,0,0">
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" VerticalAlignment="Top">
+                    <TextBlock Text="检索时使用自建词条" Foreground="#160536" Opacity="0.54" FontSize="14"
+                               Style="{StaticResource CommonLeftTextBlock}"></TextBlock>
+                </StackPanel>
+                <ToggleButton Width="34" Height="18" IsChecked="{Binding IsUseCustumCi}"
+                              Style="{StaticResource SwitchSelectToggleStyle}"
+                              HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,0,40,0"
+                              Checked="ToggleIsUseCustumCi_Checked" Unchecked="ToggleIsUseCustumCi_Unchecked">
+                </ToggleButton>
+            </Grid>
+            <Grid Margin="56,0,0,0" Height="87" Background="Transparent"
+                  HorizontalAlignment="Stretch" VerticalAlignment="Bottom">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="15"></RowDefinition>
+                    <RowDefinition Height="*"></RowDefinition>
+                </Grid.RowDefinitions>
+                <TextBlock Grid.Row="0" Text="平台和类目设置：" Foreground="#160536" Opacity="0.87" FontSize="14"
+                           Style="{StaticResource CommonLeftTextBlock}" VerticalAlignment="Center">
+                </TextBlock>
+                <Grid Grid.Row="1">
+
+                </Grid>
+            </Grid>
         </Grid>
     </Grid>
 </UserControl>
