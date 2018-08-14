@@ -69,6 +69,11 @@ namespace WordAndImgOperationApp
                         SettingControl settingControl = new SettingControl();
                         ContentGrid.Children.Add(settingControl);
                     }
+                    else if (typeName == "UserInfoControl")
+                    {
+                        UserInfoControl userInfoControl = new UserInfoControl();
+                        ContentGrid.Children.Add(userInfoControl);
+                    }
                 }
                 catch (Exception ex)
                 { }

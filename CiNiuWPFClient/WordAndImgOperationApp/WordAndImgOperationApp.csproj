@@ -158,6 +158,10 @@
       <DependentUpon>SettingWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="SettingWindowViewModel.cs" />
+    <Compile Include="UserInfoControl.xaml.cs">
+      <DependentUpon>UserInfoControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UserInfoControlViewModel.cs" />
     <Compile Include="VersionControl.xaml.cs">
       <DependentUpon>VersionControl.xaml</DependentUpon>
     </Compile>
@@ -199,6 +203,10 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="SettingWindow.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="UserInfoControl.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
