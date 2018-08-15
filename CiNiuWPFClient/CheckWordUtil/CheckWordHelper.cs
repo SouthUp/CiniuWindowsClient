@@ -38,12 +38,6 @@ namespace CheckWordUtil
                             unChekedWordInfo.IsCustumCi = item.IsCustumCi;
                             unChekedWordInfo.IsMinGanCi = item.IsMinGanCi;
                             unChekedWordInfo.UserName = item.UserName;
-                            foreach (var discriptionInfo in item.Discriptions)
-                            {
-                                UnChekedDetailWordInfo unChekedDetailWordInfo = new UnChekedDetailWordInfo();
-                                unChekedDetailWordInfo.Discription = discriptionInfo.discription;
-                                unChekedWordInfo.UnChekedWordDetailInfos.Add(unChekedDetailWordInfo);
-                            }
                             result.Add(unChekedWordInfo);
                         }
                     }

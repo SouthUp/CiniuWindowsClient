@@ -779,6 +779,15 @@ namespace WordAndImgOperationApp
                                         int heightAdd = 0;
                                         foreach (var item in viewModel.CurrentWordInfoResults)
                                         {
+                                            List<UnChekedDetailWordInfo> _detailInfos = new List<UnChekedDetailWordInfo>();
+                                            //查询违禁词描述
+                                            Task taskGetWordDiscribe = new Task(() => {
+                                                APIService serviceApi = new APIService();
+                                                _detailInfos = serviceApi.GetWordDiscribeLists(UtilSystemVar.UserToken, item.ID);
+                                            });
+                                            taskGetWordDiscribe.Start();
+                                            await taskGetWordDiscribe;
+                                            item.UnChekedWordDetailInfos = new ObservableCollection<UnChekedDetailWordInfo>(_detailInfos);
                                             heightAdd += 32 * (1 + item.UnChekedWordDetailInfos.Count) + 16;
                                         }
                                         if (heightAdd > heightAddMax)

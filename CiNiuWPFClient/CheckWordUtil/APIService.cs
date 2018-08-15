@@ -265,5 +265,17 @@ namespace CheckWordUtil
                 WPFClientCheckWordUtil.Log.TextLog.SaveError(ex.Message);
             }
         }
+        public List<UnChekedDetailWordInfo> GetWordDiscribeLists(string token, string id)
+        {
+            List<UnChekedDetailWordInfo> result = new List<UnChekedDetailWordInfo>();
+            try
+            {
+                result.Add(new UnChekedDetailWordInfo() { Discription = "违反广告法第3条", UserName = "词牛", DateTime = DateTime.Now.ToString("yyyy-MM-dd") });
+                result.Add(new UnChekedDetailWordInfo() { Discription = "违反广告法第2条", UserName = "词牛", DateTime = DateTime.Now.ToString("yyyy-MM-dd") });
+            }
+            catch (Exception ex)
+            { }
+            return result;
+        }
     }
 }

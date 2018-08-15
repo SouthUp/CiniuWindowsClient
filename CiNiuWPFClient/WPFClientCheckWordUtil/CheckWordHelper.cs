@@ -27,9 +27,10 @@ namespace WPFClientCheckWordUtil
             try
             {
                 #region 假数据
-                WordModels.Add(new WordModel { ID = "1", Name = "第一", IsCustumCi = true, IsMinGanCi = false, UserName = "18310330593", Discriptions = new List<CommonNameModel> { new CommonNameModel { discription = "违反广告法第五条" } } });
-                WordModels.Add(new WordModel { ID = "2", Name = "最", IsCustumCi = false, IsMinGanCi = false, UserName = "admin", Discriptions = new List<CommonNameModel> { new CommonNameModel { discription = "违反广告法第四条" } } });
-                WordModels.Add(new WordModel { ID = "3", Name = "冠军", IsCustumCi = false, IsMinGanCi = false, UserName = "admin", Discriptions = new List<CommonNameModel> { new CommonNameModel { discription = "违反广告法第三条" } } });
+                WordModels.Add(new WordModel { ID = "1", Name = "第一", IsCustumCi = true, IsMinGanCi = false, UserName = "18310330593" });
+                WordModels.Add(new WordModel { ID = "2", Name = "最", IsCustumCi = false, IsMinGanCi = false, UserName = "admin" });
+                WordModels.Add(new WordModel { ID = "3", Name = "冠军", IsCustumCi = false, IsMinGanCi = false, UserName = "admin" });
+                WordModels.Add(new WordModel { ID = "4", Name = "防晒", IsCustumCi = true, IsMinGanCi = false, UserName = "18310330594" });
                 #endregion
                 //string apiName = "word";
                 //string resultStr = HttpHelper.HttpUrlSend(apiName, "GET", token);
@@ -45,7 +46,6 @@ namespace WPFClientCheckWordUtil
                 //        word.IsCustumCi = item.iscustumci;
                 //        word.IsMinGanCi = item.isminganci;
                 //        word.UserName = item.username;
-                //        word.Discriptions = item.discriptions;
                 //        WordModels.Add(word);
                 //    }
                 //}

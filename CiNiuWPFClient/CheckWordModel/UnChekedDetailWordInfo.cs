@@ -19,5 +19,25 @@ namespace CheckWordModel
                 RaisePropertyChanged("Discription");
             }
         }
+        private string dateTime = "";
+        public string DateTime
+        {
+            get { return dateTime; }
+            set
+            {
+                dateTime = value;
+                RaisePropertyChanged("DateTime");
+            }
+        }
+        private string userName = "";
+        public string UserName
+        {
+            get { return userName; }
+            set
+            {
+                userName = value;
+                RaisePropertyChanged("UserName");
+            }
+        }
     }
 }

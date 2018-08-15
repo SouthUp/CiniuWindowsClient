@@ -13,6 +13,5 @@ namespace WPFClientCheckWordModel
         public bool iscustumci { get; set; }
         public bool isminganci { get; set; }
         public string username { get; set; }
-        public List<CommonNameModel> discriptions { get; set; }
     }
 }
