@@ -8,7 +8,6 @@ namespace WPFClientCheckWordModel
 {
     public class CommonNameModel
     {
-        public string code { get; set; }
-        public string name { get; set; }
+        public string discription { get; set; }
     }
 }

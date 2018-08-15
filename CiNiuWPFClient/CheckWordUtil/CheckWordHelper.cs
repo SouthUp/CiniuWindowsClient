@@ -35,18 +35,14 @@ namespace CheckWordUtil
                             UnChekedWordInfo unChekedWordInfo = new UnChekedWordInfo();
                             unChekedWordInfo.ID = item.ID;
                             unChekedWordInfo.Name = item.Name;
-                            foreach (var dbInfo in item.SourceDBs)
+                            unChekedWordInfo.IsCustumCi = item.IsCustumCi;
+                            unChekedWordInfo.IsMinGanCi = item.IsMinGanCi;
+                            unChekedWordInfo.UserName = item.UserName;
+                            foreach (var discriptionInfo in item.Discriptions)
                             {
-                                foreach (var typeInfo in item.NameTypes)
-                                {
-                                    UnChekedDetailWordInfo unChekedDetailWordInfo = new UnChekedDetailWordInfo();
-                                    unChekedDetailWordInfo.Name = item.Name;
-                                    unChekedDetailWordInfo.SourceDB = dbInfo.name;
-                                    unChekedDetailWordInfo.NameType = typeInfo.name;
-                                    unChekedDetailWordInfo.SourceDBID = dbInfo.code;
-                                    unChekedDetailWordInfo.SourceDBPublishtime = dbInfo.publishtime;
-                                    unChekedWordInfo.UnChekedWordDetailInfos.Add(unChekedDetailWordInfo);
-                                }
+                                UnChekedDetailWordInfo unChekedDetailWordInfo = new UnChekedDetailWordInfo();
+                                unChekedDetailWordInfo.Discription = discriptionInfo.discription;
+                                unChekedWordInfo.UnChekedWordDetailInfos.Add(unChekedDetailWordInfo);
                             }
                             result.Add(unChekedWordInfo);
                         }

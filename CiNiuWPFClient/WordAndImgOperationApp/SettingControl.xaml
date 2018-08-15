@@ -136,19 +136,6 @@
                               Checked="ToggleIsUseCustumCi_Checked" Unchecked="ToggleIsUseCustumCi_Unchecked">
                 </ToggleButton>
             </Grid>
-            <Grid Margin="56,0,0,0" Height="87" Background="Transparent"
-                  HorizontalAlignment="Stretch" VerticalAlignment="Bottom">
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="15"></RowDefinition>
-                    <RowDefinition Height="*"></RowDefinition>
-                </Grid.RowDefinitions>
-                <TextBlock Grid.Row="0" Text="平台和类目设置：" Foreground="#160536" Opacity="0.87" FontSize="14"
-                           Style="{StaticResource CommonLeftTextBlock}" VerticalAlignment="Center">
-                </TextBlock>
-                <Grid Grid.Row="1">
-
-                </Grid>
-            </Grid>
         </Grid>
     </Grid>
 </UserControl>

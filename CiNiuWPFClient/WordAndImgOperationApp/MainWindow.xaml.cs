@@ -755,17 +755,6 @@ namespace WordAndImgOperationApp
                                         int heightAdd = 0;
                                         foreach (var item in viewModel.CurrentWordInfoResults)
                                         {
-                                            foreach (var infoDetail in item.UnChekedWordDetailInfos)
-                                            {
-                                                if (!string.IsNullOrEmpty(infoDetail.SourceDBID))
-                                                {
-                                                    infoDetail.SourceDBImgPath = AppDomain.CurrentDomain.BaseDirectory + "Resources/DBTypeLogo/" + infoDetail.SourceDBID + ".png";
-                                                }
-                                                else
-                                                {
-                                                    infoDetail.SourceDBImgPath = AppDomain.CurrentDomain.BaseDirectory + "Resources/DBTypeLogo/Default.png";
-                                                }
-                                            }
                                             heightAdd += 32 * (1 + item.UnChekedWordDetailInfos.Count) + 16;
                                         }
                                         if (heightAdd > heightAddMax)

@@ -29,6 +29,36 @@ namespace CheckWordModel
                 RaisePropertyChanged("Name");
             }
         }
+        private bool isCustumCi = false;
+        public bool IsCustumCi
+        {
+            get { return isCustumCi; }
+            set
+            {
+                isCustumCi = value;
+                RaisePropertyChanged("IsCustumCi");
+            }
+        }
+        private bool isMinGanCi = false;
+        public bool IsMinGanCi
+        {
+            get { return isMinGanCi; }
+            set
+            {
+                isMinGanCi = value;
+                RaisePropertyChanged("IsMinGanCi");
+            }
+        }
+        private string userName = "";
+        public string UserName
+        {
+            get { return userName; }
+            set
+            {
+                userName = value;
+                RaisePropertyChanged("UserName");
+            }
+        }
         private ObservableCollection<UnChekedDetailWordInfo> _unChekedWordDetailInfos = new ObservableCollection<UnChekedDetailWordInfo>();
         public ObservableCollection<UnChekedDetailWordInfo> UnChekedWordDetailInfos
         {

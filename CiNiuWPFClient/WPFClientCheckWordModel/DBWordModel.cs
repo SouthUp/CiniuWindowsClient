@@ -10,7 +10,9 @@ namespace WPFClientCheckWordModel
     {
         public string code { get; set; }
         public string name { get; set; }
-        public List<CommonNameAndYearModel> type { get; set; }
-        public List<CommonNameModel> category { get; set; }
+        public bool iscustumci { get; set; }
+        public bool isminganci { get; set; }
+        public string username { get; set; }
+        public List<CommonNameModel> discriptions { get; set; }
     }
 }

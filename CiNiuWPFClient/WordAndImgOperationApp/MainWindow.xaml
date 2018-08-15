@@ -277,22 +277,10 @@
                                                 <ListBox.ItemTemplate>
                                                     <DataTemplate>
                                                         <Grid Height="32" Width="{Binding ElementName=listBox2,Path=ActualWidth}">
-                                                            <Grid.ColumnDefinitions>
-                                                                <ColumnDefinition Width="30"></ColumnDefinition>
-                                                                <ColumnDefinition Width="*"></ColumnDefinition>
-                                                            </Grid.ColumnDefinitions>
-                                                            <Grid Grid.Column="0">
-                                                                <Image Width="18" Height="18" Stretch="Fill"
-                                                                       HorizontalAlignment="Left" VerticalAlignment="Center"
-                                                                       control:ImageDecoder.Source="{Binding SourceDBImgPath}">
-                                                                </Image>
-                                                            </Grid>
-                                                            <Grid Grid.Column="1">
-                                                                <TextBlock Text="{Binding NameType}" FontSize="12" Opacity="0.54"
+                                                            <TextBlock Text="{Binding Discription}" FontSize="12" Opacity="0.54"
                                                                            Style="{StaticResource CommonLeftTextBlock}" 
                                                                            MaxWidth="250" TextTrimming="CharacterEllipsis">
-                                                                </TextBlock>
-                                                            </Grid>
+                                                            </TextBlock>
                                                         </Grid>
                                                     </DataTemplate>
                                                 </ListBox.ItemTemplate>
@@ -357,30 +345,7 @@
                         <RowDefinition Height="64"></RowDefinition>
                         <RowDefinition Height="48"></RowDefinition>
                     </Grid.RowDefinitions>
-                    <Grid Grid.Row="1">
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="54"></ColumnDefinition>
-                            <ColumnDefinition Width="*"></ColumnDefinition>
-                        </Grid.ColumnDefinitions>
-                        <TextBlock Grid.Column="0" Text="平台：" Margin="16,0,0,0"
-                                   FontSize="12" Foreground="Black" Opacity="0.38"
-                                   Style="{StaticResource CommonLeftTextBlock}"></TextBlock>
-                        <Grid Grid.Column="1" Margin="10,0,10,0">
-                            
-                        </Grid>
-                    </Grid>
-                    <Grid Grid.Row="2">
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="54"></ColumnDefinition>
-                            <ColumnDefinition Width="*"></ColumnDefinition>
-                        </Grid.ColumnDefinitions>
-                        <TextBlock Grid.Column="0" Text="类目：" Margin="16,0,0,0"
-                                   FontSize="12" Foreground="Black" Opacity="0.38"
-                                   Style="{StaticResource CommonLeftTextBlock}"></TextBlock>
-                        <Grid Grid.Column="1" Margin="10,0,10,0">
-
-                        </Grid>
-                    </Grid>
+                    
                     <Button Grid.Row="3" Width="64" Height="32" Content="确定"
                             HorizontalAlignment="Right" Margin="0,0,16,0"
                             Style="{StaticResource HsaBGHoverTextButtonStyle}"
