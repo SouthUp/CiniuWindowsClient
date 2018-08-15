@@ -29,5 +29,15 @@ namespace CheckWordModel
                 RaisePropertyChanged("IsUseCustumCi");
             }
         }
+        private List<CategorySelectInfo> categoryInfos = new List<CategorySelectInfo>();
+        public List<CategorySelectInfo> CategoryInfos
+        {
+            get { return categoryInfos; }
+            set
+            {
+                categoryInfos = value;
+                RaisePropertyChanged("CategoryInfos");
+            }
+        }
     }
 }

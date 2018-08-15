@@ -627,7 +627,17 @@ namespace WordAndImgOperationApp
                                 string mySettingInfo = string.Format(@"{0}\MySettingInfo.xml", Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + "\\WordAndImgOCR\\LoginInOutInfo\\");
                                 if (!File.Exists(mySettingInfo))
                                 {
-                                    EventAggregatorRepository.EventAggregator.GetEvent<WriteToSettingInfoEvent>().Publish(new MySettingInfo { IsCheckPicInDucument = true, IsUseCustumCi = false });
+                                    var mySetting = new MySettingInfo { IsCheckPicInDucument = true, IsUseCustumCi = false };
+                                    mySetting.CategoryInfos.Add(new CategorySelectInfo { CheckedState = true, Name = "通用类目", Code = "111" });
+                                    mySetting.CategoryInfos.Add(new CategorySelectInfo { CheckedState = true, Name = "母婴", Code = "222" });
+                                    mySetting.CategoryInfos.Add(new CategorySelectInfo { CheckedState = true, Name = "房地产", Code = "333" });
+                                    mySetting.CategoryInfos.Add(new CategorySelectInfo { CheckedState = true, Name = "美妆", Code = "444" });
+                                    mySetting.CategoryInfos.Add(new CategorySelectInfo { CheckedState = true, Name = "食品", Code = "555" });
+                                    mySetting.CategoryInfos.Add(new CategorySelectInfo { CheckedState = true, Name = "医疗", Code = "666" });
+                                    mySetting.CategoryInfos.Add(new CategorySelectInfo { CheckedState = true, Name = "教育", Code = "777" });
+                                    mySetting.CategoryInfos.Add(new CategorySelectInfo { CheckedState = true, Name = "保健品", Code = "888" });
+                                    mySetting.CategoryInfos.Add(new CategorySelectInfo { CheckedState = true, Name = "其它", Code = "999" });
+                                    EventAggregatorRepository.EventAggregator.GetEvent<WriteToSettingInfoEvent>().Publish(mySetting);
                                 }
                             }
                         }

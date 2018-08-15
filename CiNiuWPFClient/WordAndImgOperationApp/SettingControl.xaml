@@ -48,6 +48,41 @@
                               Checked="ToggleIsUseCustumCi_Checked" Unchecked="ToggleIsUseCustumCi_Unchecked">
                 </ToggleButton>
             </Grid>
+            <Grid Margin="56,85,0,0">
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" VerticalAlignment="Top">
+                    <TextBlock Text="类目：" Foreground="#160536" Opacity="0.54" FontSize="14"
+                               Style="{StaticResource CommonLeftTextBlock}"></TextBlock>
+                </StackPanel>
+                <ListBox x:Name="listBox" BorderThickness="0" Background="Transparent"
+                         ItemsSource="{Binding CategoryInfos}" Margin="50,0,20,0"
+                         ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+                         ScrollViewer.VerticalScrollBarVisibility="Disabled" SelectedIndex="-1"
+                         ItemContainerStyle="{StaticResource ListBoxItemContainerStyle}"
+                         VerticalAlignment="Top" HorizontalAlignment="Stretch"
+                         ScrollViewer.CanContentScroll="False">
+                    <ListBox.ItemTemplate>
+                        <DataTemplate>
+                            <StackPanel Orientation="Horizontal" Margin="0,0,15,15"
+                                        HorizontalAlignment="Left" VerticalAlignment="Center">
+                                <ToggleButton Width="18" Height="18" Margin="0,0,8,0"
+                                              Style="{StaticResource CheckSelectCategoryBtnStyle}"
+                                              Tag="{Binding}" IsChecked="{Binding CheckedState}"
+                                              Checked="CategoryToggleBtn_Checked" Unchecked="CategoryToggleBtn_Unchecked">
+                                </ToggleButton>
+                                <TextBlock Text="{Binding Name}" 
+                                           FontSize="14" Opacity="0.54" Foreground="#160536"
+                                           Style="{StaticResource CommonLeftTextBlock}">
+                                </TextBlock>
+                            </StackPanel>
+                        </DataTemplate>
+                    </ListBox.ItemTemplate>
+                    <ListBox.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <WrapPanel Orientation="Horizontal" MaxWidth="{Binding ElementName=listBox,Path=ActualWidth}"/>
+                        </ItemsPanelTemplate>
+                    </ListBox.ItemsPanel>
+                </ListBox>
+            </Grid>
         </Grid>
     </Grid>
 </UserControl>

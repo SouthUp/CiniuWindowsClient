@@ -49,6 +49,7 @@ namespace WordAndImgOperationApp
                     {
                         viewModel.IsCheckPicInDucument = settingInfo.IsCheckPicInDucument;
                         viewModel.IsUseCustumCi = settingInfo.IsUseCustumCi;
+                        viewModel.CategoryInfos = new System.Collections.ObjectModel.ObservableCollection<CategorySelectInfo>(settingInfo.CategoryInfos.ToList());
                         SaveSettingInfo();
                     }
                     else
@@ -99,17 +100,27 @@ namespace WordAndImgOperationApp
         {
             SaveSettingInfo();
         }
+        private void CategoryToggleBtn_Checked(object sender, RoutedEventArgs e)
+        {
+            SaveSettingInfo();
+        }
+
+        private void CategoryToggleBtn_Unchecked(object sender, RoutedEventArgs e)
+        {
+            SaveSettingInfo();
+        }
         private void SaveSettingInfo()
         {
             try
             {
-                EventAggregatorRepository.EventAggregator.GetEvent<WriteToSettingInfoEvent>().Publish(new MySettingInfo { IsCheckPicInDucument = viewModel.IsCheckPicInDucument, IsUseCustumCi = viewModel.IsUseCustumCi });
+                EventAggregatorRepository.EventAggregator.GetEvent<WriteToSettingInfoEvent>().Publish(new MySettingInfo { IsCheckPicInDucument = viewModel.IsCheckPicInDucument, IsUseCustumCi = viewModel.IsUseCustumCi, CategoryInfos = viewModel.CategoryInfos.ToList() });
                 //调用接口上传设置
                 Task task = new Task(() => {
                     try
                     {
+                        var info = new MySettingInfo { IsCheckPicInDucument = viewModel.IsCheckPicInDucument, IsUseCustumCi = viewModel.IsUseCustumCi, CategoryInfos = viewModel.CategoryInfos.ToList() };
                         APIService service = new APIService();
-                        service.SaveUserSettingByToken(UtilSystemVar.UserToken, new MySettingInfo { IsCheckPicInDucument = viewModel.IsCheckPicInDucument, IsUseCustumCi = viewModel.IsUseCustumCi });
+                        service.SaveUserSettingByToken(UtilSystemVar.UserToken, info);
                     }
                     catch (Exception ex)
                     { }

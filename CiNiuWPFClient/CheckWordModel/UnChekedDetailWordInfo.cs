@@ -29,14 +29,24 @@ namespace CheckWordModel
                 RaisePropertyChanged("DateTime");
             }
         }
-        private string userName = "";
-        public string UserName
+        private string categoryName = "";
+        public string CategoryName
         {
-            get { return userName; }
+            get { return categoryName; }
             set
             {
-                userName = value;
-                RaisePropertyChanged("UserName");
+                categoryName = value;
+                RaisePropertyChanged("CategoryName");
+            }
+        }
+        private string sourceName = "";
+        public string SourceName
+        {
+            get { return sourceName; }
+            set
+            {
+                sourceName = value;
+                RaisePropertyChanged("SourceName");
             }
         }
     }

@@ -9,34 +9,34 @@ namespace CheckWordModel
 {
     public class CategorySelectInfo : ViewModelBase
     {
-        private bool isCheckPicInDucument = true;
-        public bool IsCheckPicInDucument
+        private bool checkedState = true;
+        public bool CheckedState
         {
-            get { return isCheckPicInDucument; }
+            get { return checkedState; }
             set
             {
-                isCheckPicInDucument = value;
-                RaisePropertyChanged("IsCheckPicInDucument");
+                checkedState = value;
+                RaisePropertyChanged("CheckedState");
             }
         }
-        private bool isUseCustumCi = false;
-        public bool IsUseCustumCi
+        private string name = "";
+        public string Name
         {
-            get { return isUseCustumCi; }
+            get { return name; }
             set
             {
-                isUseCustumCi = value;
-                RaisePropertyChanged("IsUseCustumCi");
+                name = value;
+                RaisePropertyChanged("Name");
             }
         }
-        private List<string> categoryIds = null;
-        public List<string> CategoryIds
+        private string code = "";
+        public string Code
         {
-            get { return categoryIds; }
+            get { return code; }
             set
             {
-                categoryIds = value;
-                RaisePropertyChanged("CategoryIds");
+                code = value;
+                RaisePropertyChanged("Code");
             }
         }
     }

@@ -642,6 +642,40 @@
             </DrawingGroup>
         </DrawingBrush.Drawing>
     </DrawingBrush>
+    <DrawingBrush x:Key="CategoryCheckSelectLogo" Stretch="None">
+        <DrawingBrush.Drawing>
+            <DrawingGroup>
+                <DrawingGroup.ClipGeometry>
+                    <RectangleGeometry Rect="0,0,18,18" />
+                </DrawingGroup.ClipGeometry>
+                <GeometryDrawing>
+                    <GeometryDrawing.Brush>
+                        <SolidColorBrush Color="#673ab7"/>
+                    </GeometryDrawing.Brush>
+                    <GeometryDrawing.Geometry>
+                        <PathGeometry FillRule="EvenOdd" Figures="M14.208,1.724L3.369,1.724C2.51,1.724,1.821,2.421,1.821,3.273L1.821,14.111C1.821,14.963,2.51,15.66,3.369,15.66L14.208,15.66C15.067,15.66,15.756,14.963,15.756,14.111L15.756,3.273C15.756,2.421,15.067,1.724,14.208,1.724z M7.24,12.563L3.369,8.692 4.461,7.6 7.24,10.372 13.116,4.496 14.208,5.595 7.24,12.563z" />
+                    </GeometryDrawing.Geometry>
+                </GeometryDrawing>
+            </DrawingGroup>
+        </DrawingBrush.Drawing>
+    </DrawingBrush>
+    <DrawingBrush x:Key="CategoryCheckNoSelectLogo" Stretch="None">
+        <DrawingBrush.Drawing>
+            <DrawingGroup>
+                <DrawingGroup.ClipGeometry>
+                    <RectangleGeometry Rect="0,0,18,18" />
+                </DrawingGroup.ClipGeometry>
+                <GeometryDrawing>
+                    <GeometryDrawing.Brush>
+                        <SolidColorBrush Color="#FF000000" Opacity="0.541" />
+                    </GeometryDrawing.Brush>
+                    <GeometryDrawing.Geometry>
+                        <PathGeometry FillRule="EvenOdd" Figures="M14.208,3.256L14.208,14.095 3.369,14.095 3.369,3.256 14.208,3.256 M14.208,1.707L3.369,1.707C2.518,1.707,1.821,2.404,1.821,3.256L1.821,14.095C1.821,14.946,2.518,15.643,3.369,15.643L14.208,15.643C15.06,15.643,15.756,14.946,15.756,14.095L15.756,3.256C15.756,2.404,15.06,1.707,14.208,1.707z" />
+                    </GeometryDrawing.Geometry>
+                </GeometryDrawing>
+            </DrawingGroup>
+        </DrawingBrush.Drawing>
+    </DrawingBrush>
     <DrawingBrush x:Key="BlueCheckSelectLogo" Stretch="None">
         <DrawingBrush.Drawing>
             <DrawingGroup>

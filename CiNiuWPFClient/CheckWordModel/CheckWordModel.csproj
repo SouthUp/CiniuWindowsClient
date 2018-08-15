@@ -46,6 +46,7 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CategorySelectInfo.cs" />
     <Compile Include="Communication\CommonExchangeInfo.cs" />
     <Compile Include="HistoryCheckInfo.cs" />
     <Compile Include="ImgGeneralInfo.cs" />

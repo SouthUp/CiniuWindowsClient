@@ -34,5 +34,15 @@ namespace WordAndImgOperationApp
                 RaisePropertyChanged("IsUseCustumCi");
             }
         }
+        private ObservableCollection<CategorySelectInfo> categoryInfos = new ObservableCollection<CategorySelectInfo>();
+        public ObservableCollection<CategorySelectInfo> CategoryInfos
+        {
+            get { return categoryInfos; }
+            set
+            {
+                categoryInfos = value;
+                RaisePropertyChanged("CategoryInfos");
+            }
+        }
     }
 }

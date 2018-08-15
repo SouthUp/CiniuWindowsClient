@@ -241,6 +241,15 @@ namespace CheckWordUtil
             try
             {
                 result = new MySettingInfo { IsCheckPicInDucument = true, IsUseCustumCi = false };
+                result.CategoryInfos.Add(new CategorySelectInfo { CheckedState = true, Name = "通用类目", Code = "111" });
+                result.CategoryInfos.Add(new CategorySelectInfo { CheckedState = true, Name = "母婴", Code = "222" });
+                result.CategoryInfos.Add(new CategorySelectInfo { CheckedState = true, Name = "房地产", Code = "333" });
+                result.CategoryInfos.Add(new CategorySelectInfo { CheckedState = true, Name = "美妆", Code = "444" });
+                result.CategoryInfos.Add(new CategorySelectInfo { CheckedState = true, Name = "食品", Code = "555" });
+                result.CategoryInfos.Add(new CategorySelectInfo { CheckedState = true, Name = "医疗", Code = "666" });
+                result.CategoryInfos.Add(new CategorySelectInfo { CheckedState = true, Name = "教育", Code = "777" });
+                result.CategoryInfos.Add(new CategorySelectInfo { CheckedState = true, Name = "保健品", Code = "888" });
+                result.CategoryInfos.Add(new CategorySelectInfo { CheckedState = true, Name = "其它", Code = "999" });
             }
             catch (Exception ex)
             {
@@ -270,8 +279,8 @@ namespace CheckWordUtil
             List<UnChekedDetailWordInfo> result = new List<UnChekedDetailWordInfo>();
             try
             {
-                result.Add(new UnChekedDetailWordInfo() { Discription = "违反广告法第3条", UserName = "词牛", DateTime = DateTime.Now.ToString("yyyy-MM-dd") });
-                result.Add(new UnChekedDetailWordInfo() { Discription = "违反广告法第2条", UserName = "词牛", DateTime = DateTime.Now.ToString("yyyy-MM-dd") });
+                result.Add(new UnChekedDetailWordInfo() { Discription = "违反广告法第3条", SourceName = "词牛", CategoryName = "母婴类", DateTime = DateTime.Now.ToString("yyyy-MM-dd") });
+                result.Add(new UnChekedDetailWordInfo() { Discription = "违反广告法第2条", SourceName = "自建词条", CategoryName = "", DateTime = DateTime.Now.ToString("yyyy-MM-dd") });
             }
             catch (Exception ex)
             { }
