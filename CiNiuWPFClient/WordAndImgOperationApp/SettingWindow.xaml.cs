@@ -79,6 +79,11 @@ namespace WordAndImgOperationApp
                         SettingFindPsw settingFindPsw = new SettingFindPsw();
                         ContentGrid.Children.Add(settingFindPsw);
                     }
+                    else if (typeName == "AboutControl")
+                    {
+                        AboutControl aboutControl = new AboutControl();
+                        ContentGrid.Children.Add(aboutControl);
+                    }
                 }
                 catch (Exception ex)
                 { }

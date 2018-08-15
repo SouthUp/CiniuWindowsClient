@@ -21,100 +21,12 @@
                         HorizontalAlignment="Left" VerticalAlignment="Bottom">
                 <Border BorderThickness="2" Width="2" Height="18" 
                         BorderBrush="#160536" Opacity="0.54"></Border>
-                <TextBlock Text="实时检索" Foreground="#160536" Opacity="0.87" FontSize="18"
+                <TextBlock Text="检索设置" Foreground="#160536" Opacity="0.87" FontSize="18"
                            Style="{StaticResource CommonLeftTextBlock}" Margin="16,0,0,0"></TextBlock>
             </StackPanel>
         </Grid>
         <Grid Grid.Row="1">
-            <TextBlock Margin="56,6,50,0" Foreground="#160536" Opacity="0.54" FontSize="12"
-                       Style="{StaticResource CommonLeftTextBlock}" TextWrapping="Wrap"
-                       VerticalAlignment="Top"
-                       Text="通过安装词牛MS Word与MS Excel插件来实现。可在word/Excel中开启或关闭该功能。如果您开启此功能，每当您在word/Excel中输入任何文字或插入图片，我们都会实时来检测您输入的文字与插入图片中是否包含违禁词。" >
-            </TextBlock>
-            <TextBlock Margin="56,83,0,0" Foreground="#160536" Opacity="0.87" FontSize="14"
-                       Style="{StaticResource CommonLeftTextBlock}" TextWrapping="Wrap"
-                       VerticalAlignment="Top"
-                       Text="为保证该功能可以正常使用，我们提供了检测工具：">
-            </TextBlock>
-            <Grid Margin="56,107,0,0">
-                <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" VerticalAlignment="Top">
-                    <Grid Width="18" Height="18" Background="{StaticResource CircleWordTitleLogoBGLogo}"
-                          HorizontalAlignment="Left" VerticalAlignment="Center" Margin="0,0,16,0">
-                    </Grid>
-                    <TextBlock Text="MS Word /版本号（ WORD " Foreground="#160536" Opacity="0.54" FontSize="14"
-                               Style="{StaticResource CommonLeftTextBlock}"></TextBlock>
-                    <TextBlock Text="{Binding WordOfficeVersion}" Foreground="#160536" Opacity="0.54" FontSize="14"
-                               Style="{StaticResource CommonLeftTextBlock}"></TextBlock>
-                    <TextBlock Text="）已安装" Foreground="#160536" Opacity="0.54" FontSize="14"
-                               Style="{StaticResource CommonLeftTextBlock}"></TextBlock>
-                </StackPanel>
-                <Grid Width="18" Height="18" Background="{StaticResource WrongLogoBGLogo}"
-                      HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,0,40,0"
-                      Visibility="{Binding HasWordOffice,Converter={StaticResource BoolToVisibilityOppositeConvert}}">
-                </Grid>
-                <Grid Width="18" Height="18" Background="{StaticResource RightLogoBGLogo}"
-                      HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,0,40,0"
-                      Visibility="{Binding HasWordOffice,Converter={StaticResource BoolToVisibilityConvert}}">
-                </Grid>
-            </Grid>
-            <Grid Margin="56,140,0,0">
-                <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" VerticalAlignment="Top">
-                    <Grid Width="18" Height="18" Background="{StaticResource CircleWordTitleLogoBGLogo}"
-                          HorizontalAlignment="Left" VerticalAlignment="Center" Margin="0,0,16,0">
-                    </Grid>
-                    <TextBlock Text="MS Excel /版本号（ WORD " Foreground="#160536" Opacity="0.54" FontSize="14"
-                               Style="{StaticResource CommonLeftTextBlock}"></TextBlock>
-                    <TextBlock Text="{Binding ExcelOfficeVersion}" Foreground="#160536" Opacity="0.54" FontSize="14"
-                               Style="{StaticResource CommonLeftTextBlock}"></TextBlock>
-                    <TextBlock Text="）已安装" Foreground="#160536" Opacity="0.54" FontSize="14"
-                               Style="{StaticResource CommonLeftTextBlock}"></TextBlock>
-                </StackPanel>
-                <Grid Width="18" Height="18" Background="{StaticResource WrongLogoBGLogo}"
-                      HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,0,40,0"
-                      Visibility="{Binding HasExcelOffice,Converter={StaticResource BoolToVisibilityOppositeConvert}}">
-                </Grid>
-                <Grid Width="18" Height="18" Background="{StaticResource RightLogoBGLogo}"
-                      HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,0,40,0"
-                      Visibility="{Binding HasExcelOffice,Converter={StaticResource BoolToVisibilityConvert}}">
-                </Grid>
-            </Grid>
-            <Grid Margin="56,173,0,0">
-                <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" VerticalAlignment="Top">
-                    <TextBlock Text="词牛Word插件 已安装" Foreground="#160536" Opacity="0.54" FontSize="14"
-                               Style="{StaticResource CommonLeftTextBlock}"></TextBlock>
-                </StackPanel>
-                <Grid Width="18" Height="18" Background="{StaticResource WrongLogoBGLogo}"
-                      HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,0,40,0"
-                      Visibility="{Binding HasWordOfficeAddIn,Converter={StaticResource BoolToVisibilityOppositeConvert}}">
-                </Grid>
-                <Grid Width="18" Height="18" Background="{StaticResource RightLogoBGLogo}"
-                      HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,0,40,0"
-                      Visibility="{Binding HasWordOfficeAddIn,Converter={StaticResource BoolToVisibilityConvert}}">
-                </Grid>
-            </Grid>
-            <Grid Margin="56,205,0,0">
-                <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" VerticalAlignment="Top">
-                    <TextBlock Text="词牛Excel插件 已安装" Foreground="#160536" Opacity="0.54" FontSize="14"
-                               Style="{StaticResource CommonLeftTextBlock}"></TextBlock>
-                </StackPanel>
-                <Grid Width="18" Height="18" Background="{StaticResource WrongLogoBGLogo}"
-                      HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,0,40,0"
-                      Visibility="{Binding HasExcelOfficeAddIn,Converter={StaticResource BoolToVisibilityOppositeConvert}}">
-                </Grid>
-                <Grid Width="18" Height="18" Background="{StaticResource RightLogoBGLogo}"
-                      HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,0,40,0"
-                      Visibility="{Binding HasExcelOfficeAddIn,Converter={StaticResource BoolToVisibilityConvert}}">
-                </Grid>
-            </Grid>
-            <Grid Margin="40,252,0,0">
-                <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" VerticalAlignment="Top">
-                    <Border BorderThickness="2" Width="2" Height="18" 
-                        BorderBrush="#160536" Opacity="0.54"></Border>
-                    <TextBlock Text="批量检索" Foreground="#160536" Opacity="0.87" FontSize="18"
-                           Style="{StaticResource CommonLeftTextBlock}" Margin="16,0,0,0"></TextBlock>
-                </StackPanel>
-            </Grid>
-            <Grid Margin="56,285,0,0">
+            <Grid Margin="56,20,0,0">
                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" VerticalAlignment="Top">
                     <TextBlock Text="开启文档中图片的违禁词检索" Foreground="#160536" Opacity="0.54" FontSize="14"
                                Style="{StaticResource CommonLeftTextBlock}"></TextBlock>
@@ -125,7 +37,7 @@
                               Checked="ToggleIsCheckPic_Checked" Unchecked="ToggleIsCheckPic_Unchecked">
                 </ToggleButton>
             </Grid>
-            <Grid Margin="56,314,0,0">
+            <Grid Margin="56,50,0,0">
                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" VerticalAlignment="Top">
                     <TextBlock Text="检索时使用自建词条" Foreground="#160536" Opacity="0.54" FontSize="14"
                                Style="{StaticResource CommonLeftTextBlock}"></TextBlock>
