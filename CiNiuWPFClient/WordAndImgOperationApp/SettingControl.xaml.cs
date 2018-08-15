@@ -1,6 +1,8 @@
 ﻿using CheckWordEvent;
+using CheckWordModel;
 using CheckWordUtil;
 using Microsoft.Win32;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -69,6 +71,33 @@ namespace WordAndImgOperationApp
                     {
                         viewModel.HasExcelOfficeAddIn = true;
                     }
+                    APIService service = new APIService();
+                    MySettingInfo settingInfo = service.GetUserSettingByToken(UtilSystemVar.UserToken);
+                    if (settingInfo != null)
+                    {
+                        viewModel.IsCheckPicInDucument = settingInfo.IsCheckPicInDucument;
+                        viewModel.IsUseCustumCi = settingInfo.IsUseCustumCi;
+                        SaveSettingInfo();
+                    }
+                    else
+                    {
+                        string mySettingInfo = string.Format(@"{0}\MySettingInfo.xml", Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + "\\WordAndImgOCR\\LoginInOutInfo\\");
+                        var ui = CheckWordUtil.DataParse.ReadFromXmlPath<string>(mySettingInfo);
+                        if (ui != null && ui.ToString() != "")
+                        {
+                            try
+                            {
+                                var mySetting = JsonConvert.DeserializeObject<MySettingInfo>(ui.ToString());
+                                if (mySetting != null)
+                                {
+                                    viewModel.IsCheckPicInDucument = mySetting.IsCheckPicInDucument;
+                                    viewModel.IsUseCustumCi = mySetting.IsUseCustumCi;
+                                }
+                            }
+                            catch
+                            { }
+                        }
+                    }
                 }
                 catch (Exception ex)
                 { }
@@ -127,22 +156,42 @@ namespace WordAndImgOperationApp
 
         private void ToggleIsCheckPic_Checked(object sender, RoutedEventArgs e)
         {
-
+            SaveSettingInfo();
         }
 
         private void ToggleIsCheckPic_Unchecked(object sender, RoutedEventArgs e)
         {
-
+            SaveSettingInfo();
         }
 
         private void ToggleIsUseCustumCi_Checked(object sender, RoutedEventArgs e)
         {
-
+            SaveSettingInfo();
         }
 
         private void ToggleIsUseCustumCi_Unchecked(object sender, RoutedEventArgs e)
         {
-
+            SaveSettingInfo();
+        }
+        private void SaveSettingInfo()
+        {
+            try
+            {
+                EventAggregatorRepository.EventAggregator.GetEvent<WriteToSettingInfoEvent>().Publish(new MySettingInfo { IsCheckPicInDucument = viewModel.IsCheckPicInDucument, IsUseCustumCi = viewModel.IsUseCustumCi });
+                //调用接口上传设置
+                Task task = new Task(() => {
+                    try
+                    {
+                        APIService service = new APIService();
+                        service.SaveUserSettingByToken(UtilSystemVar.UserToken, new MySettingInfo { IsCheckPicInDucument = viewModel.IsCheckPicInDucument, IsUseCustumCi = viewModel.IsUseCustumCi });
+                    }
+                    catch (Exception ex)
+                    { }
+                });
+                task.Start();
+            }
+            catch (Exception ex)
+            { }
         }
     }
 }

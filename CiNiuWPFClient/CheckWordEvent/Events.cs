@@ -79,4 +79,11 @@ namespace CheckWordEvent
     {
 
     }
+    /// <summary>
+    ///  保存用户设置信息事件
+    /// </summary>
+    public class WriteToSettingInfoEvent : PubSubEvent<MySettingInfo>
+    {
+
+    }
 }

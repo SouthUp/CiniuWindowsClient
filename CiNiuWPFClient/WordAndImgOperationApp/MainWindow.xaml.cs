@@ -63,6 +63,7 @@ namespace WordAndImgOperationApp
             EventAggregatorRepository.EventAggregator.GetEvent<SendNotifyMessageEvent>().Subscribe(SendNotifyMessage);
             EventAggregatorRepository.EventAggregator.GetEvent<CloseMyAppEvent>().Subscribe(CloseMyApp);
             EventAggregatorRepository.EventAggregator.GetEvent<MainAppShowTipsInfoEvent>().Subscribe(MainAppShowTipsInfo);
+            EventAggregatorRepository.EventAggregator.GetEvent<WriteToSettingInfoEvent>().Subscribe(WriteToSetting);
             RegisterWcfService();
             GetVersionInfo();
         }
@@ -611,6 +612,29 @@ namespace WordAndImgOperationApp
                 if (typeInfo == "LoginIn")
                 {
                     SetIconToolTip("词牛（已登录）");
+                    //获取用户设置
+                    Task task = new Task(() => {
+                        try
+                        {
+                            APIService service = new APIService();
+                            MySettingInfo settingInfo = service.GetUserSettingByToken(UtilSystemVar.UserToken);
+                            if (settingInfo != null)
+                            {
+                                EventAggregatorRepository.EventAggregator.GetEvent<WriteToSettingInfoEvent>().Publish(settingInfo);
+                            }
+                            else
+                            {
+                                string mySettingInfo = string.Format(@"{0}\MySettingInfo.xml", Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + "\\WordAndImgOCR\\LoginInOutInfo\\");
+                                if (!File.Exists(mySettingInfo))
+                                {
+                                    EventAggregatorRepository.EventAggregator.GetEvent<WriteToSettingInfoEvent>().Publish(new MySettingInfo { IsCheckPicInDucument = true, IsUseCustumCi = false });
+                                }
+                            }
+                        }
+                        catch (Exception ex)
+                        { }
+                    });
+                    task.Start();
                 }
                 else
                 {
@@ -855,6 +879,23 @@ namespace WordAndImgOperationApp
                 WPFClientCheckWordUtil.Log.TextLog.SaveError(ex.Message);
             }
         }
+        /// <summary>
+        /// 用户设置写入历史
+        /// </summary>
+        /// <param name="list"></param>
+        private void WriteToSetting(MySettingInfo mySetting)
+        {
+            try
+            {
+                string mySettingInfo = string.Format(@"{0}\MySettingInfo.xml", Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + "\\WordAndImgOCR\\LoginInOutInfo\\");
+                //保存用户设置信息到本地
+                DataParse.WriteToXmlPath(JsonConvert.SerializeObject(mySetting), mySettingInfo);
+            }
+            catch (Exception ex)
+            {
+                WPFClientCheckWordUtil.Log.TextLog.SaveError(ex.Message);
+            }
+        }
         private void MoreMenueBtn_Click(object sender, RoutedEventArgs e)
         {
             viewModel.IsMoreMenuePopWindowOpen = true;
@@ -1063,6 +1104,7 @@ namespace WordAndImgOperationApp
             this.IsDealingData = false;
             EventAggregatorRepository.EventAggregator.GetEvent<MainAppShowTipsInfoEvent>().Publish(new AppBusyIndicator() { IsBusy = false, BusyContent = "" });
         }
+        private bool isCheckPicInDucument = true;
         private ObservableCollection<MyFolderDataViewModel> _dealDataResultList = new ObservableCollection<MyFolderDataViewModel>();
         /// <summary>
         /// 处理拖拽文件
@@ -1084,6 +1126,22 @@ namespace WordAndImgOperationApp
                     {
                         Directory.CreateDirectory(CheckWordTempPath);
                     }
+                    isCheckPicInDucument = true;
+                    string mySettingInfo = string.Format(@"{0}\MySettingInfo.xml", Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + "\\WordAndImgOCR\\LoginInOutInfo\\");
+                    var ui = CheckWordUtil.DataParse.ReadFromXmlPath<string>(mySettingInfo);
+                    if (ui != null && ui.ToString() != "")
+                    {
+                        try
+                        {
+                            var mySetting = JsonConvert.DeserializeObject<MySettingInfo>(ui.ToString());
+                            if (mySetting != null)
+                            {
+                                isCheckPicInDucument = mySetting.IsCheckPicInDucument;
+                            }
+                        }
+                        catch
+                        { }
+                    }
                     //解析数据
                     Task taskJieXi = new Task(() => {
                         int fileCount = FilePathsList.Count;
@@ -1098,14 +1156,17 @@ namespace WordAndImgOperationApp
                             {
                                 try
                                 {
-                                    Aspose.Words.Document doc = new Aspose.Words.Document(item);
-                                    //取得对象集合
-                                    Aspose.Words.NodeCollection shapes = doc.GetChildNodes(Aspose.Words.NodeType.Shape, true);
-                                    foreach (Aspose.Words.Drawing.Shape shape in shapes)
+                                    if (isCheckPicInDucument)
                                     {
-                                        if (shape != null && shape.HasImage)
+                                        Aspose.Words.Document doc = new Aspose.Words.Document(item);
+                                        //取得对象集合
+                                        Aspose.Words.NodeCollection shapes = doc.GetChildNodes(Aspose.Words.NodeType.Shape, true);
+                                        foreach (Aspose.Words.Drawing.Shape shape in shapes)
                                         {
-                                            imagesCount++;
+                                            if (shape != null && shape.HasImage)
+                                            {
+                                                imagesCount++;
+                                            }
                                         }
                                     }
                                 }
@@ -1116,11 +1177,14 @@ namespace WordAndImgOperationApp
                             {
                                 try
                                 {
-                                    Aspose.Cells.Workbook workbook = new Aspose.Cells.Workbook(item);
-                                    int sheetCount = workbook.Worksheets.Count;
-                                    for (int k = 0; k < sheetCount; k++)
+                                    if (isCheckPicInDucument)
                                     {
-                                        imagesCount += workbook.Worksheets[k].Pictures.Count;
+                                        Aspose.Cells.Workbook workbook = new Aspose.Cells.Workbook(item);
+                                        int sheetCount = workbook.Worksheets.Count;
+                                        for (int k = 0; k < sheetCount; k++)
+                                        {
+                                            imagesCount += workbook.Worksheets[k].Pictures.Count;
+                                        }
                                     }
                                 }
                                 catch (Exception ex)
@@ -1373,25 +1437,28 @@ namespace WordAndImgOperationApp
                                 }
                             }
                             //如果包含图片，检测图片
-                            if (Directory.Exists(pathDir))
+                            if (isCheckPicInDucument)
                             {
-                                DirectoryInfo dirDoc = new DirectoryInfo(pathDir);
-                                var filePicInfos = dirDoc.GetFiles();
-                                FileOperateHelper.SortAsFileCreationTime(ref filePicInfos);
-                                foreach (var picInfo in filePicInfos)
+                                if (Directory.Exists(pathDir))
                                 {
-                                    if (!IsDealingData)
+                                    DirectoryInfo dirDoc = new DirectoryInfo(pathDir);
+                                    var filePicInfos = dirDoc.GetFiles();
+                                    FileOperateHelper.SortAsFileCreationTime(ref filePicInfos);
+                                    foreach (var picInfo in filePicInfos)
                                     {
-                                        _dealDataResultList = new ObservableCollection<MyFolderDataViewModel>();
-                                        return null;
-                                    }
-                                    if (picInfo.FullName.Contains("png"))
-                                    {
-                                        var picResult = AutoExcutePicOCR(picInfo.FullName);
-                                        if (picResult != null && picResult.CheckResultInfo == "1")
+                                        if (!IsDealingData)
                                         {
-                                            model.CheckResultInfo = "1";
-                                            return model;
+                                            _dealDataResultList = new ObservableCollection<MyFolderDataViewModel>();
+                                            return null;
+                                        }
+                                        if (picInfo.FullName.Contains("png"))
+                                        {
+                                            var picResult = AutoExcutePicOCR(picInfo.FullName);
+                                            if (picResult != null && picResult.CheckResultInfo == "1")
+                                            {
+                                                model.CheckResultInfo = "1";
+                                                return model;
+                                            }
                                         }
                                     }
                                 }
@@ -1562,25 +1629,28 @@ namespace WordAndImgOperationApp
                                 }
                             }
                             //如果包含图片，检测图片
-                            if (Directory.Exists(pathDir))
+                            if (isCheckPicInDucument)
                             {
-                                DirectoryInfo dirDoc = new DirectoryInfo(pathDir);
-                                var filePicInfos = dirDoc.GetFiles();
-                                FileOperateHelper.SortAsFileCreationTime(ref filePicInfos);
-                                foreach (var picInfo in filePicInfos)
+                                if (Directory.Exists(pathDir))
                                 {
-                                    if (!IsDealingData)
+                                    DirectoryInfo dirDoc = new DirectoryInfo(pathDir);
+                                    var filePicInfos = dirDoc.GetFiles();
+                                    FileOperateHelper.SortAsFileCreationTime(ref filePicInfos);
+                                    foreach (var picInfo in filePicInfos)
                                     {
-                                        _dealDataResultList = new ObservableCollection<MyFolderDataViewModel>();
-                                        return null;
-                                    }
-                                    if (picInfo.FullName.Contains("jpg"))
-                                    {
-                                        var picResult = AutoExcutePicOCR(picInfo.FullName);
-                                        if (picResult != null && picResult.CheckResultInfo == "1")
+                                        if (!IsDealingData)
                                         {
-                                            model.CheckResultInfo = "1";
-                                            return model;
+                                            _dealDataResultList = new ObservableCollection<MyFolderDataViewModel>();
+                                            return null;
+                                        }
+                                        if (picInfo.FullName.Contains("jpg"))
+                                        {
+                                            var picResult = AutoExcutePicOCR(picInfo.FullName);
+                                            if (picResult != null && picResult.CheckResultInfo == "1")
+                                            {
+                                                model.CheckResultInfo = "1";
+                                                return model;
+                                            }
                                         }
                                     }
                                 }

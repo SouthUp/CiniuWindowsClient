@@ -230,5 +230,40 @@ namespace CheckWordUtil
             }
             return result;
         }
+        /// <summary>
+        /// 获取用户设置
+        /// </summary>
+        /// <param name="token"></param>
+        /// <returns></returns>
+        public MySettingInfo GetUserSettingByToken(string token)
+        {
+            MySettingInfo result = null;
+            try
+            {
+                result = new MySettingInfo { IsCheckPicInDucument = true, IsUseCustumCi = false };
+            }
+            catch (Exception ex)
+            {
+                WPFClientCheckWordUtil.Log.TextLog.SaveError(ex.Message);
+                result = null;
+            }
+            return result;
+        }
+        /// <summary>
+        /// 保存用户设置
+        /// </summary>
+        /// <param name="token"></param>
+        /// <returns></returns>
+        public void SaveUserSettingByToken(string token, MySettingInfo mySetting)
+        {
+            try
+            {
+                
+            }
+            catch (Exception ex)
+            {
+                WPFClientCheckWordUtil.Log.TextLog.SaveError(ex.Message);
+            }
+        }
     }
 }
