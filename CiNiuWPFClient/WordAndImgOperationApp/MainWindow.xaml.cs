@@ -64,6 +64,7 @@ namespace WordAndImgOperationApp
             EventAggregatorRepository.EventAggregator.GetEvent<CloseMyAppEvent>().Subscribe(CloseMyApp);
             EventAggregatorRepository.EventAggregator.GetEvent<MainAppShowTipsInfoEvent>().Subscribe(MainAppShowTipsInfo);
             EventAggregatorRepository.EventAggregator.GetEvent<WriteToSettingInfoEvent>().Subscribe(WriteToSetting);
+            EventAggregatorRepository.EventAggregator.GetEvent<GetWordsEvent>().Subscribe(GetWords);
             RegisterWcfService();
             GetVersionInfo();
         }
@@ -652,6 +653,33 @@ namespace WordAndImgOperationApp
                 }
                 LoginInOutInfo loginInOutInfo = new LoginInOutInfo();
                 loginInOutInfo.Type = typeInfo;
+                loginInOutInfo.UrlStr = UtilSystemVar.UrlStr;
+                loginInOutInfo.Token = UtilSystemVar.UserToken;
+                viewModel.UserName = UtilSystemVar.UserName;
+                try
+                {
+                    //保存用户登录信息到本地
+                    string loginInOutInfos = string.Format(@"{0}\LoginInOutInfo.xml", Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + "\\WordAndImgOCR\\LoginInOutInfo\\");
+                    DataParse.WriteToXmlPath(JsonConvert.SerializeObject(loginInOutInfo), loginInOutInfos);
+                }
+                catch (Exception ex)
+                {
+                    WPFClientCheckWordUtil.Log.TextLog.SaveError(ex.Message);
+                }
+                string json = JsonConvert.SerializeObject(loginInOutInfo);
+                mService.ClientSendMessage(json);
+            }
+            catch (Exception ex)
+            {
+                WPFClientCheckWordUtil.Log.TextLog.SaveError(ex.Message);
+            }
+        }
+        private void GetWords(bool b)
+        {
+            try
+            {
+                LoginInOutInfo loginInOutInfo = new LoginInOutInfo();
+                loginInOutInfo.Type = "LoginIn";
                 loginInOutInfo.UrlStr = UtilSystemVar.UrlStr;
                 loginInOutInfo.Token = UtilSystemVar.UserToken;
                 viewModel.UserName = UtilSystemVar.UserName;

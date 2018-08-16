@@ -86,4 +86,11 @@ namespace CheckWordEvent
     {
 
     }
+    /// <summary>
+    /// 拉取词库事件
+    /// </summary>
+    public class GetWordsEvent : PubSubEvent<bool>
+    {
+
+    }
 }

@@ -80,26 +80,6 @@ namespace WordAndImgOperationApp
             task.Start();
             await task;
         }
-
-        private void ToggleIsCheckPic_Checked(object sender, RoutedEventArgs e)
-        {
-            SaveSettingInfo();
-        }
-
-        private void ToggleIsCheckPic_Unchecked(object sender, RoutedEventArgs e)
-        {
-            SaveSettingInfo();
-        }
-
-        private void ToggleIsUseCustumCi_Checked(object sender, RoutedEventArgs e)
-        {
-            SaveSettingInfo();
-        }
-
-        private void ToggleIsUseCustumCi_Unchecked(object sender, RoutedEventArgs e)
-        {
-            SaveSettingInfo();
-        }
         private void CategoryToggleBtn_Checked(object sender, RoutedEventArgs e)
         {
             SaveSettingInfo(true);
@@ -123,7 +103,7 @@ namespace WordAndImgOperationApp
                         service.SaveUserSettingByToken(UtilSystemVar.UserToken, info);
                         if(isNeedGetWords)
                         {
-                            EventAggregatorRepository.EventAggregator.GetEvent<LoginInOrOutEvent>().Publish("LoginIn");
+                            EventAggregatorRepository.EventAggregator.GetEvent<GetWordsEvent>().Publish(true);
                         }
                     }
                     catch (Exception ex)
@@ -133,6 +113,16 @@ namespace WordAndImgOperationApp
             }
             catch (Exception ex)
             { }
+        }
+
+        private void ToggleIsUseCustumCi_Click(object sender, RoutedEventArgs e)
+        {
+            SaveSettingInfo();
+        }
+
+        private void ToggleIsCheckPic_Click(object sender, RoutedEventArgs e)
+        {
+            SaveSettingInfo();
         }
     }
 }

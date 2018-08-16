@@ -34,7 +34,7 @@
                 <ToggleButton Width="34" Height="18" IsChecked="{Binding IsCheckPicInDucument}"
                               Style="{StaticResource SwitchSelectToggleStyle}"
                               HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,0,40,0"
-                              Checked="ToggleIsCheckPic_Checked" Unchecked="ToggleIsCheckPic_Unchecked">
+                              Click="ToggleIsCheckPic_Click">
                 </ToggleButton>
             </Grid>
             <Grid Margin="56,50,0,0">
@@ -45,7 +45,7 @@
                 <ToggleButton Width="34" Height="18" IsChecked="{Binding IsUseCustumCi}"
                               Style="{StaticResource SwitchSelectToggleStyle}"
                               HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,0,40,0"
-                              Checked="ToggleIsUseCustumCi_Checked" Unchecked="ToggleIsUseCustumCi_Unchecked">
+                              Click="ToggleIsUseCustumCi_Click">
                 </ToggleButton>
             </Grid>
             <Grid Margin="56,85,0,0">
