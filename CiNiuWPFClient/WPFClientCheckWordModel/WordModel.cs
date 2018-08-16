@@ -11,7 +11,5 @@ namespace WPFClientCheckWordModel
         public string ID { get; set; }
         public string Name { get; set; }
         public bool IsCustumCi { get; set; }
-        public bool IsMinGanCi { get; set; }
-        public string UserName { get; set; }
     }
 }

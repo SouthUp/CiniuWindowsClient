@@ -102,14 +102,14 @@ namespace WordAndImgOperationApp
         }
         private void CategoryToggleBtn_Checked(object sender, RoutedEventArgs e)
         {
-            SaveSettingInfo();
+            SaveSettingInfo(true);
         }
 
         private void CategoryToggleBtn_Unchecked(object sender, RoutedEventArgs e)
         {
-            SaveSettingInfo();
+            SaveSettingInfo(true);
         }
-        private void SaveSettingInfo()
+        private void SaveSettingInfo(bool isNeedGetWords = false)
         {
             try
             {
@@ -121,6 +121,10 @@ namespace WordAndImgOperationApp
                         var info = new MySettingInfo { IsCheckPicInDucument = viewModel.IsCheckPicInDucument, IsUseCustumCi = viewModel.IsUseCustumCi, CategoryInfos = viewModel.CategoryInfos.ToList() };
                         APIService service = new APIService();
                         service.SaveUserSettingByToken(UtilSystemVar.UserToken, info);
+                        if(isNeedGetWords)
+                        {
+                            EventAggregatorRepository.EventAggregator.GetEvent<LoginInOrOutEvent>().Publish("LoginIn");
+                        }
                     }
                     catch (Exception ex)
                     { }
