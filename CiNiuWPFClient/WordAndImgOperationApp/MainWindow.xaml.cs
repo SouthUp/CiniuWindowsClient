@@ -1078,6 +1078,10 @@ namespace WordAndImgOperationApp
                 }
                 catch (Exception ex)
                 { }
+                if (b)
+                {
+                    EventAggregatorRepository.EventAggregator.GetEvent<GetWordsEvent>().Publish(true);
+                }
                 EventAggregatorRepository.EventAggregator.GetEvent<MainAppBusyIndicatorEvent>().Publish(new AppBusyIndicator { IsBusy = false });
                 return b;
             });
