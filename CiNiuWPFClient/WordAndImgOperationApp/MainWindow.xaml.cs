@@ -65,8 +65,27 @@ namespace WordAndImgOperationApp
             EventAggregatorRepository.EventAggregator.GetEvent<MainAppShowTipsInfoEvent>().Subscribe(MainAppShowTipsInfo);
             EventAggregatorRepository.EventAggregator.GetEvent<WriteToSettingInfoEvent>().Subscribe(WriteToSetting);
             EventAggregatorRepository.EventAggregator.GetEvent<GetWordsEvent>().Subscribe(GetWords);
+            EventAggregatorRepository.EventAggregator.GetEvent<MainAppBusyIndicatorEvent>().Subscribe(MainAppBusyIndicator);
             RegisterWcfService();
             GetVersionInfo();
+        }
+        private void MainAppBusyIndicator(AppBusyIndicator busyindicator)
+        {
+            try
+            {
+                Dispatcher.Invoke(new Action(() => {
+                    if (busyindicator.IsBusy)
+                    {
+                        viewModel.BusyWindowVisibility = Visibility.Visible;
+                    }
+                    else
+                    {
+                        viewModel.BusyWindowVisibility = Visibility.Collapsed;
+                    }
+                }));
+            }
+            catch (Exception ex)
+            { }
         }
         private void MainAppShowTipsInfo(AppBusyIndicator busyindicator)
         {
@@ -193,6 +212,7 @@ namespace WordAndImgOperationApp
         }
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
+            element.Source = AppDomain.CurrentDomain.BaseDirectory + @"Resources\Gif\loading.gif";
             CloseBtn_Click(null, null);
         }
         private void GetVersionInfo()
@@ -777,6 +797,7 @@ namespace WordAndImgOperationApp
             {
                 int countWords = 0;
                 countWords = textSearch.Count();
+                EventAggregatorRepository.EventAggregator.GetEvent<MainAppBusyIndicatorEvent>().Publish(new AppBusyIndicator { IsBusy = true });
                 try
                 {
                     APIService service = new APIService();
@@ -871,6 +892,7 @@ namespace WordAndImgOperationApp
                 }
                 catch
                 { }
+                EventAggregatorRepository.EventAggregator.GetEvent<MainAppBusyIndicatorEvent>().Publish(new AppBusyIndicator { IsBusy = false });
                 System.Threading.ThreadStart start = delegate ()
                 {
                     //记录历史
@@ -1036,13 +1058,39 @@ namespace WordAndImgOperationApp
 
         private void AddToCustumCiTiaoBtn_Click(object sender, RoutedEventArgs e)
         {
+            viewModel.DiscriptionSearchText = "";
             viewModel.AddToCustumCiTiaoVisibility = Visibility.Visible;
-            MainGrid.Height = 80 + 200;
-            this.Height = 99 + 200;
+            MainGrid.Height = 80 + 250;
+            this.Height = 99 + 250;
         }
 
-        private void SureToCustumCiTiaoBtn_Click(object sender, RoutedEventArgs e)
+        private async void SureToCustumCiTiaoBtn_Click(object sender, RoutedEventArgs e)
         {
+            //调用接口添加自建词库
+            Task<bool> task = new Task<bool>(() => {
+                EventAggregatorRepository.EventAggregator.GetEvent<MainAppBusyIndicatorEvent>().Publish(new AppBusyIndicator { IsBusy = true });
+                bool b = false;
+                try
+                {
+                    APIService service = new APIService();
+                    b = service.AddCustumCiTiaoByToken(UtilSystemVar.UserToken, viewModel.SearchText, viewModel.DiscriptionSearchText);
+                    System.Threading.Thread.Sleep(500);
+                }
+                catch (Exception ex)
+                { }
+                EventAggregatorRepository.EventAggregator.GetEvent<MainAppBusyIndicatorEvent>().Publish(new AppBusyIndicator { IsBusy = false });
+                return b;
+            });
+            task.Start();
+            await task;
+            if (task.Result)
+            {
+                EventAggregatorRepository.EventAggregator.GetEvent<MainAppShowTipsInfoEvent>().Publish(new AppBusyIndicator() { IsBusy = true, BusyContent = "添加自建词条成功" });
+            }
+            else
+            {
+                EventAggregatorRepository.EventAggregator.GetEvent<MainAppShowTipsInfoEvent>().Publish(new AppBusyIndicator() { IsBusy = true, BusyContent = "添加自建词条失败" });
+            }
             viewModel.AddToCustumCiTiaoVisibility = Visibility.Collapsed;
             MainGrid.Height = 80 + 75;
             this.Height = 99 + 75;

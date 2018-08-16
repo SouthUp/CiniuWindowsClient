@@ -14,6 +14,16 @@ namespace WordAndImgOperationApp
 {
     public class WPFOfficeWindowViewModel : NotificationObject
     {
+        private System.Windows.Visibility _busyWindowVisibility = System.Windows.Visibility.Collapsed;
+        public System.Windows.Visibility BusyWindowVisibility
+        {
+            get { return _busyWindowVisibility; }
+            set
+            {
+                _busyWindowVisibility = value;
+                RaisePropertyChanged("BusyWindowVisibility");
+            }
+        }
         private string userName = "";
         public string UserName
         {
@@ -115,6 +125,16 @@ namespace WordAndImgOperationApp
                     _searchText = value;
                     RaisePropertyChanged("SearchText");
                 }
+            }
+        }
+        private string discriptionSearchText = "";
+        public string DiscriptionSearchText
+        {
+            get { return discriptionSearchText; }
+            set
+            {
+                discriptionSearchText = value;
+                RaisePropertyChanged("DiscriptionSearchText");
             }
         }
         private Visibility dealingGridVisibility = Visibility.Collapsed;

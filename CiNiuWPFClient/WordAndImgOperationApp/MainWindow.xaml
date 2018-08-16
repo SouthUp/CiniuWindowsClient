@@ -4,6 +4,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:control="clr-namespace:CheckWordControl;assembly=CheckWordControl"
+        xmlns:gifLib="clr-namespace:GifImageLib;assembly=GifImageLib"
         AllowsTransparency="True" Background="Transparent"
         WindowStyle="None" Topmost="False" AllowDrop="True" 
         Height="99" Width="359" Loaded="Window_Loaded" Unloaded="Window_Unloaded"
@@ -337,16 +338,24 @@
                                FontSize="12" Foreground="Black" Opacity="0.54"
                                Style="{StaticResource CommonLeftTextBlock}"></TextBlock>
                 </Grid>
-                <Grid Grid.Row="2" Height="160" Background="White"
+                <Grid Grid.Row="2" Height="210" Background="White"
                       Visibility="{Binding AddToCustumCiTiaoVisibility}">
                     <Grid.RowDefinitions>
                         <RowDefinition Height="8"></RowDefinition>
-                        <RowDefinition Height="40"></RowDefinition>
-                        <RowDefinition Height="64"></RowDefinition>
-                        <RowDefinition Height="48"></RowDefinition>
+                        <RowDefinition Height="154"></RowDefinition>
+                        <RowDefinition Height="*"></RowDefinition>
                     </Grid.RowDefinitions>
-                    
-                    <Button Grid.Row="3" Width="64" Height="32" Content="确定"
+                    <Grid Grid.Row="1" >
+                        <Border BorderThickness="0" Background="Black" Opacity="0.04" Margin="15,0,15,0"></Border>
+                        <control:WatermarkTextBox Width="288" Height="134" BorderThickness="0" Margin="25,10,25,10"
+                                                  Style="{StaticResource TopLeftWatermarkTextBox}" Opacity="0.87"
+                                                  Background="Transparent" Foreground="Black" TextWrapping="Wrap"
+                                                  Text="{Binding DiscriptionSearchText}" FontSize="14" TextBlock.LineHeight="22"
+                                                  CaretBrush="Black" HorizontalAlignment="Left" VerticalAlignment="Top"
+                                                  HorizontalContentAlignment="Left" VerticalContentAlignment="Top" 
+                                                  control:WatermarkTextBox.Watermark="添加词条内容，完善词条"/>
+                    </Grid>
+                    <Button Grid.Row="2" Width="64" Height="32" Content="确定"
                             HorizontalAlignment="Right" Margin="0,0,16,0"
                             Style="{StaticResource HsaBGHoverTextButtonStyle}"
                             Click="SureToCustumCiTiaoBtn_Click"></Button>
@@ -496,5 +505,12 @@
                                Style="{StaticResource CommonLeftTextBlock}"></TextBlock>
             </Grid>
         </control:PopupEx>
+        <Grid Visibility="{Binding BusyWindowVisibility}">
+            <Border BorderThickness="0" Background="White" Opacity="0.9">
+            </Border>
+            <StackPanel Orientation="Vertical" HorizontalAlignment="Center" VerticalAlignment="Center">
+                <gifLib:GifImage x:Name="element" Width="100" Height="20" HorizontalAlignment="Center"/>
+            </StackPanel>
+        </Grid>
     </Grid>
 </Window>

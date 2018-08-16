@@ -286,5 +286,24 @@ namespace CheckWordUtil
             { }
             return result;
         }
+        /// <summary>
+        /// 添加自建词条
+        /// </summary>
+        /// <param name="token"></param>
+        /// <returns></returns>
+        public bool AddCustumCiTiaoByToken(string token, string word,string discription)
+        {
+            bool result = true;
+            try
+            {
+
+            }
+            catch (Exception ex)
+            {
+                WPFClientCheckWordUtil.Log.TextLog.SaveError(ex.Message);
+                result = false;
+            }
+            return result;
+        }
     }
 }

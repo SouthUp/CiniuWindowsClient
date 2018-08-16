@@ -24,6 +24,13 @@ namespace CheckWordEvent
 
     }
     /// <summary>
+    ///  主窗体繁忙事件
+    /// </summary>
+    public class MainAppBusyIndicatorEvent : PubSubEvent<AppBusyIndicator>
+    {
+
+    }
+    /// <summary>
     ///  设置窗体繁忙事件
     /// </summary>
     public class SettingWindowBusyIndicatorEvent : PubSubEvent<AppBusyIndicator>
