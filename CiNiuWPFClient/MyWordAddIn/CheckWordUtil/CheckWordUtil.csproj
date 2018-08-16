@@ -31,9 +31,6 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="AipSdk">
-      <HintPath>..\..\Dll\AipSdk.dll</HintPath>
-    </Reference>
     <Reference Include="Microsoft.Practices.Prism.Composition, Version=5.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\Dll\Microsoft.Practices.Prism.Composition.dll</HintPath>
@@ -67,7 +64,6 @@
     <Compile Include="HashHelper.cs" />
     <Compile Include="HttpHelper.cs" />
     <Compile Include="Log\TextLog.cs" />
-    <Compile Include="OCRHelp.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
