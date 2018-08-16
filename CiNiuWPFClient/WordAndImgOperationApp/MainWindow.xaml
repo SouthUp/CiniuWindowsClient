@@ -365,7 +365,7 @@
                     </Button>
                 </Grid>
                 <Grid Grid.Row="2" Height="35">
-                    <TextBlock Text="未被收录" Margin="20,0,0,0"
+                    <TextBlock Text="未被词牛收录" Margin="20,0,0,0"
                                FontSize="12" Foreground="Black" Opacity="0.54"
                                Style="{StaticResource CommonLeftTextBlock}"></TextBlock>
                 </Grid>

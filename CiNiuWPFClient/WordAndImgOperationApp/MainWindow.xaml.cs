@@ -1079,13 +1079,13 @@ namespace WordAndImgOperationApp
                 {
                     APIService service = new APIService();
                     b = service.AddCustumCiTiaoByToken(UtilSystemVar.UserToken, viewModel.SearchText, viewModel.DiscriptionSearchText);
-                    System.Threading.Thread.Sleep(500);
                 }
                 catch (Exception ex)
                 { }
                 if (b)
                 {
                     EventAggregatorRepository.EventAggregator.GetEvent<GetWordsEvent>().Publish(true);
+                    System.Threading.Thread.Sleep(1000);
                 }
                 EventAggregatorRepository.EventAggregator.GetEvent<MainAppBusyIndicatorEvent>().Publish(new AppBusyIndicator { IsBusy = false });
                 return b;
@@ -1103,6 +1103,10 @@ namespace WordAndImgOperationApp
             viewModel.AddToCustumCiTiaoVisibility = Visibility.Collapsed;
             MainGrid.Height = 80 + 75;
             this.Height = 99 + 75;
+            if (task.Result)
+            {
+                CheckInputText(viewModel.SearchText);
+            }
         }
         private void Window_Drop(object sender, System.Windows.DragEventArgs e)
         {
