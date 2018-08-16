@@ -231,10 +231,22 @@
             </Grid>
             <Grid Grid.Row="2" Visibility="{Binding WordHasUnchekResultVisibility}" 
                   MinHeight="80" MaxHeight="328">
+                <StackPanel Orientation="Horizontal" Margin="10,0,0,0"
+                            HorizontalAlignment="Left" VerticalAlignment="Top">
+                    <TextBlock Text="搜到" FontSize="12" Opacity="0.54"
+                           Style="{StaticResource CommonLeftTextBlock}">
+                    </TextBlock>
+                    <TextBlock Text="{Binding CurrentWordInfoResults.Count}" FontSize="12" Opacity="0.54"
+                           Style="{StaticResource CommonLeftTextBlock}">
+                    </TextBlock>
+                    <TextBlock Text="个词条" FontSize="12" Opacity="0.54"
+                           Style="{StaticResource CommonLeftTextBlock}">
+                    </TextBlock>
+                </StackPanel>
                 <ListBox x:Name="listBox" BorderThickness="0" Background="Transparent" ItemsSource="{Binding CurrentWordInfoResults}"
                                          ScrollViewer.HorizontalScrollBarVisibility="Disabled" ScrollViewer.VerticalScrollBarVisibility="Auto" SelectedIndex="-1"
                                          ItemContainerStyle="{StaticResource ListBoxItemContainerStyle}" VerticalAlignment="Top" HorizontalAlignment="Stretch"
-                                         ScrollViewer.CanContentScroll="True">
+                                         ScrollViewer.CanContentScroll="True" Margin="0,15,0,0">
                     <ListBox.ItemTemplate>
                         <DataTemplate>
                             <Grid>
@@ -246,8 +258,8 @@
                                             <RowDefinition Height="32"></RowDefinition>
                                             <RowDefinition Height="Auto"></RowDefinition>
                                         </Grid.RowDefinitions>
-                                        <Border Grid.Row="0" Height="1" BorderBrush="Black" Opacity="0.12" BorderThickness="1"
-                                                HorizontalAlignment="Stretch" VerticalAlignment="Top"></Border>
+                                        <!--<Border Grid.Row="0" Height="1" BorderBrush="Black" Opacity="0.12" BorderThickness="1"
+                                                HorizontalAlignment="Stretch" VerticalAlignment="Top"></Border>-->
                                         <Grid Grid.Row="1" Background="Transparent" Margin="16,0,0,0">
                                             <StackPanel Orientation="Horizontal"
                                                         VerticalAlignment="Center" HorizontalAlignment="Left">
@@ -266,7 +278,7 @@
                                                 </TextBlock>
                                             </StackPanel>
                                         </Grid>
-                                        <Grid Grid.Row="2" Margin="16,0,0,0">
+                                        <Grid Grid.Row="2" Margin="16,0,16,0">
                                             <ListBox x:Name="listBox2" BorderThickness="0" Background="Transparent"
                                                                      ItemsSource="{Binding UnChekedWordDetailInfos}"
                                                                      ScrollViewer.HorizontalScrollBarVisibility="Disabled"
@@ -277,11 +289,30 @@
                                                                      PreviewMouseWheel="listBox2_PreviewMouseWheel">
                                                 <ListBox.ItemTemplate>
                                                     <DataTemplate>
-                                                        <Grid Height="32" Width="{Binding ElementName=listBox2,Path=ActualWidth}">
-                                                            <TextBlock Text="{Binding Discription}" FontSize="12" Opacity="0.54"
-                                                                           Style="{StaticResource CommonLeftTextBlock}" 
-                                                                           MaxWidth="250" TextTrimming="CharacterEllipsis">
-                                                            </TextBlock>
+                                                        <Grid Width="{Binding ElementName=listBox2,Path=ActualWidth}">
+                                                            <Grid.RowDefinitions>
+                                                                <RowDefinition Height="Auto"></RowDefinition>
+                                                                <RowDefinition Height="40"></RowDefinition>
+                                                            </Grid.RowDefinitions>
+                                                            <Grid Grid.Row="0">
+                                                                <TextBlock Text="{Binding Discription}" FontSize="13" Opacity="0.54"
+                                                                           Style="{StaticResource CommonLeftTextBlock}"
+                                                                           TextWrapping="Wrap" TextBlock.LineHeight="22">
+                                                                </TextBlock>
+                                                            </Grid>
+                                                            <Grid Grid.Row="1">
+                                                                <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" VerticalAlignment="Center">
+                                                                    <TextBlock Text="{Binding SourceName}" FontSize="12" Opacity="0.26"
+                                                                               Style="{StaticResource CommonLeftTextBlock}">
+                                                                    </TextBlock>
+                                                                    <TextBlock Text="{Binding CategoryName}" FontSize="12" Opacity="0.26"
+                                                                               Style="{StaticResource CommonLeftTextBlock}">
+                                                                    </TextBlock>
+                                                                    <TextBlock Text="{Binding DateTime}" FontSize="12" Opacity="0.26"
+                                                                               Style="{StaticResource CommonLeftTextBlock}">
+                                                                    </TextBlock>
+                                                                </StackPanel>
+                                                            </Grid>
                                                         </Grid>
                                                     </DataTemplate>
                                                 </ListBox.ItemTemplate>

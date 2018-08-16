@@ -279,8 +279,8 @@ namespace CheckWordUtil
             List<UnChekedDetailWordInfo> result = new List<UnChekedDetailWordInfo>();
             try
             {
-                result.Add(new UnChekedDetailWordInfo() { Discription = "违反广告法第3条", SourceName = "词牛", CategoryName = "母婴类", DateTime = DateTime.Now.ToString("yyyy-MM-dd") });
-                result.Add(new UnChekedDetailWordInfo() { Discription = "违反广告法第2条", SourceName = "自建词条", CategoryName = "", DateTime = DateTime.Now.ToString("yyyy-MM-dd") });
+                result.Add(new UnChekedDetailWordInfo() { Discription = "违反广告法第3条违反广告法第3条违反广告法第3条违反广告法第3条违反广告法第3条违反广告法第3条违反广告法第3条", SourceName = "词牛", CategoryName = "，母婴类", DateTime = "，" + DateTime.Now.ToString("yyyy-MM-dd") });
+                result.Add(new UnChekedDetailWordInfo() { Discription = "违反广告法第2条违反广告法第2条违反广告法第2条违反广告法第2条", SourceName = "自建词条", CategoryName = "", DateTime = "，" + DateTime.Now.ToString("yyyy-MM-dd") });
             }
             catch (Exception ex)
             { }

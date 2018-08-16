@@ -835,7 +835,7 @@ namespace WordAndImgOperationApp
                                     viewModel.CurrentWordInfoResults = new ObservableCollection<CheckWordModel.UnChekedWordInfo>(resultInfo);
                                     if (viewModel.CurrentWordInfoResults.Count > 0)
                                     {
-                                        int heightAdd = 0;
+                                        int heightAdd = 15;
                                         foreach (var item in viewModel.CurrentWordInfoResults)
                                         {
                                             List<UnChekedDetailWordInfo> _detailInfos = new List<UnChekedDetailWordInfo>();
@@ -847,7 +847,12 @@ namespace WordAndImgOperationApp
                                             taskGetWordDiscribe.Start();
                                             await taskGetWordDiscribe;
                                             item.UnChekedWordDetailInfos = new ObservableCollection<UnChekedDetailWordInfo>(_detailInfos);
-                                            heightAdd += 32 * (1 + item.UnChekedWordDetailInfos.Count) + 16;
+                                            foreach (var detaiItem in item.UnChekedWordDetailInfos)
+                                            {
+                                                int rowsCount = detaiItem.Discription.Length / 25 + 1;
+                                                heightAdd += 22 * rowsCount + 40;
+                                            }
+                                            heightAdd += 32 + 16;
                                         }
                                         if (heightAdd > heightAddMax)
                                         {
