@@ -121,9 +121,66 @@ namespace WordAndImgOperationApp
         {
 
         }
-        private void ImportCustumCiBtn_Click(object sender, RoutedEventArgs e)
+        private async void ImportCustumCiBtn_Click(object sender, RoutedEventArgs e)
         {
-
+            System.Windows.Forms.OpenFileDialog ofd = new System.Windows.Forms.OpenFileDialog();
+            ofd.Filter = "Excel文件(*.xlsx)|*.xlsx";
+            ofd.ValidateNames = true;
+            ofd.CheckPathExists = true;
+            ofd.CheckFileExists = true;
+            if (ofd.ShowDialog() == System.Windows.Forms.DialogResult.OK)
+            {
+                string strFileName = ofd.FileName;
+                //检验加载文件格式
+                if (CheckFile(strFileName))
+                {
+                    //调用接口添加自建词库
+                    Task<bool> task = new Task<bool>(() => {
+                        ShowTipsInfo("正在批量上传，请稍后再上传");
+                        EventAggregatorRepository.EventAggregator.GetEvent<SettingWindowBusyIndicatorEvent>().Publish(new AppBusyIndicator { IsBusy = true });
+                        bool b = false;
+                        try
+                        {
+                            System.Threading.Thread.Sleep(5000);
+                            b = true;
+                        }
+                        catch (Exception ex)
+                        { }
+                        if (b)
+                        {
+                            EventAggregatorRepository.EventAggregator.GetEvent<GetWordsEvent>().Publish(true);
+                        }
+                        EventAggregatorRepository.EventAggregator.GetEvent<SettingWindowBusyIndicatorEvent>().Publish(new AppBusyIndicator { IsBusy = false });
+                        return b;
+                    });
+                    task.Start();
+                    await task;
+                    if (task.Result)
+                    {
+                        ShowTipsInfo("批量导入词条成功");
+                    }
+                    else
+                    {
+                        ShowTipsInfo("批量导入词条失败");
+                    }
+                }
+                else
+                {
+                    ShowTipsInfo("选择导入的文件格式不正确");
+                }
+            }
+        }
+        private bool CheckFile(string fileName)
+        {
+            bool result = false;
+            try
+            {
+                //TODO
+                result = true;
+            }
+            catch (Exception ex)
+            { }
+            return result;
         }
     }
 }
