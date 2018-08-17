@@ -57,5 +57,28 @@ namespace WordAndImgOperationApp
                 RaisePropertyChanged("DiscriptionSearchText");
             }
         }
+        private System.Windows.Visibility _messageTipVisibility = System.Windows.Visibility.Collapsed;
+        public System.Windows.Visibility MessageTipVisibility
+        {
+            get { return _messageTipVisibility; }
+            set
+            {
+                _messageTipVisibility = value;
+                RaisePropertyChanged("MessageTipVisibility");
+            }
+        }
+        private string _messageTipInfo = "";
+        public string MessageTipInfo
+        {
+            get { return _messageTipInfo; }
+            set
+            {
+                if (_messageTipInfo != value)
+                {
+                    _messageTipInfo = value;
+                    RaisePropertyChanged("MessageTipInfo");
+                }
+            }
+        }
     }
 }

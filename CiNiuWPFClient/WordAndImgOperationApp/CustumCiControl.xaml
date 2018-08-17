@@ -4,6 +4,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:WordAndImgOperationApp"
+             xmlns:control="clr-namespace:CheckWordControl;assembly=CheckWordControl"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800" Loaded="UserControl_Loaded">
     <Grid Height="520" Width="638" Background="Transparent">
@@ -26,7 +27,68 @@
                 </StackPanel>
             </Grid>
             <Grid Grid.Row="1">
-
+                <StackPanel Orientation="Horizontal" Margin="59,23,0,0" 
+                            HorizontalAlignment="Left" VerticalAlignment="Top">
+                    <TextBlock Text="词条:" Foreground="#160536" Opacity="0.38" FontSize="12"
+                               Style="{StaticResource CommonLeftTextBlock}"></TextBlock>
+                    <Grid Width="491" Height="37" Margin="20,0,0,0" HorizontalAlignment="Left" VerticalAlignment="Top">
+                        <Border BorderThickness="0" Background="#160536" Opacity="0.04"></Border>
+                        <control:WatermarkTextBox Width="471" Height="37" BorderThickness="0" Margin="10,0,0,0"
+                                              Style="{StaticResource WatermarkTextBox}" Opacity="0.87"
+                                              Background="Transparent" Foreground="#160536" 
+                                              Text="{Binding SearchText}" FontSize="16" 
+                                              CaretBrush="Black" HorizontalAlignment="Left" VerticalAlignment="Top"
+                                              HorizontalContentAlignment="Left" VerticalContentAlignment="Top"
+                                              control:WatermarkTextBox.Watermark="输入自建词条"/>
+                    </Grid>
+                </StackPanel>
+                <StackPanel Orientation="Horizontal" Margin="59,76,0,0" 
+                            HorizontalAlignment="Left" VerticalAlignment="Top">
+                    <TextBlock Text="解读:" Foreground="#160536" Opacity="0.38" FontSize="12"
+                               Style="{StaticResource CommonLeftTextBlock}"></TextBlock>
+                    <Grid Width="491" Height="80" Margin="20,0,0,0" HorizontalAlignment="Left" VerticalAlignment="Top">
+                        <Border BorderThickness="0" Background="#160536" Opacity="0.04"></Border>
+                        <control:WatermarkTextBox Width="471" Height="70" BorderThickness="0" Margin="10,5,0,0"
+                                              Style="{StaticResource TopLeftWatermarkTextBox}" Opacity="0.87"
+                                              Background="Transparent" Foreground="#160536" TextWrapping="Wrap"
+                                              Text="{Binding DiscriptionSearchText}" FontSize="16" TextBlock.LineHeight="22"
+                                              CaretBrush="Black" HorizontalAlignment="Left" VerticalAlignment="Top"
+                                              HorizontalContentAlignment="Left" VerticalContentAlignment="Top"
+                                              control:WatermarkTextBox.Watermark="添加词条内容，完善词条"/>
+                    </Grid>
+                </StackPanel>
+                <Button Width="72" Height="32" Content="添加"
+                        HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,164,40,0"
+                        FontSize="13" Style="{StaticResource BGHoverTextButtonStyle}"
+                        Click="SureToCustumCiTiaoBtn_Click"></Button>
+                <StackPanel Orientation="Horizontal" Margin="40,237,0,0"
+                        HorizontalAlignment="Left" VerticalAlignment="Top">
+                    <Border BorderThickness="2" Width="2" Height="18" 
+                        BorderBrush="#160536" Opacity="0.54"></Border>
+                    <TextBlock Text="批量导入词条" Foreground="#160536" Opacity="0.87" FontSize="18"
+                           Style="{StaticResource CommonLeftTextBlock}" Margin="16,0,0,0"></TextBlock>
+                </StackPanel>
+                <TextBlock Margin="58,270,0,0"
+                           Text="仅支持Excel文件格式，请严格按照模板的样式填写，以免影响您的批量上传" 
+                           Foreground="#160536" Opacity="0.54" FontSize="12" VerticalAlignment="Top"
+                           Style="{StaticResource CommonLeftTextBlock}"></TextBlock>
+                <Button Margin="58,299,0,0" Width="50" Height="18" Content="下载模板" 
+                        HorizontalAlignment="Left" VerticalAlignment="Top" FontSize="12"
+                        Style="{StaticResource HsaBGHoverTextButtonStyle}"
+                        Click="DownLoadBtn_Click"></Button>
+                <Button Width="72" Height="32" Content="立即导入"
+                        HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,327,40,0"
+                        FontSize="13" Style="{StaticResource BGHoverTextButtonStyle}"
+                        Click="ImportCustumCiBtn_Click"></Button>
+            </Grid>
+            <Grid Grid.Row="1" Visibility="{Binding MessageTipVisibility}" 
+                  HorizontalAlignment="Left" VerticalAlignment="Bottom">
+                <Grid Width="230" Height="40" Background="Transparent">
+                    <Border Background="#160536" Opacity="0.87" BorderThickness="0" CornerRadius="2"></Border>
+                    <TextBlock Text="{Binding MessageTipInfo}" Margin="30,0,0,0"
+                               FontSize="13" Foreground="White" 
+                               Style="{StaticResource CommonLeftTextBlock}"></TextBlock>
+                </Grid>
             </Grid>
         </Grid>
         <Grid x:Name="ContentGrid" Visibility="{Binding ContentGridVisibility}">
