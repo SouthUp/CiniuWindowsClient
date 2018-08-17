@@ -48,13 +48,16 @@
                               Click="ToggleIsUseCustumCi_Click">
                 </ToggleButton>
             </Grid>
-            <Grid Margin="56,85,0,0">
-                <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" VerticalAlignment="Top">
-                    <TextBlock Text="类目：" Foreground="#160536" Opacity="0.54" FontSize="14"
-                               Style="{StaticResource CommonLeftTextBlock}"></TextBlock>
-                </StackPanel>
+            <StackPanel Orientation="Horizontal" Margin="40,90,0,0"
+                        HorizontalAlignment="Left" VerticalAlignment="Top">
+                <Border BorderThickness="2" Width="2" Height="18" 
+                        BorderBrush="#160536" Opacity="0.54"></Border>
+                <TextBlock Text="类目设置" Foreground="#160536" Opacity="0.87" FontSize="18"
+                           Style="{StaticResource CommonLeftTextBlock}" Margin="16,0,0,0"></TextBlock>
+            </StackPanel>
+            <Grid Margin="56,130,0,0">
                 <ListBox x:Name="listBox" BorderThickness="0" Background="Transparent"
-                         ItemsSource="{Binding CategoryInfos}" Margin="50,0,20,0"
+                         ItemsSource="{Binding CategoryInfos}" Margin="0,0,20,0"
                          ScrollViewer.HorizontalScrollBarVisibility="Disabled"
                          ScrollViewer.VerticalScrollBarVisibility="Disabled" SelectedIndex="-1"
                          ItemContainerStyle="{StaticResource ListBoxItemContainerStyle}"
@@ -62,7 +65,7 @@
                          ScrollViewer.CanContentScroll="False">
                     <ListBox.ItemTemplate>
                         <DataTemplate>
-                            <StackPanel Orientation="Horizontal" Margin="0,0,15,15"
+                            <StackPanel Orientation="Horizontal" Margin="0,0,16,20"
                                         HorizontalAlignment="Left" VerticalAlignment="Center">
                                 <ToggleButton Width="18" Height="18" Margin="0,0,8,0"
                                               Style="{StaticResource CheckSelectCategoryBtnStyle}"
