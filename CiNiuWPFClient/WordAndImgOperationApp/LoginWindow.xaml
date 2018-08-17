@@ -58,9 +58,6 @@
             <Grid>
                 <StackPanel Orientation="Vertical" HorizontalAlignment="Center" VerticalAlignment="Center">
                     <gifLib:GifImage x:Name="element" Width="100" Height="20" HorizontalAlignment="Center"/>
-                    <TextBlock Text="{Binding BusyContent}" Width="200" Height="50" TextAlignment="Center" TextWrapping="Wrap" 
-                                       HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="14" Foreground="#2196f3" 
-                                       FontFamily="Microsoft YaHei" Margin="0,5,0,0"/>
                 </StackPanel>
             </Grid>
         </Grid>
