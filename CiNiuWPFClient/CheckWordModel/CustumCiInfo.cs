@@ -39,5 +39,15 @@ namespace CheckWordModel
                 RaisePropertyChanged("DiscriptionInfo");
             }
         }
+        private bool isSelected = false;
+        public bool IsSelected
+        {
+            get { return isSelected; }
+            set
+            {
+                isSelected = value;
+                RaisePropertyChanged("IsSelected");
+            }
+        }
     }
 }

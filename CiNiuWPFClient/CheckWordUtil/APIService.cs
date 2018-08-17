@@ -305,5 +305,27 @@ namespace CheckWordUtil
             }
             return result;
         }
+        /// <summary>
+        /// 获取用户设置
+        /// </summary>
+        /// <param name="token"></param>
+        /// <returns></returns>
+        public List<CustumCiInfo> GetUserCustumCiByToken(string token)
+        {
+            List<CustumCiInfo> result = new List<CustumCiInfo>();
+            try
+            {
+                result.Add(new CustumCiInfo { ID = "111", Name = "健身", DiscriptionInfo = "中医调理康复和手术。但不推荐手术治疗" });
+                result.Add(new CustumCiInfo { ID = "222", Name = "最舒服", DiscriptionInfo = "中医调理康复和手术。但不推荐手术治疗、康复和" });
+                result.Add(new CustumCiInfo { ID = "333", Name = "顶级享受", DiscriptionInfo = "中医调理康复和手术。但不推荐手术治疗" });
+                result.Add(new CustumCiInfo { ID = "444", Name = "促进骺软骨组", DiscriptionInfo = "中医调理康复和手术。但不推荐手术治疗" });
+            }
+            catch (Exception ex)
+            {
+                WPFClientCheckWordUtil.Log.TextLog.SaveError(ex.Message);
+                result = null;
+            }
+            return result;
+        }
     }
 }

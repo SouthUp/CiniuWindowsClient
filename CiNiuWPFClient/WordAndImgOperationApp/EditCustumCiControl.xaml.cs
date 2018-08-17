@@ -44,19 +44,73 @@ namespace WordAndImgOperationApp
         }
         private async void InitData()
         {
-            Task task = new Task(() => {
+            Task<List<CustumCiInfo>> task = new Task<List<CustumCiInfo>>(() => {
                 EventAggregatorRepository.EventAggregator.GetEvent<SettingWindowBusyIndicatorEvent>().Publish(new AppBusyIndicator { IsBusy = true });
+                List<CustumCiInfo> list = new List<CustumCiInfo>();
                 try
                 {
-                    
+                    APIService serviceApi = new APIService();
+                    list = serviceApi.GetUserCustumCiByToken(UtilSystemVar.UserToken);
                 }
                 catch (Exception ex)
                 { }
                 System.Threading.Thread.Sleep(500);
                 EventAggregatorRepository.EventAggregator.GetEvent<SettingWindowBusyIndicatorEvent>().Publish(new AppBusyIndicator { IsBusy = false });
+                return list;
             });
             task.Start();
             await task;
+            viewModel.CustumCiInfoList = new System.Collections.ObjectModel.ObservableCollection<CustumCiInfo>(task.Result.ToList());
+        }
+
+        private void DeleteBtn_Click(object sender, RoutedEventArgs e)
+        {
+            var btn = sender as Button;
+            if (btn != null)
+            {
+                var custumCiInfo = btn.Tag as CustumCiInfo;
+                custumCiInfo.IsSelected = true;
+                foreach (var item in viewModel.CustumCiInfoList)
+                {
+                    if (item.ID != custumCiInfo.ID)
+                    {
+                        item.IsSelected = false;
+                    }
+                }
+            }
+        }
+        private void EditBtn_Click(object sender, RoutedEventArgs e)
+        {
+            var btn = sender as Button;
+            if (btn != null)
+            {
+                var custumCiInfo = btn.Tag as CustumCiInfo;
+                custumCiInfo.IsSelected = true;
+                foreach (var item in viewModel.CustumCiInfoList)
+                {
+                    if (item.ID != custumCiInfo.ID)
+                    {
+                        item.IsSelected = false;
+                    }
+                }
+            }
+        }
+
+        private void Grid_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            var grid = sender as Grid;
+            if (grid != null)
+            {
+                var custumCiInfo = grid.Tag as CustumCiInfo;
+                custumCiInfo.IsSelected = true;
+                foreach (var item in viewModel.CustumCiInfoList)
+                {
+                    if (item.ID != custumCiInfo.ID)
+                    {
+                        item.IsSelected = false;
+                    }
+                }
+            }
         }
     }
 }

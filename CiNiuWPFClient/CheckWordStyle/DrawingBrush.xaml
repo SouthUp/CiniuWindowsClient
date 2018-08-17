@@ -1185,18 +1185,112 @@
                 </DrawingGroup.ClipGeometry>
                 <GeometryDrawing>
                     <GeometryDrawing.Brush>
-                        <SolidColorBrush Color="#FF673AB7" Opacity="0.039" />
-                    </GeometryDrawing.Brush>
-                    <GeometryDrawing.Geometry>
-                        <PathGeometry FillRule="EvenOdd" Figures="M0,0L24,0 24,24 0,24 0,0z" />
-                    </GeometryDrawing.Geometry>
-                </GeometryDrawing>
-                <GeometryDrawing>
-                    <GeometryDrawing.Brush>
-                        <SolidColorBrush Color="#FF000000" Opacity="0.38" />
+                        <SolidColorBrush Color="#160536" Opacity="0.87" />
                     </GeometryDrawing.Brush>
                     <GeometryDrawing.Geometry>
                         <PathGeometry FillRule="EvenOdd" Figures="M6.83,11L10.41,7.41 9,6 3,12 9,18 10.41,16.59 6.83,13 21,13 21,11" />
+                    </GeometryDrawing.Geometry>
+                </GeometryDrawing>
+            </DrawingGroup>
+        </DrawingBrush.Drawing>
+    </DrawingBrush>
+    <DrawingBrush x:Key="WhiteDeleteBGLogo" Stretch="None">
+        <DrawingBrush.Drawing>
+            <DrawingGroup>
+                <DrawingGroup.ClipGeometry>
+                    <RectangleGeometry Rect="0,0,16,16" />
+                </DrawingGroup.ClipGeometry>
+                <GeometryDrawing>
+                    <GeometryDrawing.Brush>
+                        <SolidColorBrush Color="White"/>
+                    </GeometryDrawing.Brush>
+                    <GeometryDrawing.Geometry>
+                        <PathGeometry FillRule="EvenOdd" Figures="M4.023,12.492C4.023,13.249,4.647,13.869,5.41,13.869L10.957,13.869C11.719,13.869,12.343,13.249,12.343,12.492L12.343,4.234 4.023,4.234 4.023,12.492z M13.037,2.17L10.61,2.17 9.917,1.482 6.45,1.482 5.757,2.17 3.33,2.17 3.33,3.546 13.037,3.546 13.037,2.17z" />
+                    </GeometryDrawing.Geometry>
+                </GeometryDrawing>
+            </DrawingGroup>
+        </DrawingBrush.Drawing>
+    </DrawingBrush>
+    <DrawingBrush x:Key="DeleteBGLogo" Stretch="None">
+        <DrawingBrush.Drawing>
+            <DrawingGroup>
+                <DrawingGroup.ClipGeometry>
+                    <RectangleGeometry Rect="0,0,16,16" />
+                </DrawingGroup.ClipGeometry>
+                <GeometryDrawing>
+                    <GeometryDrawing.Brush>
+                        <SolidColorBrush Color="#FF160536" Opacity="0.38" />
+                    </GeometryDrawing.Brush>
+                    <GeometryDrawing.Geometry>
+                        <PathGeometry FillRule="EvenOdd" Figures="M4.023,12.492C4.023,13.249,4.647,13.869,5.41,13.869L10.957,13.869C11.719,13.869,12.343,13.249,12.343,12.492L12.343,4.234 4.023,4.234 4.023,12.492z M13.037,2.17L10.61,2.17 9.917,1.482 6.45,1.482 5.757,2.17 3.33,2.17 3.33,3.546 13.037,3.546 13.037,2.17z" />
+                    </GeometryDrawing.Geometry>
+                </GeometryDrawing>
+            </DrawingGroup>
+        </DrawingBrush.Drawing>
+    </DrawingBrush>
+    <DrawingBrush x:Key="HoverDeleteBGLogo" Stretch="None">
+        <DrawingBrush.Drawing>
+            <DrawingGroup>
+                <DrawingGroup.ClipGeometry>
+                    <RectangleGeometry Rect="0,0,16,16" />
+                </DrawingGroup.ClipGeometry>
+                <GeometryDrawing>
+                    <GeometryDrawing.Brush>
+                        <SolidColorBrush Color="#FF160536" Opacity="0.54" />
+                    </GeometryDrawing.Brush>
+                    <GeometryDrawing.Geometry>
+                        <PathGeometry FillRule="EvenOdd" Figures="M4.023,12.492C4.023,13.249,4.647,13.869,5.41,13.869L10.957,13.869C11.719,13.869,12.343,13.249,12.343,12.492L12.343,4.234 4.023,4.234 4.023,12.492z M13.037,2.17L10.61,2.17 9.917,1.482 6.45,1.482 5.757,2.17 3.33,2.17 3.33,3.546 13.037,3.546 13.037,2.17z" />
+                    </GeometryDrawing.Geometry>
+                </GeometryDrawing>
+            </DrawingGroup>
+        </DrawingBrush.Drawing>
+    </DrawingBrush>
+    <DrawingBrush x:Key="WhiteEditBGLogo" Stretch="None">
+        <DrawingBrush.Drawing>
+            <DrawingGroup>
+                <DrawingGroup.ClipGeometry>
+                    <RectangleGeometry Rect="0,0,16,16" />
+                </DrawingGroup.ClipGeometry>
+                <GeometryDrawing>
+                    <GeometryDrawing.Brush>
+                        <SolidColorBrush Color="White"/>
+                    </GeometryDrawing.Brush>
+                    <GeometryDrawing.Geometry>
+                        <PathGeometry FillRule="EvenOdd" Figures="M1.329,11.4L1.329,13.968 3.897,13.968 11.472,6.394 8.903,3.826 1.329,11.4z M13.458,4.408A0.683,0.683,0,0,0,13.458,3.442L11.855,1.84A0.68,0.68,0,0,0,10.89,1.84L9.636,3.093 12.205,5.661 13.458,4.408z" />
+                    </GeometryDrawing.Geometry>
+                </GeometryDrawing>
+            </DrawingGroup>
+        </DrawingBrush.Drawing>
+    </DrawingBrush>
+    <DrawingBrush x:Key="EditBGLogo" Stretch="None">
+        <DrawingBrush.Drawing>
+            <DrawingGroup>
+                <DrawingGroup.ClipGeometry>
+                    <RectangleGeometry Rect="0,0,16,16" />
+                </DrawingGroup.ClipGeometry>
+                <GeometryDrawing>
+                    <GeometryDrawing.Brush>
+                        <SolidColorBrush Color="#FF160536" Opacity="0.38" />
+                    </GeometryDrawing.Brush>
+                    <GeometryDrawing.Geometry>
+                        <PathGeometry FillRule="EvenOdd" Figures="M1.329,11.4L1.329,13.968 3.897,13.968 11.472,6.394 8.903,3.826 1.329,11.4z M13.458,4.408A0.683,0.683,0,0,0,13.458,3.442L11.855,1.84A0.68,0.68,0,0,0,10.89,1.84L9.636,3.093 12.205,5.661 13.458,4.408z" />
+                    </GeometryDrawing.Geometry>
+                </GeometryDrawing>
+            </DrawingGroup>
+        </DrawingBrush.Drawing>
+    </DrawingBrush>
+    <DrawingBrush x:Key="HoverEditBGLogo" Stretch="None">
+        <DrawingBrush.Drawing>
+            <DrawingGroup>
+                <DrawingGroup.ClipGeometry>
+                    <RectangleGeometry Rect="0,0,16,16" />
+                </DrawingGroup.ClipGeometry>
+                <GeometryDrawing>
+                    <GeometryDrawing.Brush>
+                        <SolidColorBrush Color="#FF160536" Opacity="0.54" />
+                    </GeometryDrawing.Brush>
+                    <GeometryDrawing.Geometry>
+                        <PathGeometry FillRule="EvenOdd" Figures="M1.329,11.4L1.329,13.968 3.897,13.968 11.472,6.394 8.903,3.826 1.329,11.4z M13.458,4.408A0.683,0.683,0,0,0,13.458,3.442L11.855,1.84A0.68,0.68,0,0,0,10.89,1.84L9.636,3.093 12.205,5.661 13.458,4.408z" />
                     </GeometryDrawing.Geometry>
                 </GeometryDrawing>
             </DrawingGroup>

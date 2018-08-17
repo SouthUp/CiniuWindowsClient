@@ -48,6 +48,7 @@
   <ItemGroup>
     <Compile Include="CategorySelectInfo.cs" />
     <Compile Include="Communication\CommonExchangeInfo.cs" />
+    <Compile Include="CustumCiInfo.cs" />
     <Compile Include="HistoryCheckInfo.cs" />
     <Compile Include="ImgGeneralInfo.cs" />
     <Compile Include="MyFolderDataViewModel.cs" />

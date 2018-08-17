@@ -4,8 +4,12 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:WordAndImgOperationApp"
+             xmlns:control="clr-namespace:CheckWordControl;assembly=CheckWordControl"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800" Loaded="UserControl_Loaded">
+    <UserControl.Resources>
+        <control:BoolToVisibilityConvert x:Key="BoolToVisibilityConvert"></control:BoolToVisibilityConvert>
+    </UserControl.Resources>
     <Grid Height="520" Width="638" Background="Transparent">
         <Grid>
             <Grid.RowDefinitions>
@@ -23,8 +27,83 @@
                         Style="{StaticResource ReturnBackBtnButtonStyle}"
                         Click="ReturnBtn_Click"></Button>
             </Grid>
-            <Grid Grid.Row="1">
-
+            <Grid Grid.Row="1" Height="400" Width="567" 
+                  HorizontalAlignment="Center" VerticalAlignment="Top">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="43"></RowDefinition>
+                    <RowDefinition Height="*"></RowDefinition>
+                </Grid.RowDefinitions>
+                <Grid Grid.Row="0" Height="28" VerticalAlignment="Bottom">
+                    <Border BorderThickness="0" Background="#160536" Opacity="0.04"></Border>
+                    <TextBlock Text="词条" Foreground="#160536" Opacity="0.38" FontSize="12"
+                               Style="{StaticResource CommonLeftTextBlock}" Margin="8,0,0,0"></TextBlock>
+                    <TextBlock Text="解读" Foreground="#160536" Opacity="0.38" FontSize="12"
+                               Style="{StaticResource CommonLeftTextBlock}" Margin="153,0,0,0"></TextBlock>
+                </Grid>
+                <Grid Grid.Row="1" Margin="0,4,0,0">
+                    <ListBox x:Name="listBox" Grid.Row="1" BorderThickness="0" Background="Transparent"
+                         ItemsSource="{Binding CustumCiInfoList}"
+                         ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+                         ScrollViewer.VerticalScrollBarVisibility="Auto" SelectedIndex="-1"
+                         ItemContainerStyle="{StaticResource CustumCiListBoxItemContainerStyle}"
+                         VerticalAlignment="Top" HorizontalAlignment="Stretch"
+                         ScrollViewer.CanContentScroll="True">
+                        <ListBox.ItemTemplate>
+                            <DataTemplate>
+                                <Grid Height="28" Width="{Binding ElementName=listBox,Path=ActualWidth}"
+                                      Tag="{Binding}" MouseLeftButtonDown="Grid_MouseLeftButtonDown">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="153"></ColumnDefinition>
+                                        <ColumnDefinition Width="315"></ColumnDefinition>
+                                        <ColumnDefinition Width="*"></ColumnDefinition>
+                                    </Grid.ColumnDefinitions>
+                                    <Grid Grid.Column="0" Background="Transparent">
+                                        <TextBlock Text="{Binding Name}" 
+                                               Foreground="#160536" FontSize="13" Opacity="0.54"
+                                               Style="{StaticResource CommonLeftTextBlock}" Margin="8,0,0,0"
+                                               MaxWidth="140" TextTrimming="CharacterEllipsis">
+                                        </TextBlock>
+                                        <TextBlock Text="{Binding Name}" 
+                                               Foreground="White" FontSize="13"
+                                               Style="{StaticResource CommonLeftTextBlock}" Margin="8,0,0,0"
+                                               MaxWidth="140" TextTrimming="CharacterEllipsis"
+                                               Visibility="{Binding IsSelected,Converter={StaticResource BoolToVisibilityConvert}}">
+                                        </TextBlock>
+                                    </Grid>
+                                    <Grid Grid.Column="1" Background="Transparent">
+                                        <TextBlock Text="{Binding DiscriptionInfo}" 
+                                               Foreground="#160536" FontSize="13" Opacity="0.54"
+                                               Style="{StaticResource CommonLeftTextBlock}" 
+                                               MaxWidth="315" TextTrimming="CharacterEllipsis">
+                                        </TextBlock>
+                                        <TextBlock Text="{Binding DiscriptionInfo}" 
+                                               Foreground="White" FontSize="13" 
+                                               Style="{StaticResource CommonLeftTextBlock}" 
+                                               MaxWidth="315" TextTrimming="CharacterEllipsis"
+                                               Visibility="{Binding IsSelected,Converter={StaticResource BoolToVisibilityConvert}}">
+                                        </TextBlock>
+                                    </Grid>
+                                    <Grid Grid.Column="2" Background="Transparent">
+                                        <StackPanel Orientation="Horizontal" 
+                                                HorizontalAlignment="Center" VerticalAlignment="Center">
+                                            <Button Width="16" Height="16" HorizontalAlignment="Left"
+                                                Style="{StaticResource DeleteBtnButtonStyle}" ToolTip="删除"
+                                                Tag="{Binding}" Click="DeleteBtn_Click"></Button>
+                                            <Button Width="16" Height="16" HorizontalAlignment="Left" Margin="16,0,0,0"
+                                                Style="{StaticResource EditBtnButtonStyle}" ToolTip="编辑"
+                                                Tag="{Binding}" Click="EditBtn_Click"></Button>
+                                        </StackPanel>
+                                    </Grid>
+                                </Grid>
+                            </DataTemplate>
+                        </ListBox.ItemTemplate>
+                        <ListBox.ItemsPanel>
+                            <ItemsPanelTemplate>
+                                <WrapPanel Orientation="Vertical"/>
+                            </ItemsPanelTemplate>
+                        </ListBox.ItemsPanel>
+                    </ListBox>
+                </Grid>
             </Grid>
         </Grid>
         <Grid x:Name="ContentGrid" Visibility="{Binding ContentGridVisibility}">

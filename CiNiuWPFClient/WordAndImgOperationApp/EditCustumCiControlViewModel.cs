@@ -24,5 +24,15 @@ namespace WordAndImgOperationApp
                 RaisePropertyChanged("ContentGridVisibility");
             }
         }
+        private ObservableCollection<CustumCiInfo> _custumCiInfoList = new ObservableCollection<CustumCiInfo>();
+        public ObservableCollection<CustumCiInfo> CustumCiInfoList
+        {
+            get { return _custumCiInfoList; }
+            set
+            {
+                _custumCiInfoList = value;
+                RaisePropertyChanged("CustumCiInfoList");
+            }
+        }
     }
 }
