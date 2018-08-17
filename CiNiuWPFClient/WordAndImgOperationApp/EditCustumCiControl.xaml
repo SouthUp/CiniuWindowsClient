@@ -15,13 +15,12 @@
             <Grid Grid.Row="0">
                 <StackPanel Orientation="Horizontal" Margin="40,0,0,0"
                             HorizontalAlignment="Left" VerticalAlignment="Bottom">
-                    <Border BorderThickness="2" Width="2" Height="18" 
-                        BorderBrush="#160536" Opacity="0.54"></Border>
-                    <TextBlock Text="自建词条词库" Foreground="#160536" Opacity="0.87" FontSize="16"
-                           Style="{StaticResource CommonLeftTextBlock}" Margin="16,0,0,0"></TextBlock>
+                    <TextBlock Text="自建词条库" Foreground="#160536" Opacity="0.87" FontSize="16"
+                           Style="{StaticResource CommonLeftTextBlock}"></TextBlock>
                 </StackPanel>
-                <Button Width="18" Height="12" Margin="40,0,0,35" 
+                <Button Width="24" Height="24" Margin="40,0,0,25" 
                         HorizontalAlignment="Left" VerticalAlignment="Bottom"
+                        Style="{StaticResource ReturnBackBtnButtonStyle}"
                         Click="ReturnBtn_Click"></Button>
             </Grid>
             <Grid Grid.Row="1">

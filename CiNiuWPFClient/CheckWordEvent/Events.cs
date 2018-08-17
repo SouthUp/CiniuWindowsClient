@@ -100,4 +100,11 @@ namespace CheckWordEvent
     {
 
     }
+    /// <summary>
+    ///  自建词条返回事件
+    /// </summary>
+    public class ReturnToCustumCiViewEvent : PubSubEvent<bool>
+    {
+
+    }
 }

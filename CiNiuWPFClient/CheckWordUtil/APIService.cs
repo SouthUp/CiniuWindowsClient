@@ -240,7 +240,7 @@ namespace CheckWordUtil
             MySettingInfo result = null;
             try
             {
-                result = new MySettingInfo { IsCheckPicInDucument = true, IsUseCustumCi = false };
+                result = new MySettingInfo { IsCheckPicInDucument = true, IsUseCustumCi = true };
                 result.CategoryInfos.Add(new CategorySelectInfo { CheckedState = true, Name = "通用类目", Code = "111" });
                 result.CategoryInfos.Add(new CategorySelectInfo { CheckedState = true, Name = "母婴", Code = "222" });
                 result.CategoryInfos.Add(new CategorySelectInfo { CheckedState = true, Name = "房地产", Code = "333" });

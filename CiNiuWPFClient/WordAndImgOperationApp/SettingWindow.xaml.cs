@@ -84,6 +84,11 @@ namespace WordAndImgOperationApp
                         AboutControl aboutControl = new AboutControl();
                         ContentGrid.Children.Add(aboutControl);
                     }
+                    else if (typeName == "CustumCiControl")
+                    {
+                        CustumCiControl custumCiControl = new CustumCiControl();
+                        ContentGrid.Children.Add(custumCiControl);
+                    }
                 }
                 catch (Exception ex)
                 { }

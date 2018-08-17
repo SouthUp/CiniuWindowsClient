@@ -131,6 +131,14 @@
       <DependentUpon>AboutControl.xaml</DependentUpon>
     </Compile>
     <Compile Include="AboutControlViewModel.cs" />
+    <Compile Include="CustumCiControl.xaml.cs">
+      <DependentUpon>CustumCiControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="CustumCiControlViewModel.cs" />
+    <Compile Include="EditCustumCiControl.xaml.cs">
+      <DependentUpon>EditCustumCiControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="EditCustumCiControlViewModel.cs" />
     <Compile Include="FindPsw.xaml.cs">
       <DependentUpon>FindPsw.xaml</DependentUpon>
     </Compile>
@@ -175,6 +183,14 @@
     </Compile>
     <Compile Include="VersionControlViewModel.cs" />
     <Page Include="AboutControl.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="CustumCiControl.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="EditCustumCiControl.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>

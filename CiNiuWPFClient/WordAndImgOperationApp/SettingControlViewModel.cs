@@ -24,7 +24,7 @@ namespace WordAndImgOperationApp
                 RaisePropertyChanged("IsCheckPicInDucument");
             }
         }
-        private bool _isUseCustumCi = false;
+        private bool _isUseCustumCi = true;
         public bool IsUseCustumCi
         {
             get { return _isUseCustumCi; }
