@@ -241,15 +241,34 @@ namespace CheckWordUtil
             try
             {
                 result = new MySettingInfo { IsCheckPicInDucument = true, IsUseCustumCi = true };
-                result.CategoryInfos.Add(new CategorySelectInfo { CheckedState = true, Name = "通用类目", Code = "111" });
-                result.CategoryInfos.Add(new CategorySelectInfo { CheckedState = true, Name = "母婴", Code = "222" });
-                result.CategoryInfos.Add(new CategorySelectInfo { CheckedState = true, Name = "房地产", Code = "333" });
-                result.CategoryInfos.Add(new CategorySelectInfo { CheckedState = true, Name = "美妆", Code = "444" });
-                result.CategoryInfos.Add(new CategorySelectInfo { CheckedState = true, Name = "食品", Code = "555" });
-                result.CategoryInfos.Add(new CategorySelectInfo { CheckedState = true, Name = "医疗", Code = "666" });
-                result.CategoryInfos.Add(new CategorySelectInfo { CheckedState = true, Name = "教育", Code = "777" });
-                result.CategoryInfos.Add(new CategorySelectInfo { CheckedState = true, Name = "保健品", Code = "888" });
-                result.CategoryInfos.Add(new CategorySelectInfo { CheckedState = true, Name = "其它", Code = "999" });
+                //result.CategoryInfos.Add(new CategorySelectInfo { CheckedState = true, Name = "通用类目", Code = "111" });
+                //result.CategoryInfos.Add(new CategorySelectInfo { CheckedState = true, Name = "母婴", Code = "222" });
+                //result.CategoryInfos.Add(new CategorySelectInfo { CheckedState = true, Name = "房地产", Code = "333" });
+                //result.CategoryInfos.Add(new CategorySelectInfo { CheckedState = true, Name = "美妆", Code = "444" });
+                //result.CategoryInfos.Add(new CategorySelectInfo { CheckedState = true, Name = "食品", Code = "555" });
+                //result.CategoryInfos.Add(new CategorySelectInfo { CheckedState = true, Name = "医疗", Code = "666" });
+                //result.CategoryInfos.Add(new CategorySelectInfo { CheckedState = true, Name = "教育", Code = "777" });
+                //result.CategoryInfos.Add(new CategorySelectInfo { CheckedState = true, Name = "保健品", Code = "888" });
+                //result.CategoryInfos.Add(new CategorySelectInfo { CheckedState = true, Name = "其它", Code = "999" });
+                string apiName = "setting";
+                string resultStr = HttpHelper.HttpUrlGet(apiName, "Get", token);
+                CommonResponse resultInfo = JsonConvert.DeserializeObject<CommonResponse>(resultStr);
+                if (resultInfo != null && resultInfo.state)
+                {
+                    MySettingModel mySettingModel = JsonConvert.DeserializeObject<MySettingModel>(resultInfo.result);
+                    if (mySettingModel != null)
+                    {
+                        result.IsCheckPicInDucument = mySettingModel.imageActive;
+                        result.IsUseCustumCi = mySettingModel.customActive;
+                        if(mySettingModel.types !=null)
+                        {
+                            foreach (var item in mySettingModel.types)
+                            {
+                                result.CategoryInfos.Add(new CategorySelectInfo { CheckedState = item.selected, Name = item.typeName, Code = item.typeId });
+                            }
+                        }
+                    }
+                }
             }
             catch (Exception ex)
             {
@@ -267,7 +286,20 @@ namespace CheckWordUtil
         {
             try
             {
-                
+                string apiName = "setting";
+                UpdateSettingRequest settingRequest = new UpdateSettingRequest();
+                settingRequest.notSelectedType = new List<string>();
+                settingRequest.imageActive = mySetting.IsCheckPicInDucument;
+                settingRequest.customActive = mySetting.IsUseCustumCi;
+                foreach (var item in mySetting.CategoryInfos)
+                {
+                    if (!item.CheckedState)
+                    {
+                        settingRequest.notSelectedType.Add(item.Code);
+                    }
+                }
+                string json = JsonConvert.SerializeObject(settingRequest);
+                string resultStr = HttpHelper.HttpUrlSend(apiName, "PATCH", json, token);
             }
             catch (Exception ex)
             {
@@ -328,7 +360,7 @@ namespace CheckWordUtil
             bool result = true;
             try
             {
-                string apiName = "words/word/:" + code;
+                string apiName = "words/word/" + code;
                 string resultStr = HttpHelper.HttpUrlGet(apiName, "DELETE", token);
                 CommonResponse resultInfo = JsonConvert.DeserializeObject<CommonResponse>(resultStr);
                 if (resultInfo != null)
@@ -353,8 +385,8 @@ namespace CheckWordUtil
             bool result = true;
             try
             {
-                string apiName = "words/word/:" + code;
-                CustumWordRequest custumWordRequest = new CustumWordRequest();
+                string apiName = "words/word/" + code;
+                UpdateCustumWordRequest custumWordRequest = new UpdateCustumWordRequest();
                 custumWordRequest.name = name;
                 custumWordRequest.comment = discription;
                 string json = JsonConvert.SerializeObject(custumWordRequest);
@@ -382,10 +414,28 @@ namespace CheckWordUtil
             List<CustumCiInfo> result = new List<CustumCiInfo>();
             try
             {
-                result.Add(new CustumCiInfo { ID = "111", Name = "健身", DiscriptionInfo = "中医调理康复和手术。但不推荐手术治疗" });
-                result.Add(new CustumCiInfo { ID = "222", Name = "最舒服", DiscriptionInfo = "中医调理康复和手术。但不推荐手术治疗、康复和" });
-                result.Add(new CustumCiInfo { ID = "333", Name = "顶级享受", DiscriptionInfo = "中医调理康复和手术。但不推荐手术治疗" });
-                result.Add(new CustumCiInfo { ID = "444", Name = "促进骺软骨组", DiscriptionInfo = "中医调理康复和手术。但不推荐手术治疗" });
+                //result.Add(new CustumCiInfo { ID = "111", Name = "健身", DiscriptionInfo = "中医调理康复和手术。但不推荐手术治疗" });
+                //result.Add(new CustumCiInfo { ID = "222", Name = "最舒服", DiscriptionInfo = "中医调理康复和手术。但不推荐手术治疗、康复和" });
+                //result.Add(new CustumCiInfo { ID = "333", Name = "顶级享受", DiscriptionInfo = "中医调理康复和手术。但不推荐手术治疗" });
+                //result.Add(new CustumCiInfo { ID = "444", Name = "促进骺软骨组", DiscriptionInfo = "中医调理康复和手术。但不推荐手术治疗" });
+                string apiName = "words/word/custom";
+                string resultStr = HttpHelper.HttpUrlGet(apiName, "GET", token);
+                CommonResponse resultInfo = JsonConvert.DeserializeObject<CommonResponse>(resultStr);
+                if (resultInfo != null && resultInfo.state)
+                {
+                    List<CustomWordModel> listDBWords = JsonConvert.DeserializeObject<List<CustomWordModel>>(resultInfo.result);
+                    if (listDBWords != null)
+                    {
+                        foreach (var item in listDBWords)
+                        {
+                            CustumCiInfo word = new CustumCiInfo();
+                            word.ID = item.id;
+                            word.Name = item.name;
+                            word.DiscriptionInfo = item.comment;
+                            result.Add(word);
+                        }
+                    }
+                }
             }
             catch (Exception ex)
             {

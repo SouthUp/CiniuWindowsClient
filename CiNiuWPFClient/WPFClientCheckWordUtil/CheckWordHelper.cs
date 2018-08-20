@@ -26,48 +26,57 @@ namespace WPFClientCheckWordUtil
             WordModels = new List<WordModel>();
             try
             {
-                #region 假数据
-                WordModels.Add(new WordModel { ID = "1", Name = "第一", IsCustumCi = true });
-                WordModels.Add(new WordModel { ID = "2", Name = "最", IsCustumCi = false });
-                WordModels.Add(new WordModel { ID = "3", Name = "冠军", IsCustumCi = false });
-                WordModels.Add(new WordModel { ID = "4", Name = "防晒", IsCustumCi = true });
-                #endregion
-                //string apiName = "word";
-                //string resultStr = HttpHelper.HttpUrlSend(apiName, "GET", token);
-                //GetAllWordsInfoResponse resultInfo = JsonConvert.DeserializeObject<GetAllWordsInfoResponse>(resultStr);
-                //var listDBWords = resultInfo.data;
-                //if (listDBWords != null)
-                //{
-                //    foreach (var item in listDBWords)
-                //    {
-                //        WordModel word = new WordModel();
-                //        word.ID = item.code;
-                //        word.Name = item.name;
-                //        word.IsCustumCi = item.iscustumci;
-                //        WordModels.Add(word);
-                //    }
-                //}
+                //#region 假数据
+                //WordModels.Add(new WordModel { ID = "1", Name = "第一", IsCustumCi = true });
+                //WordModels.Add(new WordModel { ID = "2", Name = "最", IsCustumCi = false });
+                //WordModels.Add(new WordModel { ID = "3", Name = "冠军", IsCustumCi = false });
+                //WordModels.Add(new WordModel { ID = "4", Name = "防晒", IsCustumCi = true });
+                //#endregion
+                string apiName = "words/word";
+                string resultStr = HttpHelper.HttpUrlSend(apiName, "GET", token);
+                CommonResponse resultInfo = JsonConvert.DeserializeObject<CommonResponse>(resultStr);
+                if (resultInfo != null && resultInfo.state)
+                {
+                    List<DBWordModel> listDBWords = JsonConvert.DeserializeObject<List<DBWordModel>>(resultInfo.result);
+                    if (listDBWords != null)
+                    {
+                        foreach (var item in listDBWords)
+                        {
+                            WordModel word = new WordModel();
+                            word.ID = item.id;
+                            word.Name = item.name;
+                            WordModels.Add(word);
+                        }
+                    }
+                    try
+                    {
+                        CommonExchangeInfo commonExchangeInfo = new CommonExchangeInfo();
+                        commonExchangeInfo.Code = "HideNotifyMessageView";
+                        commonExchangeInfo.Data = "4003";
+                        string jsonData = JsonConvert.SerializeObject(commonExchangeInfo); //序列化
+                        WPFClientCheckWordUtilWin32Helper.SendMessage("WordAndImgOperationApp", jsonData);
+                    }
+                    catch
+                    { }
+                }
+                else
+                {
+                    try
+                    {
+                        CommonExchangeInfo commonExchangeInfo = new CommonExchangeInfo();
+                        commonExchangeInfo.Code = "ShowNotifyMessageView";
+                        commonExchangeInfo.Data = "4003";
+                        string jsonData = JsonConvert.SerializeObject(commonExchangeInfo); //序列化
+                        WPFClientCheckWordUtilWin32Helper.SendMessage("WordAndImgOperationApp", jsonData);
+                    }
+                    catch
+                    { }
+                }
             }
             catch (Exception ex)
             {
                 WPFClientCheckWordUtil.Log.TextLog.SaveError(ex.Message);
                 WordModels = new List<WordModel>();
-            }
-            if (WordModels.Count > 0)
-            {
-                try
-                {
-                    CommonExchangeInfo commonExchangeInfo = new CommonExchangeInfo();
-                    commonExchangeInfo.Code = "HideNotifyMessageView";
-                    commonExchangeInfo.Data = "4003";
-                    string jsonData = JsonConvert.SerializeObject(commonExchangeInfo); //序列化
-                    WPFClientCheckWordUtilWin32Helper.SendMessage("WordAndImgOperationApp", jsonData);
-                }
-                catch
-                { }
-            }
-            else
-            {
                 try
                 {
                     CommonExchangeInfo commonExchangeInfo = new CommonExchangeInfo();

@@ -29,16 +29,6 @@ namespace CheckWordModel
                 RaisePropertyChanged("Name");
             }
         }
-        private bool isCustumCi = false;
-        public bool IsCustumCi
-        {
-            get { return isCustumCi; }
-            set
-            {
-                isCustumCi = value;
-                RaisePropertyChanged("IsCustumCi");
-            }
-        }
         private ObservableCollection<UnChekedDetailWordInfo> _unChekedWordDetailInfos = new ObservableCollection<UnChekedDetailWordInfo>();
         public ObservableCollection<UnChekedDetailWordInfo> UnChekedWordDetailInfos
         {

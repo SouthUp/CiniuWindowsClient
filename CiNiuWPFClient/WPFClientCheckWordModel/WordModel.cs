@@ -10,6 +10,5 @@ namespace WPFClientCheckWordModel
     {
         public string ID { get; set; }
         public string Name { get; set; }
-        public bool IsCustumCi { get; set; }
     }
 }

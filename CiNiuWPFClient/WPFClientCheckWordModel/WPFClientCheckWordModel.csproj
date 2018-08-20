@@ -48,6 +48,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AddInStateInfo.cs" />
+    <Compile Include="CatagryTypesModel.cs" />
     <Compile Include="CheckWordRequestInfo.cs" />
     <Compile Include="CheckWordResponseResult.cs" />
     <Compile Include="CommonNameAndYearModel.cs" />
@@ -55,10 +56,11 @@
     <Compile Include="CommonResponse.cs" />
     <Compile Include="ConsumeRequest.cs" />
     <Compile Include="ConsumeResponse.cs" />
+    <Compile Include="CustomWordModel.cs" />
     <Compile Include="CustumWordRequest.cs" />
     <Compile Include="DBWordModel.cs" />
-    <Compile Include="GetAllWordsInfoResponse.cs" />
     <Compile Include="LoginInOutInfo.cs" />
+    <Compile Include="MySettingModel.cs" />
     <Compile Include="OCRRequest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
@@ -75,6 +77,8 @@
     </Compile>
     <Compile Include="SendYZMRequest.cs" />
     <Compile Include="SendYZMResponse.cs" />
+    <Compile Include="UpdateCustumWordRequest.cs" />
+    <Compile Include="UpdateSettingRequest.cs" />
     <Compile Include="UserFindPswrRequest.cs" />
     <Compile Include="UserFindPswrResponse.cs" />
     <Compile Include="UserLoginInfo.cs" />

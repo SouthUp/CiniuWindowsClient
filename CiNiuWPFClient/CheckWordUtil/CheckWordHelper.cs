@@ -35,7 +35,6 @@ namespace CheckWordUtil
                             UnChekedWordInfo unChekedWordInfo = new UnChekedWordInfo();
                             unChekedWordInfo.ID = item.ID;
                             unChekedWordInfo.Name = item.Name;
-                            unChekedWordInfo.IsCustumCi = item.IsCustumCi;
                             result.Add(unChekedWordInfo);
                         }
                     }
