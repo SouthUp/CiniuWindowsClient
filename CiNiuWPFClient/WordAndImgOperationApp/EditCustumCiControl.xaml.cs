@@ -33,6 +33,7 @@ namespace WordAndImgOperationApp
             InitializeComponent();
             this.DataContext = viewModel;
             EventAggregatorRepository.EventAggregator.GetEvent<DeleteCustumCiEvent>().Subscribe(DeleteCustumCi);
+            EventAggregatorRepository.EventAggregator.GetEvent<UpdateCustumCiEvent>().Subscribe(UpdateCustumCi);
         }
         private void DeleteCustumCi(CustumCiInfo info)
         {
@@ -52,6 +53,33 @@ namespace WordAndImgOperationApp
                     task.Start();
                     //删除数据
                     viewModel.CustumCiInfoList.Remove(info);
+                }
+                catch (Exception ex)
+                { }
+            }));
+        }
+        private void UpdateCustumCi(CustumCiInfo info)
+        {
+            Dispatcher.Invoke(new Action(() => {
+                try
+                {
+                    //调用接口更新数据
+                    Task task = new Task(() => {
+                        try
+                        {
+                            APIService serviceApi = new APIService();
+                            serviceApi.UpdateCustumCiTiaoByToken(UtilSystemVar.UserToken, info.ID, info.DiscriptionInfo);
+                        }
+                        catch (Exception ex)
+                        { }
+                    });
+                    task.Start();
+                    //更新数据
+                    var itemInfo = viewModel.CustumCiInfoList.FirstOrDefault(x => x.ID == info.ID);
+                    if (itemInfo != null)
+                    {
+                        itemInfo.DiscriptionInfo = info.DiscriptionInfo;
+                    }
                 }
                 catch (Exception ex)
                 { }
@@ -118,7 +146,7 @@ namespace WordAndImgOperationApp
                         item.IsSelected = false;
                     }
                 }
-                
+                EventAggregatorRepository.EventAggregator.GetEvent<SettingWindowShowEditPopViewEvent>().Publish(custumCiInfo);
             }
         }
 

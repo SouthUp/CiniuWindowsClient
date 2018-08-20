@@ -325,6 +325,25 @@ namespace CheckWordUtil
             return result;
         }
         /// <summary>
+        /// 更新自建词条
+        /// </summary>
+        /// <param name="token"></param>
+        /// <returns></returns>
+        public bool UpdateCustumCiTiaoByToken(string token, string code,string discription)
+        {
+            bool result = true;
+            try
+            {
+
+            }
+            catch (Exception ex)
+            {
+                WPFClientCheckWordUtil.Log.TextLog.SaveError(ex.Message);
+                result = false;
+            }
+            return result;
+        }
+        /// <summary>
         /// 获取用户设置
         /// </summary>
         /// <param name="token"></param>

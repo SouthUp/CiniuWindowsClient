@@ -135,4 +135,18 @@ namespace CheckWordEvent
     {
 
     }
+    /// <summary>
+    ///  设置中的PopGrid编辑事件
+    /// </summary>
+    public class SettingWindowShowEditPopViewEvent : PubSubEvent<CustumCiInfo>
+    {
+
+    }
+    /// <summary>
+    ///  更新自定义词条事件
+    /// </summary>
+    public class UpdateCustumCiEvent : PubSubEvent<CustumCiInfo>
+    {
+
+    }
 }

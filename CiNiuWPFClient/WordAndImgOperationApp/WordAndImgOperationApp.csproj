@@ -139,6 +139,10 @@
       <DependentUpon>DeleteShowTipControl.xaml</DependentUpon>
     </Compile>
     <Compile Include="DeleteShowTipControlViewModel.cs" />
+    <Compile Include="EditCiTiaoControl.xaml.cs">
+      <DependentUpon>EditCiTiaoControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="EditCiTiaoControlViewModel.cs" />
     <Compile Include="EditCustumCiControl.xaml.cs">
       <DependentUpon>EditCustumCiControl.xaml</DependentUpon>
     </Compile>
@@ -199,6 +203,10 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="DeleteShowTipControl.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="EditCiTiaoControl.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
