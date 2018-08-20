@@ -311,8 +311,27 @@ namespace CheckWordUtil
             List<UnChekedDetailWordInfo> result = new List<UnChekedDetailWordInfo>();
             try
             {
-                result.Add(new UnChekedDetailWordInfo() { Discription = "违反广告法第3条违反广告法第3条违反广告法第3条违反广告法第3条违反广告法第3条违反广告法第3条违反广告法第3条", SourceName = "词牛", CategoryName = "，母婴类", DateTime = "，" + DateTime.Now.ToString("yyyy-MM-dd") });
-                result.Add(new UnChekedDetailWordInfo() { Discription = "违反广告法第2条违反广告法第2条违反广告法第2条违反广告法第2条", SourceName = "自建词条", CategoryName = "", DateTime = "，" + DateTime.Now.ToString("yyyy-MM-dd") });
+                //result.Add(new UnChekedDetailWordInfo() { Discription = "违反广告法第3条违反广告法第3条违反广告法第3条违反广告法第3条违反广告法第3条违反广告法第3条违反广告法第3条", SourceName = "词牛", CategoryName = "，母婴类", DateTime = "，" + DateTime.Now.ToString("yyyy-MM-dd") });
+                //result.Add(new UnChekedDetailWordInfo() { Discription = "违反广告法第2条违反广告法第2条违反广告法第2条违反广告法第2条", SourceName = "自建词条", CategoryName = "", DateTime = "，" + DateTime.Now.ToString("yyyy-MM-dd") });
+                string apiName = "words/word/:" + id;
+                string resultStr = HttpHelper.HttpUrlGet(apiName, "GET", token);
+                CommonResponse resultInfo = JsonConvert.DeserializeObject<CommonResponse>(resultStr);
+                if (resultInfo != null && resultInfo.state)
+                {
+                    List<LawWordInfoModel> listLawWordInfos = JsonConvert.DeserializeObject<List<LawWordInfoModel>>(resultInfo.result);
+                    if (listLawWordInfos != null)
+                    {
+                        foreach (var item in listLawWordInfos)
+                        {
+                            UnChekedDetailWordInfo detailInfo = new UnChekedDetailWordInfo();
+                            detailInfo.Discription = item.data;
+                            detailInfo.CategoryName = string.IsNullOrEmpty(item.typeName) ? "" : "，" + item.typeName;
+                            detailInfo.SourceName = item.official ? "词牛" : "自建词条";
+                            detailInfo.DateTime = "，" + DateTime.Now.ToString("yyyy-MM-dd");
+                            result.Add(detailInfo);
+                        }
+                    }
+                }
             }
             catch (Exception ex)
             { }

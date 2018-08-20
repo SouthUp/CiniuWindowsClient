@@ -59,6 +59,7 @@
     <Compile Include="CustomWordModel.cs" />
     <Compile Include="CustumWordRequest.cs" />
     <Compile Include="DBWordModel.cs" />
+    <Compile Include="LawWordInfoModel.cs" />
     <Compile Include="LoginInOutInfo.cs" />
     <Compile Include="MySettingModel.cs" />
     <Compile Include="OCRRequest.cs" />
