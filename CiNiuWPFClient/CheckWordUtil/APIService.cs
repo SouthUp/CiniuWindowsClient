@@ -296,7 +296,20 @@ namespace CheckWordUtil
             bool result = true;
             try
             {
-
+                string apiName = "words/word";
+                CustumWordRequest custumWordRequest = new CustumWordRequest();
+                custumWordRequest.wordId = "";
+                custumWordRequest.name = word;
+                custumWordRequest.comment = discription;
+                custumWordRequest.official = false;
+                custumWordRequest.sensitive = false;
+                string json = JsonConvert.SerializeObject(custumWordRequest);
+                string resultStr = HttpHelper.HttpUrlSend(apiName, "POST", json, token);
+                CommonResponse resultInfo = JsonConvert.DeserializeObject<CommonResponse>(resultStr);
+                if (resultInfo != null)
+                {
+                    result = resultInfo.state;
+                }
             }
             catch (Exception ex)
             {
@@ -315,7 +328,13 @@ namespace CheckWordUtil
             bool result = true;
             try
             {
-
+                string apiName = "words/word/:" + code;
+                string resultStr = HttpHelper.HttpUrlGet(apiName, "DELETE", token);
+                CommonResponse resultInfo = JsonConvert.DeserializeObject<CommonResponse>(resultStr);
+                if (resultInfo != null)
+                {
+                    result = resultInfo.state;
+                }
             }
             catch (Exception ex)
             {
@@ -329,12 +348,22 @@ namespace CheckWordUtil
         /// </summary>
         /// <param name="token"></param>
         /// <returns></returns>
-        public bool UpdateCustumCiTiaoByToken(string token, string code,string discription)
+        public bool UpdateCustumCiTiaoByToken(string token, string code, string name, string discription)
         {
             bool result = true;
             try
             {
-
+                string apiName = "words/word/:" + code;
+                CustumWordRequest custumWordRequest = new CustumWordRequest();
+                custumWordRequest.name = name;
+                custumWordRequest.comment = discription;
+                string json = JsonConvert.SerializeObject(custumWordRequest);
+                string resultStr = HttpHelper.HttpUrlSend(apiName, "PATCH", json, token);
+                CommonResponse resultInfo = JsonConvert.DeserializeObject<CommonResponse>(resultStr);
+                if (resultInfo != null)
+                {
+                    result = resultInfo.state;
+                }
             }
             catch (Exception ex)
             {
@@ -344,7 +373,7 @@ namespace CheckWordUtil
             return result;
         }
         /// <summary>
-        /// 获取用户设置
+        /// 获取自建词条
         /// </summary>
         /// <param name="token"></param>
         /// <returns></returns>

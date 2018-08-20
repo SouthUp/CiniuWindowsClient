@@ -68,7 +68,7 @@ namespace WordAndImgOperationApp
                         try
                         {
                             APIService serviceApi = new APIService();
-                            serviceApi.UpdateCustumCiTiaoByToken(UtilSystemVar.UserToken, info.ID, info.DiscriptionInfo);
+                            serviceApi.UpdateCustumCiTiaoByToken(UtilSystemVar.UserToken, info.ID, info.Name, info.DiscriptionInfo);
                         }
                         catch (Exception ex)
                         { }

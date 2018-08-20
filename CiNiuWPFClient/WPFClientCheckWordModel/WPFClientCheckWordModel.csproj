@@ -55,6 +55,7 @@
     <Compile Include="CommonResponse.cs" />
     <Compile Include="ConsumeRequest.cs" />
     <Compile Include="ConsumeResponse.cs" />
+    <Compile Include="CustumWordRequest.cs" />
     <Compile Include="DBWordModel.cs" />
     <Compile Include="GetAllWordsInfoResponse.cs" />
     <Compile Include="LoginInOutInfo.cs" />
