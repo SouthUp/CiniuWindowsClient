@@ -75,7 +75,7 @@
             <Grid Grid.Column="1">
                 <Border Background="#673AB7" BorderThickness="0" Opacity="0.02"></Border>
                 <Grid x:Name="ContentGrid" Background="Transparent">
-                    
+
                 </Grid>
                 <Button Width="24" Height="24" Click="CloseBtn_Click"
                         Style="{StaticResource CloseBtnButtonStyle}" Focusable="False"
@@ -83,11 +83,14 @@
                 </Button>
             </Grid>
         </Grid>
+        <Grid x:Name="ContentPopGrid" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" 
+              Visibility="{Binding ContentPopGridVisibility}">
+        </Grid>
         <Grid HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Visibility="{Binding BusyWindowVisibility}">
             <Grid Background="White" Opacity="0.75"></Grid>
             <Grid>
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="180"></ColumnDefinition>
+                    <ColumnDefinition Width="0"></ColumnDefinition>
                     <ColumnDefinition Width="*"></ColumnDefinition>
                 </Grid.ColumnDefinitions>
                 <StackPanel Grid.Column="1" Orientation="Vertical" HorizontalAlignment="Center" VerticalAlignment="Center">

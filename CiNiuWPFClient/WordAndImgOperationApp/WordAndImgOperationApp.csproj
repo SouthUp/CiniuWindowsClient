@@ -135,6 +135,10 @@
       <DependentUpon>CustumCiControl.xaml</DependentUpon>
     </Compile>
     <Compile Include="CustumCiControlViewModel.cs" />
+    <Compile Include="DeleteShowTipControl.xaml.cs">
+      <DependentUpon>DeleteShowTipControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="DeleteShowTipControlViewModel.cs" />
     <Compile Include="EditCustumCiControl.xaml.cs">
       <DependentUpon>EditCustumCiControl.xaml</DependentUpon>
     </Compile>
@@ -174,6 +178,10 @@
       <DependentUpon>SettingWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="SettingWindowViewModel.cs" />
+    <Compile Include="ShowCiTiaoDetailControl.xaml.cs">
+      <DependentUpon>ShowCiTiaoDetailControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ShowCiTiaoDetailControlViewModel.cs" />
     <Compile Include="UserInfoControl.xaml.cs">
       <DependentUpon>UserInfoControl.xaml</DependentUpon>
     </Compile>
@@ -187,6 +195,10 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="CustumCiControl.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="DeleteShowTipControl.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -235,6 +247,10 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="SettingWindow.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="ShowCiTiaoDetailControl.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>

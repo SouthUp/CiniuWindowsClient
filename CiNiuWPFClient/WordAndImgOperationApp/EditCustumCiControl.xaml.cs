@@ -32,6 +32,30 @@ namespace WordAndImgOperationApp
         {
             InitializeComponent();
             this.DataContext = viewModel;
+            EventAggregatorRepository.EventAggregator.GetEvent<DeleteCustumCiEvent>().Subscribe(DeleteCustumCi);
+        }
+        private void DeleteCustumCi(CustumCiInfo info)
+        {
+            Dispatcher.Invoke(new Action(() => {
+                try
+                {
+                    //调用接口删除数据
+                    Task task = new Task(() => {
+                        try
+                        {
+                            APIService serviceApi = new APIService();
+                            serviceApi.DeleteCustumCiTiaoByToken(UtilSystemVar.UserToken, info.ID);
+                        }
+                        catch (Exception ex)
+                        { }
+                    });
+                    task.Start();
+                    //删除数据
+                    viewModel.CustumCiInfoList.Remove(info);
+                }
+                catch (Exception ex)
+                { }
+            }));
         }
         private void UserControl_Loaded(object sender, RoutedEventArgs e)
         {
@@ -77,6 +101,7 @@ namespace WordAndImgOperationApp
                         item.IsSelected = false;
                     }
                 }
+                EventAggregatorRepository.EventAggregator.GetEvent<SettingWindowShowDeletePopViewEvent>().Publish(custumCiInfo);
             }
         }
         private void EditBtn_Click(object sender, RoutedEventArgs e)
@@ -93,6 +118,7 @@ namespace WordAndImgOperationApp
                         item.IsSelected = false;
                     }
                 }
+                
             }
         }
 
@@ -110,6 +136,7 @@ namespace WordAndImgOperationApp
                         item.IsSelected = false;
                     }
                 }
+                EventAggregatorRepository.EventAggregator.GetEvent<SettingWindowShowDetailPopViewEvent>().Publish(custumCiInfo);
             }
         }
     }

@@ -107,4 +107,32 @@ namespace CheckWordEvent
     {
 
     }
+    /// <summary>
+    ///  关闭设置中的PopGrid事件
+    /// </summary>
+    public class CloseSettingWindowPopGridViewEvent : PubSubEvent<bool>
+    {
+
+    }
+    /// <summary>
+    ///  设置中的PopGrid删除提示事件
+    /// </summary>
+    public class SettingWindowShowDeletePopViewEvent : PubSubEvent<CustumCiInfo>
+    {
+
+    }
+    /// <summary>
+    ///  删除自定义词条事件
+    /// </summary>
+    public class DeleteCustumCiEvent : PubSubEvent<CustumCiInfo>
+    {
+
+    }
+    /// <summary>
+    ///  设置中的PopGrid查看详情事件
+    /// </summary>
+    public class SettingWindowShowDetailPopViewEvent : PubSubEvent<CustumCiInfo>
+    {
+
+    }
 }

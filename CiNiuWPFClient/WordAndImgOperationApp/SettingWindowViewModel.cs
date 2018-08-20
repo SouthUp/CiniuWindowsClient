@@ -24,5 +24,15 @@ namespace WordAndImgOperationApp
                 RaisePropertyChanged("BusyWindowVisibility");
             }
         }
+        private System.Windows.Visibility _contentGridVisibility = System.Windows.Visibility.Collapsed;
+        public System.Windows.Visibility ContentPopGridVisibility
+        {
+            get { return _contentGridVisibility; }
+            set
+            {
+                _contentGridVisibility = value;
+                RaisePropertyChanged("ContentPopGridVisibility");
+            }
+        }
     }
 }

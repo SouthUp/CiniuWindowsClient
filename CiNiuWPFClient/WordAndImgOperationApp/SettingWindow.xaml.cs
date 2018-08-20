@@ -34,6 +34,9 @@ namespace WordAndImgOperationApp
             this.typeBtn = type;
             EventAggregatorRepository.EventAggregator.GetEvent<SettingWindowBusyIndicatorEvent>().Subscribe(SettingWindowBusyIndicator);
             EventAggregatorRepository.EventAggregator.GetEvent<LoadSettingWindowGridViewEvent>().Subscribe(LoadSettingWindowGridView);
+            EventAggregatorRepository.EventAggregator.GetEvent<CloseSettingWindowPopGridViewEvent>().Subscribe(CloseSettingWindowPopGrid);
+            EventAggregatorRepository.EventAggregator.GetEvent<SettingWindowShowDeletePopViewEvent>().Subscribe(SettingWindowShowDeletePop);
+            EventAggregatorRepository.EventAggregator.GetEvent<SettingWindowShowDetailPopViewEvent>().Subscribe(SettingWindowShowDetailPop);
         }
         private void SettingWindowBusyIndicator(AppBusyIndicator busyindicator)
         {
@@ -52,6 +55,46 @@ namespace WordAndImgOperationApp
             }
             catch (Exception ex)
             { }
+        }
+        private void CloseSettingWindowPopGrid(bool b)
+        {
+            try
+            {
+                Dispatcher.Invoke(new Action(() => {
+                    ContentPopGrid.Children.Clear();
+                    viewModel.ContentPopGridVisibility = Visibility.Collapsed;
+                }));
+            }
+            catch (Exception ex)
+            { }
+        }
+        private void SettingWindowShowDeletePop(CustumCiInfo info)
+        {
+            Dispatcher.Invoke(new Action(() => {
+                try
+                {
+                    ContentPopGrid.Children.Clear();
+                    DeleteShowTipControl deleteShowTipControl = new DeleteShowTipControl(info);
+                    ContentPopGrid.Children.Add(deleteShowTipControl);
+                    viewModel.ContentPopGridVisibility = Visibility.Visible;
+                }
+                catch (Exception ex)
+                { }
+            }));
+        }
+        private void SettingWindowShowDetailPop(CustumCiInfo info)
+        {
+            Dispatcher.Invoke(new Action(() => {
+                try
+                {
+                    ContentPopGrid.Children.Clear();
+                    ShowCiTiaoDetailControl showCiTiaoDetailControl = new ShowCiTiaoDetailControl(info);
+                    ContentPopGrid.Children.Add(showCiTiaoDetailControl);
+                    viewModel.ContentPopGridVisibility = Visibility.Visible;
+                }
+                catch (Exception ex)
+                { }
+            }));
         }
         private void LoadSettingWindowGridView(string typeName)
         {
