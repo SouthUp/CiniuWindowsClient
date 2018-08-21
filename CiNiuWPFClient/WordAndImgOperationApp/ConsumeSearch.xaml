@@ -1,0 +1,24 @@
+﻿<UserControl x:Class="WordAndImgOperationApp.ConsumeSearch"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:WordAndImgOperationApp"
+             xmlns:input="clr-namespace:System.Windows.Input;assembly=PresentationCore"
+             xmlns:control="clr-namespace:CheckWordControl;assembly=CheckWordControl"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="800" Loaded="UserControl_Loaded">
+    <Grid Height="520" Width="638" Background="Transparent">
+        <Button Width="24" Height="24" Click="ReturnBtn_Click" Margin="40,25,0,0" 
+                Style="{StaticResource ReturnBackBtnButtonStyle}" Focusable="False"
+                HorizontalAlignment="Left" VerticalAlignment="Top">
+        </Button>
+        <TextBlock Text="扣点记录" Foreground="#160536" Opacity="0.87" FontSize="18"
+                   Style="{StaticResource CommonLeftTextBlock}" 
+                   Margin="40,49,0,0" VerticalAlignment="Top"></TextBlock>
+        <Grid Height="400" Background="Transparent"
+              VerticalAlignment="Bottom" HorizontalAlignment="Stretch">
+
+        </Grid>
+    </Grid>
+</UserControl>
