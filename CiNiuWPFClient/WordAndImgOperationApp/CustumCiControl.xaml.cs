@@ -121,7 +121,7 @@ namespace WordAndImgOperationApp
         {
             try
             {
-                System.Diagnostics.Process.Start("http://www.ciniuwang.com/files/批量导/批量导入词条模板.xlsx");
+                System.Diagnostics.Process.Start("http://www.ciniuwang.com/files/批量导入词条模板.xlsx");
             }
             catch (Exception ex)
             { }
