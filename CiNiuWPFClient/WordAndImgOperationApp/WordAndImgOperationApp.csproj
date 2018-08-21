@@ -190,6 +190,9 @@
       <DependentUpon>ShowCiTiaoDetailControl.xaml</DependentUpon>
     </Compile>
     <Compile Include="ShowCiTiaoDetailControlViewModel.cs" />
+    <Compile Include="ShowConsumeStandardControl.xaml.cs">
+      <DependentUpon>ShowConsumeStandardControl.xaml</DependentUpon>
+    </Compile>
     <Compile Include="UserInfoControl.xaml.cs">
       <DependentUpon>UserInfoControl.xaml</DependentUpon>
     </Compile>
@@ -267,6 +270,10 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="ShowCiTiaoDetailControl.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="ShowConsumeStandardControl.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>

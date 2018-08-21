@@ -149,4 +149,11 @@ namespace CheckWordEvent
     {
 
     }
+    /// <summary>
+    ///  设置中的PopGrid查看计费标准事件
+    /// </summary>
+    public class SettingWindowShowConsumeStandardControlEvent : PubSubEvent<bool>
+    {
+
+    }
 }

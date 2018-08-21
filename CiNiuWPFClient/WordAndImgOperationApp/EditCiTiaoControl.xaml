@@ -30,7 +30,7 @@
                 <Grid Grid.Row="0">
                     <Button Width="24" Height="24" Click="CancelBtn_Click"
                         Style="{StaticResource CloseBtnButtonStyle}" Focusable="False"
-                        HorizontalAlignment="Right" VerticalAlignment="Top">
+                        HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,-5,-5,0">
                     </Button>
                     <TextBlock Text="编辑词条" Foreground="#160536" Opacity="0.87" FontSize="16"
                                Style="{StaticResource CommonLeftTextBlock}" 

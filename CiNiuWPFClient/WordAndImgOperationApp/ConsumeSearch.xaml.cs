@@ -48,7 +48,7 @@ namespace WordAndImgOperationApp
         }
         private void ConsumeStandardBtn_Click(object sender, RoutedEventArgs e)
         {
-
+            EventAggregatorRepository.EventAggregator.GetEvent<SettingWindowShowConsumeStandardControlEvent>().Publish(true);
         }
     }
 }
