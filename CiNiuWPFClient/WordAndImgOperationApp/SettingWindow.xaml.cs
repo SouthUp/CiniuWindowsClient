@@ -147,6 +147,11 @@ namespace WordAndImgOperationApp
                         CustumCiControl custumCiControl = new CustumCiControl();
                         ContentGrid.Children.Add(custumCiControl);
                     }
+                    else if (typeName == "ConsumeSearch")
+                    {
+                        ConsumeSearch consumeSearch = new ConsumeSearch();
+                        ContentGrid.Children.Add(consumeSearch);
+                    }
                 }
                 catch (Exception ex)
                 { }

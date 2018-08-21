@@ -65,7 +65,7 @@ namespace WordAndImgOperationApp
 
         private void ConsumeSeachBtn_Click(object sender, RoutedEventArgs e)
         {
-
+            EventAggregatorRepository.EventAggregator.GetEvent<LoadSettingWindowGridViewEvent>().Publish("ConsumeSearch");
         }
         private void RechargeBtn_Click(object sender, RoutedEventArgs e)
         {

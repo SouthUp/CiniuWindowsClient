@@ -131,6 +131,10 @@
       <DependentUpon>AboutControl.xaml</DependentUpon>
     </Compile>
     <Compile Include="AboutControlViewModel.cs" />
+    <Compile Include="ConsumeSearch.xaml.cs">
+      <DependentUpon>ConsumeSearch.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ConsumeSearchViewModel.cs" />
     <Compile Include="CustumCiControl.xaml.cs">
       <DependentUpon>CustumCiControl.xaml</DependentUpon>
     </Compile>
@@ -195,6 +199,10 @@
     </Compile>
     <Compile Include="VersionControlViewModel.cs" />
     <Page Include="AboutControl.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="ConsumeSearch.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
