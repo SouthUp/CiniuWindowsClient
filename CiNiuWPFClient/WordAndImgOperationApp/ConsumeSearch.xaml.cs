@@ -35,11 +35,20 @@ namespace WordAndImgOperationApp
 
         private void UserControl_Loaded(object sender, RoutedEventArgs e)
         {
-            
+
         }
         private void ReturnBtn_Click(object sender, RoutedEventArgs e)
         {
             EventAggregatorRepository.EventAggregator.GetEvent<LoadSettingWindowGridViewEvent>().Publish("UserInfoControl");
+        }
+
+        private void ConsumeHistoryBtn_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+        private void ConsumeStandardBtn_Click(object sender, RoutedEventArgs e)
+        {
+
         }
     }
 }

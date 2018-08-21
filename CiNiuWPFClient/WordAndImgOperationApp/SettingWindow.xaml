@@ -20,7 +20,7 @@
                 <DropShadowEffect ShadowDepth="0" />
             </Border.Effect>
         </Border>
-        <Grid Background="Transparent" Cursor="Hand" MouseDown="TitleGrid_MouseDown">
+        <Grid Background="Transparent" Cursor="Arrow" MouseDown="TitleGrid_MouseDown">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="180"></ColumnDefinition>
                 <ColumnDefinition Width="*"></ColumnDefinition>
