@@ -23,7 +23,7 @@ namespace WPFClientCheckWordUtil
         /// <returns></returns>
         public static List<WordModel> GetAllCheckWordByToken(string token)
         {
-            WordModels = new List<WordModel>();
+            List<WordModel> wordModelLists = new List<WordModel>();
             try
             {
                 //#region 假数据
@@ -45,8 +45,9 @@ namespace WPFClientCheckWordUtil
                             WordModel word = new WordModel();
                             word.ID = item.id;
                             word.Name = item.name;
-                            WordModels.Add(word);
+                            wordModelLists.Add(word);
                         }
+                        WordModels = wordModelLists;
                     }
                     try
                     {
@@ -76,7 +77,6 @@ namespace WPFClientCheckWordUtil
             catch (Exception ex)
             {
                 WPFClientCheckWordUtil.Log.TextLog.SaveError(ex.Message);
-                WordModels = new List<WordModel>();
                 try
                 {
                     CommonExchangeInfo commonExchangeInfo = new CommonExchangeInfo();
