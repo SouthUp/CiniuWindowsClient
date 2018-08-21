@@ -30,16 +30,6 @@ namespace CheckWordModel
                 RaisePropertyChanged("Name");
             }
         }
-        private bool isCustumCi = false;
-        public bool IsCustumCi
-        {
-            get { return isCustumCi; }
-            set
-            {
-                isCustumCi = value;
-                RaisePropertyChanged("IsCustumCi");
-            }
-        }
         public Range Range { get; set; }
         public Range UnCheckWordRange { get; set; }
         private bool _isSelected = false;

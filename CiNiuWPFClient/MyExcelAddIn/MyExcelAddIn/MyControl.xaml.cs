@@ -727,7 +727,14 @@ namespace MyExcelAddIn
                     var image = File.ReadAllBytes(filePath);
                     //集成云处理OCR
                     APIService service = new APIService();
-                    var result = service.GetOCRResultByToken(image);
+                    string fileName = "";
+                    try
+                    {
+                        fileName = Globals.ThisAddIn.Application.ActiveWorkbook.Name;
+                    }
+                    catch
+                    { }
+                    var result = service.GetOCRResultByToken(image, fileName);
                     //反序列化
                     resultImgGeneral = JsonConvert.DeserializeObject<ImgGeneralInfo>(result.ToString().Replace("char", "Char"));
                     ////////var options = new Dictionary<string, object>{
