@@ -117,7 +117,7 @@ namespace WordAndImgOperationApp
 
         private void ToggleIsUseCustumCi_Click(object sender, RoutedEventArgs e)
         {
-            SaveSettingInfo();
+            SaveSettingInfo(true);
         }
 
         private void ToggleIsCheckPic_Click(object sender, RoutedEventArgs e)

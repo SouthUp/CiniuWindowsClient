@@ -73,7 +73,7 @@ namespace WPFClientService
                 {
                     SystemVar.UrlStr = loginInOutInfo.UrlStr;
                     SystemVar.UserToken = loginInOutInfo.Token;
-                    if (CheckWordHelper.WordModels.Count == 0 && !string.IsNullOrEmpty(SystemVar.UserToken))
+                    if (!string.IsNullOrEmpty(SystemVar.UserToken))
                     {
                         CheckWordHelper.WordModels = CheckWordHelper.GetAllCheckWordByToken(SystemVar.UserToken);
                     }
