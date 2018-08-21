@@ -12,5 +12,6 @@ namespace WPFClientCheckWordModel
         public string name { get; set; }
         public string data { get; set; }
         public string typeName { get; set; }
+        public DateTime uTime { get; set; }
     }
 }

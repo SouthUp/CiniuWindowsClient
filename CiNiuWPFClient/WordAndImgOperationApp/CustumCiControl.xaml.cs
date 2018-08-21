@@ -141,7 +141,29 @@ namespace WordAndImgOperationApp
                         bool b = false;
                         try
                         {
-                            System.Threading.Thread.Sleep(5000);
+                            Aspose.Cells.Workbook workbookName = new Aspose.Cells.Workbook(strFileName);
+                            string sheetName = workbookName.Worksheets[0].Name;
+                            Aspose.Cells.Cells cellsName = workbookName.Worksheets[0].Cells;
+                            int minDataColumn = cellsName.MinDataColumn;
+                            int maxDataColumn = cellsName.MaxDataColumn;
+                            int minDataRow = cellsName.MinDataRow;
+                            int maxDataRow = cellsName.MaxDataRow;
+                            //导入数据
+                            for (int i = minDataRow + 1; i < maxDataRow + 1; i++)
+                            {
+                                try
+                                {
+                                    string name = cellsName[i, minDataColumn].StringValue.Trim();
+                                    string comment = cellsName[i, maxDataColumn].StringValue.Trim();
+                                    if(!string.IsNullOrEmpty(name))
+                                    {
+                                        APIService service = new APIService();
+                                        service.AddCustumCiTiaoByToken(UtilSystemVar.UserToken, name, comment);
+                                    }
+                                }
+                                catch (Exception ex)
+                                { }
+                            }
                             b = true;
                         }
                         catch (Exception ex)
@@ -166,7 +188,7 @@ namespace WordAndImgOperationApp
                 }
                 else
                 {
-                    ShowTipsInfo("选择导入的文件格式不正确");
+                    ShowTipsInfo("选择导入的文件与模板不匹配");
                 }
             }
         }
@@ -175,8 +197,23 @@ namespace WordAndImgOperationApp
             bool result = false;
             try
             {
-                //TODO
-                result = true;
+                Aspose.Cells.Workbook workbookName = new Aspose.Cells.Workbook(fileName);
+                int sheetCount = workbookName.Worksheets.Count;
+                if (sheetCount == 1)
+                {
+                    string sheetName = workbookName.Worksheets[0].Name;
+                    if (sheetName == "批量导入词条模板")
+                    {
+                        Aspose.Cells.Cells cellsName = workbookName.Worksheets[0].Cells;
+                        int minDataColumn = cellsName.MinDataColumn;
+                        int maxDataColumn = cellsName.MaxDataColumn;
+                        if (cellsName[0, minDataColumn].StringValue.Trim() == "词条" &&
+                            cellsName[0, maxDataColumn].StringValue.Trim() == "解读")
+                        {
+                            result = true;
+                        }
+                    }
+                }
             }
             catch (Exception ex)
             { }
