@@ -10,5 +10,6 @@ namespace WPFClientCheckWordModel
     {
         public int count { get; set; }
         public string fileName { get; set; }
+        public string taskId { get; set; }
     }
 }

@@ -12,5 +12,6 @@ namespace WPFClientCheckWordModel
         public string recognize_granularity = "small";
         public string vertexes_location = "true";
         public string fileName { get; set; }
+        public string taskId { get; set; }
     }
 }

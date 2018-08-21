@@ -144,7 +144,7 @@ namespace CheckWordUtil
         /// </summary>
         /// <param name="token"></param>
         /// <returns></returns>
-        public string GetOCRResultByToken(string token, byte[] image, string fileName)
+        public string GetOCRResultByToken(string token, byte[] image, string fileName, string taskId = "")
         {
             string result = "";
             try
@@ -153,6 +153,7 @@ namespace CheckWordUtil
                 OCRRequest ocrRequest = new OCRRequest();
                 ocrRequest.image = System.Convert.ToBase64String(image);
                 ocrRequest.fileName = fileName;
+                ocrRequest.taskId = taskId;
                 string json = JsonConvert.SerializeObject(ocrRequest);
                 result = HttpHelper.HttpUrlSend(apiName, "POST", json, token);
             }
@@ -209,7 +210,7 @@ namespace CheckWordUtil
             }
             return versionResponse;
         }
-        public ConsumeResponse GetWordConsume(int count, string token, string fileName = "")
+        public ConsumeResponse GetWordConsume(int count, string token, string fileName = "", string taskId = "")
         {
             ConsumeResponse result = null;
             try
@@ -218,6 +219,7 @@ namespace CheckWordUtil
                 ConsumeRequest consumeRequest = new ConsumeRequest();
                 consumeRequest.count = count;
                 consumeRequest.fileName = fileName;
+                consumeRequest.taskId = taskId;
                 string json = JsonConvert.SerializeObject(consumeRequest);
                 string resultStr = HttpHelper.HttpUrlSend(apiName, "POST", json, token);
                 ConsumeResponse resultInfo = JsonConvert.DeserializeObject<ConsumeResponse>(resultStr);
