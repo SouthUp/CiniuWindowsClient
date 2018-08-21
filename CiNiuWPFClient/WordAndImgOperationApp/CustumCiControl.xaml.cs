@@ -119,7 +119,12 @@ namespace WordAndImgOperationApp
 
         private void DownLoadBtn_Click(object sender, RoutedEventArgs e)
         {
-
+            try
+            {
+                System.Diagnostics.Process.Start("http://www.ciniuwang.com/files/批量导/批量导入词条模板.xlsx");
+            }
+            catch (Exception ex)
+            { }
         }
         private async void ImportCustumCiBtn_Click(object sender, RoutedEventArgs e)
         {
