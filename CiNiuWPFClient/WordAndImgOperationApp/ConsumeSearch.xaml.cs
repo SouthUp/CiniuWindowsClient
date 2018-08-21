@@ -59,6 +59,7 @@ namespace WordAndImgOperationApp
                 try
                 {
                     APIService serviceApi = new APIService();
+                    viewModel.CurrentMonthConsumeInfo = serviceApi.GetCurrentMonthConsumeByToken(UtilSystemVar.UserToken);
                     list = serviceApi.GetUserConsumeByToken(UtilSystemVar.UserToken);
                 }
                 catch (Exception ex)

@@ -24,8 +24,8 @@ namespace WordAndImgOperationApp
                 RaisePropertyChanged("CurrentMonthDateTime");
             }
         }
-        private int _wordsConsumeCount = 200;
-        public int WordsConsumeCount
+        private UserMonthConsumeInfo _wordsConsumeCount = new UserMonthConsumeInfo();
+        public UserMonthConsumeInfo CurrentMonthConsumeInfo
         {
             get { return _wordsConsumeCount; }
             set
@@ -33,18 +33,8 @@ namespace WordAndImgOperationApp
                 if (_wordsConsumeCount != value)
                 {
                     _wordsConsumeCount = value;
-                    RaisePropertyChanged("WordsConsumeCount");
+                    RaisePropertyChanged("CurrentMonthConsumeInfo");
                 }
-            }
-        }
-        private int _picturesConsumeCount = 100;
-        public int PicturesConsumeCount
-        {
-            get { return _picturesConsumeCount; }
-            set
-            {
-                _picturesConsumeCount = value;
-                RaisePropertyChanged("PicturesConsumeCount");
             }
         }
         private ObservableCollection<UserConsumeInfo> _userConsumeInfoList = new ObservableCollection<UserConsumeInfo>();

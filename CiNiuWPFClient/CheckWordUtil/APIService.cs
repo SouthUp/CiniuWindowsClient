@@ -468,6 +468,25 @@ namespace CheckWordUtil
             return result;
         }
         /// <summary>
+        /// 获取当月消费统计
+        /// </summary>
+        /// <param name="token"></param>
+        /// <returns></returns>
+        public UserMonthConsumeInfo GetCurrentMonthConsumeByToken(string token)
+        {
+            UserMonthConsumeInfo result = new UserMonthConsumeInfo();
+            try
+            {
+                result.PicConsumeCount = 180;
+                result.WordConsumeCount = 100;
+            }
+            catch (Exception ex)
+            {
+                WPFClientCheckWordUtil.Log.TextLog.SaveError(ex.Message);
+            }
+            return result;
+        }
+        /// <summary>
         /// 获取消费记录
         /// </summary>
         /// <param name="token"></param>

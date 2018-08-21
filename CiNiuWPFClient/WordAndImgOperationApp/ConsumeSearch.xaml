@@ -44,11 +44,11 @@
                             HorizontalAlignment="Left" VerticalAlignment="Center">
                     <TextBlock Text="文字扣点：" Foreground="#160536" Opacity="0.54" FontSize="12"
                            Style="{StaticResource CommonLeftTextBlock}"></TextBlock>
-                    <TextBlock Text="{Binding WordsConsumeCount}" Foreground="#160536" Opacity="0.54" FontSize="12"
+                    <TextBlock Text="{Binding CurrentMonthConsumeInfo.WordConsumeCount}" Foreground="#160536" Opacity="0.54" FontSize="12"
                            Style="{StaticResource CommonLeftTextBlock}"></TextBlock>
                     <TextBlock Text="图片扣点：" Foreground="#160536" Opacity="0.54" FontSize="12"
                            Style="{StaticResource CommonLeftTextBlock}" Margin="20,0,0,0"></TextBlock>
-                    <TextBlock Text="{Binding PicturesConsumeCount}" Foreground="#160536" Opacity="0.54" FontSize="12"
+                    <TextBlock Text="{Binding CurrentMonthConsumeInfo.PicConsumeCount}" Foreground="#160536" Opacity="0.54" FontSize="12"
                            Style="{StaticResource CommonLeftTextBlock}"></TextBlock>
                 </StackPanel>
             </Grid>

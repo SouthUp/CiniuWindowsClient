@@ -57,6 +57,7 @@
     <Compile Include="UnChekedDetailWordInfo.cs" />
     <Compile Include="UnChekedWordInfo.cs" />
     <Compile Include="UserConsumeInfo.cs" />
+    <Compile Include="UserMonthConsumeInfo.cs" />
     <Compile Include="UserStateInfos.cs" />
     <Compile Include="VersionInfo.cs" />
     <Compile Include="ViewModelBase.cs" />
