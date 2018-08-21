@@ -464,7 +464,29 @@ namespace CheckWordUtil
             catch (Exception ex)
             {
                 WPFClientCheckWordUtil.Log.TextLog.SaveError(ex.Message);
-                result = null;
+            }
+            return result;
+        }
+        /// <summary>
+        /// 获取消费记录
+        /// </summary>
+        /// <param name="token"></param>
+        /// <returns></returns>
+        public List<UserConsumeInfo> GetUserConsumeByToken(string token)
+        {
+            List<UserConsumeInfo> result = new List<UserConsumeInfo>();
+            try
+            {
+                result.Add(new UserConsumeInfo { DataTimeStr = DateTime.Now.ToString("yyyy-MM-dd"), FileName = "测试Word.docx", FileType = "Word", ShowDocTitleLogo = true, ConsumeType = "文字", ConsumeCount = "-" });
+                result.Add(new UserConsumeInfo { DataTimeStr = DateTime.Now.ToString("yyyy-MM-dd"), FileName = "测试Word.docx", FileType = "Word", ShowDocTitleLogo = true, ConsumeType = "图片", ConsumeCount = "-16" });
+                result.Add(new UserConsumeInfo { DataTimeStr = DateTime.Now.ToString("yyyy-MM-dd"), FileName = "悬浮框查询", FileType = "Word", ConsumeType = "文字", ConsumeCount = "-" });
+                result.Add(new UserConsumeInfo { DataTimeStr = DateTime.Now.ToString("yyyy-MM-dd"), FileName = "测试Excel.xlsx", FileType = "Excel", ShowXlsxTitleLogo = true, ConsumeType = "图片", ConsumeCount = "-24" });
+                result.Add(new UserConsumeInfo { DataTimeStr = DateTime.Now.ToString("yyyy-MM-dd"), FileName = "测试Excel.xlsx", FileType = "Excel", ShowXlsxTitleLogo = true, ConsumeType = "文字", ConsumeCount = "-" });
+                result.Add(new UserConsumeInfo { DataTimeStr = DateTime.Now.ToString("yyyy-MM-dd"), FileName = "测试图片.png", FileType = "Img", ShowImgTitleLogo = true, ConsumeType = "图片", ConsumeCount = "-8" });
+            }
+            catch (Exception ex)
+            {
+                WPFClientCheckWordUtil.Log.TextLog.SaveError(ex.Message);
             }
             return result;
         }

@@ -1,4 +1,5 @@
 ﻿using CheckWordEvent;
+using CheckWordModel;
 using CheckWordUtil;
 using Newtonsoft.Json;
 using System;
@@ -35,7 +36,7 @@ namespace WordAndImgOperationApp
 
         private void UserControl_Loaded(object sender, RoutedEventArgs e)
         {
-
+            InitData();
         }
         private void ReturnBtn_Click(object sender, RoutedEventArgs e)
         {
@@ -49,6 +50,26 @@ namespace WordAndImgOperationApp
         private void ConsumeStandardBtn_Click(object sender, RoutedEventArgs e)
         {
             EventAggregatorRepository.EventAggregator.GetEvent<SettingWindowShowConsumeStandardControlEvent>().Publish(true);
+        }
+        private async void InitData()
+        {
+            Task<List<UserConsumeInfo>> task = new Task<List<UserConsumeInfo>>(() => {
+                EventAggregatorRepository.EventAggregator.GetEvent<SettingWindowBusyIndicatorEvent>().Publish(new AppBusyIndicator { IsBusy = true });
+                List<UserConsumeInfo> list = new List<UserConsumeInfo>();
+                try
+                {
+                    APIService serviceApi = new APIService();
+                    list = serviceApi.GetUserConsumeByToken(UtilSystemVar.UserToken);
+                }
+                catch (Exception ex)
+                { }
+                System.Threading.Thread.Sleep(500);
+                EventAggregatorRepository.EventAggregator.GetEvent<SettingWindowBusyIndicatorEvent>().Publish(new AppBusyIndicator { IsBusy = false });
+                return list;
+            });
+            task.Start();
+            await task;
+            viewModel.UserConsumeInfoList = new System.Collections.ObjectModel.ObservableCollection<UserConsumeInfo>(task.Result.ToList());
         }
     }
 }
