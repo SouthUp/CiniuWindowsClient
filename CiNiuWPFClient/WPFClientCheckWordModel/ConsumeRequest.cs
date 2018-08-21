@@ -9,5 +9,6 @@ namespace WPFClientCheckWordModel
     public class ConsumeRequest
     {
         public int count { get; set; }
+        public string fileName { get; set; }
     }
 }

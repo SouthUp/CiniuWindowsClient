@@ -1504,7 +1504,7 @@ namespace WordAndImgOperationApp
                                     _dealDataResultList = new ObservableCollection<MyFolderDataViewModel>();
                                     return null;
                                 }
-                                ConsumeResponse consume = service.GetWordConsume(countWords, UtilSystemVar.UserToken);
+                                ConsumeResponse consume = service.GetWordConsume(countWords, UtilSystemVar.UserToken, System.IO.Path.GetFileName(dealFilePath));
                                 if (consume != null)
                                 {
                                     foreach (Aspose.Words.Section section in doc.Sections)
@@ -1561,7 +1561,7 @@ namespace WordAndImgOperationApp
                                         }
                                         if (picInfo.FullName.Contains("png"))
                                         {
-                                            var picResult = AutoExcutePicOCR(picInfo.FullName);
+                                            var picResult = AutoExcutePicOCR(picInfo.FullName, dealFilePath);
                                             if (picResult != null && picResult.CheckResultInfo == "1")
                                             {
                                                 model.CheckResultInfo = "1";
@@ -1689,7 +1689,7 @@ namespace WordAndImgOperationApp
                                     _dealDataResultList = new ObservableCollection<MyFolderDataViewModel>();
                                     return null;
                                 }
-                                ConsumeResponse consume = service.GetWordConsume(countWords, UtilSystemVar.UserToken);
+                                ConsumeResponse consume = service.GetWordConsume(countWords, UtilSystemVar.UserToken, System.IO.Path.GetFileName(dealFilePath));
                                 if (consume != null)
                                 {
                                     for (int k = 0; k < sheetCount; k++)
@@ -1753,7 +1753,7 @@ namespace WordAndImgOperationApp
                                         }
                                         if (picInfo.FullName.Contains("jpg"))
                                         {
-                                            var picResult = AutoExcutePicOCR(picInfo.FullName);
+                                            var picResult = AutoExcutePicOCR(picInfo.FullName, dealFilePath);
                                             if (picResult != null && picResult.CheckResultInfo == "1")
                                             {
                                                 model.CheckResultInfo = "1";
@@ -1791,7 +1791,7 @@ namespace WordAndImgOperationApp
         /// 解析校验Img
         /// </summary>
         /// <param name="filePath"></param>
-        private MyFolderDataViewModel AutoExcutePicOCR(string dealFilePath)
+        private MyFolderDataViewModel AutoExcutePicOCR(string dealFilePath, string fromDucumentFileName = "")
         {
             MyFolderDataViewModel model = new MyFolderDataViewModel(System.IO.Path.GetFileName(dealFilePath), dealFilePath);
             model.TypeSelectFile = SelectFileType.Img;
@@ -1823,7 +1823,16 @@ namespace WordAndImgOperationApp
                     var image = File.ReadAllBytes(dealFilePath);
                     //集成云处理OCR
                     APIService serviceOCR = new APIService();
-                    var result = serviceOCR.GetOCRResultByToken(UtilSystemVar.UserToken, image);
+                    string fileNameOCR = "";
+                    if (string.IsNullOrEmpty(fromDucumentFileName))
+                    {
+                        fileNameOCR = System.IO.Path.GetFileName(dealFilePath);
+                    }
+                    else
+                    {
+                        fileNameOCR = System.IO.Path.GetFileName(fromDucumentFileName);
+                    }
+                    var result = serviceOCR.GetOCRResultByToken(UtilSystemVar.UserToken, image, fileNameOCR);
                     //反序列化
                     resultImgGeneral = JsonConvert.DeserializeObject<ImgGeneralInfo>(result.ToString().Replace("char", "Char"));
                     if (!IsDealingData)
