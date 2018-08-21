@@ -14,7 +14,7 @@ namespace CheckWordUtil
         /// 获取OCR分析结果
         /// </summary>
         /// <returns></returns>
-        public string GetOCRResultByToken(byte[] image,string fileName)
+        public string GetOCRResultByToken(byte[] image,string fileName, string taskId = "")
         {
             string result = "";
             try
@@ -48,6 +48,7 @@ namespace CheckWordUtil
                 OCRRequest ocrRequest = new OCRRequest();
                 ocrRequest.image = System.Convert.ToBase64String(image);
                 ocrRequest.fileName = fileName;
+                ocrRequest.taskId = taskId;
                 string json = JsonConvert.SerializeObject(ocrRequest);
                 result = HttpHelper.HttpUrlSend(apiName, "POST", json, token);
             }
