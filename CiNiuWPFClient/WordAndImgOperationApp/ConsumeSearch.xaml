@@ -12,14 +12,14 @@
         <control:BoolToVisibilityConvert x:Key="BoolToVisibilityConvert"></control:BoolToVisibilityConvert>
     </UserControl.Resources>
     <Grid Height="520" Width="638" Background="Transparent">
-        <Button Width="24" Height="24" Click="ReturnBtn_Click" Margin="40,25,0,0" 
+        <Button Width="24" Height="24" Click="ReturnBtn_Click" Margin="40,30,0,0" 
                 Style="{StaticResource ReturnBackBtnButtonStyle}" Focusable="False"
                 HorizontalAlignment="Left" VerticalAlignment="Top">
         </Button>
         <TextBlock Text="扣点记录" Foreground="#160536" Opacity="0.87" FontSize="18"
                    Style="{StaticResource CommonLeftTextBlock}" 
-                   Margin="40,49,0,0" VerticalAlignment="Top"></TextBlock>
-        <StackPanel Orientation="Horizontal" Margin="0,52,40,0"
+                   Margin="40,59,0,0" VerticalAlignment="Top"></TextBlock>
+        <StackPanel Orientation="Horizontal" Margin="0,62,40,0"
                     HorizontalAlignment="Right" VerticalAlignment="Top">
             <Button HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
                     Style="{StaticResource HasIconCommonButtonStyle}"
@@ -30,7 +30,7 @@
                     Content="计费标准" Background="{StaticResource ConsumeStandardIconLogo}"
                     Click="ConsumeStandardBtn_Click" Margin="25,0,0,0"></Button>
         </StackPanel>
-        <Grid Height="48" Background="Transparent" Margin="0,74,0,0"
+        <Grid Height="48" Background="Transparent" Margin="0,89,0,0"
               HorizontalAlignment="Stretch" VerticalAlignment="Top">
             <Border BorderThickness="0" Background="#673ab7" Opacity="0.04"></Border>
             <Grid>
@@ -53,7 +53,7 @@
                 </StackPanel>
             </Grid>
         </Grid>
-        <Grid Height="400" Background="Transparent"
+        <Grid Height="385" Background="Transparent"
               VerticalAlignment="Bottom" HorizontalAlignment="Stretch">
             <Grid.RowDefinitions>
                 <RowDefinition Height="40"></RowDefinition>
