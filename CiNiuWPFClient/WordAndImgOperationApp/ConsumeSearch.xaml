@@ -69,7 +69,7 @@
                 <TextBlock Text="图片" Foreground="#160536" Opacity="0.38" FontSize="12"
                                Style="{StaticResource CommonLeftTextBlock}" Margin="573,0,0,0"></TextBlock>
             </Grid>
-            <Grid Grid.Row="1" Margin="40,0,40,15">
+            <Grid Grid.Row="1" Margin="40,0,0,15">
                 <ListBox x:Name="listBox" Grid.Row="1" BorderThickness="0" Background="Transparent"
                          ItemsSource="{Binding UserConsumeInfoList}"
                          ScrollViewer.HorizontalScrollBarVisibility="Disabled"
@@ -85,6 +85,7 @@
                                     <ColumnDefinition Width="280"></ColumnDefinition>
                                     <ColumnDefinition Width="*"></ColumnDefinition>
                                     <ColumnDefinition Width="*"></ColumnDefinition>
+                                    <ColumnDefinition Width="40"></ColumnDefinition>
                                 </Grid.ColumnDefinitions>
                                 <Grid Grid.Column="0" Background="Transparent">
                                     <TextBlock Text="{Binding DataTimeStr}" 

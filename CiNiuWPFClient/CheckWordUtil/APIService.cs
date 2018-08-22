@@ -504,6 +504,18 @@ namespace CheckWordUtil
                 result.Add(new UserConsumeInfo { DataTimeStr = DateTime.Now.ToString("yyyy-MM-dd"), FileName = "测试Excel.xlsx", ShowXlsxTitleLogo = true, WordConsumeCount = "-4", PicConsumeCount = "-24" });
                 result.Add(new UserConsumeInfo { DataTimeStr = DateTime.Now.ToString("yyyy-MM-dd"), FileName = "测试Excel.xlsx", ShowXlsxTitleLogo = true, WordConsumeCount = "-", PicConsumeCount = "-" });
                 result.Add(new UserConsumeInfo { DataTimeStr = DateTime.Now.ToString("yyyy-MM-dd"), FileName = "测试图片.png", ShowImgTitleLogo = true, WordConsumeCount = "-", PicConsumeCount = "-8" });
+                result.Add(new UserConsumeInfo { DataTimeStr = DateTime.Now.ToString("yyyy-MM-dd"), FileName = "测试Word.docx", ShowDocTitleLogo = true, WordConsumeCount = "-", PicConsumeCount = "-" });
+                result.Add(new UserConsumeInfo { DataTimeStr = DateTime.Now.ToString("yyyy-MM-dd"), FileName = "测试Word.docx", ShowDocTitleLogo = true, WordConsumeCount = "-", PicConsumeCount = "-16" });
+                result.Add(new UserConsumeInfo { DataTimeStr = DateTime.Now.ToString("yyyy-MM-dd"), FileName = "悬浮框查询", WordConsumeCount = "-", PicConsumeCount = "-" });
+                result.Add(new UserConsumeInfo { DataTimeStr = DateTime.Now.ToString("yyyy-MM-dd"), FileName = "测试Excel.xlsx", ShowXlsxTitleLogo = true, WordConsumeCount = "-4", PicConsumeCount = "-24" });
+                result.Add(new UserConsumeInfo { DataTimeStr = DateTime.Now.ToString("yyyy-MM-dd"), FileName = "测试Excel.xlsx", ShowXlsxTitleLogo = true, WordConsumeCount = "-", PicConsumeCount = "-" });
+                result.Add(new UserConsumeInfo { DataTimeStr = DateTime.Now.ToString("yyyy-MM-dd"), FileName = "测试图片.png", ShowImgTitleLogo = true, WordConsumeCount = "-", PicConsumeCount = "-8" });
+                result.Add(new UserConsumeInfo { DataTimeStr = DateTime.Now.ToString("yyyy-MM-dd"), FileName = "测试Word.docx", ShowDocTitleLogo = true, WordConsumeCount = "-", PicConsumeCount = "-" });
+                result.Add(new UserConsumeInfo { DataTimeStr = DateTime.Now.ToString("yyyy-MM-dd"), FileName = "测试Word.docx", ShowDocTitleLogo = true, WordConsumeCount = "-", PicConsumeCount = "-16" });
+                result.Add(new UserConsumeInfo { DataTimeStr = DateTime.Now.ToString("yyyy-MM-dd"), FileName = "悬浮框查询", WordConsumeCount = "-", PicConsumeCount = "-" });
+                result.Add(new UserConsumeInfo { DataTimeStr = DateTime.Now.ToString("yyyy-MM-dd"), FileName = "测试Excel.xlsx", ShowXlsxTitleLogo = true, WordConsumeCount = "-4", PicConsumeCount = "-24" });
+                result.Add(new UserConsumeInfo { DataTimeStr = DateTime.Now.ToString("yyyy-MM-dd"), FileName = "测试Excel.xlsx", ShowXlsxTitleLogo = true, WordConsumeCount = "-", PicConsumeCount = "-" });
+                result.Add(new UserConsumeInfo { DataTimeStr = DateTime.Now.ToString("yyyy-MM-dd"), FileName = "测试图片.png", ShowImgTitleLogo = true, WordConsumeCount = "-", PicConsumeCount = "-8" });
             }
             catch (Exception ex)
             {
@@ -521,7 +533,20 @@ namespace CheckWordUtil
             List<UserMonthConsumeInfo> result = new List<UserMonthConsumeInfo>();
             try
             {
-                result.Add(new UserMonthConsumeInfo { MonthName = "2018年", TotalConsumeCount = 5000, ShowBackground = System.Windows.Visibility.Visible, GridHeight = 40 });
+                result.Add(new UserMonthConsumeInfo { MonthName = "2018年", TotalConsumeCount = 4000, ShowBackground = System.Windows.Visibility.Visible, GridHeight = 40 });
+                result.Add(new UserMonthConsumeInfo { MonthName = "8月", TotalConsumeCount = 500 });
+                result.Add(new UserMonthConsumeInfo { MonthName = "7月", TotalConsumeCount = 500 });
+                result.Add(new UserMonthConsumeInfo { MonthName = "6月", TotalConsumeCount = 500 });
+                result.Add(new UserMonthConsumeInfo { MonthName = "5月", TotalConsumeCount = 500 });
+                result.Add(new UserMonthConsumeInfo { MonthName = "4月", TotalConsumeCount = 500 });
+                result.Add(new UserMonthConsumeInfo { MonthName = "3月", TotalConsumeCount = 500 });
+                result.Add(new UserMonthConsumeInfo { MonthName = "2月", TotalConsumeCount = 500 });
+                result.Add(new UserMonthConsumeInfo { MonthName = "1月", TotalConsumeCount = 500 });
+                result.Add(new UserMonthConsumeInfo { MonthName = "2017年", TotalConsumeCount = 6000, ShowBackground = System.Windows.Visibility.Visible, GridHeight = 40 });
+                result.Add(new UserMonthConsumeInfo { MonthName = "12月", TotalConsumeCount = 500 });
+                result.Add(new UserMonthConsumeInfo { MonthName = "11月", TotalConsumeCount = 500 });
+                result.Add(new UserMonthConsumeInfo { MonthName = "10月", TotalConsumeCount = 500 });
+                result.Add(new UserMonthConsumeInfo { MonthName = "9月", TotalConsumeCount = 500 });
                 result.Add(new UserMonthConsumeInfo { MonthName = "8月", TotalConsumeCount = 500 });
                 result.Add(new UserMonthConsumeInfo { MonthName = "7月", TotalConsumeCount = 500 });
                 result.Add(new UserMonthConsumeInfo { MonthName = "6月", TotalConsumeCount = 500 });

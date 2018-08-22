@@ -95,7 +95,7 @@
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type Thumb}">
-                    <Border CornerRadius="6" Background="LightGray" Width="12" BorderThickness="0">
+                    <Border Background="#160536" Opacity="0.54" Width="6" BorderThickness="0">
                     </Border>
                 </ControlTemplate>
             </Setter.Value>
@@ -105,7 +105,7 @@
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type Thumb}">
-                    <Border CornerRadius="6" Background="LightGray" Height="12" BorderThickness="0">
+                    <Border Background="#160536" Opacity="0.54" Height="6" BorderThickness="0">
                     </Border>
                 </ControlTemplate>
             </Setter.Value>
@@ -114,32 +114,35 @@
     <Style TargetType="{x:Type ScrollBar}">
         <Setter Property="Stylus.IsFlicksEnabled" Value="false" />
         <Setter Property="Background" Value="Transparent" />
-        <Setter Property="Width" Value="12" />
-        <Setter Property="MinWidth" Value="12" />
+        <Setter Property="Width" Value="6" />
+        <Setter Property="MinWidth" Value="6" />
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type ScrollBar}">
-                    <Grid Background="White">
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="16" />
-                            <RowDefinition Height="*"/>
-                            <RowDefinition Height="16" />
-                        </Grid.RowDefinitions>
-                        <RepeatButton Grid.Row="0" Style="{DynamicResource ScrollBar_LineButton}" Command="ScrollBar.LineUpCommand" 
+                    <Grid Background="Transparent">
+                        <Border BorderThickness="0" Background="#673ab7" Opacity="0.08"></Border>
+                        <Grid Background="Transparent">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="16" />
+                                <RowDefinition Height="*"/>
+                                <RowDefinition Height="16" />
+                            </Grid.RowDefinitions>
+                            <RepeatButton Grid.Row="0" Style="{DynamicResource ScrollBar_LineButton}" Command="ScrollBar.LineUpCommand" 
                                       Content="M 0 10 L 6 0 L 12 10 Z" />
-                        <Track Grid.Row="1" Name="PART_Track" IsDirectionReversed="true">
-                            <Track.DecreaseRepeatButton>
-                                <RepeatButton Style="{StaticResource ScrollBar_PageButton}"/>
-                            </Track.DecreaseRepeatButton>
-                            <Track.Thumb>
-                                <Thumb Style="{StaticResource ScrollBar_Thumb}" MinHeight="4"/>
-                            </Track.Thumb>
-                            <Track.IncreaseRepeatButton>
-                                <RepeatButton Style="{StaticResource ScrollBar_PageButton}"/>
-                            </Track.IncreaseRepeatButton>
-                        </Track>
-                        <RepeatButton Grid.Row="2" Style="{DynamicResource ScrollBar_LineButton}" Command="ScrollBar.LineDownCommand" 
+                            <Track Grid.Row="1" Name="PART_Track" IsDirectionReversed="true">
+                                <Track.DecreaseRepeatButton>
+                                    <RepeatButton Style="{StaticResource ScrollBar_PageButton}"/>
+                                </Track.DecreaseRepeatButton>
+                                <Track.Thumb>
+                                    <Thumb Style="{StaticResource ScrollBar_Thumb}" MinHeight="4"/>
+                                </Track.Thumb>
+                                <Track.IncreaseRepeatButton>
+                                    <RepeatButton Style="{StaticResource ScrollBar_PageButton}"/>
+                                </Track.IncreaseRepeatButton>
+                            </Track>
+                            <RepeatButton Grid.Row="2" Style="{DynamicResource ScrollBar_LineButton}" Command="ScrollBar.LineDownCommand" 
                                       Content="M 0 0 L 6 10 L 12 0 Z" />
+                        </Grid>
                     </Grid>
                 </ControlTemplate>
             </Setter.Value>
