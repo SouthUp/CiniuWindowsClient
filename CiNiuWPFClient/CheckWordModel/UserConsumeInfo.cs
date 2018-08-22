@@ -29,34 +29,24 @@ namespace CheckWordModel
                 RaisePropertyChanged("FileName");
             }
         }
-        private string fileType = "";
-        public string FileType
+        private string wordConsumeCount = "";
+        public string WordConsumeCount
         {
-            get { return fileType; }
+            get { return wordConsumeCount; }
             set
             {
-                fileType = value;
-                RaisePropertyChanged("FileType");
+                wordConsumeCount = value;
+                RaisePropertyChanged("WordConsumeCount");
             }
         }
-        private string consumeType = "";
-        public string ConsumeType
+        private string picConsumeCount = "";
+        public string PicConsumeCount
         {
-            get { return consumeType; }
+            get { return picConsumeCount; }
             set
             {
-                consumeType = value;
-                RaisePropertyChanged("ConsumeType");
-            }
-        }
-        private string consumeCount = "";
-        public string ConsumeCount
-        {
-            get { return consumeCount; }
-            set
-            {
-                consumeCount = value;
-                RaisePropertyChanged("ConsumeCount");
+                picConsumeCount = value;
+                RaisePropertyChanged("PicConsumeCount");
             }
         }
         private bool _showImgTitleLogo = false;

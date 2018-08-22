@@ -64,9 +64,9 @@
                                Style="{StaticResource CommonLeftTextBlock}" Margin="40,0,0,0"></TextBlock>
                 <TextBlock Text="名称" Foreground="#160536" Opacity="0.38" FontSize="12"
                                Style="{StaticResource CommonLeftTextBlock}" Margin="160,0,0,0"></TextBlock>
-                <TextBlock Text="类型" Foreground="#160536" Opacity="0.38" FontSize="12"
-                               Style="{StaticResource CommonLeftTextBlock}" Margin="470,0,0,0"></TextBlock>
-                <TextBlock Text="点数" Foreground="#160536" Opacity="0.38" FontSize="12"
+                <TextBlock Text="文字" Foreground="#160536" Opacity="0.38" FontSize="12"
+                               Style="{StaticResource CommonLeftTextBlock}" Margin="495,0,0,0"></TextBlock>
+                <TextBlock Text="图片" Foreground="#160536" Opacity="0.38" FontSize="12"
                                Style="{StaticResource CommonLeftTextBlock}" Margin="573,0,0,0"></TextBlock>
             </Grid>
             <Grid Grid.Row="1" Margin="40,0,40,15">
@@ -82,8 +82,8 @@
                             <Grid Height="40" Width="{Binding ElementName=listBox,Path=ActualWidth}">
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="120"></ColumnDefinition>
-                                    <ColumnDefinition Width="310"></ColumnDefinition>
-                                    <ColumnDefinition Width="60"></ColumnDefinition>
+                                    <ColumnDefinition Width="280"></ColumnDefinition>
+                                    <ColumnDefinition Width="*"></ColumnDefinition>
                                     <ColumnDefinition Width="*"></ColumnDefinition>
                                 </Grid.ColumnDefinitions>
                                 <Grid Grid.Column="0" Background="Transparent">
@@ -111,13 +111,14 @@
                                     </TextBlock>
                                 </Grid>
                                 <Grid Grid.Column="2" Background="Transparent">
-                                    <TextBlock Text="{Binding ConsumeType}" 
+                                    <TextBlock Text="{Binding WordConsumeCount}" 
                                                Foreground="#160536" FontSize="12" Opacity="0.54"
-                                               Style="{StaticResource CommonLeftTextBlock}">
+                                               Style="{StaticResource CommonLeftTextBlock}"
+                                               HorizontalAlignment="Right" Margin="0,0,3,0">
                                     </TextBlock>
                                 </Grid>
                                 <Grid Grid.Column="3" Background="Transparent">
-                                    <TextBlock Text="{Binding ConsumeCount}" HorizontalAlignment="Right"
+                                    <TextBlock Text="{Binding PicConsumeCount}" HorizontalAlignment="Right"
                                                Foreground="#160536" FontSize="12" Opacity="0.54"
                                                Style="{StaticResource CommonLeftTextBlock}" Margin="0,0,3,0">
                                     </TextBlock>

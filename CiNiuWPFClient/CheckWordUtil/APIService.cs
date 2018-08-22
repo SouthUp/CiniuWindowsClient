@@ -498,12 +498,12 @@ namespace CheckWordUtil
             List<UserConsumeInfo> result = new List<UserConsumeInfo>();
             try
             {
-                result.Add(new UserConsumeInfo { DataTimeStr = DateTime.Now.ToString("yyyy-MM-dd"), FileName = "测试Word.docx", FileType = "Word", ShowDocTitleLogo = true, ConsumeType = "文字", ConsumeCount = "-" });
-                result.Add(new UserConsumeInfo { DataTimeStr = DateTime.Now.ToString("yyyy-MM-dd"), FileName = "测试Word.docx", FileType = "Word", ShowDocTitleLogo = true, ConsumeType = "图片", ConsumeCount = "-16" });
-                result.Add(new UserConsumeInfo { DataTimeStr = DateTime.Now.ToString("yyyy-MM-dd"), FileName = "悬浮框查询", FileType = "Word", ConsumeType = "文字", ConsumeCount = "-" });
-                result.Add(new UserConsumeInfo { DataTimeStr = DateTime.Now.ToString("yyyy-MM-dd"), FileName = "测试Excel.xlsx", FileType = "Excel", ShowXlsxTitleLogo = true, ConsumeType = "图片", ConsumeCount = "-24" });
-                result.Add(new UserConsumeInfo { DataTimeStr = DateTime.Now.ToString("yyyy-MM-dd"), FileName = "测试Excel.xlsx", FileType = "Excel", ShowXlsxTitleLogo = true, ConsumeType = "文字", ConsumeCount = "-" });
-                result.Add(new UserConsumeInfo { DataTimeStr = DateTime.Now.ToString("yyyy-MM-dd"), FileName = "测试图片.png", FileType = "Img", ShowImgTitleLogo = true, ConsumeType = "图片", ConsumeCount = "-8" });
+                result.Add(new UserConsumeInfo { DataTimeStr = DateTime.Now.ToString("yyyy-MM-dd"), FileName = "测试Word.docx", ShowDocTitleLogo = true, WordConsumeCount = "-", PicConsumeCount = "-" });
+                result.Add(new UserConsumeInfo { DataTimeStr = DateTime.Now.ToString("yyyy-MM-dd"), FileName = "测试Word.docx", ShowDocTitleLogo = true, WordConsumeCount = "-", PicConsumeCount = "-16" });
+                result.Add(new UserConsumeInfo { DataTimeStr = DateTime.Now.ToString("yyyy-MM-dd"), FileName = "悬浮框查询", WordConsumeCount = "-", PicConsumeCount = "-" });
+                result.Add(new UserConsumeInfo { DataTimeStr = DateTime.Now.ToString("yyyy-MM-dd"), FileName = "测试Excel.xlsx", ShowXlsxTitleLogo = true, WordConsumeCount = "-4", PicConsumeCount = "-24" });
+                result.Add(new UserConsumeInfo { DataTimeStr = DateTime.Now.ToString("yyyy-MM-dd"), FileName = "测试Excel.xlsx", ShowXlsxTitleLogo = true, WordConsumeCount = "-", PicConsumeCount = "-" });
+                result.Add(new UserConsumeInfo { DataTimeStr = DateTime.Now.ToString("yyyy-MM-dd"), FileName = "测试图片.png", ShowImgTitleLogo = true, WordConsumeCount = "-", PicConsumeCount = "-8" });
             }
             catch (Exception ex)
             {
