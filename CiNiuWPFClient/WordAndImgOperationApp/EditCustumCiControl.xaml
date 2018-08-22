@@ -51,7 +51,7 @@
                         <ListBox.ItemTemplate>
                             <DataTemplate>
                                 <Grid Height="28" Width="{Binding ElementName=listBox,Path=ActualWidth}"
-                                      Tag="{Binding}" MouseLeftButtonDown="Grid_MouseLeftButtonDown">
+                                      Tag="{Binding}" Cursor="Hand" MouseLeftButtonDown="Grid_MouseLeftButtonDown">
                                     <Grid.ColumnDefinitions>
                                         <ColumnDefinition Width="153"></ColumnDefinition>
                                         <ColumnDefinition Width="315"></ColumnDefinition>
