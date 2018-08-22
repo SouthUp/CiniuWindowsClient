@@ -45,7 +45,7 @@ namespace WordAndImgOperationApp
 
         private void ConsumeHistoryBtn_Click(object sender, RoutedEventArgs e)
         {
-
+            EventAggregatorRepository.EventAggregator.GetEvent<SettingWindowShowHistoryConsumeControlEvent>().Publish(true);
         }
         private void ConsumeStandardBtn_Click(object sender, RoutedEventArgs e)
         {

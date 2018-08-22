@@ -511,5 +511,31 @@ namespace CheckWordUtil
             }
             return result;
         }
+        /// <summary>
+        /// 获取历史消费记录统计
+        /// </summary>
+        /// <param name="token"></param>
+        /// <returns></returns>
+        public List<UserMonthConsumeInfo> GetUserAllHistoryConsumeByToken(string token)
+        {
+            List<UserMonthConsumeInfo> result = new List<UserMonthConsumeInfo>();
+            try
+            {
+                result.Add(new UserMonthConsumeInfo { MonthName = "2018年", TotalConsumeCount = 5000, ShowBackground = System.Windows.Visibility.Visible, GridHeight = 40 });
+                result.Add(new UserMonthConsumeInfo { MonthName = "8月", TotalConsumeCount = 500 });
+                result.Add(new UserMonthConsumeInfo { MonthName = "7月", TotalConsumeCount = 500 });
+                result.Add(new UserMonthConsumeInfo { MonthName = "6月", TotalConsumeCount = 500 });
+                result.Add(new UserMonthConsumeInfo { MonthName = "5月", TotalConsumeCount = 500 });
+                result.Add(new UserMonthConsumeInfo { MonthName = "4月", TotalConsumeCount = 500 });
+                result.Add(new UserMonthConsumeInfo { MonthName = "3月", TotalConsumeCount = 500 });
+                result.Add(new UserMonthConsumeInfo { MonthName = "2月", TotalConsumeCount = 500 });
+                result.Add(new UserMonthConsumeInfo { MonthName = "1月", TotalConsumeCount = 500 });
+            }
+            catch (Exception ex)
+            {
+                WPFClientCheckWordUtil.Log.TextLog.SaveError(ex.Message);
+            }
+            return result;
+        }
     }
 }

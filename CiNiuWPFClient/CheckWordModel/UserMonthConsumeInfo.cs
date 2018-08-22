@@ -9,16 +9,6 @@ namespace CheckWordModel
 {
     public class UserMonthConsumeInfo : ViewModelBase
     {
-        private int totalCount = 0;
-        public int TotalConsumeCount
-        {
-            get { return totalCount; }
-            set
-            {
-                totalCount = value;
-                RaisePropertyChanged("TotalCount");
-            }
-        }
         private int wordConsumeCount = 0;
         public int WordConsumeCount
         {
@@ -37,6 +27,46 @@ namespace CheckWordModel
             {
                 picConsumeCount = value;
                 RaisePropertyChanged("PicConsumeCount");
+            }
+        }
+        private string monthName = "";
+        public string MonthName
+        {
+            get { return monthName; }
+            set
+            {
+                monthName = value;
+                RaisePropertyChanged("MonthName");
+            }
+        }
+        private int totalCount = 0;
+        public int TotalConsumeCount
+        {
+            get { return totalCount; }
+            set
+            {
+                totalCount = value;
+                RaisePropertyChanged("TotalConsumeCount");
+            }
+        }
+        private Visibility showBackground = Visibility.Collapsed;
+        public Visibility ShowBackground
+        {
+            get { return showBackground; }
+            set
+            {
+                showBackground = value;
+                RaisePropertyChanged("ShowBackground");
+            }
+        }
+        private int gridHeight = 32;
+        public int GridHeight
+        {
+            get { return gridHeight; }
+            set
+            {
+                gridHeight = value;
+                RaisePropertyChanged("GridHeight");
             }
         }
     }

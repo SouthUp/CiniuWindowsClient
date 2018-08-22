@@ -39,6 +39,7 @@ namespace WordAndImgOperationApp
             EventAggregatorRepository.EventAggregator.GetEvent<SettingWindowShowDetailPopViewEvent>().Subscribe(SettingWindowShowDetailPop);
             EventAggregatorRepository.EventAggregator.GetEvent<SettingWindowShowEditPopViewEvent>().Subscribe(SettingWindowShowEditPop);
             EventAggregatorRepository.EventAggregator.GetEvent<SettingWindowShowConsumeStandardControlEvent>().Subscribe(ShowConsumeStandardControl);
+            EventAggregatorRepository.EventAggregator.GetEvent<SettingWindowShowHistoryConsumeControlEvent>().Subscribe(ShowHistoryConsumeControl);
         }
         private void SettingWindowBusyIndicator(AppBusyIndicator busyindicator)
         {
@@ -106,6 +107,20 @@ namespace WordAndImgOperationApp
                     ContentPopGrid.Children.Clear();
                     ShowConsumeStandardControl showConsumeStandardControl = new ShowConsumeStandardControl();
                     ContentPopGrid.Children.Add(showConsumeStandardControl);
+                    viewModel.ContentPopGridVisibility = Visibility.Visible;
+                }
+                catch (Exception ex)
+                { }
+            }));
+        }
+        private void ShowHistoryConsumeControl(bool b)
+        {
+            Dispatcher.Invoke(new Action(() => {
+                try
+                {
+                    ContentPopGrid.Children.Clear();
+                    HisotyConsumeControl hisotyConsumeControl = new HisotyConsumeControl();
+                    ContentPopGrid.Children.Add(hisotyConsumeControl);
                     viewModel.ContentPopGridVisibility = Visibility.Visible;
                 }
                 catch (Exception ex)

@@ -156,4 +156,11 @@ namespace CheckWordEvent
     {
 
     }
+    /// <summary>
+    ///  设置中的PopGrid查看历史消费事件
+    /// </summary>
+    public class SettingWindowShowHistoryConsumeControlEvent : PubSubEvent<bool>
+    {
+
+    }
 }

@@ -155,6 +155,10 @@
       <DependentUpon>FindPsw.xaml</DependentUpon>
     </Compile>
     <Compile Include="FindPswViewModel.cs" />
+    <Compile Include="HisotyConsumeControl.xaml.cs">
+      <DependentUpon>HisotyConsumeControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="HisotyConsumeControlViewModel.cs" />
     <Compile Include="ImgWindow.xaml.cs">
       <DependentUpon>ImgWindow.xaml</DependentUpon>
     </Compile>
@@ -226,6 +230,10 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="FindPsw.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="HisotyConsumeControl.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
