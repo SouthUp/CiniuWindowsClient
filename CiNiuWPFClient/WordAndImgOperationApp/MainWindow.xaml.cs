@@ -468,6 +468,22 @@ namespace WordAndImgOperationApp
             viewModel.MenueLoginVisibility = Visibility.Collapsed;
             EventAggregatorRepository.EventAggregator.GetEvent<LoginInOrOutEvent>().Publish("LoginOut");
             EventAggregatorRepository.EventAggregator.GetEvent<InitContentGridViewEvent>().Publish("Login");
+            Task task = new Task(() => {
+                Dispatcher.Invoke(new Action(() => {
+                    viewModel.IsSelectHistoryChecked = false;
+                    viewModel.SearchText = "";
+                    if(this.IsDealingData)
+                    {
+                        //取消检查数据
+                        CloseDealingGrid();
+                    }
+                    MainGrid.Height = 80;
+                    this.Height = 99;
+                    this.Left = SystemParameters.WorkArea.Width - 352;
+                    this.Top = SystemParameters.WorkArea.Height - 170;
+                }));
+            });
+            task.Start();
         }
 
         private void MenuExit_Click(object sender, RoutedEventArgs e)
@@ -835,7 +851,7 @@ namespace WordAndImgOperationApp
                                     viewModel.CurrentWordInfoResults = new ObservableCollection<CheckWordModel.UnChekedWordInfo>(resultInfo);
                                     if (viewModel.CurrentWordInfoResults.Count > 0)
                                     {
-                                        int heightAdd = 15;
+                                        int heightAdd = 25;
                                         foreach (var item in viewModel.CurrentWordInfoResults)
                                         {
                                             List<UnChekedDetailWordInfo> _detailInfos = new List<UnChekedDetailWordInfo>();
