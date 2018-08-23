@@ -88,7 +88,31 @@
                                                 HorizontalAlignment="Center" VerticalAlignment="Center">
                                             <Button Width="16" Height="16" HorizontalAlignment="Left"
                                                 Style="{StaticResource DeleteBtnButtonStyle}" ToolTip="删除"
-                                                Tag="{Binding}" Click="DeleteBtn_Click"></Button>
+                                                Tag="{Binding}" Click="DeleteBtn_Click">
+                                                <Button.Resources>
+                                                    <Style TargetType="ToolTip">
+                                                        <Setter Property="Background" Value="Red"/>
+                                                        <Setter Property="BorderThickness" Value="0"/>
+                                                        <Setter Property="Height" Value="28"/>
+                                                        <Setter Property="FontSize" Value="13"/>
+                                                        <Setter Property="Foreground" Value="White"/>
+                                                        <Setter Property="FontFamily" Value="Microsoft YaHei"/>
+                                                        <Setter Property="BorderBrush" Value="Transparent"/>
+                                                        <Setter Property="Template">
+                                                            <Setter.Value>
+                                                                <ControlTemplate TargetType="ToolTip">
+                                                                    <Border CornerRadius="2" BorderThickness="{TemplateBinding BorderThickness}" 
+                                                                            Background="Red" Opacity="0.87" BorderBrush="{TemplateBinding BorderBrush}">
+                                                                        <ContentPresenter TextBlock.Foreground="White" TextBlock.FontFamily="Microsoft YaHei"
+                                                                                          Content="{TemplateBinding Content}" ContentTemplate="{TemplateBinding ContentTemplate}"
+                                                                                          Cursor="{TemplateBinding Cursor}" Margin="{TemplateBinding Padding}"/>
+                                                                    </Border>
+                                                                </ControlTemplate>
+                                                            </Setter.Value>
+                                                        </Setter>
+                                                    </Style>
+                                                </Button.Resources>
+                                            </Button>
                                             <Button Width="16" Height="16" HorizontalAlignment="Left" Margin="16,0,0,0"
                                                 Style="{StaticResource EditBtnButtonStyle}" ToolTip="编辑"
                                                 Tag="{Binding}" Click="EditBtn_Click"></Button>
