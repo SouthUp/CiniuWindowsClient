@@ -12,10 +12,8 @@ namespace CheckWordUtil
 {
     public class HttpHelper
     {
-        public static string UrlStr = "http://ciniu.leanapp.cn/";
-        public static string HttpUrlSend(string apiName, string method, string json, string token = "")
+        public static string HttpUrlSend(string urlStr, string method, string json, string token = "")
         {
-            string urlStr = UrlStr + apiName;
             HttpWebRequest req = (HttpWebRequest)WebRequest.Create(urlStr);
             req.Method = method;
             byte[] postBytes = Encoding.UTF8.GetBytes(json);
@@ -46,9 +44,8 @@ namespace CheckWordUtil
                 return ex.Message;
             }
         }
-        public static string HttpUrlGet(string apiName, string method, string token = "")
+        public static string HttpUrlGet(string urlStr, string method, string token = "")
         {
-            string urlStr = UrlStr + apiName;
             HttpWebRequest req = (HttpWebRequest)WebRequest.Create(urlStr);
             req.Method = method;
             if (!string.IsNullOrEmpty(token))

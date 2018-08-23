@@ -20,6 +20,7 @@ namespace CheckWordUtil
             try
             {
                 string token = "";
+                string urlStr = "";
                 try
                 {
                     string loginInOutInfos = string.Format(@"{0}\LoginInOutInfo.xml", Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + "\\WordAndImgOCR\\LoginInOutInfo\\");
@@ -32,6 +33,7 @@ namespace CheckWordUtil
                             if (loginInOutInfo != null && loginInOutInfo.Type == "LoginIn")
                             {
                                 token = loginInOutInfo.Token;
+                                urlStr = loginInOutInfo.UrlStr;
                             }
                         }
                         catch(Exception ex)
@@ -44,13 +46,13 @@ namespace CheckWordUtil
                 {
                     CheckWordUtil.Log.TextLog.SaveError(ex.Message);
                 }
-                string apiName = "ocr";
+                string url = urlStr + "ocr";
                 OCRRequest ocrRequest = new OCRRequest();
                 ocrRequest.image = System.Convert.ToBase64String(image);
                 ocrRequest.fileName = fileName;
                 ocrRequest.taskId = taskId;
                 string json = JsonConvert.SerializeObject(ocrRequest);
-                result = HttpHelper.HttpUrlSend(apiName, "POST", json, token);
+                result = HttpHelper.HttpUrlSend(url, "POST", json, token);
             }
             catch (Exception ex)
             {
@@ -69,6 +71,7 @@ namespace CheckWordUtil
             try
             {
                 string token = "";
+                string urlStr = "";
                 try
                 {
                     string loginInOutInfos = string.Format(@"{0}\LoginInOutInfo.xml", Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + "\\WordAndImgOCR\\LoginInOutInfo\\");
@@ -81,6 +84,7 @@ namespace CheckWordUtil
                             if (loginInOutInfo != null && loginInOutInfo.Type == "LoginIn")
                             {
                                 token = loginInOutInfo.Token;
+                                urlStr = loginInOutInfo.UrlStr;
                             }
                         }
                         catch (Exception ex)
@@ -93,8 +97,8 @@ namespace CheckWordUtil
                 {
                     CheckWordUtil.Log.TextLog.SaveError(ex.Message);
                 }
-                string apiName = "user";
-                string resultStr = HttpHelper.HttpUrlGet(apiName, "GET", token);
+                string url = urlStr + "user";
+                string resultStr = HttpHelper.HttpUrlGet(url, "GET", token);
                 UserStateResponse resultInfo = JsonConvert.DeserializeObject<UserStateResponse>(resultStr);
                 if (resultInfo != null)
                 {
