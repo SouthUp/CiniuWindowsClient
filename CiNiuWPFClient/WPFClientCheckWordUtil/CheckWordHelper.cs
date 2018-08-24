@@ -134,7 +134,6 @@ namespace WPFClientCheckWordUtil
                 req.Headers.Add("X-LC-Session", token);
             }
             req.ContentType = "application/json;charset=UTF-8";
-            req.Timeout = 5000;
             try
             {
                 using (WebResponse res = req.GetResponse())
