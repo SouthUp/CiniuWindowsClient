@@ -100,15 +100,6 @@ namespace WPFClientCheckWordUtil
             List<WordModel> result = new List<WordModel>();
             try
             {
-                if (WordModels.Count == 0 && !string.IsNullOrEmpty(SystemVar.UserToken))
-                {
-                    WordModels = CheckWordHelper.GetAllCheckWordByToken(SystemVar.UserToken, SystemVar.UrlStr);
-                }
-            }
-            catch (Exception ex)
-            { }
-            try
-            {
                 foreach (var item in WordModels)
                 {
                     if (text.Contains(item.Name))

@@ -31,6 +31,15 @@ namespace WPFClientService
             {
                 try
                 {
+                    try
+                    {
+                        if (CheckWordHelper.WordModels.Count == 0 && !string.IsNullOrEmpty(SystemVar.UserToken))
+                        {
+                            CheckWordHelper.GetAllCheckWordByToken(SystemVar.UserToken, SystemVar.UrlStr);
+                        }
+                    }
+                    catch (Exception ex)
+                    { }
                     var listUnChekedWord = CheckWordHelper.GetUnChekedWordInfoList(info.Text).ToList();
                     result.Result = true;
                     result.UncheckWordModels = listUnChekedWord;
