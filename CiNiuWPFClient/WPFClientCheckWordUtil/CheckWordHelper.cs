@@ -21,7 +21,7 @@ namespace WPFClientCheckWordUtil
         /// </summary>
         /// <param name="token"></param>
         /// <returns></returns>
-        public static List<WordModel> GetAllCheckWordByToken(string token)
+        public static List<WordModel> GetAllCheckWordByToken(string token, string url)
         {
             List<WordModel> wordModelLists = new List<WordModel>();
             try
@@ -33,7 +33,7 @@ namespace WPFClientCheckWordUtil
                 //WordModels.Add(new WordModel { ID = "4", Name = "防晒", IsCustumCi = true });
                 //#endregion
                 string apiName = "words/word";
-                string resultStr = HttpHelper.HttpUrlSend(apiName, "GET", token);
+                string resultStr = HttpHelper.HttpUrlSend(apiName, "GET", token, url);
                 CommonResponse resultInfo = JsonConvert.DeserializeObject<CommonResponse>(resultStr);
                 if (resultInfo != null && resultInfo.state)
                 {
@@ -102,7 +102,7 @@ namespace WPFClientCheckWordUtil
             {
                 if (WordModels.Count == 0 && !string.IsNullOrEmpty(SystemVar.UserToken))
                 {
-                    WordModels = CheckWordHelper.GetAllCheckWordByToken(SystemVar.UserToken);
+                    WordModels = CheckWordHelper.GetAllCheckWordByToken(SystemVar.UserToken, SystemVar.UrlStr);
                 }
             }
             catch (Exception ex)
@@ -124,9 +124,9 @@ namespace WPFClientCheckWordUtil
     }
     public class HttpHelper
     {
-        public static string HttpUrlSend(string apiName, string method, string token = "")
+        public static string HttpUrlSend(string apiName, string method, string token = "", string url = "")
         {
-            string urlStr = SystemVar.UrlStr + apiName;
+            string urlStr = url + apiName;
             HttpWebRequest req = (HttpWebRequest)WebRequest.Create(urlStr);
             req.Method = method;
             if (!string.IsNullOrEmpty(token))
