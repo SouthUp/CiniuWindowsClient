@@ -41,7 +41,7 @@
                     <Grid Width="18" Height="18" Background="{StaticResource CircleWordTitleLogoBGLogo}"
                           HorizontalAlignment="Left" VerticalAlignment="Center" Margin="0,0,16,0">
                     </Grid>
-                    <TextBlock Text="MS Word /版本号（ WORD " Foreground="#160536" Opacity="0.54" FontSize="14"
+                    <TextBlock Text="MS Word /版本号（ Word " Foreground="#160536" Opacity="0.54" FontSize="14"
                                Style="{StaticResource CommonLeftTextBlock}"></TextBlock>
                     <TextBlock Text="{Binding WordOfficeVersion}" Foreground="#160536" Opacity="0.54" FontSize="14"
                                Style="{StaticResource CommonLeftTextBlock}"></TextBlock>
@@ -59,10 +59,10 @@
             </Grid>
             <Grid Margin="56,140,0,0">
                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" VerticalAlignment="Top">
-                    <Grid Width="18" Height="18" Background="{StaticResource CircleWordTitleLogoBGLogo}"
+                    <Grid Width="18" Height="18" Background="{StaticResource CircleXlsxTitleLogoBGLogo}"
                           HorizontalAlignment="Left" VerticalAlignment="Center" Margin="0,0,16,0">
                     </Grid>
-                    <TextBlock Text="MS Excel /版本号（ WORD " Foreground="#160536" Opacity="0.54" FontSize="14"
+                    <TextBlock Text="MS Excel /版本号（ Excel " Foreground="#160536" Opacity="0.54" FontSize="14"
                                Style="{StaticResource CommonLeftTextBlock}"></TextBlock>
                     <TextBlock Text="{Binding ExcelOfficeVersion}" Foreground="#160536" Opacity="0.54" FontSize="14"
                                Style="{StaticResource CommonLeftTextBlock}"></TextBlock>
