@@ -2,7 +2,6 @@
 using CheckWordModel;
 using CheckWordModel.Communication;
 using CheckWordUtil;
-using IWPFClientService;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Concurrent;
@@ -36,7 +35,7 @@ namespace WordAndImgOperationApp
     /// <summary>
     /// MainWindow.xaml 的交互逻辑
     /// </summary>
-    public partial class MainWindow : Window, ICallBackServices, IShell
+    public partial class MainWindow : Window, IShell
     {
         private List<HistoryCheckInfo> listCheckHistory = new List<HistoryCheckInfo>();
         private static List<string> FilePathsList = new List<string>();
@@ -429,8 +428,8 @@ namespace WordAndImgOperationApp
         private void Window_Closed(object sender, EventArgs e)
         {
             this.notifyIcon.Visible = false;
-            LeaveWcfService();
-            CloseConsoleWPFClientServer();
+            UtilSystemVar.UserToken = "";
+            EventAggregatorRepository.EventAggregator.GetEvent<LoginInOrOutEvent>().Publish("LoginOut");
             CloseNotifyMessageView();
             CloseLoginView();
             CloseImgWindow();
@@ -592,19 +591,6 @@ namespace WordAndImgOperationApp
             catch (Exception ex)
             { }
         }
-        private void CloseConsoleWPFClientServer()
-        {
-            try
-            {
-                Process[] processes = Process.GetProcessesByName("ConsoleWPFClientServer");
-                foreach (var p in processes)
-                {
-                    p.Kill();
-                }
-            }
-            catch (Exception ex)
-            { }
-        }
         protected override void OnSourceInitialized(EventArgs e)
         {
             base.OnSourceInitialized(e);
@@ -615,39 +601,34 @@ namespace WordAndImgOperationApp
                 hwndSource.AddHook(new HwndSourceHook(WndProc));
             }
         }
-        private MessageServiceClient mService = null;
         private void RegisterWcfService()
         {
-            try
-            {
-                InstanceContext context = new InstanceContext(this);
-                mService = new MessageServiceClient(context);
-                mService.Register("WordAndImgOperationApp");
-            }
-            catch (Exception ex)
-            { }
             EventAggregatorRepository.EventAggregator.GetEvent<LoginInOrOutEvent>().Publish("LoginOut");
-        }
-
-        private void LeaveWcfService()
-        {
-            try
-            {
-                mService.Leave("WordAndImgOperationApp");
-            }
-            catch (Exception ex)
-            { }
-        }
-        public void SendMessage(string str)
-        {
-
         }
         private void LoginInOrOut(string typeInfo)
         {
             try
             {
+                LoginInOutInfo loginInOutInfo = new LoginInOutInfo();
+                loginInOutInfo.Type = typeInfo;
+                loginInOutInfo.UrlStr = UtilSystemVar.UrlStr;
+                loginInOutInfo.Token = UtilSystemVar.UserToken;
+                viewModel.UserName = UtilSystemVar.UserName;
+                try
+                {
+                    //保存用户登录信息到本地
+                    string loginInOutInfos = string.Format(@"{0}\LoginInOutInfo.xml", Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + "\\WordAndImgOCR\\LoginInOutInfo\\");
+                    DataParse.WriteToXmlPath(JsonConvert.SerializeObject(loginInOutInfo), loginInOutInfos);
+                }
+                catch (Exception ex)
+                {
+                    WPFClientCheckWordUtil.Log.TextLog.SaveError(ex.Message);
+                }
                 if (typeInfo == "LoginIn")
                 {
+                    new Task(() => {
+                        EventAggregatorRepository.EventAggregator.GetEvent<GetWordsEvent>().Publish(true);
+                    }).Start();
                     SetIconToolTip("词牛（已登录）");
                     //获取用户设置
                     Task task = new Task(() => {
@@ -685,25 +666,21 @@ namespace WordAndImgOperationApp
                 }
                 else
                 {
+                    new Task(() => {
+                        try
+                        {
+                            List<WordModel> wordModels = new List<WordModel>();
+                            string myWordModelsInfo = string.Format(@"{0}\MyWordModelsInfo.xml", Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + "\\WordAndImgOCR\\LoginInOutInfo\\");
+                            //保存用户设置信息到本地
+                            DataParse.WriteToXmlPath(JsonConvert.SerializeObject(wordModels), myWordModelsInfo);
+                        }
+                        catch (Exception ex)
+                        {
+                            WPFClientCheckWordUtil.Log.TextLog.SaveError(ex.Message);
+                        }
+                    }).Start();
                     SetIconToolTip("词牛（未登录）");
                 }
-                LoginInOutInfo loginInOutInfo = new LoginInOutInfo();
-                loginInOutInfo.Type = typeInfo;
-                loginInOutInfo.UrlStr = UtilSystemVar.UrlStr;
-                loginInOutInfo.Token = UtilSystemVar.UserToken;
-                viewModel.UserName = UtilSystemVar.UserName;
-                try
-                {
-                    //保存用户登录信息到本地
-                    string loginInOutInfos = string.Format(@"{0}\LoginInOutInfo.xml", Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + "\\WordAndImgOCR\\LoginInOutInfo\\");
-                    DataParse.WriteToXmlPath(JsonConvert.SerializeObject(loginInOutInfo), loginInOutInfos);
-                }
-                catch (Exception ex)
-                {
-                    WPFClientCheckWordUtil.Log.TextLog.SaveError(ex.Message);
-                }
-                string json = JsonConvert.SerializeObject(loginInOutInfo);
-                mService.ClientSendMessage(json);
             }
             catch (Exception ex)
             {
@@ -729,8 +706,7 @@ namespace WordAndImgOperationApp
                 {
                     WPFClientCheckWordUtil.Log.TextLog.SaveError(ex.Message);
                 }
-                string json = JsonConvert.SerializeObject(loginInOutInfo);
-                mService.ClientSendMessage(json);
+                CheckWordHelper.GetAllCheckWordByToken(UtilSystemVar.UserToken);
             }
             catch (Exception ex)
             {

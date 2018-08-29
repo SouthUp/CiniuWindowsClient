@@ -173,7 +173,6 @@
       <DependentUpon>LoginWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="MainWindowViewModel.cs" />
-    <Compile Include="MessageProxy.cs" />
     <Compile Include="Register.xaml.cs">
       <DependentUpon>Register.xaml</DependentUpon>
     </Compile>
@@ -345,14 +344,6 @@
       <Project>{7ade6cf2-1cc9-46f6-8bce-f2f475e00e9f}</Project>
       <Name>CheckWordUtil</Name>
     </ProjectReference>
-    <ProjectReference Include="..\ConsoleWPFClientServer\ConsoleWPFClientServer.csproj">
-      <Project>{587d6527-0390-438f-a1dc-83eaf2c44e92}</Project>
-      <Name>ConsoleWPFClientServer</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\IWPFClientService\IWPFClientService.csproj">
-      <Project>{ccbaf7e2-a23c-4459-a7bf-cbb7a08471e4}</Project>
-      <Name>IWPFClientService</Name>
-    </ProjectReference>
     <ProjectReference Include="..\WPFClientCheckWordModel\WPFClientCheckWordModel.csproj">
       <Project>{b92f769c-c517-4261-8c03-f58c8cd79651}</Project>
       <Name>WPFClientCheckWordModel</Name>
@@ -360,10 +351,6 @@
     <ProjectReference Include="..\WPFClientCheckWordUtil\WPFClientCheckWordUtil.csproj">
       <Project>{36085f13-48fd-4326-a717-39c5274f530a}</Project>
       <Name>WPFClientCheckWordUtil</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\WPFClientService\WPFClientService.csproj">
-      <Project>{b3493fe6-b75d-4d5d-bf3d-992ef7f09c76}</Project>
-      <Name>WPFClientService</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

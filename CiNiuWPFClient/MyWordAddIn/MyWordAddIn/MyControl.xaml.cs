@@ -245,7 +245,7 @@ namespace MyWordAddIn
             { }
             try
             {
-                if (Util.IsUrlExist("http://localhost:8888/") && Util.GetIsUserLogin())
+                if (Util.GetIsUserLogin())
                 {
                     Dispatcher.Invoke(new Action(() =>
                     {
@@ -501,7 +501,7 @@ namespace MyWordAddIn
             }
             catch (Exception ex)
             { }
-            if (Util.IsUrlExist("http://localhost:8888/") && Util.GetIsUserLogin())
+            if (Util.GetIsUserLogin())
             {
                 Dispatcher.Invoke(new Action(() =>
                 {

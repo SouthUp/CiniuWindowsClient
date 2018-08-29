@@ -107,7 +107,7 @@ namespace MyExcelAddIn
             viewModel.IsBusyVisibility = Visibility.Visible;
             try
             {
-                if (Util.IsUrlExist("http://localhost:8888/") && Util.GetIsUserLogin())
+                if (Util.GetIsUserLogin())
                 {
                     Dispatcher.Invoke(new System.Action(() =>
                     {

@@ -1,4 +1,5 @@
 ﻿using CheckWordModel;
+using CheckWordModel.Communication;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -16,18 +17,110 @@ namespace CheckWordUtil
 {
     public class CheckWordHelper
     {
+        public static List<WordModel> WordModels = new List<WordModel>();
+        /// <summary>
+        /// 获取所有校验数据
+        /// </summary>
+        /// <param name="token"></param>
+        /// <returns></returns>
+        public static void GetAllCheckWordByToken(string token)
+        {
+            List<WordModel> wordModelLists = new List<WordModel>();
+            try
+            {
+                //#region 假数据
+                //WordModels.Add(new WordModel { ID = "1", Name = "第一", IsCustumCi = true });
+                //WordModels.Add(new WordModel { ID = "2", Name = "最", IsCustumCi = false });
+                //WordModels.Add(new WordModel { ID = "3", Name = "冠军", IsCustumCi = false });
+                //WordModels.Add(new WordModel { ID = "4", Name = "防晒", IsCustumCi = true });
+                //#endregion
+                string apiName = "words/word";
+                string resultStr = HttpHelper.HttpUrlGet(apiName, "GET", token);
+                CommonResponse resultInfo = JsonConvert.DeserializeObject<CommonResponse>(resultStr);
+                if (resultInfo != null && resultInfo.state)
+                {
+                    List<DBWordModel> listDBWords = JsonConvert.DeserializeObject<List<DBWordModel>>(resultInfo.result);
+                    if (listDBWords != null)
+                    {
+                        foreach (var item in listDBWords)
+                        {
+                            WordModel word = new WordModel();
+                            word.ID = item.id;
+                            word.Name = item.name;
+                            wordModelLists.Add(word);
+                        }
+                    }
+                    try
+                    {
+                        CommonExchangeInfo commonExchangeInfo = new CommonExchangeInfo();
+                        commonExchangeInfo.Code = "HideNotifyMessageView";
+                        commonExchangeInfo.Data = "4003";
+                        string jsonData = JsonConvert.SerializeObject(commonExchangeInfo); //序列化
+                        Win32Helper.SendMessage("WordAndImgOperationApp", jsonData);
+                    }
+                    catch
+                    { }
+                }
+                else
+                {
+                    try
+                    {
+                        CommonExchangeInfo commonExchangeInfo = new CommonExchangeInfo();
+                        commonExchangeInfo.Code = "ShowNotifyMessageView";
+                        commonExchangeInfo.Data = "4003";
+                        string jsonData = JsonConvert.SerializeObject(commonExchangeInfo); //序列化
+                        Win32Helper.SendMessage("WordAndImgOperationApp", jsonData);
+                    }
+                    catch
+                    { }
+                }
+            }
+            catch (Exception ex)
+            {
+                wordModelLists = new List<WordModel>();
+                WPFClientCheckWordUtil.Log.TextLog.SaveError(ex.Message);
+                try
+                {
+                    CommonExchangeInfo commonExchangeInfo = new CommonExchangeInfo();
+                    commonExchangeInfo.Code = "ShowNotifyMessageView";
+                    commonExchangeInfo.Data = "4003";
+                    string jsonData = JsonConvert.SerializeObject(commonExchangeInfo); //序列化
+                    Win32Helper.SendMessage("WordAndImgOperationApp", jsonData);
+                }
+                catch
+                { }
+            }
+            WordModels = wordModelLists;
+            new Task(() => {
+                try
+                {
+                    string myWordModelsInfo = string.Format(@"{0}\MyWordModelsInfo.xml", Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + "\\WordAndImgOCR\\LoginInOutInfo\\");
+                    //保存用户设置信息到本地
+                    DataParse.WriteToXmlPath(JsonConvert.SerializeObject(WordModels), myWordModelsInfo);
+                }
+                catch (Exception ex)
+                {
+                    WPFClientCheckWordUtil.Log.TextLog.SaveError(ex.Message);
+                }
+            }).Start();
+        }
         public static List<UnChekedWordInfo> GetUnChekedWordInfoList(string text)
         {
             List<UnChekedWordInfo> result = new List<UnChekedWordInfo>();
             try
             {
-                CheckWordRequestInfo info = new CheckWordRequestInfo() { Text = text };
-                string json = JsonConvert.SerializeObject(info);
-                string resultStr = PostSend("http://localhost:8888/WPFClientCheckWordService/CheckWord", json);
-                CheckWordResponseResult resultInfo = JsonConvert.DeserializeObject<CheckWordResponseResult>(resultStr);
-                if (resultInfo != null && resultInfo.Result && resultInfo.UncheckWordModels != null)
+                try
                 {
-                    foreach (var item in resultInfo.UncheckWordModels)
+                    if (WordModels.Count == 0 && !string.IsNullOrEmpty(UtilSystemVar.UserToken))
+                    {
+                        GetAllCheckWordByToken(UtilSystemVar.UserToken);
+                    }
+                }
+                catch (Exception ex)
+                { }
+                foreach (var item in WordModels)
+                {
+                    if (text.Contains(item.Name))
                     {
                         var defaultObj = result.FirstOrDefault(x => x.Name == item.Name);
                         if (text.Contains(item.Name) && defaultObj == null)
@@ -112,44 +205,6 @@ namespace CheckWordUtil
 
             }
             return subIndex;
-        }
-        public static string PostSend(string url, string json)
-        {
-            byte[] postBytes = Encoding.UTF8.GetBytes(json);
-            HttpWebRequest req = (HttpWebRequest)WebRequest.Create(url);
-            req.Method = "POST";
-            req.ContentType = "application/json;charset=UTF-8";
-            req.ContentLength = postBytes.Length;
-            try
-            {
-                using (Stream reqStream = req.GetRequestStream())
-                {
-                    reqStream.Write(postBytes, 0, postBytes.Length);
-                }
-                using (WebResponse res = req.GetResponse())
-                {
-                    using (StreamReader sr = new StreamReader(res.GetResponseStream(), Encoding.GetEncoding("UTF-8")))
-                    {
-                        string strResult = sr.ReadToEnd();
-                        strResult = strResult.Replace("\\\"", "\"");
-                        if (strResult.Substring(0, 1) == "\"")
-                        {
-                            string strRegex = @"^(" + "\"" + ")";
-                            strResult = Regex.Replace(strResult, strRegex, "");
-                        }
-                        if (strResult.Substring(strResult.Length - 1, 1) == "\"")
-                        {
-                            string strRegex2 = @"(" + "\"" + ")" + "$";
-                            strResult = Regex.Replace(strResult, strRegex2, "");
-                        }
-                        return strResult;
-                    }
-                }
-            }
-            catch (WebException ex)
-            {
-                return ex.Message;
-            }
         }
     }
 }

@@ -30,7 +30,6 @@ namespace WordAndImgOperationApp
                 Application.Current.Dispatcher.Invoke((Action)(() => Application.Current.Shutdown()));
                 return;
             }
-            StartService();
             try
             {
                 WordAndImgAppInfo info = new WordAndImgAppInfo();
@@ -51,25 +50,6 @@ namespace WordAndImgOperationApp
         void App_DispatcherUnhandledException(object sender, System.Windows.Threading.DispatcherUnhandledExceptionEventArgs e)
         {
             e.Handled = true;
-        }
-        private void StartService()
-        {
-            try
-            {
-                Process[] processes = Process.GetProcessesByName("ConsoleWPFClientServer");
-                foreach (var p in processes)
-                {
-                    p.Kill();
-                }
-                string exePath = System.IO.Path.Combine(System.AppDomain.CurrentDomain.BaseDirectory,
-                    "ConsoleWPFClientServer.exe");
-                var info = new System.Diagnostics.ProcessStartInfo(exePath);
-                info.UseShellExecute = true;
-                info.WorkingDirectory = exePath.Substring(0, exePath.LastIndexOf(System.IO.Path.DirectorySeparatorChar));
-                System.Diagnostics.Process.Start(info);
-            }
-            catch (Exception ex)
-            { }
         }
         private void BootStrapper()
         {

@@ -85,20 +85,6 @@ namespace CheckWordUtil
             { }
             return image;
         }
-        public static bool IsUrlExist(string URL)
-        {
-            try
-            {
-                WebRequest request = WebRequest.Create(URL);
-                request.Timeout = 1000;
-                WebResponse response = request.GetResponse();
-                return true;
-            }
-            catch
-            {
-                return false;
-            }
-        }
         public static bool GetIsUserLogin()
         {
             bool result = false;
