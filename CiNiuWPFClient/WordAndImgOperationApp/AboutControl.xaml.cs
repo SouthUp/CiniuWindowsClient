@@ -95,13 +95,37 @@ namespace WordAndImgOperationApp
             {
                 officeVersion = "2010";
             }
+            else
+            {
+                akey10 = rk.OpenSubKey(@"SOFTWARE\WOW6432Node\Microsoft\Office\14.0\" + officeName + @"\InstallRoot\");//查询2010
+                if (akey10 != null)
+                {
+                    officeVersion = "2010";
+                }
+            }
             if (akey13 != null)
             {
                 officeVersion = "2013";
             }
+            else
+            {
+                akey13 = rk.OpenSubKey(@"SOFTWARE\WOW6432Node\Microsoft\Office\15.0\" + officeName + @"\InstallRoot\");//查询2013
+                if (akey13 != null)
+                {
+                    officeVersion = "2013";
+                }
+            }
             if (akey16 != null)
             {
                 officeVersion = "2016";
+            }
+            else
+            {
+                akey16 = rk.OpenSubKey(@"SOFTWARE\WOW6432Node\Microsoft\Office\16.0\" + officeName + @"\InstallRoot\");//查询2016
+                if (akey16 != null)
+                {
+                    officeVersion = "2016";
+                }
             }
             return officeVersion;
         }
