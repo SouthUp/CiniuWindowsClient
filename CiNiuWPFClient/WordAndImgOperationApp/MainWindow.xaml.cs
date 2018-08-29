@@ -1781,10 +1781,19 @@ namespace WordAndImgOperationApp
                                         if (picInfo.FullName.Contains("jpg"))
                                         {
                                             var picResult = AutoExcutePicOCR(picInfo.FullName, dealFilePath, guid);
-                                            if (picResult != null && picResult.CheckResultInfo == "1")
+                                            if (picResult != null)
                                             {
-                                                model.CheckResultInfo = "1";
-                                                return model;
+                                                if (picResult.CheckResultInfo == "1")
+                                                {
+                                                    model.CheckResultInfo = "1";
+                                                    return model;
+                                                }
+                                                else if (picResult.CheckResultInfo == "2")
+                                                {
+                                                    model.CheckResultInfo = "2";
+                                                    model.FileToolTip = picResult.FileToolTip;
+                                                    return model;
+                                                }
                                             }
                                         }
                                     }
