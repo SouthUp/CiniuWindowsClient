@@ -211,6 +211,7 @@ namespace WordAndImgOperationApp
             {
                 SettingBtn.IsChecked = true;
             }
+            this.Topmost = false;
         }
 
         private void UserInfoBtn_Click(object sender, RoutedEventArgs e)

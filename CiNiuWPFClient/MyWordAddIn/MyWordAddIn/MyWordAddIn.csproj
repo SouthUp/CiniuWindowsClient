@@ -367,6 +367,7 @@
     <Resource Include="Image\5.png" />
     <Content Include="Resources\CheckBtn.png" />
     <None Include="Resources\MarkWord.png" />
+    <Content Include="Resources\Setting.png" />
     <Content Include="Resources\SynonymDB.png" />
     <Content Include="Resources\WordsDB.png" />
   </ItemGroup>

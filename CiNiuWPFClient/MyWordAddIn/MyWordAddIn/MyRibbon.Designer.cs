@@ -38,13 +38,17 @@
             this.group1 = this.Factory.CreateRibbonGroup();
             this.CheckWordBtn = this.Factory.CreateRibbonCheckBox();
             this.button1 = this.Factory.CreateRibbonButton();
+            this.group2 = this.Factory.CreateRibbonGroup();
+            this.button2 = this.Factory.CreateRibbonButton();
             this.tab1.SuspendLayout();
             this.group1.SuspendLayout();
+            this.group2.SuspendLayout();
             this.SuspendLayout();
             // 
             // tab1
             // 
             this.tab1.Groups.Add(this.group1);
+            this.tab1.Groups.Add(this.group2);
             this.tab1.Label = "词牛";
             this.tab1.Name = "tab1";
             // 
@@ -52,23 +56,39 @@
             // 
             this.group1.Items.Add(this.CheckWordBtn);
             this.group1.Items.Add(this.button1);
-            this.group1.Label = "违禁词检查";
+            this.group1.Label = "筛查";
             this.group1.Name = "group1";
             // 
             // CheckWordBtn
             // 
             this.CheckWordBtn.Checked = true;
-            this.CheckWordBtn.Label = "实时检查开关";
+            this.CheckWordBtn.Label = "实时筛查";
             this.CheckWordBtn.Name = "CheckWordBtn";
             this.CheckWordBtn.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.CheckWordBtn_Click);
             // 
             // button1
             // 
+            this.button1.ControlSize = Microsoft.Office.Core.RibbonControlSize.RibbonControlSizeLarge;
             this.button1.Image = global::MyWordAddIn.Properties.Resources.MarkWord;
-            this.button1.Label = "标记违禁词";
+            this.button1.Label = "标记";
             this.button1.Name = "button1";
             this.button1.ShowImage = true;
             this.button1.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.button1_Click);
+            // 
+            // group2
+            // 
+            this.group2.Items.Add(this.button2);
+            this.group2.Label = "筛查使用词库";
+            this.group2.Name = "group2";
+            // 
+            // button2
+            // 
+            this.button2.ControlSize = Microsoft.Office.Core.RibbonControlSize.RibbonControlSizeLarge;
+            this.button2.Image = global::MyWordAddIn.Properties.Resources.Setting;
+            this.button2.Label = "设置";
+            this.button2.Name = "button2";
+            this.button2.ShowImage = true;
+            this.button2.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.button2_Click);
             // 
             // MyRibbon
             // 
@@ -80,6 +100,8 @@
             this.tab1.PerformLayout();
             this.group1.ResumeLayout(false);
             this.group1.PerformLayout();
+            this.group2.ResumeLayout(false);
+            this.group2.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -90,6 +112,8 @@
         internal Microsoft.Office.Tools.Ribbon.RibbonGroup group1;
         internal Microsoft.Office.Tools.Ribbon.RibbonCheckBox CheckWordBtn;
         internal Microsoft.Office.Tools.Ribbon.RibbonButton button1;
+        internal Microsoft.Office.Tools.Ribbon.RibbonGroup group2;
+        internal Microsoft.Office.Tools.Ribbon.RibbonButton button2;
     }
 
     partial class ThisRibbonCollection

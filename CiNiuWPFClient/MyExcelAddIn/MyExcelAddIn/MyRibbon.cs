@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using CheckWordEvent;
+using CheckWordModel.Communication;
+using CheckWordUtil;
 using Microsoft.Office.Tools.Ribbon;
 using Newtonsoft.Json;
 using WPFClientCheckWordModel;
@@ -58,6 +60,20 @@ namespace MyExcelAddIn
         private void button1_Click(object sender, RibbonControlEventArgs e)
         {
             EventAggregatorRepository.EventAggregator.GetEvent<MarkUnCheckWordEvent>().Publish(true);
+        }
+
+        private void button2_Click(object sender, RibbonControlEventArgs e)
+        {
+            try
+            {
+                CommonExchangeInfo commonExchangeInfo = new CommonExchangeInfo();
+                commonExchangeInfo.Code = "ShowSettingWindow";
+                commonExchangeInfo.Data = "";
+                string jsonData = JsonConvert.SerializeObject(commonExchangeInfo); //序列化
+                Win32Helper.SendMessage("WordAndImgOperationApp", jsonData);
+            }
+            catch
+            { }
         }
     }
 }

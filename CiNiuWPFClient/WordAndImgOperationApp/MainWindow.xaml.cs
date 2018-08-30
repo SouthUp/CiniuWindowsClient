@@ -523,6 +523,15 @@ namespace WordAndImgOperationApp
                             {
                                 EventAggregatorRepository.EventAggregator.GetEvent<SendNotifyMessageEvent>().Publish(result.Data);
                             }
+                            else if (result.Code == "ShowSettingWindow")
+                            {
+                                Dispatcher.Invoke(new Action(() => {
+                                    if (viewModel.MenueLoginVisibility == Visibility.Visible)
+                                    {
+                                        OpenSettingWindow("Setting");
+                                    }
+                                }));
+                            }
                             else if (result.Code == "HideNotifyMessageView")
                             {
                                 if (result.Data == "4003" && this.notifyIcon.Text.Contains("数据异常"))
