@@ -21,7 +21,7 @@
                              Style="{StaticResource WatermarkTextBox}" Opacity="0.87" Margin="10,0,0,0"
                              Width="250" Height="36" Background="Transparent" Foreground="Black" 
                              Text="{Binding UserName}" FontSize="12" HorizontalAlignment="Left"
-                             VerticalContentAlignment="Bottom" CaretBrush="Black"
+                             VerticalContentAlignment="Bottom" CaretBrush="Black" IsReadOnly="True"
                                               control:WatermarkTextBox.Watermark="用户名"
                                               MaxLength="11" IsOnlyNumber="True"
                                               InputMethod.IsInputMethodEnabled="False"

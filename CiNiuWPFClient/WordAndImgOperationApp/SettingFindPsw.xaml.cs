@@ -77,6 +77,32 @@ namespace WordAndImgOperationApp
                     viewModel.FindPswResultGridVisibility = Visibility.Visible;
                     Task task = new Task(() =>
                     {
+                        try
+                        {
+                            string loginInOutInfos = string.Format(@"{0}\UserLoginInfo.xml", Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + "\\WordAndImgOCR\\LoginInOutInfo\\");
+                            var ui = CheckWordUtil.DataParse.ReadFromXmlPath<string>(loginInOutInfos);
+                            if (ui != null && ui.ToString() != "")
+                            {
+                                try
+                                {
+                                    var userLoginInfo = JsonConvert.DeserializeObject<UserLoginInfo>(ui.ToString());
+                                    if (userLoginInfo != null)
+                                    {
+                                        if (userLoginInfo.IsAutoLogin)
+                                        {
+                                            userLoginInfo.PassWord = viewModel.PassWord;
+                                            //保存用户登录信息到本地
+                                            string userLoginInfos = string.Format(@"{0}\UserLoginInfo.xml", Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + "\\WordAndImgOCR\\LoginInOutInfo\\");
+                                            DataParse.WriteToXmlPath(JsonConvert.SerializeObject(userLoginInfo), userLoginInfos);
+                                        }
+                                    }
+                                }
+                                catch
+                                { }
+                            }
+                        }
+                        catch (Exception ex)
+                        { }
                         System.Threading.Thread.Sleep(2000);
                         EventAggregatorRepository.EventAggregator.GetEvent<LoadSettingWindowGridViewEvent>().Publish("UserInfoControl");
                     });
