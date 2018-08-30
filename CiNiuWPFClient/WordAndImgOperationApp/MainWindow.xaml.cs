@@ -810,6 +810,11 @@ namespace WordAndImgOperationApp
         {
             if (e.Key == Key.Enter)
             {
+                if (string.IsNullOrEmpty(SearchTextBox.Text))
+                {
+                    EventAggregatorRepository.EventAggregator.GetEvent<MainAppShowTipsInfoEvent>().Publish(new AppBusyIndicator() { IsBusy = true, BusyContent = "检查内容为空，请输入后再操作" });
+                    return;
+                }
                 viewModel.SearchText = SearchTextBox.Text;
                 CheckInputText(viewModel.SearchText);
             }
@@ -817,6 +822,11 @@ namespace WordAndImgOperationApp
 
         private void GoBtn_Click(object sender, RoutedEventArgs e)
         {
+            if (string.IsNullOrEmpty(viewModel.SearchText))
+            {
+                EventAggregatorRepository.EventAggregator.GetEvent<MainAppShowTipsInfoEvent>().Publish(new AppBusyIndicator() { IsBusy = true, BusyContent = "检查内容为空，请输入后再操作" });
+                return;
+            }
             CheckInputText(viewModel.SearchText);
         }
         private async void CheckInputText(string textSearch)
