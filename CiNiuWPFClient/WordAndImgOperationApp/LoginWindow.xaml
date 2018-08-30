@@ -27,7 +27,7 @@
                 <RowDefinition Height="24"></RowDefinition>
                 <RowDefinition Height="72"></RowDefinition>
                 <RowDefinition Height="*"></RowDefinition>
-                <RowDefinition Height="72"></RowDefinition>
+                <RowDefinition Height="40"></RowDefinition>
             </Grid.RowDefinitions>
             <Grid Grid.Row="0" x:Name="TitleGrid" Background="Transparent" 
                   Cursor="Hand" MouseDown="TitleGrid_MouseDown">

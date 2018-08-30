@@ -242,5 +242,9 @@ namespace WordAndImgOperationApp
             NewPasswordBorder.BorderBrush = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#000000"));
             NewPasswordBorder.Opacity = 0.06;
         }
+        private void CancelBtn_Click(object sender, RoutedEventArgs e)
+        {
+            EventAggregatorRepository.EventAggregator.GetEvent<LoadLoginContentGridViewEvent>().Publish("LoginControl");
+        }
     }
 }
