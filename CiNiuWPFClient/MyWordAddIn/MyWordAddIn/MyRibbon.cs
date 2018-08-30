@@ -15,6 +15,7 @@ namespace MyWordAddIn
     {
         private void MyRibbon_Load(object sender, RibbonUIEventArgs e)
         {
+            button2.Label += "\n";
             EventAggregatorRepository.EventAggregator.GetEvent<SetOpenMyControlEnableEvent>().Subscribe(SetOpenMyControlEnable);
         }
         private void SetOpenMyControlEnable(bool isEnable)

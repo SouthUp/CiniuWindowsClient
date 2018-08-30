@@ -37,8 +37,8 @@
             this.tab1 = this.Factory.CreateRibbonTab();
             this.group1 = this.Factory.CreateRibbonGroup();
             this.CheckWordBtn = this.Factory.CreateRibbonCheckBox();
-            this.group2 = this.Factory.CreateRibbonGroup();
             this.button1 = this.Factory.CreateRibbonButton();
+            this.group2 = this.Factory.CreateRibbonGroup();
             this.button2 = this.Factory.CreateRibbonButton();
             this.tab1.SuspendLayout();
             this.group1.SuspendLayout();
@@ -66,20 +66,19 @@
             this.CheckWordBtn.Name = "CheckWordBtn";
             this.CheckWordBtn.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.CheckWordBtn_Click);
             // 
+            // button1
+            // 
+            this.button1.Image = global::MyExcelAddIn.Properties.Resources.MarkWord;
+            this.button1.Label = "标记违禁词";
+            this.button1.Name = "button1";
+            this.button1.ShowImage = true;
+            this.button1.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.button1_Click);
+            // 
             // group2
             // 
             this.group2.Items.Add(this.button2);
             this.group2.Label = "筛查使用词库";
             this.group2.Name = "group2";
-            // 
-            // button1
-            // 
-            this.button1.ControlSize = Microsoft.Office.Core.RibbonControlSize.RibbonControlSizeLarge;
-            this.button1.Image = global::MyExcelAddIn.Properties.Resources.MarkWord;
-            this.button1.Label = "标记";
-            this.button1.Name = "button1";
-            this.button1.ShowImage = true;
-            this.button1.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.button1_Click);
             // 
             // button2
             // 
