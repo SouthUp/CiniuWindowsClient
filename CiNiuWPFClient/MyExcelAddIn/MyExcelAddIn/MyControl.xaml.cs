@@ -528,7 +528,7 @@ namespace MyExcelAddIn
                     {
                         if (!CurrentWordsDictionary.ContainsKey(hashWord))
                         {
-                            listUnChekedWord = CheckWordHelper.GetUnChekedWordInfoList(str).ToList();
+                            listUnChekedWord = CheckWordHelper.GetUnChekedWordInfoList(str, "Excel").ToList();
                             if (listUnChekedWord != null)
                             {
                                 try
@@ -780,7 +780,7 @@ namespace MyExcelAddIn
                             lineWord += charInfo.Char;
                             rects.Add(new Rect() { X = charInfo.location.left * xScale, Y = charInfo.location.top * yScale, Width = charInfo.location.width * xScale, Height = charInfo.location.height * yScale });
                         }
-                        var listUnChekedWordInfo = CheckWordUtil.CheckWordHelper.GetUnChekedWordInfoList(lineWord);
+                        var listUnChekedWordInfo = CheckWordUtil.CheckWordHelper.GetUnChekedWordInfoList(lineWord, "Excel");
                         foreach (var itemInfo in listUnChekedWordInfo)
                         {
                             listUnValidInfos.Add(new WordInfo() { UnValidText = itemInfo.Name, AllText = lineWord, Rects = rects });

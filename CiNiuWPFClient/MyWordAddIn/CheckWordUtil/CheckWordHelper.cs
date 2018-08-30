@@ -16,43 +16,71 @@ namespace CheckWordUtil
 {
     public class CheckWordHelper
     {
+        public static List<WordModel> WordModels = new List<WordModel>();
         /// <summary>
         /// 获取文本中包含的违禁词集合
         /// </summary>
         /// <param name="text"></param>
         /// <returns></returns>
-        public static List<UnChekedWordInfo> GetUnChekedWordInfoList(string text)
+        public static List<UnChekedWordInfo> GetUnChekedWordInfoList(string text, string typeInfo = "Word")
         {
             List<UnChekedWordInfo> result = new List<UnChekedWordInfo>();
             try
             {
-                string myWordModelsInfo = string.Format(@"{0}\MyWordModelsInfo.xml", Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + "\\WordAndImgOCR\\LoginInOutInfo\\");
-                var ui = CheckWordUtil.DataParse.ReadFromXmlPath<string>(myWordModelsInfo);
+                bool isGetAllWord = true;
+                string isGetAllWordsInfo = "";
+                if (typeInfo == "Word")
+                {
+                    isGetAllWordsInfo = string.Format(@"{0}\IsWordGetAllWordsInfo.xml", Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + "\\WordAndImgOCR\\LoginInOutInfo\\");
+                }
+                else
+                {
+                    isGetAllWordsInfo = string.Format(@"{0}\IsExcelGetAllWordsInfo.xml", Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + "\\WordAndImgOCR\\LoginInOutInfo\\");
+                }
+                var ui = DataParse.ReadFromXmlPath<string>(isGetAllWordsInfo);
                 if (ui != null && ui.ToString() != "")
                 {
                     try
                     {
-                        List<WordModel> WordModels = JsonConvert.DeserializeObject<List<WordModel>>(ui.ToString());
-                        if (WordModels != null)
+                        var isGetAllWords = JsonConvert.DeserializeObject<IsGetAllWordsInfo>(ui.ToString());
+                        if (isGetAllWords != null)
                         {
-                            foreach (var item in WordModels)
-                            {
-                                if (text.Contains(item.Name))
-                                {
-                                    var defaultObj = result.FirstOrDefault(x => x.Name == item.Name);
-                                    if (text.Contains(item.Name) && defaultObj == null)
-                                    {
-                                        UnChekedWordInfo unChekedWordInfo = new UnChekedWordInfo();
-                                        unChekedWordInfo.ID = item.ID;
-                                        unChekedWordInfo.Name = item.Name;
-                                        result.Add(unChekedWordInfo);
-                                    }
-                                }
-                            }
+                            isGetAllWord = isGetAllWords.IsGetAllWords;
                         }
                     }
-                    catch
+                    catch (Exception ex)
                     { }
+                }
+                if (isGetAllWord || WordModels.Count == 0)
+                {
+                    string myWordModelsInfo = string.Format(@"{0}\MyWordModelsInfo.xml", Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + "\\WordAndImgOCR\\LoginInOutInfo\\");
+                    var uiMyWords = CheckWordUtil.DataParse.ReadFromXmlPath<string>(myWordModelsInfo);
+                    if (uiMyWords != null && uiMyWords.ToString() != "")
+                    {
+                        try
+                        {
+                            WordModels = JsonConvert.DeserializeObject<List<WordModel>>(uiMyWords.ToString());
+                            IsGetAllWordsInfo info = new IsGetAllWordsInfo();
+                            info.IsGetAllWords = false;
+                            DataParse.WriteToXmlPath(JsonConvert.SerializeObject(info), isGetAllWordsInfo);
+                        }
+                        catch
+                        { }
+                    }
+                }
+                foreach (var item in WordModels)
+                {
+                    if (text.Contains(item.Name))
+                    {
+                        var defaultObj = result.FirstOrDefault(x => x.Name == item.Name);
+                        if (text.Contains(item.Name) && defaultObj == null)
+                        {
+                            UnChekedWordInfo unChekedWordInfo = new UnChekedWordInfo();
+                            unChekedWordInfo.ID = item.ID;
+                            unChekedWordInfo.Name = item.Name;
+                            result.Add(unChekedWordInfo);
+                        }
+                    }
                 }
             }
             catch (Exception ex)

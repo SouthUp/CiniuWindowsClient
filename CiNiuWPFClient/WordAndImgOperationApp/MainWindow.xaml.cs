@@ -706,7 +706,34 @@ namespace WordAndImgOperationApp
                 {
                     WPFClientCheckWordUtil.Log.TextLog.SaveError(ex.Message);
                 }
+                IsGetAllWordsInfo isGetAllWordsInfo = new IsGetAllWordsInfo();
+                isGetAllWordsInfo.IsGetAllWords = false;
+                try
+                {
+                    //保存是否获取词库信息到本地
+                    string isWordGetAllWordsInfos = string.Format(@"{0}\IsWordGetAllWordsInfo.xml", Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + "\\WordAndImgOCR\\LoginInOutInfo\\");
+                    DataParse.WriteToXmlPath(JsonConvert.SerializeObject(isGetAllWordsInfo), isWordGetAllWordsInfos);
+                    string isExcelGetAllWordsInfos = string.Format(@"{0}\IsExcelGetAllWordsInfo.xml", Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + "\\WordAndImgOCR\\LoginInOutInfo\\");
+                    DataParse.WriteToXmlPath(JsonConvert.SerializeObject(isGetAllWordsInfo), isExcelGetAllWordsInfos);
+                }
+                catch (Exception ex)
+                {
+                    WPFClientCheckWordUtil.Log.TextLog.SaveError(ex.Message);
+                }
                 CheckWordHelper.GetAllCheckWordByToken(UtilSystemVar.UserToken);
+                isGetAllWordsInfo.IsGetAllWords = true;
+                try
+                {
+                    //保存是否获取词库信息到本地
+                    string isWordGetAllWordsInfos = string.Format(@"{0}\IsWordGetAllWordsInfo.xml", Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + "\\WordAndImgOCR\\LoginInOutInfo\\");
+                    DataParse.WriteToXmlPath(JsonConvert.SerializeObject(isGetAllWordsInfo), isWordGetAllWordsInfos);
+                    string isExcelGetAllWordsInfos = string.Format(@"{0}\IsExcelGetAllWordsInfo.xml", Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + "\\WordAndImgOCR\\LoginInOutInfo\\");
+                    DataParse.WriteToXmlPath(JsonConvert.SerializeObject(isGetAllWordsInfo), isExcelGetAllWordsInfos);
+                }
+                catch (Exception ex)
+                {
+                    WPFClientCheckWordUtil.Log.TextLog.SaveError(ex.Message);
+                }
             }
             catch (Exception ex)
             {
