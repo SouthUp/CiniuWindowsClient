@@ -53,7 +53,7 @@
                 </Grid>
                 <StackPanel Grid.Row="1" Orientation="Horizontal" Margin="0,0,30,16"
                             HorizontalAlignment="Right" VerticalAlignment="Bottom">
-                    <Button Width="64" Height="32" Content="添加"
+                    <Button Width="64" Height="32" Content="确定"
                             Style="{StaticResource BGHoverTextButtonStyle}"
                             Click="SureBtn_Click"></Button>
                 </StackPanel>

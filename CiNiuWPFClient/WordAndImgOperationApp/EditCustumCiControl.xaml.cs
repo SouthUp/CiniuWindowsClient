@@ -42,17 +42,30 @@ namespace WordAndImgOperationApp
                 {
                     //调用接口删除数据
                     Task task = new Task(() => {
+                        EventAggregatorRepository.EventAggregator.GetEvent<SettingWindowBusyIndicatorEvent>().Publish(new AppBusyIndicator { IsBusy = true });
                         try
                         {
+                            bool result = false;
                             APIService serviceApi = new APIService();
-                            serviceApi.DeleteCustumCiTiaoByToken(UtilSystemVar.UserToken, info.ID);
+                            result = serviceApi.DeleteCustumCiTiaoByToken(UtilSystemVar.UserToken, info.ID);
+                            if (result)
+                            {
+                                Dispatcher.Invoke(new Action(() => {
+                                    //删除数据
+                                    viewModel.CustumCiInfoList.Remove(info);
+                                }));
+                                ShowTipsInfo("删除自建词条成功");
+                            }
+                            else
+                            {
+                                ShowTipsInfo("删除自建词条失败");
+                            }
                         }
                         catch (Exception ex)
                         { }
+                        EventAggregatorRepository.EventAggregator.GetEvent<SettingWindowBusyIndicatorEvent>().Publish(new AppBusyIndicator { IsBusy = false });
                     });
                     task.Start();
-                    //删除数据
-                    viewModel.CustumCiInfoList.Remove(info);
                 }
                 catch (Exception ex)
                 { }
@@ -65,21 +78,32 @@ namespace WordAndImgOperationApp
                 {
                     //调用接口更新数据
                     Task task = new Task(() => {
+                        EventAggregatorRepository.EventAggregator.GetEvent<SettingWindowBusyIndicatorEvent>().Publish(new AppBusyIndicator { IsBusy = true });
                         try
                         {
+                            bool result = false;
                             APIService serviceApi = new APIService();
-                            serviceApi.UpdateCustumCiTiaoByToken(UtilSystemVar.UserToken, info.ID, info.Name, info.DiscriptionInfo);
+                            result = serviceApi.UpdateCustumCiTiaoByToken(UtilSystemVar.UserToken, info.ID, info.Name, info.DiscriptionInfo);
+                            if (result)
+                            {
+                                //更新数据
+                                var itemInfo = viewModel.CustumCiInfoList.FirstOrDefault(x => x.ID == info.ID);
+                                if (itemInfo != null)
+                                {
+                                    itemInfo.DiscriptionInfo = info.DiscriptionInfo;
+                                }
+                                ShowTipsInfo("修改自建词条成功");
+                            }
+                            else
+                            {
+                                ShowTipsInfo("修改自建词条失败");
+                            }
                         }
                         catch (Exception ex)
                         { }
+                        EventAggregatorRepository.EventAggregator.GetEvent<SettingWindowBusyIndicatorEvent>().Publish(new AppBusyIndicator { IsBusy = false });
                     });
                     task.Start();
-                    //更新数据
-                    var itemInfo = viewModel.CustumCiInfoList.FirstOrDefault(x => x.ID == info.ID);
-                    if (itemInfo != null)
-                    {
-                        itemInfo.DiscriptionInfo = info.DiscriptionInfo;
-                    }
                 }
                 catch (Exception ex)
                 { }
@@ -166,6 +190,23 @@ namespace WordAndImgOperationApp
                 }
                 EventAggregatorRepository.EventAggregator.GetEvent<SettingWindowShowDetailPopViewEvent>().Publish(custumCiInfo);
             }
+        }
+        private void ShowTipsInfo(string tipsInfo)
+        {
+            try
+            {
+                Dispatcher.Invoke(new Action(() => {
+                    this.viewModel.MessageTipInfo = tipsInfo;
+                    viewModel.MessageTipVisibility = Visibility.Visible;
+                    Task task = new Task(() => {
+                        System.Threading.Thread.Sleep(2000);
+                        viewModel.MessageTipVisibility = Visibility.Collapsed;
+                    });
+                    task.Start();
+                }));
+            }
+            catch (Exception ex)
+            { }
         }
     }
 }

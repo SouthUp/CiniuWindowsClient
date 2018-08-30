@@ -136,14 +136,22 @@ namespace WordAndImgOperationApp
             if (ofd.ShowDialog() == System.Windows.Forms.DialogResult.OK)
             {
                 string strFileName = ofd.FileName;
+                EventAggregatorRepository.EventAggregator.GetEvent<SettingWindowBusyIndicatorEvent>().Publish(new AppBusyIndicator { IsBusy = true });
+                Task<bool> taskCheckFile = new Task<bool>(() => {
+                    bool b = CheckFile(strFileName);
+                    return b;
+                });
+                taskCheckFile.Start();
+                await taskCheckFile;
                 //检验加载文件格式
-                if (CheckFile(strFileName))
+                if (taskCheckFile.Result)
                 {
+                    int totalCount = 0;
+                    int errorCount = 0;
                     //调用接口添加自建词库
                     Task<bool> task = new Task<bool>(() => {
                         ShowTipsInfo("正在批量上传，请稍后再上传");
                         EventAggregatorRepository.EventAggregator.GetEvent<SettingWindowBusyIndicatorEvent>().Publish(new AppBusyIndicator { IsBusy = true });
-                        bool b = false;
                         try
                         {
                             Aspose.Cells.Workbook workbookName = new Aspose.Cells.Workbook(strFileName);
@@ -162,23 +170,29 @@ namespace WordAndImgOperationApp
                                     string comment = cellsName[i, maxDataColumn].StringValue.Trim();
                                     if(!string.IsNullOrEmpty(name))
                                     {
+                                        totalCount++;
                                         APIService service = new APIService();
-                                        service.AddCustumCiTiaoByToken(UtilSystemVar.UserToken, name, comment);
+                                        bool b = service.AddCustumCiTiaoByToken(UtilSystemVar.UserToken, name, comment);
+                                        if (!b)
+                                        {
+                                            errorCount++;
+                                        }
                                     }
                                 }
                                 catch (Exception ex)
                                 { }
                             }
-                            b = true;
                         }
                         catch (Exception ex)
                         { }
-                        if (b)
+                        bool bResult = false;
+                        if (totalCount != 0 && errorCount == 0)
                         {
+                            bResult = true;
                             EventAggregatorRepository.EventAggregator.GetEvent<GetWordsEvent>().Publish(true);
                         }
                         EventAggregatorRepository.EventAggregator.GetEvent<SettingWindowBusyIndicatorEvent>().Publish(new AppBusyIndicator { IsBusy = false });
-                        return b;
+                        return bResult;
                     });
                     task.Start();
                     await task;
@@ -188,13 +202,21 @@ namespace WordAndImgOperationApp
                     }
                     else
                     {
-                        ShowTipsInfo("批量导入词条失败");
+                        if (totalCount == errorCount)
+                        {
+                            ShowTipsInfo("批量导入词条失败");
+                        }
+                        else
+                        {
+                            ShowTipsInfo("批量导入词条" + (totalCount- errorCount) + "条成功，" + errorCount + "条失败");
+                        }
                     }
                 }
                 else
                 {
                     ShowTipsInfo("选择导入的文件与模板不匹配");
                 }
+                EventAggregatorRepository.EventAggregator.GetEvent<SettingWindowBusyIndicatorEvent>().Publish(new AppBusyIndicator { IsBusy = false });
             }
         }
         private bool CheckFile(string fileName)
