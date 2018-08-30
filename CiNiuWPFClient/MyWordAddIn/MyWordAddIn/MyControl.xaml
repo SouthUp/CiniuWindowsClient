@@ -135,6 +135,42 @@
                 </DrawingGroup>
             </DrawingBrush.Drawing>
         </DrawingBrush>
+        <DrawingBrush x:Key="CloseBtnLogo" Stretch="None">
+            <DrawingBrush.Drawing>
+                <DrawingGroup>
+                    <DrawingGroup.ClipGeometry>
+                        <RectangleGeometry Rect="0,0,24,24" />
+                    </DrawingGroup.ClipGeometry>
+                    <GeometryDrawing>
+                        <GeometryDrawing.Brush>
+                            <SolidColorBrush Color="#FF000000" Opacity="0.38" />
+                        </GeometryDrawing.Brush>
+                        <GeometryDrawing.Geometry>
+                            <PathGeometry FillRule="EvenOdd" Figures="M19,6.41L17.59,5 12,10.59 6.41,5 5,6.41 10.59,12 5,17.59 6.41,19 12,13.41 17.59,19 19,17.59 13.41,12 19,6.41z" />
+                        </GeometryDrawing.Geometry>
+                    </GeometryDrawing>
+                </DrawingGroup>
+            </DrawingBrush.Drawing>
+        </DrawingBrush>
+        <DrawingBrush x:Key="HoverCloseBtnLogo" Stretch="None">
+            <DrawingBrush.Drawing>
+                <DrawingGroup>
+                    <DrawingGroup.ClipGeometry>
+                        <RectangleGeometry Rect="0,0,24,24" />
+                    </DrawingGroup.ClipGeometry>
+                    <GeometryDrawing Brush="#FFF44336">
+                        <GeometryDrawing.Geometry>
+                            <PathGeometry FillRule="EvenOdd" Figures="M0,0L24,0 24,24 0,24 0,0z" />
+                        </GeometryDrawing.Geometry>
+                    </GeometryDrawing>
+                    <GeometryDrawing Brush="#FFFFFFFF">
+                        <GeometryDrawing.Geometry>
+                            <PathGeometry FillRule="EvenOdd" Figures="M19,6.41L17.59,5 12,10.59 6.41,5 5,6.41 10.59,12 5,17.59 6.41,19 12,13.41 17.59,19 19,17.59 13.41,12 19,6.41z" />
+                        </GeometryDrawing.Geometry>
+                    </GeometryDrawing>
+                </DrawingGroup>
+            </DrawingBrush.Drawing>
+        </DrawingBrush>
         <Style x:Key="ButtonFocusVisual">
             <Setter Property="Control.Template">
                 <Setter.Value>
@@ -204,6 +240,36 @@
                                        Style="{StaticResource CommonLeftTextBlock}">
                             </TextBlock>
                         </Grid>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        <Style x:Key="CloseBtnButtonStyle" TargetType="{x:Type Button}">
+            <Setter Property="FocusVisualStyle" Value="{StaticResource ButtonFocusVisual}" />
+            <Setter Property="HorizontalContentAlignment" Value="Center" />
+            <Setter Property="VerticalContentAlignment" Value="Center" />
+            <Setter Property="BorderThickness" Value="0" />
+            <Setter Property="Background" Value="{StaticResource CloseBtnLogo}" />
+            <Setter Property="ToolTip" Value="关闭" />
+            <Setter Property="Cursor" Value="Hand" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type Button}">
+                        <Grid>
+                            <Border Background="{TemplateBinding Background}"
+                                    BorderBrush="{TemplateBinding BorderBrush}"
+                                    BorderThickness="{TemplateBinding BorderThickness}" />
+                            <ContentPresenter HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                              Margin="{TemplateBinding Padding}" RecognizesAccessKey="True"
+                                              SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"
+                                              VerticalAlignment="{TemplateBinding VerticalContentAlignment}" />
+                        </Grid>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True" >
+                                <Setter Property="Background" Value="{StaticResource HoverCloseBtnLogo}">
+                                </Setter>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
                     </ControlTemplate>
                 </Setter.Value>
             </Setter>
@@ -283,11 +349,11 @@
                                     <RowDefinition Height="48"></RowDefinition>
                                     <RowDefinition Height="Auto"></RowDefinition>
                                 </Grid.RowDefinitions>
-                                <Grid Grid.Row="0" Background="Transparent"
+                                <Grid Grid.Row="0" Background="Transparent" ToolTip="点击展开/伸缩"
                                       Width="{Binding ElementName=UnCheckWordChildrenGrid,Path=ActualWidth}"
                                       Tag="{Binding}" Cursor="Hand" MouseLeftButtonDown="UnCheckWordGrid_MouseLeftButtonDown">
                                     <StackPanel Margin="15,0,0,0" Orientation="Horizontal" HorizontalAlignment="Left" VerticalAlignment="Center">
-                                        <Button Content="{Binding Name}"
+                                        <Button Content="{Binding Name}" ToolTip="点击查看详情"
                                             HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
                                             Style="{StaticResource ErrorWordsDetailInfoTextButtonStyle}"
                                             Tag="{Binding}" Click="InLineDetailNameBtn_Click">
@@ -303,7 +369,7 @@
                                     <ToggleButton IsChecked="{Binding IsSelected}" Width="24" Height="24"
                                                   Style="{StaticResource ExpandCollapseToggleStyle}"
                                                   HorizontalAlignment="Right" VerticalAlignment="Center"
-                                                  Margin="0,0,10,0"/>
+                                                  Margin="0,0,10,0" ToolTip="点击展开/伸缩"/>
                                 </Grid>
                                 <ListBox x:Name="listBoxChildren" Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" BorderThickness="0" Background="Transparent" ItemsSource="{Binding UnChekedWordInLineDetailInfos}"
                                      ScrollViewer.HorizontalScrollBarVisibility="Disabled" ScrollViewer.VerticalScrollBarVisibility="Auto" SelectedIndex="-1"
@@ -358,5 +424,87 @@
                 </ListBox>
             </Grid>
         </Grid>
+        <Popup x:Name="DetailInfoPopup" IsOpen="{Binding IsDetailInfoPopWindowOpen}" AllowsTransparency="True"
+               HorizontalOffset="0" VerticalOffset="0" PopupAnimation="Fade"
+               Placement="MousePoint" StaysOpen ="False">
+            <Grid>
+                <Grid Width="340" Background="White" Margin="9">
+                    <Grid.Effect>
+                        <DropShadowEffect ShadowDepth="0" BlurRadius="9" Opacity="0.8"/>
+                    </Grid.Effect>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="32"></RowDefinition>
+                        <RowDefinition Height="Auto"></RowDefinition>
+                        <RowDefinition Height="8"></RowDefinition>
+                    </Grid.RowDefinitions>
+                    <Grid Grid.Row="0" Background="Transparent" Margin="16,0,0,0">
+                        <StackPanel Orientation="Horizontal"
+                                    VerticalAlignment="Center" HorizontalAlignment="Left">
+                            <TextBlock Text="&quot;" FontWeight="Bold"
+                                       Foreground="Black" FontSize="16" Opacity="0.87"
+                                       Style="{StaticResource CommonLeftTextBlock}">
+                            </TextBlock>
+                            <TextBlock Text="{Binding SelectedUnChekedWordInfo.Name}" FontWeight="Bold"
+                                       Foreground="Black" FontSize="16" Opacity="0.87"
+                                       Style="{StaticResource CommonLeftTextBlock}"
+                                       MaxWidth="250" TextTrimming="CharacterEllipsis">
+                            </TextBlock>
+                            <TextBlock Text="&quot;" FontWeight="Bold"
+                                       Foreground="Black" FontSize="16" Opacity="0.87"
+                                       Style="{StaticResource CommonLeftTextBlock}">
+                            </TextBlock>
+                        </StackPanel>
+                    </Grid>
+                    <Button Grid.Row="0" Width="24" Height="24" Click="CloseBtn_Click" 
+                            Style="{StaticResource CloseBtnButtonStyle}"
+                            HorizontalAlignment="Right" VerticalAlignment="Top">
+                    </Button>
+                    <Grid Grid.Row="1" MinHeight="45" MaxHeight="400" Margin="16,0,0,0">
+                        <ListBox x:Name="listBoxDetail" BorderThickness="0" Background="Transparent"
+                                 ItemsSource="{Binding SelectedUnChekedWordInfo.UnChekedWordDetailInfos}"
+                                 ScrollViewer.HorizontalScrollBarVisibility="Disabled" 
+                                 ScrollViewer.VerticalScrollBarVisibility="Auto" SelectedIndex="-1"
+                                 ItemContainerStyle="{StaticResource ListBoxItemContainerStyle}" 
+                                 VerticalAlignment="Top" HorizontalAlignment="Stretch"
+                                 ScrollViewer.CanContentScroll="True" >
+                            <ListBox.ItemTemplate>
+                                <DataTemplate>
+                                    <Grid Width="{Binding ElementName=listBoxDetail,Path=ActualWidth}">
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition Height="Auto"></RowDefinition>
+                                            <RowDefinition Height="35"></RowDefinition>
+                                        </Grid.RowDefinitions>
+                                        <Grid Grid.Row="0">
+                                            <TextBlock Text="{Binding Discription}" FontSize="13" Opacity="0.54"
+                                                       Style="{StaticResource CommonLeftTextBlock}" Margin="0,0,16,0"
+                                                       TextWrapping="Wrap" TextBlock.LineHeight="22">
+                                            </TextBlock>
+                                        </Grid>
+                                        <Grid Grid.Row="1">
+                                            <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" VerticalAlignment="Top">
+                                                <TextBlock Text="{Binding SourceName}" FontSize="12" Opacity="0.26"
+                                                           Style="{StaticResource CommonLeftTextBlock}">
+                                                </TextBlock>
+                                                <TextBlock Text="{Binding CategoryName}" FontSize="12" Opacity="0.26"
+                                                           Style="{StaticResource CommonLeftTextBlock}">
+                                                </TextBlock>
+                                                <TextBlock Text="{Binding DateTime}" FontSize="12" Opacity="0.26"
+                                                           Style="{StaticResource CommonLeftTextBlock}">
+                                                </TextBlock>
+                                            </StackPanel>
+                                        </Grid>
+                                    </Grid>
+                                </DataTemplate>
+                            </ListBox.ItemTemplate>
+                            <ListBox.ItemsPanel>
+                                <ItemsPanelTemplate>
+                                    <WrapPanel Orientation="Vertical"/>
+                                </ItemsPanelTemplate>
+                            </ListBox.ItemsPanel>
+                        </ListBox>
+                    </Grid>
+                </Grid>
+            </Grid>
+        </Popup>
     </Grid>
 </UserControl>

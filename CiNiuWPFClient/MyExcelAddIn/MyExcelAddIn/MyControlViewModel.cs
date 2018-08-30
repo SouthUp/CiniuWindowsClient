@@ -52,5 +52,25 @@ namespace MyExcelAddIn
                 RaisePropertyChanged("IsUnLogin");
             }
         }
+        private bool _isDetailInfoPopWindowOpen = false;
+        public bool IsDetailInfoPopWindowOpen
+        {
+            get { return _isDetailInfoPopWindowOpen; }
+            set
+            {
+                _isDetailInfoPopWindowOpen = value;
+                RaisePropertyChanged("IsDetailInfoPopWindowOpen");
+            }
+        }
+        private UnChekedWordInfo selectedUnChekedWordInfo = new UnChekedWordInfo();
+        public UnChekedWordInfo SelectedUnChekedWordInfo
+        {
+            get { return selectedUnChekedWordInfo; }
+            set
+            {
+                selectedUnChekedWordInfo = value;
+                RaisePropertyChanged("SelectedUnChekedWordInfo");
+            }
+        }
     }
 }

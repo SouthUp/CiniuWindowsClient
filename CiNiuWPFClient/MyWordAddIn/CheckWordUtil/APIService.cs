@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using CheckWordModel;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -147,6 +148,65 @@ namespace CheckWordUtil
             {
                 CheckWordUtil.Log.TextLog.SaveError(ex.Message);
             }
+            return result;
+        }
+        public List<UnChekedDetailWordInfo> GetWordDiscribeLists(string id)
+        {
+            List<UnChekedDetailWordInfo> result = new List<UnChekedDetailWordInfo>();
+            try
+            {
+                string token = "";
+                string urlStr = "";
+                try
+                {
+                    string loginInOutInfos = string.Format(@"{0}\LoginInOutInfo.xml", Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + "\\WordAndImgOCR\\LoginInOutInfo\\");
+                    var ui = CheckWordUtil.DataParse.ReadFromXmlPath<string>(loginInOutInfos);
+                    if (ui != null && ui.ToString() != "")
+                    {
+                        try
+                        {
+                            var loginInOutInfo = JsonConvert.DeserializeObject<LoginInOutInfo>(ui.ToString());
+                            if (loginInOutInfo != null && loginInOutInfo.Type == "LoginIn")
+                            {
+                                token = loginInOutInfo.Token;
+                                urlStr = loginInOutInfo.UrlStr;
+                            }
+                        }
+                        catch (Exception ex)
+                        {
+                            CheckWordUtil.Log.TextLog.SaveError(ex.Message);
+                        }
+                    }
+                }
+                catch (Exception ex)
+                {
+                    CheckWordUtil.Log.TextLog.SaveError(ex.Message);
+                }
+                string url = urlStr + "words/word/" + id;
+                string resultStr = HttpHelper.HttpUrlGet(url, "GET", token);
+                CommonResponse resultInfo = JsonConvert.DeserializeObject<CommonResponse>(resultStr);
+                if (resultInfo != null && resultInfo.state)
+                {
+                    List<LawWordInfoModel> listLawWordInfos = JsonConvert.DeserializeObject<List<LawWordInfoModel>>(resultInfo.result);
+                    if (listLawWordInfos != null)
+                    {
+                        foreach (var item in listLawWordInfos)
+                        {
+                            UnChekedDetailWordInfo detailInfo = new UnChekedDetailWordInfo();
+                            detailInfo.Discription = item.data;
+                            detailInfo.CategoryName = string.IsNullOrEmpty(item.typeName) ? "" : "，" + item.typeName;
+                            detailInfo.SourceName = item.official ? "词牛" : "自建词条";
+                            if (item.uTime != null)
+                            {
+                                detailInfo.DateTime = "，" + item.uTime.ToString("yyyy/MM/dd");
+                            }
+                            result.Add(detailInfo);
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            { }
             return result;
         }
     }

@@ -304,7 +304,7 @@ namespace MyWordAddIn
                 var listUnChekedWord = ItemInfo.UnChekedWordLists;
                 foreach (var strFind in listUnChekedWord.ToList())
                 {
-                    UnChekedWordInfo SelectUnCheckWord = new UnChekedWordInfo() { Name = strFind.Name, UnChekedWordDetailInfos = strFind.UnChekedWordDetailInfos };
+                    UnChekedWordInfo SelectUnCheckWord = new UnChekedWordInfo() { ID = strFind.ID, Name = strFind.Name, UnChekedWordDetailInfos = strFind.UnChekedWordDetailInfos };
                     MatchCollection mc = Regex.Matches(paragraph.Range.Text, strFind.Name, RegexOptions.IgnoreCase);
                     if (mc.Count > 0)
                     {
@@ -618,19 +618,26 @@ namespace MyWordAddIn
             catch (Exception ex)
             { }
         }
-        private void InLineDetailNameBtn_Click(object sender, RoutedEventArgs e)
+        private async void InLineDetailNameBtn_Click(object sender, RoutedEventArgs e)
         {
             var btn = sender as Button;
             if (btn != null)
             {
                 UnChekedWordInfo unChekedWordInfo = btn.Tag as UnChekedWordInfo;
-                unChekedWordInfo.IsSelected = !unChekedWordInfo.IsSelected;
-                foreach (var item in viewModel.UncheckedWordLists)
+                viewModel.SelectedUnChekedWordInfo = unChekedWordInfo;
+                viewModel.IsDetailInfoPopWindowOpen = true;
+                if (unChekedWordInfo.UnChekedWordDetailInfos.Count == 0 && !string.IsNullOrEmpty(unChekedWordInfo.ID))
                 {
-                    if (item != unChekedWordInfo)
-                    {
-                        item.IsSelected = false;
-                    }
+                    List<UnChekedDetailWordInfo> _detailInfos = new List<UnChekedDetailWordInfo>();
+                    //查询违禁词描述
+                    System.Threading.Tasks.Task taskGetWordDiscribe = new System.Threading.Tasks.Task(() => {
+                        APIService serviceApi = new APIService();
+                        _detailInfos = serviceApi.GetWordDiscribeLists(unChekedWordInfo.ID);
+                    });
+                    taskGetWordDiscribe.Start();
+                    await taskGetWordDiscribe;
+                    unChekedWordInfo.UnChekedWordDetailInfos = new ObservableCollection<UnChekedDetailWordInfo>(_detailInfos);
+                    viewModel.SelectedUnChekedWordInfo = unChekedWordInfo;
                 }
             }
         }
@@ -923,6 +930,11 @@ namespace MyWordAddIn
         private void LoginBtn_Click(object sender, RoutedEventArgs e)
         {
             Util.CallWordAndImgApp();
+        }
+
+        private void CloseBtn_Click(object sender, RoutedEventArgs e)
+        {
+            viewModel.IsDetailInfoPopWindowOpen = false;
         }
     }
 }
