@@ -63,7 +63,7 @@
                                  Height="18" Background="Transparent"  Foreground="Black"
                                  FontSize="12" CaretBrush="Black"
                                  VerticalContentAlignment="Bottom"
-                                 control:WatermarkTextBox.Watermark="重置密码（6-12位字母与数字组合）" 
+                                 control:WatermarkTextBox.Watermark="重置密码（6-20位）" 
                                  control:PasswordHelper.Attach="True" 
                                  control:PasswordHelper.Password="{Binding NewPassWord,Mode=TwoWay}"
                              GotFocus="NewPassword_GotFocus"
