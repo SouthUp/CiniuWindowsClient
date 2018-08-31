@@ -33,8 +33,7 @@
                 </StackPanel>
                 <ToggleButton Width="34" Height="18" IsChecked="{Binding IsCheckPicInDucument}"
                               Style="{StaticResource SwitchSelectToggleStyle}"
-                              HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,0,40,0"
-                              Click="ToggleIsCheckPic_Click">
+                              HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,0,40,0">
                 </ToggleButton>
             </Grid>
             <Grid Margin="56,50,0,0">
@@ -44,8 +43,7 @@
                 </StackPanel>
                 <ToggleButton Width="34" Height="18" IsChecked="{Binding IsUseCustumCi}"
                               Style="{StaticResource SwitchSelectToggleStyle}"
-                              HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,0,40,0"
-                              Click="ToggleIsUseCustumCi_Click">
+                              HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,0,40,0">
                 </ToggleButton>
             </Grid>
             <StackPanel Orientation="Horizontal" Margin="40,90,0,0"
@@ -69,8 +67,7 @@
                                         HorizontalAlignment="Left" VerticalAlignment="Center">
                                 <ToggleButton Width="18" Height="18" Margin="0,0,8,0"
                                               Style="{StaticResource CheckSelectCategoryBtnStyle}"
-                                              Tag="{Binding}" IsChecked="{Binding CheckedState}"
-                                              Checked="CategoryToggleBtn_Checked" Unchecked="CategoryToggleBtn_Unchecked">
+                                              Tag="{Binding}" IsChecked="{Binding CheckedState}">
                                 </ToggleButton>
                                 <TextBlock Text="{Binding Name}" 
                                            FontSize="14" Opacity="0.54" Foreground="#160536"
@@ -85,6 +82,19 @@
                         </ItemsPanelTemplate>
                     </ListBox.ItemsPanel>
                 </ListBox>
+            </Grid>
+            <Button Width="260" Height="36" Content="应用设置"
+                    HorizontalAlignment="Center" VerticalAlignment="Bottom" Margin="0,0,0,50"
+                    FontSize="14" Style="{StaticResource BGHoverTextButtonStyle}"
+                    Click="ApplySettingBtn_Click"></Button>
+        </Grid>
+        <Grid Grid.Row="1" Visibility="{Binding MessageTipVisibility}" 
+                  HorizontalAlignment="Left" VerticalAlignment="Bottom">
+            <Grid Width="230" Height="40" Background="Transparent">
+                <Border Background="#160536" Opacity="0.87" BorderThickness="0" CornerRadius="2"></Border>
+                <TextBlock Text="{Binding MessageTipInfo}" Margin="30,0,0,0"
+                               FontSize="13" Foreground="White" 
+                               Style="{StaticResource CommonLeftTextBlock}"></TextBlock>
             </Grid>
         </Grid>
     </Grid>

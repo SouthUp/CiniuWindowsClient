@@ -286,8 +286,9 @@ namespace CheckWordUtil
         /// </summary>
         /// <param name="token"></param>
         /// <returns></returns>
-        public void SaveUserSettingByToken(string token, MySettingInfo mySetting)
+        public bool SaveUserSettingByToken(string token, MySettingInfo mySetting)
         {
+            bool result = false;
             try
             {
                 string apiName = "setting";
@@ -304,11 +305,17 @@ namespace CheckWordUtil
                 }
                 string json = JsonConvert.SerializeObject(settingRequest);
                 string resultStr = HttpHelper.HttpUrlSend(apiName, "PATCH", json, token);
+                CommonResponse resultInfo = JsonConvert.DeserializeObject<CommonResponse>(resultStr);
+                if (resultInfo != null && resultInfo.state)
+                {
+                    result = true;
+                }
             }
             catch (Exception ex)
             {
                 WPFClientCheckWordUtil.Log.TextLog.SaveError(ex.Message);
             }
+            return result;
         }
         public List<UnChekedDetailWordInfo> GetWordDiscribeLists(string token, string id)
         {

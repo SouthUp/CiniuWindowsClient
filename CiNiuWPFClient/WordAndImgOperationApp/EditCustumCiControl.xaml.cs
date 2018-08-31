@@ -50,6 +50,7 @@ namespace WordAndImgOperationApp
                             result = serviceApi.DeleteCustumCiTiaoByToken(UtilSystemVar.UserToken, info.ID);
                             if (result)
                             {
+                                EventAggregatorRepository.EventAggregator.GetEvent<GetWordsEvent>().Publish(true);
                                 Dispatcher.Invoke(new Action(() => {
                                     //删除数据
                                     viewModel.CustumCiInfoList.Remove(info);
@@ -86,6 +87,7 @@ namespace WordAndImgOperationApp
                             result = serviceApi.UpdateCustumCiTiaoByToken(UtilSystemVar.UserToken, info.ID, info.Name, info.DiscriptionInfo);
                             if (result)
                             {
+                                EventAggregatorRepository.EventAggregator.GetEvent<GetWordsEvent>().Publish(true);
                                 //更新数据
                                 var itemInfo = viewModel.CustumCiInfoList.FirstOrDefault(x => x.ID == info.ID);
                                 if (itemInfo != null)

@@ -50,7 +50,7 @@ namespace WordAndImgOperationApp
                         viewModel.IsCheckPicInDucument = settingInfo.IsCheckPicInDucument;
                         viewModel.IsUseCustumCi = settingInfo.IsUseCustumCi;
                         viewModel.CategoryInfos = new System.Collections.ObjectModel.ObservableCollection<CategorySelectInfo>(settingInfo.CategoryInfos.ToList());
-                        SaveSettingInfo();
+                        EventAggregatorRepository.EventAggregator.GetEvent<WriteToSettingInfoEvent>().Publish(new MySettingInfo { IsCheckPicInDucument = viewModel.IsCheckPicInDucument, IsUseCustumCi = viewModel.IsUseCustumCi, CategoryInfos = viewModel.CategoryInfos.ToList() });
                     }
                     else
                     {
@@ -65,6 +65,7 @@ namespace WordAndImgOperationApp
                                 {
                                     viewModel.IsCheckPicInDucument = mySetting.IsCheckPicInDucument;
                                     viewModel.IsUseCustumCi = mySetting.IsUseCustumCi;
+                                    viewModel.CategoryInfos = new System.Collections.ObjectModel.ObservableCollection<CategorySelectInfo>(settingInfo.CategoryInfos.ToList());
                                 }
                             }
                             catch
@@ -80,49 +81,54 @@ namespace WordAndImgOperationApp
             task.Start();
             await task;
         }
-        private void CategoryToggleBtn_Checked(object sender, RoutedEventArgs e)
-        {
-            SaveSettingInfo(true);
-        }
 
-        private void CategoryToggleBtn_Unchecked(object sender, RoutedEventArgs e)
+        private void ApplySettingBtn_Click(object sender, RoutedEventArgs e)
         {
-            SaveSettingInfo(true);
+            //调用接口上传设置
+            Task task = new Task(() => {
+                EventAggregatorRepository.EventAggregator.GetEvent<SettingWindowBusyIndicatorEvent>().Publish(new AppBusyIndicator { IsBusy = true });
+                bool b = false;
+                try
+                {
+                    EventAggregatorRepository.EventAggregator.GetEvent<WriteToSettingInfoEvent>().Publish(new MySettingInfo { IsCheckPicInDucument = viewModel.IsCheckPicInDucument, IsUseCustumCi = viewModel.IsUseCustumCi, CategoryInfos = viewModel.CategoryInfos.ToList() });
+                    var info = new MySettingInfo { IsCheckPicInDucument = viewModel.IsCheckPicInDucument, IsUseCustumCi = viewModel.IsUseCustumCi, CategoryInfos = viewModel.CategoryInfos.ToList() };
+                    APIService service = new APIService();
+                    b = service.SaveUserSettingByToken(UtilSystemVar.UserToken, info);
+                    if (b)
+                    {
+                        EventAggregatorRepository.EventAggregator.GetEvent<GetWordsEvent>().Publish(true);
+                    }
+                }
+                catch (Exception ex)
+                { }
+                EventAggregatorRepository.EventAggregator.GetEvent<SettingWindowBusyIndicatorEvent>().Publish(new AppBusyIndicator { IsBusy = false });
+                if (b)
+                {
+                    ShowTipsInfo("应用设置成功");
+                }
+                else
+                {
+                    ShowTipsInfo("应用设置失败");
+                }
+            });
+            task.Start();
         }
-        private void SaveSettingInfo(bool isNeedGetWords = false)
+        private void ShowTipsInfo(string tipsInfo)
         {
             try
             {
-                EventAggregatorRepository.EventAggregator.GetEvent<WriteToSettingInfoEvent>().Publish(new MySettingInfo { IsCheckPicInDucument = viewModel.IsCheckPicInDucument, IsUseCustumCi = viewModel.IsUseCustumCi, CategoryInfos = viewModel.CategoryInfos.ToList() });
-                //调用接口上传设置
-                Task task = new Task(() => {
-                    try
-                    {
-                        var info = new MySettingInfo { IsCheckPicInDucument = viewModel.IsCheckPicInDucument, IsUseCustumCi = viewModel.IsUseCustumCi, CategoryInfos = viewModel.CategoryInfos.ToList() };
-                        APIService service = new APIService();
-                        service.SaveUserSettingByToken(UtilSystemVar.UserToken, info);
-                        if(isNeedGetWords)
-                        {
-                            EventAggregatorRepository.EventAggregator.GetEvent<GetWordsEvent>().Publish(true);
-                        }
-                    }
-                    catch (Exception ex)
-                    { }
-                });
-                task.Start();
+                Dispatcher.Invoke(new Action(() => {
+                    this.viewModel.MessageTipInfo = tipsInfo;
+                    viewModel.MessageTipVisibility = Visibility.Visible;
+                    Task task = new Task(() => {
+                        System.Threading.Thread.Sleep(2000);
+                        viewModel.MessageTipVisibility = Visibility.Collapsed;
+                    });
+                    task.Start();
+                }));
             }
             catch (Exception ex)
             { }
-        }
-
-        private void ToggleIsUseCustumCi_Click(object sender, RoutedEventArgs e)
-        {
-            SaveSettingInfo(true);
-        }
-
-        private void ToggleIsCheckPic_Click(object sender, RoutedEventArgs e)
-        {
-            SaveSettingInfo();
         }
     }
 }
