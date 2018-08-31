@@ -39,7 +39,8 @@
                                               Text="{Binding SearchText}" FontSize="16" 
                                               CaretBrush="Black" HorizontalAlignment="Left" VerticalAlignment="Top"
                                               HorizontalContentAlignment="Left" VerticalContentAlignment="Top"
-                                              control:WatermarkTextBox.Watermark="输入自建词条"/>
+                                              control:WatermarkTextBox.Watermark="输入自建词条"
+                                                  MaxLength="16"/>
                     </Grid>
                 </StackPanel>
                 <StackPanel Orientation="Horizontal" Margin="59,76,0,0" 
@@ -54,7 +55,8 @@
                                               Text="{Binding DiscriptionSearchText}" FontSize="16" TextBlock.LineHeight="22"
                                               CaretBrush="Black" HorizontalAlignment="Left" VerticalAlignment="Top"
                                               HorizontalContentAlignment="Left" VerticalContentAlignment="Top"
-                                              control:WatermarkTextBox.Watermark="添加词条内容，完善词条"/>
+                                              control:WatermarkTextBox.Watermark="添加词条内容，完善词条"
+                                                  MaxLength="2000"/>
                     </Grid>
                 </StackPanel>
                 <Button Width="72" Height="32" Content="添加"
