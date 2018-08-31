@@ -1231,11 +1231,11 @@ namespace WordAndImgOperationApp
             DragTipGrid.Visibility = Visibility.Collapsed;
             if (this.IsDealingData)
             {
+                EventAggregatorRepository.EventAggregator.GetEvent<MainAppShowTipsInfoEvent>().Publish(new AppBusyIndicator() { IsBusy = true, BusyContent = "正在检测中，请稍后添加" });
                 return;
             }
             this.IsDealingData = true;
             viewModel.DealingGridVisibility = Visibility.Visible;
-            EventAggregatorRepository.EventAggregator.GetEvent<MainAppShowTipsInfoEvent>().Publish(new AppBusyIndicator() { IsBusy = true, BusyContent = "正在检测中，请稍后添加" });
             viewModel.CheckFilesInfosText = "正在解析中...";
             viewModel.DealCurrentIndex = 0;
             FilePathsList = new List<string>();
@@ -2118,7 +2118,6 @@ namespace WordAndImgOperationApp
             {
                 this.IsDealingData = true;
                 viewModel.DealingGridVisibility = Visibility.Visible;
-                EventAggregatorRepository.EventAggregator.GetEvent<MainAppShowTipsInfoEvent>().Publish(new AppBusyIndicator() { IsBusy = true, BusyContent = "正在检测中，请稍后添加" });
                 viewModel.CheckFilesInfosText = "正在解析中...";
                 viewModel.DealCurrentIndex = 0;
                 FilePathsList = new List<string>();
