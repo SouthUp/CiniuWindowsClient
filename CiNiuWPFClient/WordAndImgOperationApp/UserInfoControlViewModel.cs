@@ -24,8 +24,8 @@ namespace WordAndImgOperationApp
                 RaisePropertyChanged("UserName");
             }
         }
-        private int pointCount = 0;
-        public int PointCount
+        private string pointCount = "";
+        public string PointCount
         {
             get { return pointCount; }
             set

@@ -80,7 +80,7 @@
                                     HorizontalAlignment="Left" VerticalAlignment="Center">
                             <TextBlock Text="剩 " Foreground="Black" Opacity="0.54" FontSize="12"
                                    Style="{StaticResource CommonLeftTextBlock}"></TextBlock>
-                            <TextBlock Text="{Binding CurrentUserInfo.PointCount}" Foreground="Black" Opacity="0.54" FontSize="12"
+                            <TextBlock Text="{Binding CurrentUserInfo.PointCountStr}" Foreground="Black" Opacity="0.54" FontSize="12"
                                    Style="{StaticResource CommonLeftTextBlock}"></TextBlock>
                             <TextBlock Text=" 点" Foreground="Black" Opacity="0.54" FontSize="12"
                                    Style="{StaticResource CommonLeftTextBlock}"></TextBlock>

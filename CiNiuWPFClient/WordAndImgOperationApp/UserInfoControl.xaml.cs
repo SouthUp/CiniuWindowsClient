@@ -46,7 +46,7 @@ namespace WordAndImgOperationApp
                     var userStateInfos = service.GetUserStateByToken(UtilSystemVar.UserToken);
                     if (userStateInfos != null)
                     {
-                        viewModel.PointCount = userStateInfos.PointCount;
+                        viewModel.PointCount = userStateInfos.PointCountStr;
                     }
                 }
                 catch (Exception ex)
