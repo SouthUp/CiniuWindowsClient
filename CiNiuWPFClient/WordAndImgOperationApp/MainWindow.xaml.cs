@@ -1402,6 +1402,8 @@ namespace WordAndImgOperationApp
                         EventAggregatorRepository.EventAggregator.GetEvent<MainAppShowTipsInfoEvent>().Publish(new AppBusyIndicator() { IsBusy = true, BusyContent = "其中有" + UnCheckFilePathsList.Count + "个文件类型不支持." });
                     }
                     viewModel.DragFilesResultVisibility = Visibility.Visible;
+                    viewModel.WordHasUnchekResultVisibility = Visibility.Collapsed;
+                    viewModel.WordNoUnchekResultVisibility = Visibility.Collapsed;
                     viewModel.HistoryFilesGridVisibility = Visibility.Collapsed;
                     viewModel.IsSelectHistoryChecked = false;
                     System.Threading.ThreadStart start = delegate ()
