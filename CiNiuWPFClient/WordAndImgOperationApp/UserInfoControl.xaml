@@ -22,12 +22,12 @@
             </StackPanel>
             <StackPanel Orientation="Horizontal" Margin="0,0,0,55"
                         HorizontalAlignment="Center" VerticalAlignment="Bottom">
-                <TextBlock Text="剩余" Foreground="#160536" Opacity="0.87" FontSize="14"
+                <TextBlock Text="剩余 " Foreground="#160536" Opacity="0.87" FontSize="14"
                            Style="{StaticResource CommonLeftTextBlock}" VerticalAlignment="Bottom"></TextBlock>
                 <TextBlock Text="{Binding PointCount}" Foreground="#160536" Opacity="0.87" FontSize="36"
                            Style="{StaticResource CommonLeftTextBlock}" FontWeight="Bold" 
                            VerticalAlignment="Bottom" Margin="0,0,0,-8"></TextBlock>
-                <TextBlock Text="点" Foreground="#160536" Opacity="0.87" FontSize="14"
+                <TextBlock Text=" 点" Foreground="#160536" Opacity="0.87" FontSize="14"
                            Style="{StaticResource CommonLeftTextBlock}" VerticalAlignment="Bottom"></TextBlock>
             </StackPanel>
             <StackPanel Orientation="Horizontal" VerticalAlignment="Bottom" HorizontalAlignment="Center">
