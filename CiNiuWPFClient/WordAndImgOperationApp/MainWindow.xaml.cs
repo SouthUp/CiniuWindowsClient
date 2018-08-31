@@ -1513,7 +1513,7 @@ namespace WordAndImgOperationApp
                     }
                     else
                     {
-                        EventAggregatorRepository.EventAggregator.GetEvent<MainAppShowTipsInfoEvent>().Publish(new AppBusyIndicator() { IsBusy = true, BusyContent = "未发现支持的文件类型." });
+                        EventAggregatorRepository.EventAggregator.GetEvent<MainAppShowTipsInfoEvent>().Publish(new AppBusyIndicator() { IsBusy = true, BusyContent = "筛查目标是空文件夹." });
                     }
                 }
             }
