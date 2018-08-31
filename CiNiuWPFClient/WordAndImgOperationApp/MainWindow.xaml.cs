@@ -334,6 +334,26 @@ namespace WordAndImgOperationApp
             {
                 result = false;
             }
+            if (!result)
+            {
+                System.Threading.Thread.Sleep(500);
+                try
+                {
+                    using (Ping ping = new Ping())
+                    {
+                        int timeout = 3000;
+                        PingReply reply = ping.Send("www.baidu.com", timeout);
+                        if (reply == null || reply.Status != IPStatus.Success)
+                        {
+                            result = false;
+                        }
+                    }
+                }
+                catch (Exception ex)
+                {
+                    result = false;
+                }
+            }
             return result;
         }
         private void TitleGrid_MouseDown(object sender, MouseButtonEventArgs e)
