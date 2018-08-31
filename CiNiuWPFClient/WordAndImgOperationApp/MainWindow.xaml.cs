@@ -1030,42 +1030,48 @@ namespace WordAndImgOperationApp
         {
             oldMainGrid = MainGrid.Height;
             oldHeight = this.Height;
-            try
-            {
-                //检测变化
-                string historyCheckInfos = string.Format(@"{0}\HistoryCheckInfo.xml", Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + "\\WordAndImgOCR\\LoginInOutInfo\\");
-                var ui = CheckWordUtil.DataParse.ReadFromXmlPath<string>(historyCheckInfos);
-                if (ui != null && ui.ToString() != "")
+            viewModel.HistoryFilesGridVisibility = Visibility.Visible;
+            MainGrid.Height = 80 + heightAddMax;
+            this.Height = 99 + heightAddMax;
+            Task task = new Task(() => {
+                EventAggregatorRepository.EventAggregator.GetEvent<MainAppBusyIndicatorEvent>().Publish(new AppBusyIndicator { IsBusy = true });
+                try
                 {
-                    listCheckHistory = JsonConvert.DeserializeObject<List<HistoryCheckInfo>>(ui.ToString()).OrderByDescending(x => x.CheckTime).ToList();
-                    foreach (var item in listCheckHistory)
+                    //检测变化
+                    string historyCheckInfos = string.Format(@"{0}\HistoryCheckInfo.xml", Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + "\\WordAndImgOCR\\LoginInOutInfo\\");
+                    var ui = CheckWordUtil.DataParse.ReadFromXmlPath<string>(historyCheckInfos);
+                    if (ui != null && ui.ToString() != "")
                     {
-                        if (item.Type == "File")
+                        listCheckHistory = JsonConvert.DeserializeObject<List<HistoryCheckInfo>>(ui.ToString()).OrderByDescending(x => x.CheckTime).ToList();
+                        foreach (var item in listCheckHistory)
                         {
-                            if (!File.Exists(item.FileFullPath))
+                            if (item.Type == "File")
                             {
-                                item.IsDelete = true;
-                            }
-                            else
-                            {
-                                item.IsDelete = false;
-                                if (new FileInfo(item.FileFullPath).LastWriteTime > item.LastWriteTime)
+                                if (!File.Exists(item.FileFullPath))
                                 {
-                                    item.IsModify = true;
+                                    item.IsDelete = true;
+                                }
+                                else
+                                {
+                                    item.IsDelete = false;
+                                    if (new FileInfo(item.FileFullPath).LastWriteTime > item.LastWriteTime)
+                                    {
+                                        item.IsModify = true;
+                                    }
                                 }
                             }
                         }
                     }
+                    Dispatcher.Invoke(new Action(() => {
+                        viewModel.HistoryCheckInfoList = new ObservableCollection<HistoryCheckInfo>(listCheckHistory);
+                    }));
                 }
-                viewModel.HistoryCheckInfoList = new ObservableCollection<HistoryCheckInfo>(listCheckHistory);
-                //保存历史记录信息到本地
-                DataParse.WriteToXmlPath(JsonConvert.SerializeObject(listCheckHistory), historyCheckInfos);
-            }
-            catch (Exception ex)
-            { }
-            viewModel.HistoryFilesGridVisibility = Visibility.Visible;
-            MainGrid.Height = 80 + heightAddMax;
-            this.Height = 99 + heightAddMax;
+                catch (Exception ex)
+                { }
+                System.Threading.Thread.Sleep(250);
+                EventAggregatorRepository.EventAggregator.GetEvent<MainAppBusyIndicatorEvent>().Publish(new AppBusyIndicator { IsBusy = false });
+            });
+            task.Start();
         }
 
         private void SelectHistoryBtn_Unchecked(object sender, RoutedEventArgs e)
@@ -1430,7 +1436,7 @@ namespace WordAndImgOperationApp
                             }
                             WriteToHistory(info);
                         }
-                        System.Threading.Thread.Sleep(500);
+                        System.Threading.Thread.Sleep(250);
                         EventAggregatorRepository.EventAggregator.GetEvent<MainAppBusyIndicatorEvent>().Publish(new AppBusyIndicator { IsBusy = false });
                     };
                     System.Threading.Thread t = new System.Threading.Thread(start);
