@@ -193,7 +193,14 @@ namespace CheckWordUtil
                         foreach (var item in listLawWordInfos)
                         {
                             UnChekedDetailWordInfo detailInfo = new UnChekedDetailWordInfo();
-                            detailInfo.Discription = item.data;
+                            if (string.IsNullOrEmpty(item.data))
+                            {
+                                detailInfo.Discription = "暂无解读";
+                            }
+                            else
+                            {
+                                detailInfo.Discription = item.data;
+                            }
                             detailInfo.CategoryName = string.IsNullOrEmpty(item.typeName) ? "" : "，" + item.typeName;
                             detailInfo.SourceName = item.official ? "词牛" : "自建词条";
                             if (item.uTime != null)
