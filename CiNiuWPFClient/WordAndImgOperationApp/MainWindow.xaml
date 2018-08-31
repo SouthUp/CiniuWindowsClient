@@ -230,7 +230,7 @@
                              Maximum="{Binding DealTotalCount}"></ProgressBar>
             </Grid>
             <Grid Grid.Row="2" Visibility="{Binding WordHasUnchekResultVisibility}" 
-                  MinHeight="80" MaxHeight="328">
+                  MinHeight="80" MaxHeight="328" VerticalAlignment="Top">
                 <StackPanel Orientation="Horizontal" Margin="10,0,0,0"
                             HorizontalAlignment="Left" VerticalAlignment="Top">
                     <TextBlock Text="搜到" FontSize="12" Opacity="0.54"
@@ -336,7 +336,7 @@
                 </ListBox>
             </Grid>
             <Grid Grid.Row="2" Visibility="{Binding WordNoUnchekResultVisibility}"
-                  HorizontalAlignment="Stretch" Background="White">
+                  HorizontalAlignment="Stretch" Background="White" VerticalAlignment="Top">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="8"></RowDefinition>
                     <RowDefinition Height="32"></RowDefinition>
@@ -393,7 +393,7 @@
                 </Grid>
             </Grid>
             <Grid Grid.Row="2" Visibility="{Binding DragFilesResultVisibility}" 
-                  Background="White">
+                  Background="White" VerticalAlignment="Top">
                 <ListBox x:Name="listBox3" BorderThickness="0" Background="Transparent"
                          ItemsSource="{Binding DealDataResultList}"
                          ScrollViewer.HorizontalScrollBarVisibility="Disabled"
@@ -456,7 +456,7 @@
                 </ListBox>
             </Grid>
             <Grid Grid.Row="2" Visibility="{Binding HistoryFilesGridVisibility}" 
-                  Background="White" Height="328">
+                  Background="White" Height="328" VerticalAlignment="Top">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="15"></RowDefinition>
                     <RowDefinition Height="*"></RowDefinition>

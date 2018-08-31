@@ -953,16 +953,10 @@ namespace WordAndImgOperationApp
                 }
                 catch
                 { }
+                //记录历史
+                HistoryCheckInfo info = new HistoryCheckInfo { Type = "TxT", FileName = textSearch, FileFullPath = textSearch, CheckTime = DateTime.Now };
+                WriteToHistory(info);
                 EventAggregatorRepository.EventAggregator.GetEvent<MainAppBusyIndicatorEvent>().Publish(new AppBusyIndicator { IsBusy = false });
-                System.Threading.ThreadStart start = delegate ()
-                {
-                    //记录历史
-                    HistoryCheckInfo info = new HistoryCheckInfo { Type = "TxT", FileName = textSearch, FileFullPath = textSearch, CheckTime = DateTime.Now };
-                    WriteToHistory(info);
-                };
-                System.Threading.Thread t = new System.Threading.Thread(start);
-                t.IsBackground = true;
-                t.Start();
             }
         }
         /// <summary>
@@ -1412,6 +1406,7 @@ namespace WordAndImgOperationApp
                     viewModel.IsSelectHistoryChecked = false;
                     System.Threading.ThreadStart start = delegate ()
                     {
+                        EventAggregatorRepository.EventAggregator.GetEvent<MainAppBusyIndicatorEvent>().Publish(new AppBusyIndicator { IsBusy = true });
                         //记录历史
                         foreach (var item in FilePathsList)
                         {
@@ -1433,6 +1428,8 @@ namespace WordAndImgOperationApp
                             }
                             WriteToHistory(info);
                         }
+                        System.Threading.Thread.Sleep(500);
+                        EventAggregatorRepository.EventAggregator.GetEvent<MainAppBusyIndicatorEvent>().Publish(new AppBusyIndicator { IsBusy = false });
                     };
                     System.Threading.Thread t = new System.Threading.Thread(start);
                     t.IsBackground = true;
