@@ -67,6 +67,55 @@ namespace WordAndImgOperationApp
             EventAggregatorRepository.EventAggregator.GetEvent<MainAppBusyIndicatorEvent>().Subscribe(MainAppBusyIndicator);
             RegisterWcfService();
             GetVersionInfo();
+            this.Deactivated += MainWindow_Deactivated;
+            this.Activated += MainWindow_Activated;
+        }
+
+        private void MainWindow_Activated(object sender, EventArgs e)
+        {
+            SetTopMost();
+        }
+
+        private void MainWindow_Deactivated(object sender, EventArgs e)
+        {
+            SetTopMost();
+        }
+        private void SetTopMost()
+        {
+            try
+            {
+                if (viewModel.PinBtnToolTip == "取消固定")
+                {
+                    this.Topmost = true;
+                    IntPtr hwnd = new WindowInteropHelper(this).Handle;
+                    App.Current.Dispatcher.BeginInvoke(new Action(async () => await RetrySetTopMost(hwnd)));
+                }
+            }
+            catch (Exception ex)
+            { }
+        }
+        internal const int GWL_EXSTYLE = -20;
+        internal const int WS_EX_TOPMOST = 0x00000008;
+        [System.Runtime.InteropServices.DllImport("user32.dll")]
+        internal static extern int GetWindowLong(IntPtr hwnd, int index);
+        private static async Task RetrySetTopMost(IntPtr hwnd)
+        {
+            try
+            {
+                for (int i = 0; i < 20; i++)
+                {
+                    await Task.Delay(200);
+                    int winStyle = GetWindowLong(hwnd, GWL_EXSTYLE);
+                    if ((winStyle & WS_EX_TOPMOST) != 0)
+                    {
+                        break;
+                    }
+                    App.Current.MainWindow.Topmost = false;
+                    App.Current.MainWindow.Topmost = true;
+                }
+            }
+            catch (Exception ex)
+            { }
         }
         private void MainAppBusyIndicator(AppBusyIndicator busyindicator)
         {
