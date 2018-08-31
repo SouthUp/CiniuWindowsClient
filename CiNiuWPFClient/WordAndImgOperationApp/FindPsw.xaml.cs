@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Linq;
+using System.Net.NetworkInformation;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
@@ -78,13 +79,42 @@ namespace WordAndImgOperationApp
                 }
                 else
                 {
-                    viewModel.MessageInfo = messageInfo;
+                    bool netState = GetCurrentNetState();
+                    if (!netState)
+                    {
+                        viewModel.MessageInfo = "网络异常";
+                    }
+                    else
+                    {
+                        viewModel.MessageInfo = messageInfo;
+                    }
                 }
                 EventAggregatorRepository.EventAggregator.GetEvent<AppBusyIndicatorEvent>().Publish(new AppBusyIndicator() { IsBusy = false });
             };
             System.Threading.Thread t = new System.Threading.Thread(startLogin);
             t.IsBackground = true;
             t.Start();
+        }
+        private bool GetCurrentNetState()
+        {
+            bool result = true;
+            try
+            {
+                using (Ping ping = new Ping())
+                {
+                    int timeout = 3000;
+                    PingReply reply = ping.Send("www.baidu.com", timeout);
+                    if (reply == null || reply.Status != IPStatus.Success)
+                    {
+                        result = false;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                result = false;
+            }
+            return result;
         }
         public System.Timers.Timer timersTimer;
         int countTime = 60;

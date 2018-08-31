@@ -192,17 +192,6 @@ namespace WordAndImgOperationApp
                         viewModel.MenueUnLoginVisibility = Visibility.Collapsed;
                         viewModel.MenueLoginVisibility = Visibility.Visible;
                         viewModel.UserName = UtilSystemVar.UserName;
-                        try
-                        {
-                            if (thCheckNetConn == null)
-                            {
-                                thCheckNetConn = new System.Threading.Thread(CheckNetConn);
-                                thCheckNetConn.IsBackground = true;
-                                thCheckNetConn.Start();
-                            }
-                        }
-                        catch (Exception ex)
-                        { }
                     }
                 }
                 catch (Exception ex)
@@ -213,6 +202,17 @@ namespace WordAndImgOperationApp
         {
             element.Source = AppDomain.CurrentDomain.BaseDirectory + @"Resources\Gif\loading.gif";
             CloseBtn_Click(null, null);
+            try
+            {
+                if (thCheckNetConn == null)
+                {
+                    thCheckNetConn = new System.Threading.Thread(CheckNetConn);
+                    thCheckNetConn.IsBackground = true;
+                    thCheckNetConn.Start();
+                }
+            }
+            catch (Exception ex)
+            { }
         }
         private void GetVersionInfo()
         {
@@ -243,6 +243,16 @@ namespace WordAndImgOperationApp
                     }
                     else
                     {
+                        bool netState = GetCurrentNetState();
+                        if (!netState)
+                        {
+                            EventAggregatorRepository.EventAggregator.GetEvent<SendNotifyMessageEvent>().Publish("300");
+                        }
+                        else
+                        {
+                            EventAggregatorRepository.EventAggregator.GetEvent<SendNotifyMessageEvent>().Publish("200");
+                        }
+                        System.Threading.Thread.Sleep(1000);
                         EventAggregatorRepository.EventAggregator.GetEvent<SendNotifyMessageEvent>().Publish("60020");
                     }
                 }
