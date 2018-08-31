@@ -52,11 +52,11 @@
                 </Border>
                 <Border x:Name="NewPasswordBorder" Width="260" Height="36" 
                         BorderThickness="1" BorderBrush="#c3becb" Margin="0,8,0,0">
-                    <PasswordBox x:Name="NewPassword" Style="{StaticResource NoEyeWatermarkPasswordBox}" 
+                    <PasswordBox x:Name="NewPassword" Style="{StaticResource WatermarkPasswordBox}" 
                                  input:InputMethod.IsInputMethodEnabled="False" 
-                                 BorderThickness="0" BorderBrush="#c3becb" Width="250"  Opacity="0.87"
+                                 BorderThickness="0" BorderBrush="#c3becb" Width="240"  Opacity="0.87"
                                  Height="36" Background="Transparent"  Foreground="Black"
-                                 FontSize="12" CaretBrush="Black" Margin="10,0,0,0"
+                                 FontSize="12" CaretBrush="Black" Margin="10,0,10,0"
                                  VerticalContentAlignment="Bottom"
                                  control:WatermarkTextBox.Watermark="重置密码（6-12位字母与数字组合）" 
                                  control:PasswordHelper.Attach="True" 
@@ -66,11 +66,11 @@
                 </Border>
                 <Border x:Name="PasswordBorder" Width="260" Height="36" 
                         BorderThickness="1" BorderBrush="#c3becb" Margin="0,8,0,0">
-                    <PasswordBox x:Name="Password" Style="{StaticResource NoEyeWatermarkPasswordBox}" 
+                    <PasswordBox x:Name="Password" Style="{StaticResource WatermarkPasswordBox}" 
                                  input:InputMethod.IsInputMethodEnabled="False" 
-                                 BorderThickness="0" BorderBrush="#c3becb" Width="250"  Opacity="0.87"
+                                 BorderThickness="0" BorderBrush="#c3becb" Width="240"  Opacity="0.87"
                                  Height="36" Background="Transparent"  Foreground="Black"
-                                 FontSize="12" CaretBrush="Black" Margin="10,0,0,0"
+                                 FontSize="12" CaretBrush="Black" Margin="10,0,10,0"
                                  VerticalContentAlignment="Bottom"
                                  control:WatermarkTextBox.Watermark="确认密码" 
                                  control:PasswordHelper.Attach="True" 

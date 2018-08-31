@@ -57,7 +57,7 @@
                     HorizontalAlignment="Center" Margin="0,8,0,0" Opacity="0.06"></Border>
             </StackPanel>
             <StackPanel Orientation="Vertical" Margin="0,18,0,0">
-                <PasswordBox x:Name="NewPassword" Style="{StaticResource NoEyeWatermarkPasswordBox}" 
+                <PasswordBox x:Name="NewPassword" Style="{StaticResource WatermarkPasswordBox}" 
                                  input:InputMethod.IsInputMethodEnabled="False" 
                                  BorderThickness="0"  Width="260"  Opacity="0.87"
                                  Height="18" Background="Transparent"  Foreground="Black"
@@ -72,7 +72,7 @@
                     HorizontalAlignment="Center" Margin="0,8,0,0" Opacity="0.06"></Border>
             </StackPanel>
             <StackPanel Orientation="Vertical" Margin="0,18,0,0">
-                <PasswordBox x:Name="Password" Style="{StaticResource NoEyeWatermarkPasswordBox}" 
+                <PasswordBox x:Name="Password" Style="{StaticResource WatermarkPasswordBox}" 
                                  input:InputMethod.IsInputMethodEnabled="False" 
                                  BorderThickness="0"  Width="260"  Opacity="0.87"
                                  Height="18" Background="Transparent"  Foreground="Black"
