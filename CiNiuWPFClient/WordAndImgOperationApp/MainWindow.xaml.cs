@@ -1385,6 +1385,10 @@ namespace WordAndImgOperationApp
                     //检查完成
                     viewModel.DealDataResultList = _dealDataResultList;
                     CloseDealingGrid();
+                    if (UnCheckFilePathsList.Count > 0)
+                    {
+                        EventAggregatorRepository.EventAggregator.GetEvent<MainAppShowTipsInfoEvent>().Publish(new AppBusyIndicator() { IsBusy = true, BusyContent = "其中有" + UnCheckFilePathsList.Count + "个文件类型不支持." });
+                    }
                     viewModel.DragFilesResultVisibility = Visibility.Visible;
                     viewModel.HistoryFilesGridVisibility = Visibility.Collapsed;
                     viewModel.IsSelectHistoryChecked = false;
