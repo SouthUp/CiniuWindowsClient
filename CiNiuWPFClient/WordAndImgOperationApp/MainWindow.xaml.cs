@@ -915,6 +915,14 @@ namespace WordAndImgOperationApp
                                         viewModel.AddToCustumCiTiaoVisibility = Visibility.Collapsed;
                                         MainGrid.Height = 80 + heightAdd;
                                         this.Height = 99 + heightAdd;
+                                        try
+                                        {
+                                            Decorator decorator = (Decorator)VisualTreeHelper.GetChild(listBox, 0);
+                                            ScrollViewer scrollViewer = (ScrollViewer)decorator.Child;
+                                            scrollViewer.ScrollToTop();
+                                        }
+                                        catch
+                                        { }
                                     }
                                     else
                                     {
