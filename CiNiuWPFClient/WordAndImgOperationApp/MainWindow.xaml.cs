@@ -488,7 +488,7 @@ namespace WordAndImgOperationApp
                             else
                             {
                                 viewModel.CurrentUserInfo = new UserStateInfos();
-                                viewModel.CurrentUserInfo.PointCountStr = "";
+                                viewModel.CurrentUserInfo.PointCountStr = "--";
                             }
                         }
                         catch

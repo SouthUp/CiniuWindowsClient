@@ -50,7 +50,7 @@ namespace WordAndImgOperationApp
                     }
                     else
                     {
-                        viewModel.PointCount = "";
+                        viewModel.PointCount = "--";
                     }
                 }
                 catch (Exception ex)
