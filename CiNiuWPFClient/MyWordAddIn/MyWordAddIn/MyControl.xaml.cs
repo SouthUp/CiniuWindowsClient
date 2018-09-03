@@ -825,6 +825,28 @@ namespace MyWordAddIn
                     catch
                     { }
                     var result = service.GetOCRResultByToken(image, fileName);
+                    new System.Threading.Tasks.Task(() => {
+                        try
+                        {
+                            APIService serviceUser = new APIService();
+                            var userStateInfos = serviceUser.GetUserStateByToken();
+                            if (!userStateInfos)
+                            {
+                                try
+                                {
+                                    CommonExchangeInfo commonExchangeInfo = new CommonExchangeInfo();
+                                    commonExchangeInfo.Code = "ShowNotifyMessageView";
+                                    commonExchangeInfo.Data = "500";
+                                    string jsonData = JsonConvert.SerializeObject(commonExchangeInfo); //序列化
+                                    Win32Helper.SendMessage("WordAndImgOperationApp", jsonData);
+                                }
+                                catch
+                                { }
+                            }
+                        }
+                        catch
+                        { }
+                    }).Start();
                     //反序列化
                     resultImgGeneral = JsonConvert.DeserializeObject<ImgGeneralInfo>(result.ToString().Replace("char", "Char"));
                     ////////var options = new Dictionary<string, object>{
