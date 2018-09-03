@@ -207,6 +207,14 @@ namespace WordAndImgOperationApp
                 viewModel.MessageInfo = "请输入重置密码";
                 return false;
             }
+            else
+            {
+                if (newPsw.Length < 6 || newPsw.Length > 20)
+                {
+                    viewModel.MessageInfo = "密码长度为6-20位";
+                    return false;
+                }
+            }
             if (String.IsNullOrWhiteSpace(psw))
             {
                 viewModel.MessageInfo = "请输入确认密码";

@@ -250,6 +250,14 @@ namespace WordAndImgOperationApp
                 viewModel.MessageInfo = "请设置密码";
                 return false;
             }
+            else
+            {
+                if (psw.Length < 6 || psw.Length > 20)
+                {
+                    viewModel.MessageInfo = "密码长度为6-20位";
+                    return false;
+                }
+            }
             return true;
         }
         private void UserControl_Unloaded(object sender, RoutedEventArgs e)
