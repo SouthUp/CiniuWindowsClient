@@ -697,19 +697,23 @@ namespace MyExcelAddIn
                 try
                 {
                     APIService service = new APIService();
-                    var userStateInfos = service.GetUserStateByToken();
+                    bool isNetWrong = false;
+                    var userStateInfos = service.GetUserStateByToken(ref isNetWrong);
                     if (!userStateInfos)
                     {
-                        try
+                        if (!isNetWrong)
                         {
-                            CommonExchangeInfo commonExchangeInfo = new CommonExchangeInfo();
-                            commonExchangeInfo.Code = "ShowNotifyMessageView";
-                            commonExchangeInfo.Data = "500";
-                            string jsonData = JsonConvert.SerializeObject(commonExchangeInfo); //序列化
-                            Win32Helper.SendMessage("WordAndImgOperationApp", jsonData);
+                            try
+                            {
+                                CommonExchangeInfo commonExchangeInfo = new CommonExchangeInfo();
+                                commonExchangeInfo.Code = "ShowNotifyMessageView";
+                                commonExchangeInfo.Data = "500";
+                                string jsonData = JsonConvert.SerializeObject(commonExchangeInfo); //序列化
+                                Win32Helper.SendMessage("WordAndImgOperationApp", jsonData);
+                            }
+                            catch
+                            { }
                         }
-                        catch
-                        { }
                         return null;
                     }
                 }
@@ -746,19 +750,23 @@ namespace MyExcelAddIn
                         try
                         {
                             APIService serviceUser = new APIService();
-                            var userStateInfos = serviceUser.GetUserStateByToken();
+                            bool isNetWrong = false;
+                            var userStateInfos = serviceUser.GetUserStateByToken(ref isNetWrong);
                             if (!userStateInfos)
                             {
-                                try
+                                if (!isNetWrong)
                                 {
-                                    CommonExchangeInfo commonExchangeInfo = new CommonExchangeInfo();
-                                    commonExchangeInfo.Code = "ShowNotifyMessageView";
-                                    commonExchangeInfo.Data = "500";
-                                    string jsonData = JsonConvert.SerializeObject(commonExchangeInfo); //序列化
-                                    Win32Helper.SendMessage("WordAndImgOperationApp", jsonData);
+                                    try
+                                    {
+                                        CommonExchangeInfo commonExchangeInfo = new CommonExchangeInfo();
+                                        commonExchangeInfo.Code = "ShowNotifyMessageView";
+                                        commonExchangeInfo.Data = "500";
+                                        string jsonData = JsonConvert.SerializeObject(commonExchangeInfo); //序列化
+                                        Win32Helper.SendMessage("WordAndImgOperationApp", jsonData);
+                                    }
+                                    catch
+                                    { }
                                 }
-                                catch
-                                { }
                             }
                         }
                         catch

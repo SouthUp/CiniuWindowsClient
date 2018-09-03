@@ -780,19 +780,23 @@ namespace MyWordAddIn
                 try
                 {
                     APIService service = new APIService();
-                    var userStateInfos = service.GetUserStateByToken();
+                    bool isNetWrong = false;
+                    var userStateInfos = service.GetUserStateByToken(ref isNetWrong);
                     if (!userStateInfos)
                     {
-                        try
+                        if (!isNetWrong)
                         {
-                            CommonExchangeInfo commonExchangeInfo = new CommonExchangeInfo();
-                            commonExchangeInfo.Code = "ShowNotifyMessageView";
-                            commonExchangeInfo.Data = "500";
-                            string jsonData = JsonConvert.SerializeObject(commonExchangeInfo); //序列化
-                            Win32Helper.SendMessage("WordAndImgOperationApp", jsonData);
+                            try
+                            {
+                                CommonExchangeInfo commonExchangeInfo = new CommonExchangeInfo();
+                                commonExchangeInfo.Code = "ShowNotifyMessageView";
+                                commonExchangeInfo.Data = "500";
+                                string jsonData = JsonConvert.SerializeObject(commonExchangeInfo); //序列化
+                                Win32Helper.SendMessage("WordAndImgOperationApp", jsonData);
+                            }
+                            catch
+                            { }
                         }
-                        catch
-                        { }
                         return null;
                     }
                 }
@@ -825,28 +829,35 @@ namespace MyWordAddIn
                     catch
                     { }
                     var result = service.GetOCRResultByToken(image, fileName);
-                    new System.Threading.Tasks.Task(() => {
-                        try
-                        {
-                            APIService serviceUser = new APIService();
-                            var userStateInfos = serviceUser.GetUserStateByToken();
-                            if (!userStateInfos)
+                    if (!string.IsNullOrEmpty(result))
+                    {
+                        new System.Threading.Tasks.Task(() => {
+                            try
                             {
-                                try
+                                APIService serviceUser = new APIService();
+                                bool isNetWrong = false;
+                                var userStateInfos = serviceUser.GetUserStateByToken(ref isNetWrong);
+                                if (!userStateInfos)
                                 {
-                                    CommonExchangeInfo commonExchangeInfo = new CommonExchangeInfo();
-                                    commonExchangeInfo.Code = "ShowNotifyMessageView";
-                                    commonExchangeInfo.Data = "500";
-                                    string jsonData = JsonConvert.SerializeObject(commonExchangeInfo); //序列化
-                                    Win32Helper.SendMessage("WordAndImgOperationApp", jsonData);
+                                    if (!isNetWrong)
+                                    {
+                                        try
+                                        {
+                                            CommonExchangeInfo commonExchangeInfo = new CommonExchangeInfo();
+                                            commonExchangeInfo.Code = "ShowNotifyMessageView";
+                                            commonExchangeInfo.Data = "500";
+                                            string jsonData = JsonConvert.SerializeObject(commonExchangeInfo); //序列化
+                                            Win32Helper.SendMessage("WordAndImgOperationApp", jsonData);
+                                        }
+                                        catch
+                                        { }
+                                    }
                                 }
-                                catch
-                                { }
                             }
-                        }
-                        catch
-                        { }
-                    }).Start();
+                            catch
+                            { }
+                        }).Start();
+                    }
                     //反序列化
                     resultImgGeneral = JsonConvert.DeserializeObject<ImgGeneralInfo>(result.ToString().Replace("char", "Char"));
                     ////////var options = new Dictionary<string, object>{

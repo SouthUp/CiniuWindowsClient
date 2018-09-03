@@ -66,7 +66,7 @@ namespace CheckWordUtil
         /// </summary>
         /// <param name="token"></param>
         /// <returns></returns>
-        public bool GetUserStateByToken()
+        public bool GetUserStateByToken(ref bool isNetWrong)
         {
             bool result = false;
             try
@@ -113,6 +113,7 @@ namespace CheckWordUtil
             {
                 CheckWordUtil.Log.TextLog.SaveError(ex.Message);
                 result = false;
+                isNetWrong = true;
             }
             return result;
         }
