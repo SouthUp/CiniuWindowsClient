@@ -36,10 +36,7 @@ namespace CheckWordModel
             set
             {
                 pointCount = value;
-                if (pointCount != 0)
-                {
-                    PointCountStr = pointCount.ToString();
-                }
+                PointCountStr = pointCount.ToString();
                 RaisePropertyChanged("PointCount");
             }
         }

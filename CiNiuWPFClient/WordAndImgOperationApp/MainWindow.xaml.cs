@@ -485,6 +485,11 @@ namespace WordAndImgOperationApp
                             {
                                 viewModel.CurrentUserInfo = userStateInfos;
                             }
+                            else
+                            {
+                                viewModel.CurrentUserInfo = new UserStateInfos();
+                                viewModel.CurrentUserInfo.PointCountStr = "";
+                            }
                         }
                         catch
                         { }

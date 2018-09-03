@@ -48,6 +48,10 @@ namespace WordAndImgOperationApp
                     {
                         viewModel.PointCount = userStateInfos.PointCountStr;
                     }
+                    else
+                    {
+                        viewModel.PointCount = "";
+                    }
                 }
                 catch (Exception ex)
                 { }
