@@ -26,7 +26,7 @@
                              Width="220" Height="18" Background="Transparent" Foreground="Black" 
                              Text="{Binding UserName}" FontSize="12" 
                              VerticalContentAlignment="Bottom" CaretBrush="Black"
-                                              control:WatermarkTextBox.Watermark="用户名"
+                                              control:WatermarkTextBox.Watermark="手机号"
                                               MaxLength="11" IsOnlyNumber="True"
                                               InputMethod.IsInputMethodEnabled="False"/>
                 </StackPanel>
