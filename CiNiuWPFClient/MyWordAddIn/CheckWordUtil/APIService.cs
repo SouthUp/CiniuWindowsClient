@@ -217,5 +217,36 @@ namespace CheckWordUtil
             { }
             return result;
         }
+        /// <summary>
+        /// 获取是否检测文档中的图片
+        /// </summary>
+        /// <returns></returns>
+        public bool GetIsCheckPicAddIn()
+        {
+            bool result = true;
+            try
+            {
+                string mySettingInfo = string.Format(@"{0}\MySettingInfo.xml", Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + "\\WordAndImgOCR\\LoginInOutInfo\\");
+                var ui = CheckWordUtil.DataParse.ReadFromXmlPath<string>(mySettingInfo);
+                if (ui != null && ui.ToString() != "")
+                {
+                    try
+                    {
+                        var mySetting = JsonConvert.DeserializeObject<MySettingInfo>(ui.ToString());
+                        if (mySetting != null)
+                        {
+                            result = mySetting.IsCheckPicInDucument;
+                        }
+                    }
+                    catch
+                    { }
+                }
+            }
+            catch (Exception ex)
+            {
+                CheckWordUtil.Log.TextLog.SaveError(ex.Message);
+            }
+            return result;
+        }
     }
 }

@@ -338,45 +338,50 @@ namespace MyWordAddIn
                     }
                 }
             }
-            foreach (var item in listUnCheckWordsImages.ToList())
+            APIService service = new APIService();
+            bool isCheckPicInDucument = service.GetIsCheckPicAddIn();
+            if (isCheckPicInDucument)
             {
-                var infoExist = listUnCheckWords.AsParallel().FirstOrDefault(x => x.Name == item.Name);
-                if (infoExist == null)
+                foreach (var item in listUnCheckWordsImages.ToList())
                 {
-                    UnChekedWordInfo unChekedWordInfoNoExist = new UnChekedWordInfo();
-                    unChekedWordInfoNoExist.ID = item.ID;
-                    unChekedWordInfoNoExist.Name = item.Name;
-                    unChekedWordInfoNoExist.ErrorTotalCount = item.ErrorTotalCount;
-                    unChekedWordInfoNoExist.Range = item.Range;
-                    unChekedWordInfoNoExist.UnCheckWordRange = item.UnCheckWordRange;
-                    unChekedWordInfoNoExist.UnChekedWordInLineDetailInfos = new ObservableCollection<UnChekedInLineDetailWordInfo>(item.UnChekedWordInLineDetailInfos.ToList());
-                    unChekedWordInfoNoExist.UnChekedWordDetailInfos = new ObservableCollection<UnChekedDetailWordInfo>(item.UnChekedWordDetailInfos.ToList());
-                    unChekedWordInfoNoExist.TypeTextFrom = item.TypeTextFrom;
-                    unChekedWordInfoNoExist.IsSelected = item.IsSelected;
-                    listUnCheckWords.Add(unChekedWordInfoNoExist);
-                }
-                else
-                {
-                    UnChekedWordInfo unChekedWordInfoExist = new UnChekedWordInfo();
-                    unChekedWordInfoExist.ID = infoExist.ID;
-                    unChekedWordInfoExist.Name = infoExist.Name;
-                    unChekedWordInfoExist.ErrorTotalCount = infoExist.ErrorTotalCount;
-                    unChekedWordInfoExist.Range = infoExist.Range;
-                    unChekedWordInfoExist.UnCheckWordRange = infoExist.UnCheckWordRange;
-                    unChekedWordInfoExist.UnChekedWordInLineDetailInfos = new ObservableCollection<UnChekedInLineDetailWordInfo>(infoExist.UnChekedWordInLineDetailInfos.ToList());
-                    unChekedWordInfoExist.UnChekedWordDetailInfos = new ObservableCollection<UnChekedDetailWordInfo>(infoExist.UnChekedWordDetailInfos.ToList());
-                    unChekedWordInfoExist.TypeTextFrom = infoExist.TypeTextFrom;
-                    unChekedWordInfoExist.IsSelected = infoExist.IsSelected;
-                    Dispatcher.Invoke(new Action(() =>
+                    var infoExist = listUnCheckWords.AsParallel().FirstOrDefault(x => x.Name == item.Name);
+                    if (infoExist == null)
                     {
-                        foreach (var detail in item.UnChekedWordInLineDetailInfos.ToList())
+                        UnChekedWordInfo unChekedWordInfoNoExist = new UnChekedWordInfo();
+                        unChekedWordInfoNoExist.ID = item.ID;
+                        unChekedWordInfoNoExist.Name = item.Name;
+                        unChekedWordInfoNoExist.ErrorTotalCount = item.ErrorTotalCount;
+                        unChekedWordInfoNoExist.Range = item.Range;
+                        unChekedWordInfoNoExist.UnCheckWordRange = item.UnCheckWordRange;
+                        unChekedWordInfoNoExist.UnChekedWordInLineDetailInfos = new ObservableCollection<UnChekedInLineDetailWordInfo>(item.UnChekedWordInLineDetailInfos.ToList());
+                        unChekedWordInfoNoExist.UnChekedWordDetailInfos = new ObservableCollection<UnChekedDetailWordInfo>(item.UnChekedWordDetailInfos.ToList());
+                        unChekedWordInfoNoExist.TypeTextFrom = item.TypeTextFrom;
+                        unChekedWordInfoNoExist.IsSelected = item.IsSelected;
+                        listUnCheckWords.Add(unChekedWordInfoNoExist);
+                    }
+                    else
+                    {
+                        UnChekedWordInfo unChekedWordInfoExist = new UnChekedWordInfo();
+                        unChekedWordInfoExist.ID = infoExist.ID;
+                        unChekedWordInfoExist.Name = infoExist.Name;
+                        unChekedWordInfoExist.ErrorTotalCount = infoExist.ErrorTotalCount;
+                        unChekedWordInfoExist.Range = infoExist.Range;
+                        unChekedWordInfoExist.UnCheckWordRange = infoExist.UnCheckWordRange;
+                        unChekedWordInfoExist.UnChekedWordInLineDetailInfos = new ObservableCollection<UnChekedInLineDetailWordInfo>(infoExist.UnChekedWordInLineDetailInfos.ToList());
+                        unChekedWordInfoExist.UnChekedWordDetailInfos = new ObservableCollection<UnChekedDetailWordInfo>(infoExist.UnChekedWordDetailInfos.ToList());
+                        unChekedWordInfoExist.TypeTextFrom = infoExist.TypeTextFrom;
+                        unChekedWordInfoExist.IsSelected = infoExist.IsSelected;
+                        Dispatcher.Invoke(new Action(() =>
                         {
-                            unChekedWordInfoExist.UnChekedWordInLineDetailInfos.Add(detail);
-                            unChekedWordInfoExist.ErrorTotalCount++;
-                        }
-                        listUnCheckWords.Remove(infoExist);
-                        listUnCheckWords.Add(unChekedWordInfoExist);
-                    }));
+                            foreach (var detail in item.UnChekedWordInLineDetailInfos.ToList())
+                            {
+                                unChekedWordInfoExist.UnChekedWordInLineDetailInfos.Add(detail);
+                                unChekedWordInfoExist.ErrorTotalCount++;
+                            }
+                            listUnCheckWords.Remove(infoExist);
+                            listUnCheckWords.Add(unChekedWordInfoExist);
+                        }));
+                    }
                 }
             }
             foreach (var SelectUnCheckWord in listUnCheckWords)
@@ -509,22 +514,27 @@ namespace MyWordAddIn
                 }));
                 try
                 {
-                    List<ImagesDetailInfo> ImagesDetailInfos = GetImagesFromWord();
-                    foreach (var item in ImagesDetailInfos)
+                    APIService service = new APIService();
+                    bool isCheckPicInDucument = service.GetIsCheckPicAddIn();
+                    if (isCheckPicInDucument)
                     {
-                        string hashPic = HashHelper.ComputeSHA1(item.ImgResultPath);
-                        if (!HostSystemVar.CurrentImgsDictionary.ContainsKey(hashPic))
+                        List<ImagesDetailInfo> ImagesDetailInfos = GetImagesFromWord();
+                        foreach (var item in ImagesDetailInfos)
                         {
-                            var listResult = AutoExcutePicOCR(item.ImgResultPath, item.UnCheckWordRange);
-                            if (listResult != null)
+                            string hashPic = HashHelper.ComputeSHA1(item.ImgResultPath);
+                            if (!HostSystemVar.CurrentImgsDictionary.ContainsKey(hashPic))
                             {
-                                listUnCheckWordsImages.AddRange(listResult.ToList());
-                                HostSystemVar.CurrentImgsDictionary.Add(hashPic, listResult.ToList());
+                                var listResult = AutoExcutePicOCR(item.ImgResultPath, item.UnCheckWordRange);
+                                if (listResult != null)
+                                {
+                                    listUnCheckWordsImages.AddRange(listResult.ToList());
+                                    HostSystemVar.CurrentImgsDictionary.Add(hashPic, listResult.ToList());
+                                }
                             }
-                        }
-                        else
-                        {
-                            listUnCheckWordsImages.AddRange(HostSystemVar.CurrentImgsDictionary[hashPic].ToList());
+                            else
+                            {
+                                listUnCheckWordsImages.AddRange(HostSystemVar.CurrentImgsDictionary[hashPic].ToList());
+                            }
                         }
                     }
                 }
