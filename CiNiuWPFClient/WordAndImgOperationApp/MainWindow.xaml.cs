@@ -1183,6 +1183,11 @@ namespace WordAndImgOperationApp
 
         private void AddToCustumCiTiaoBtn_Click(object sender, RoutedEventArgs e)
         {
+            if (viewModel.SearchText.Length > 16)
+            {
+                EventAggregatorRepository.EventAggregator.GetEvent<MainAppShowTipsInfoEvent>().Publish(new AppBusyIndicator() { IsBusy = true, BusyContent = "自建词条最大长度为16" });
+                return;
+            }
             viewModel.DiscriptionSearchText = "";
             viewModel.AddToCustumCiTiaoVisibility = Visibility.Visible;
             MainGrid.Height = 80 + 250;
