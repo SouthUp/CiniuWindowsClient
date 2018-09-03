@@ -714,9 +714,7 @@ namespace WordAndImgOperationApp
                 }
                 if (typeInfo == "LoginIn")
                 {
-                    new Task(() => {
-                        EventAggregatorRepository.EventAggregator.GetEvent<GetWordsEvent>().Publish(true);
-                    }).Start();
+                    EventAggregatorRepository.EventAggregator.GetEvent<GetWordsEvent>().Publish(true);
                     SetIconToolTip("词牛（已登录）");
                     //获取用户设置
                     Task task = new Task(() => {
