@@ -1979,6 +1979,19 @@ namespace WordAndImgOperationApp
                         fileNameOCR = System.IO.Path.GetFileName(fromDucumentFileName);
                     }
                     var result = serviceOCR.GetOCRResultByToken(UtilSystemVar.UserToken, image, fileNameOCR, taskId);
+                    new Task(() => {
+                        try
+                        {
+                            APIService serviceUser = new APIService();
+                            var userInfos = serviceUser.GetUserStateByToken(UtilSystemVar.UserToken);
+                            if (userInfos != null && userInfos.PicCount == 0)
+                            {
+                                EventAggregatorRepository.EventAggregator.GetEvent<SendNotifyMessageEvent>().Publish("500");
+                            }
+                        }
+                        catch
+                        { }
+                    }).Start();
                     //反序列化
                     resultImgGeneral = JsonConvert.DeserializeObject<ImgGeneralInfo>(result.ToString().Replace("char", "Char"));
                     if (!IsDealingData)
