@@ -54,18 +54,30 @@ namespace CheckWordUtil
                 if (isGetAllWord || WordModels.Count == 0)
                 {
                     string myWordModelsInfo = string.Format(@"{0}\MyWordModelsInfo.xml", Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + "\\WordAndImgOCR\\LoginInOutInfo\\");
-                    var uiMyWords = CheckWordUtil.DataParse.ReadFromXmlPath<string>(myWordModelsInfo);
-                    if (uiMyWords != null && uiMyWords.ToString() != "")
+                    int countTime = 0;
+                    while (true)
                     {
-                        try
+                        var uiMyWords = CheckWordUtil.DataParse.ReadFromXmlPath<string>(myWordModelsInfo);
+                        if (uiMyWords != null && uiMyWords.ToString() != "")
                         {
-                            WordModels = JsonConvert.DeserializeObject<List<WordModel>>(uiMyWords.ToString());
-                            IsGetAllWordsInfo info = new IsGetAllWordsInfo();
-                            info.IsGetAllWords = false;
-                            DataParse.WriteToXmlPath(JsonConvert.SerializeObject(info), isGetAllWordsInfo);
+                            try
+                            {
+                                WordModels = JsonConvert.DeserializeObject<List<WordModel>>(uiMyWords.ToString());
+                                IsGetAllWordsInfo info = new IsGetAllWordsInfo();
+                                info.IsGetAllWords = false;
+                                DataParse.WriteToXmlPath(JsonConvert.SerializeObject(info), isGetAllWordsInfo);
+                                if (WordModels.Count > 0)
+                                    break;
+                            }
+                            catch
+                            { }
                         }
-                        catch
-                        { }
+                        countTime++;
+                        System.Threading.Thread.Sleep(500);
+                        if (countTime > 10)
+                        {
+                            break;
+                        }
                     }
                 }
                 foreach (var item in WordModels)
