@@ -69,6 +69,7 @@ namespace WordAndImgOperationApp
 
         private async void SureToCustumCiTiaoBtn_Click(object sender, RoutedEventArgs e)
         {
+            string message = "";
             //调用接口添加自建词库
             Task<bool> task = new Task<bool>(() => {
                 EventAggregatorRepository.EventAggregator.GetEvent<SettingWindowBusyIndicatorEvent>().Publish(new AppBusyIndicator { IsBusy = true });
@@ -76,7 +77,7 @@ namespace WordAndImgOperationApp
                 try
                 {
                     APIService service = new APIService();
-                    b = service.AddCustumCiTiaoByToken(UtilSystemVar.UserToken, viewModel.SearchText, viewModel.DiscriptionSearchText);
+                    b = service.AddCustumCiTiaoByToken(UtilSystemVar.UserToken, viewModel.SearchText, viewModel.DiscriptionSearchText,ref message);
                     System.Threading.Thread.Sleep(1000);
                 }
                 catch (Exception ex)
@@ -96,7 +97,7 @@ namespace WordAndImgOperationApp
             }
             else
             {
-                ShowTipsInfo("添加自建词条失败");
+                ShowTipsInfo(message);
             }
         }
         private void ShowTipsInfo(string tipsInfo)
@@ -171,8 +172,9 @@ namespace WordAndImgOperationApp
                                     if(!string.IsNullOrEmpty(name))
                                     {
                                         totalCount++;
+                                        string message = "";
                                         APIService service = new APIService();
-                                        bool b = service.AddCustumCiTiaoByToken(UtilSystemVar.UserToken, name, comment);
+                                        bool b = service.AddCustumCiTiaoByToken(UtilSystemVar.UserToken, name, comment,ref message);
                                         if (!b)
                                         {
                                             errorCount++;

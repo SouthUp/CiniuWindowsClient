@@ -1196,6 +1196,7 @@ namespace WordAndImgOperationApp
 
         private async void SureToCustumCiTiaoBtn_Click(object sender, RoutedEventArgs e)
         {
+            string message = "";
             //调用接口添加自建词库
             Task<bool> task = new Task<bool>(() => {
                 EventAggregatorRepository.EventAggregator.GetEvent<MainAppBusyIndicatorEvent>().Publish(new AppBusyIndicator { IsBusy = true });
@@ -1203,7 +1204,7 @@ namespace WordAndImgOperationApp
                 try
                 {
                     APIService service = new APIService();
-                    b = service.AddCustumCiTiaoByToken(UtilSystemVar.UserToken, viewModel.SearchText, viewModel.DiscriptionSearchText);
+                    b = service.AddCustumCiTiaoByToken(UtilSystemVar.UserToken, viewModel.SearchText, viewModel.DiscriptionSearchText,ref message);
                 }
                 catch (Exception ex)
                 { }
@@ -1223,7 +1224,7 @@ namespace WordAndImgOperationApp
             }
             else
             {
-                EventAggregatorRepository.EventAggregator.GetEvent<MainAppShowTipsInfoEvent>().Publish(new AppBusyIndicator() { IsBusy = true, BusyContent = "添加自建词条失败" });
+                EventAggregatorRepository.EventAggregator.GetEvent<MainAppShowTipsInfoEvent>().Publish(new AppBusyIndicator() { IsBusy = true, BusyContent = message });
             }
             viewModel.AddToCustumCiTiaoVisibility = Visibility.Collapsed;
             MainGrid.Height = 80 + 75;

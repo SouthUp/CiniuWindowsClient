@@ -363,9 +363,10 @@ namespace CheckWordUtil
         /// </summary>
         /// <param name="token"></param>
         /// <returns></returns>
-        public bool AddCustumCiTiaoByToken(string token, string word,string discription)
+        public bool AddCustumCiTiaoByToken(string token, string word,string discription,ref string message)
         {
             bool result = true;
+            message = "";
             try
             {
                 string apiName = "words/word";
@@ -381,12 +382,17 @@ namespace CheckWordUtil
                 if (resultInfo != null)
                 {
                     result = resultInfo.state;
+                    if (!resultInfo.state && resultInfo.code == "409")
+                    {
+                        message = "该自建词条已存在";
+                    }
                 }
             }
             catch (Exception ex)
             {
                 WPFClientCheckWordUtil.Log.TextLog.SaveError(ex.Message);
                 result = false;
+                message = "添加自建词条失败";
             }
             return result;
         }
