@@ -33,8 +33,8 @@
             <StackPanel Orientation="Horizontal" VerticalAlignment="Bottom" HorizontalAlignment="Center">
                 <Button Width="72" Height="32" Content="扣点查询" IsEnabled="False"
                         FontSize="13" Style="{StaticResource BGHoverTextButtonStyle}"
-                        Click="ConsumeSeachBtn_Click"></Button>
-                <Button Width="72" Height="32" Content="充值" Margin="16,0,0,0" 
+                        Click="ConsumeSeachBtn_Click" Visibility="Collapsed"></Button>
+                <Button Width="72" Height="32" Content="充值" 
                         FontSize="13" Style="{StaticResource BGHoverTextButtonStyle}"
                         Click="RechargeBtn_Click"></Button>
             </StackPanel>
