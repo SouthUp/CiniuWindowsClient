@@ -2150,5 +2150,12 @@ namespace WordAndImgOperationApp
             catch (Exception ex)
             { }
         }
+
+        private void SearchTextBox_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            viewModel.IsSelectHistoryChecked = false;
+            MainGrid.Height = 80;
+            this.Height = 99;
+        }
     }
 }

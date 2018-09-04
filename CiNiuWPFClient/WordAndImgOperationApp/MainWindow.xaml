@@ -194,7 +194,7 @@
                                                   BorderThickness="0" Background="Transparent" Margin="10,0,0,0"
                                                   HorizontalAlignment="Left" KeyDown="SearchTextBox_KeyDown"
                                                   control:WatermarkTextBox.Watermark="拖入文件，文件夹或输入词，句"
-                                                      MaxLength="1000"/>
+                                                      MaxLength="1000" TextChanged="SearchTextBox_TextChanged"/>
                         <ToggleButton Width="16" Height="16" Margin="0,0,8,0" IsChecked="{Binding IsSelectHistoryChecked}"
                                           Style="{StaticResource HistoryExpandToggleStyle}"
                                           VerticalAlignment="Center" HorizontalAlignment="Right"
