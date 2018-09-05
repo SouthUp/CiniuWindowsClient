@@ -149,6 +149,7 @@ namespace WordAndImgOperationApp
                 {
                     int totalCount = 0;
                     int errorCount = 0;
+                    int errorSameCount = 0;
                     //调用接口添加自建词库
                     Task<bool> task = new Task<bool>(() => {
                         ShowTipsInfo("正在批量上传，请稍后再上传");
@@ -178,6 +179,10 @@ namespace WordAndImgOperationApp
                                         if (!b)
                                         {
                                             errorCount++;
+                                            if (message == "该自建词条已存在")
+                                            {
+                                                errorSameCount++;
+                                            }
                                         }
                                     }
                                 }
@@ -204,13 +209,34 @@ namespace WordAndImgOperationApp
                     }
                     else
                     {
-                        if (totalCount == errorCount)
+                        if (totalCount == 0)
                         {
-                            ShowTipsInfo("批量导入词条失败");
+                            ShowTipsInfo("批量导入词条失败,数据为空");
                         }
                         else
                         {
-                            ShowTipsInfo("批量导入词条" + (totalCount- errorCount) + "条成功，" + errorCount + "条失败");
+                            if (totalCount == errorCount)
+                            {
+                                if (errorSameCount == 0)
+                                {
+                                    ShowTipsInfo("批量导入词条失败");
+                                }
+                                else
+                                {
+                                    ShowTipsInfo("批量导入词条失败，自建词条已存在");
+                                }
+                            }
+                            else
+                            {
+                                if (errorSameCount == 0)
+                                {
+                                    ShowTipsInfo("批量导入词条" + (totalCount - errorCount) + "条成功，" + errorCount + "条失败");
+                                }
+                                else
+                                {
+                                    ShowTipsInfo("批量导入词条" + (totalCount - errorCount) + "条成功，" + errorSameCount + "条自建词条已存在");
+                                }
+                            }
                         }
                     }
                 }

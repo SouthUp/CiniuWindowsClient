@@ -84,11 +84,11 @@
                         Click="ImportCustumCiBtn_Click"></Button>
             </Grid>
             <Grid Grid.Row="1" Visibility="{Binding MessageTipVisibility}" 
-                  HorizontalAlignment="Center" VerticalAlignment="Center">
-                <Grid Width="230" Height="40" Background="Transparent">
+                  HorizontalAlignment="Center" VerticalAlignment="Bottom">
+                <Grid Width="300" Height="40" Background="Transparent">
                     <Border Background="#160536" Opacity="0.87" BorderThickness="0" CornerRadius="2"></Border>
-                    <TextBlock Text="{Binding MessageTipInfo}" Margin="30,0,0,0"
-                               FontSize="13" Foreground="White" 
+                    <TextBlock Text="{Binding MessageTipInfo}" 
+                               FontSize="13" Foreground="White" HorizontalAlignment="Center"
                                Style="{StaticResource CommonLeftTextBlock}"></TextBlock>
                 </Grid>
             </Grid>
