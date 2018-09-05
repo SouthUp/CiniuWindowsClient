@@ -7,7 +7,7 @@
         xmlns:gifLib="clr-namespace:GifImageLib;assembly=GifImageLib"
         mc:Ignorable="d" AllowsTransparency="True" WindowStyle="None" 
         WindowStartupLocation="CenterScreen" Background="Transparent" Topmost="True"
-        Title="SettingWindow" Height="530" Width="828" Loaded="Window_Loaded">
+        Title="SettingWindow" Height="540" Width="838" Loaded="Window_Loaded">
     <Grid Height="520" Width="818">
         <Border BorderThickness="0">
             <Border.Background>
@@ -17,7 +17,7 @@
                 </LinearGradientBrush>
             </Border.Background>
             <Border.Effect>
-                <DropShadowEffect ShadowDepth="0" Opacity="0.38"/>
+                <DropShadowEffect ShadowDepth="0" BlurRadius="16" Opacity="0.26"/>
             </Border.Effect>
         </Border>
         <Grid Background="Transparent" Cursor="Arrow" MouseDown="TitleGrid_MouseDown">
