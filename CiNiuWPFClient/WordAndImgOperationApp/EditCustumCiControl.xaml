@@ -130,7 +130,7 @@
                 </Grid>
             </Grid>
             <Grid Grid.Row="1" Visibility="{Binding MessageTipVisibility}" 
-                  HorizontalAlignment="Left" VerticalAlignment="Bottom">
+                  HorizontalAlignment="Center" VerticalAlignment="Center">
                 <Grid Width="230" Height="40" Background="Transparent">
                     <Border Background="#160536" Opacity="0.87" BorderThickness="0" CornerRadius="2"></Border>
                     <TextBlock Text="{Binding MessageTipInfo}" Margin="30,0,0,0"
