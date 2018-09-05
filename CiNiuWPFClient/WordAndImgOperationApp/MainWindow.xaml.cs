@@ -1193,7 +1193,18 @@ namespace WordAndImgOperationApp
             MainGrid.Height = 80 + 250;
             this.Height = 99 + 250;
         }
-
+        private void CancelToCustumCiTiaoBtn_Click(object sender, RoutedEventArgs e)
+        {
+            //不包含违禁词
+            viewModel.WordNoUnchekResultVisibility = Visibility.Visible;
+            viewModel.WordHasUnchekResultVisibility = Visibility.Collapsed;
+            viewModel.DragFilesResultVisibility = Visibility.Collapsed;
+            viewModel.HistoryFilesGridVisibility = Visibility.Collapsed;
+            viewModel.IsSelectHistoryChecked = false;
+            viewModel.AddToCustumCiTiaoVisibility = Visibility.Collapsed;
+            MainGrid.Height = 80 + 75;
+            this.Height = 99 + 75;
+        }
         private async void SureToCustumCiTiaoBtn_Click(object sender, RoutedEventArgs e)
         {
             string message = "";

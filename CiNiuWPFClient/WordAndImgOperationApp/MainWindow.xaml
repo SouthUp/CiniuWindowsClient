@@ -387,10 +387,17 @@
                                                   control:WatermarkTextBox.Watermark="添加词条内容，完善词条"
                                                   MaxLength="2000"/>
                     </Grid>
-                    <Button Grid.Row="2" Width="64" Height="32" Content="确定"
-                            HorizontalAlignment="Right" Margin="0,0,16,0"
-                            Style="{StaticResource HsaBGHoverTextButtonStyle}"
-                            Click="SureToCustumCiTiaoBtn_Click"></Button>
+                    <StackPanel Grid.Row="2" Orientation="Horizontal" Margin="0,0,16,0"
+                                HorizontalAlignment="Right" VerticalAlignment="Center">
+                        <Button Width="64" Height="32" Content="取消"
+                                HorizontalAlignment="Right" FontSize="14"
+                                Style="{StaticResource GrayHsaBGHoverTextButtonStyle}"
+                                Click="CancelToCustumCiTiaoBtn_Click"></Button>
+                        <Button Width="64" Height="32" Content="确定" FontSize="14"
+                                HorizontalAlignment="Right" Margin="8,0,0,0"
+                                Style="{StaticResource HsaBGHoverTextButtonStyle}"
+                                Click="SureToCustumCiTiaoBtn_Click"></Button>
+                    </StackPanel>
                 </Grid>
             </Grid>
             <Grid Grid.Row="2" Visibility="{Binding DragFilesResultVisibility}" 
