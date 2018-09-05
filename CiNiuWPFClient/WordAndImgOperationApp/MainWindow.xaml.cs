@@ -2086,6 +2086,28 @@ namespace WordAndImgOperationApp
                 {
                     try
                     {
+                        AddInStateInfo addInStateInfo = new AddInStateInfo();
+                        addInStateInfo.IsOpen = true;
+                        string addInStateInfos = "";
+                        if (myFolderDataViewModel.TypeSelectFile == SelectFileType.Docx)
+                        {
+                            //保存用户操作信息到本地
+                            addInStateInfos = string.Format(@"{0}\WordAddInStateInfo.xml", Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + "\\WordAndImgOCR\\LoginInOutInfo\\");
+                        }
+                        else if (myFolderDataViewModel.TypeSelectFile == SelectFileType.Xlsx)
+                        {
+                            //保存用户操作信息到本地
+                            addInStateInfos = string.Format(@"{0}\ExcelAddInStateInfo.xml", Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + "\\WordAndImgOCR\\LoginInOutInfo\\");
+                        }
+                        if (!string.IsNullOrEmpty(addInStateInfos))
+                        {
+                            CheckWordUtil.DataParse.WriteToXmlPath(JsonConvert.SerializeObject(addInStateInfo), addInStateInfos);
+                        }
+                    }
+                    catch (Exception ex)
+                    { }
+                    try
+                    {
                         System.Diagnostics.Process.Start(myFolderDataViewModel.FilePath); //打开此文件。
                     }
                     catch (Exception ex)
