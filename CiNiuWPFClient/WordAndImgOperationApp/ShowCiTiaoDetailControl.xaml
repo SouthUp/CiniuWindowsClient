@@ -18,7 +18,7 @@
                     </LinearGradientBrush>
                 </Border.Background>
                 <Border.Effect>
-                    <DropShadowEffect ShadowDepth="0" />
+                    <DropShadowEffect ShadowDepth="0" BlurRadius="16" Opacity="0.48"/>
                 </Border.Effect>
             </Border>
             <Grid Width="567" MinHeight="176" Margin="0,5,0,5"
