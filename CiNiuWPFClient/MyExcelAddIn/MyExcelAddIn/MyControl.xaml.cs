@@ -34,7 +34,6 @@ namespace MyExcelAddIn
     {
         List<UnChekedWordInfo> listUnCheckWordsImages = new List<UnChekedWordInfo>();
         private ConcurrentBag<UnChekedWordExcelRangeInfo> HasUnChenckedWordsParagraphs = new ConcurrentBag<UnChekedWordExcelRangeInfo>();
-        Dictionary<string, List<UnChekedWordInfo>> CurrentWordsDictionary = new Dictionary<string, List<UnChekedWordInfo>>();
         List<UnChekedWordInfo> listUnCheckWords = new List<UnChekedWordInfo>();
         MyControlViewModel viewModel = new MyControlViewModel();
         //保存当前要修改的Range的行和列
@@ -535,26 +534,9 @@ namespace MyExcelAddIn
                 if (!string.IsNullOrEmpty(str))
                 {
                     List<UnChekedWordInfo> listUnChekedWord = new List<UnChekedWordInfo>();
-                    string hashWord = HashHelper.ComputeSHA1ByStr(str);
                     try
                     {
-                        if (!CurrentWordsDictionary.ContainsKey(hashWord))
-                        {
-                            listUnChekedWord = CheckWordHelper.GetUnChekedWordInfoList(str, "Excel").ToList();
-                            if (listUnChekedWord != null)
-                            {
-                                try
-                                {
-                                    CurrentWordsDictionary.Add(hashWord, listUnChekedWord);
-                                }
-                                catch
-                                { }
-                            }
-                        }
-                        else
-                        {
-                            listUnChekedWord = CurrentWordsDictionary[hashWord];
-                        }
+                        listUnChekedWord = CheckWordHelper.GetUnChekedWordInfoList(str, "Excel").ToList();
                     }
                     catch (Exception ex)
                     {
