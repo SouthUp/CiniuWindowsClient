@@ -41,11 +41,11 @@
                     <Grid Width="18" Height="18" Background="{StaticResource CircleWordTitleLogoBGLogo}"
                           HorizontalAlignment="Left" VerticalAlignment="Center" Margin="0,0,16,0">
                     </Grid>
-                    <TextBlock Text="MS Word /版本号（ Word " Foreground="#160536" Opacity="0.54" FontSize="14"
+                    <TextBlock Text="Office Word " Foreground="#160536" Opacity="0.54" FontSize="14"
                                Style="{StaticResource CommonLeftTextBlock}"></TextBlock>
                     <TextBlock Text="{Binding WordOfficeVersion}" Foreground="#160536" Opacity="0.54" FontSize="14"
                                Style="{StaticResource CommonLeftTextBlock}"></TextBlock>
-                    <TextBlock Text="）已安装" Foreground="#160536" Opacity="0.54" FontSize="14"
+                    <TextBlock Text=" 已安装" Foreground="#160536" Opacity="0.54" FontSize="14"
                                Style="{StaticResource CommonLeftTextBlock}"></TextBlock>
                 </StackPanel>
                 <Grid Width="18" Height="18" Background="{StaticResource WrongLogoBGLogo}"
@@ -62,11 +62,11 @@
                     <Grid Width="18" Height="18" Background="{StaticResource CircleXlsxTitleLogoBGLogo}"
                           HorizontalAlignment="Left" VerticalAlignment="Center" Margin="0,0,16,0">
                     </Grid>
-                    <TextBlock Text="MS Excel /版本号（ Excel " Foreground="#160536" Opacity="0.54" FontSize="14"
+                    <TextBlock Text="Office Excel " Foreground="#160536" Opacity="0.54" FontSize="14"
                                Style="{StaticResource CommonLeftTextBlock}"></TextBlock>
                     <TextBlock Text="{Binding ExcelOfficeVersion}" Foreground="#160536" Opacity="0.54" FontSize="14"
                                Style="{StaticResource CommonLeftTextBlock}"></TextBlock>
-                    <TextBlock Text="）已安装" Foreground="#160536" Opacity="0.54" FontSize="14"
+                    <TextBlock Text=" 已安装" Foreground="#160536" Opacity="0.54" FontSize="14"
                                Style="{StaticResource CommonLeftTextBlock}"></TextBlock>
                 </StackPanel>
                 <Grid Width="18" Height="18" Background="{StaticResource WrongLogoBGLogo}"
