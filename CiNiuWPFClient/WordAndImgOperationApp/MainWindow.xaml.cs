@@ -1479,8 +1479,6 @@ namespace WordAndImgOperationApp
                     {
                         heightAdd = heightAddMax;
                     }
-                    MainGrid.Height = 80 + heightAdd;
-                    this.Height = 99 + heightAdd;
                     //检查完成
                     viewModel.DealDataResultList = _dealDataResultList;
                     CloseDealingGrid();
@@ -1493,6 +1491,9 @@ namespace WordAndImgOperationApp
                     viewModel.WordNoUnchekResultVisibility = Visibility.Collapsed;
                     viewModel.HistoryFilesGridVisibility = Visibility.Collapsed;
                     viewModel.IsSelectHistoryChecked = false;
+
+                    MainGrid.Height = 80 + heightAdd;
+                    this.Height = 99 + heightAdd;
                     System.Threading.ThreadStart start = delegate ()
                     {
                         EventAggregatorRepository.EventAggregator.GetEvent<MainAppBusyIndicatorEvent>().Publish(new AppBusyIndicator { IsBusy = true });
