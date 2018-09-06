@@ -299,5 +299,25 @@ namespace WordAndImgOperationApp
                 RaisePropertyChanged("IsSelectHistoryChecked");
             }
         }
+        private System.Windows.Visibility _selectHistoryBtnVisibility = System.Windows.Visibility.Visible;
+        public System.Windows.Visibility SelectHistoryBtnVisibility
+        {
+            get { return _selectHistoryBtnVisibility; }
+            set
+            {
+                _selectHistoryBtnVisibility = value;
+                RaisePropertyChanged("SelectHistoryBtnVisibility");
+            }
+        }
+        private System.Windows.Visibility _deleteSearchTextBtnVisibility = System.Windows.Visibility.Collapsed;
+        public System.Windows.Visibility DeleteSearchTextBtnVisibility
+        {
+            get { return _deleteSearchTextBtnVisibility; }
+            set
+            {
+                _deleteSearchTextBtnVisibility = value;
+                RaisePropertyChanged("DeleteSearchTextBtnVisibility");
+            }
+        }
     }
 }

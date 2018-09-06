@@ -2191,6 +2191,26 @@ namespace WordAndImgOperationApp
             viewModel.IsSelectHistoryChecked = false;
             MainGrid.Height = 80;
             this.Height = 99;
+            try
+            {
+                if (string.IsNullOrEmpty(SearchTextBox.Text))
+                {
+                    viewModel.SelectHistoryBtnVisibility = Visibility.Visible;
+                    viewModel.DeleteSearchTextBtnVisibility = Visibility.Collapsed;
+                }
+                else
+                {
+                    viewModel.SelectHistoryBtnVisibility = Visibility.Collapsed;
+                    viewModel.DeleteSearchTextBtnVisibility = Visibility.Visible;
+                }
+            }
+            catch (Exception ex)
+            { }
+        }
+
+        private void DeleteSearchTextBtn_Click(object sender, RoutedEventArgs e)
+        {
+            SearchTextBox.Text = "";
         }
     }
 }

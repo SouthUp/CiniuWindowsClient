@@ -102,6 +102,15 @@
             </DrawingGroup>
         </DrawingBrush.Drawing>
     </DrawingBrush>
+    <DrawingBrush x:Key="DeleteSearchTextBtnLogo" Stretch="Fill">
+        <DrawingBrush.Drawing>
+            <DrawingGroup>
+                <DrawingGroup.Children>
+                    <GeometryDrawing Brush="#61000000" Geometry="F1 M 13.3333,12.08L 12.0813,13.3333L 8.88933,10.1427L 5.69733,13.3333L 4.444,12.08L 7.636,8.88933L 4.444,5.69867L 5.69733,4.44533L 8.88933,7.636L 12.0813,4.44533L 13.3333,5.69867L 10.1427,8.88933M 8.88933,-9.53674e-007C 3.97333,-9.53674e-007 0,3.97333 0,8.88933C 0,13.8053 3.97333,17.7773 8.88933,17.7773C 13.8053,17.7773 17.7787,13.8053 17.7787,8.88933C 17.7787,3.97333 13.8053,-9.53674e-007 8.88933,-9.53674e-007 Z "/>
+                </DrawingGroup.Children>
+            </DrawingGroup>
+        </DrawingBrush.Drawing>
+    </DrawingBrush>
     <DrawingBrush x:Key="GoBtnLogo" Stretch="None">
         <DrawingBrush.Drawing>
             <DrawingGroup>

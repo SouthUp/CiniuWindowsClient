@@ -198,8 +198,13 @@
                         <ToggleButton Width="16" Height="16" Margin="0,0,8,0" IsChecked="{Binding IsSelectHistoryChecked}"
                                           Style="{StaticResource HistoryExpandToggleStyle}"
                                           VerticalAlignment="Center" HorizontalAlignment="Right"
-                                          Checked="SelectHistoryBtn_Checked" Unchecked="SelectHistoryBtn_Unchecked">
+                                          Checked="SelectHistoryBtn_Checked" Unchecked="SelectHistoryBtn_Unchecked"
+                                      Visibility="{Binding SelectHistoryBtnVisibility}">
                         </ToggleButton>
+                        <Button Width="16" Height="16" Margin="0,0,8,0" HorizontalAlignment="Right"
+                                Style="{StaticResource DeleteSearchTextBtnStyle}" VerticalAlignment="Center"
+                                Click="DeleteSearchTextBtn_Click" Visibility="{Binding DeleteSearchTextBtnVisibility}">
+                        </Button>
                     </Grid>
                     <Button Width="36" Height="36" HorizontalAlignment="Right"
                                 Style="{StaticResource GoBtnStyle}" VerticalAlignment="Center"
