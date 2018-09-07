@@ -2211,6 +2211,7 @@ namespace WordAndImgOperationApp
         private void DeleteSearchTextBtn_Click(object sender, RoutedEventArgs e)
         {
             SearchTextBox.Text = "";
+            viewModel.SearchText = SearchTextBox.Text;
         }
     }
 }
