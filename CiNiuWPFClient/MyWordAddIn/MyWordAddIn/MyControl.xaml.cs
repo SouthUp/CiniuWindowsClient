@@ -666,6 +666,7 @@ namespace MyWordAddIn
                 {
                     Directory.CreateDirectory(savePathGetImage);
                 }
+                bool hasPic = false;
                 int index = 1;
                 foreach (Microsoft.Office.Interop.Word.Paragraph paragraph in Application.ActiveDocument.Paragraphs)
                 {
@@ -722,14 +723,18 @@ namespace MyWordAddIn
                                 }
                                 catch
                                 { }
+                                hasPic = true;
                             }
                         }
                     }
                 }
-                Dispatcher.Invoke(new Action(() =>
+                if (hasPic)
                 {
-                    System.Windows.Forms.Clipboard.Clear();
-                }));
+                    Dispatcher.Invoke(new Action(() =>
+                    {
+                        System.Windows.Forms.Clipboard.Clear();
+                    }));
+                }
             }
             catch (Exception ex)
             {

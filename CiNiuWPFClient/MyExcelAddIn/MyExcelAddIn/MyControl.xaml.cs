@@ -582,6 +582,7 @@ namespace MyExcelAddIn
                 {
                     Directory.CreateDirectory(savePathGetImage);
                 }
+                bool hasPic = false;
                 for (int i = 1; i <= workSheet.Shapes.Count; i++)
                 {
                     var pic = workSheet.Shapes.Item(i);
@@ -618,12 +619,16 @@ namespace MyExcelAddIn
                         {
                             CheckWordUtil.Log.TextLog.SaveError(ex.Message);
                         }
+                        hasPic = true;
                     }
                 }
-                Dispatcher.Invoke(new System.Action(() =>
+                if (hasPic)
                 {
-                    System.Windows.Forms.Clipboard.Clear();
-                }));
+                    Dispatcher.Invoke(new System.Action(() =>
+                    {
+                        System.Windows.Forms.Clipboard.Clear();
+                    }));
+                }
             }
             catch (Exception ex)
             {
