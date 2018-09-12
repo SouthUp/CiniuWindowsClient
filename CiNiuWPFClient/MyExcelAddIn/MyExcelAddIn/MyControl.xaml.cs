@@ -647,34 +647,27 @@ namespace MyExcelAddIn
                 }
                 if (hasPic)
                 {
-                    Dispatcher.Invoke(new System.Action(() =>
+                    Dispatcher.BeginInvoke(new System.Action(() =>
                     {
                         System.Windows.Forms.Clipboard.Clear();
-                    }));
-                    if (xx != null)
-                    {
-                        Task task = new Task(() => {
-                            System.Threading.Thread.Sleep(200);
+                        if (xx != null)
+                        {
                             try
                             {
-                                Dispatcher.Invoke(new System.Action(() =>
+                                if (ctype == "FileDrop")
                                 {
-                                    if (ctype == "FileDrop")
-                                    {
-                                        StringCollection stringCollection = (StringCollection)xx;
-                                        Clipboard.SetFileDropList(stringCollection);
-                                    }
-                                    else
-                                    {
-                                        Clipboard.SetDataObject(xx);
-                                    }
-                                }));
+                                    StringCollection stringCollection = (StringCollection)xx;
+                                    Clipboard.SetFileDropList(stringCollection);
+                                }
+                                else
+                                {
+                                    Clipboard.SetDataObject(xx);
+                                }
                             }
                             catch (Exception ex)
                             { }
-                        });
-                        task.Start();
-                    }
+                        }
+                    }));
                 }
             }
             catch (Exception ex)
