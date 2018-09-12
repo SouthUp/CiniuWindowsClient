@@ -747,26 +747,19 @@ namespace MyWordAddIn
                 }
                 if (hasPic)
                 {
-                    Dispatcher.Invoke(new Action(() =>
+                    Dispatcher.BeginInvoke(new Action(() =>
                     {
                         System.Windows.Forms.Clipboard.Clear();
-                    }));
-                    if (xx != null)
-                    {
-                        System.Threading.Tasks.Task task = new System.Threading.Tasks.Task(() => {
-                            System.Threading.Thread.Sleep(200);
+                        if (xx != null)
+                        {
                             try
                             {
-                                Dispatcher.Invoke(new System.Action(() =>
-                                {
-                                    Clipboard.SetDataObject(xx);
-                                }));
+                                System.Windows.Forms.Clipboard.SetDataObject(xx);
                             }
                             catch (Exception ex)
                             { }
-                        });
-                        task.Start();
-                    }
+                        }
+                    }));
                 }
             }
             catch (Exception ex)
