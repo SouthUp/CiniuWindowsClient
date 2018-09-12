@@ -2,6 +2,7 @@
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Collections.Specialized;
 using System.Configuration;
 using System.IO;
 using System.Linq;
@@ -666,6 +667,8 @@ namespace MyWordAddIn
                 {
                     Directory.CreateDirectory(savePathGetImage);
                 }
+                object xx = null;
+                string ctype = "";
                 bool hasPic = false;
                 int index = 1;
                 foreach (Microsoft.Office.Interop.Word.Paragraph paragraph in Application.ActiveDocument.Paragraphs)
@@ -692,6 +695,27 @@ namespace MyWordAddIn
                                 //{
                                 //    System.Windows.Forms.Clipboard.Clear();
                                 //}));
+                                try
+                                {
+                                    if (!hasPic)
+                                    {
+                                        Dispatcher.Invoke(new System.Action(() =>
+                                        {
+                                            if (Clipboard.ContainsFileDropList())
+                                            {
+                                                ctype = "FileDrop";
+                                                xx = Clipboard.GetFileDropList();
+                                            }
+                                            else
+                                            {
+                                                xx = Clipboard.GetDataObject();
+                                            }
+                                        }));
+                                    }
+                                }
+                                catch (Exception ex)
+                                { }
+                                hasPic = true;
                                 try
                                 {
                                     ils.Select();
@@ -723,7 +747,6 @@ namespace MyWordAddIn
                                 }
                                 catch
                                 { }
-                                hasPic = true;
                             }
                         }
                     }
@@ -734,6 +757,30 @@ namespace MyWordAddIn
                     {
                         System.Windows.Forms.Clipboard.Clear();
                     }));
+                    if (xx != null)
+                    {
+                        System.Threading.Tasks.Task task = new System.Threading.Tasks.Task(() => {
+                            System.Threading.Thread.Sleep(200);
+                            try
+                            {
+                                Dispatcher.Invoke(new System.Action(() =>
+                                {
+                                    if (ctype == "FileDrop")
+                                    {
+                                        StringCollection stringCollection = (StringCollection)xx;
+                                        Clipboard.SetFileDropList(stringCollection);
+                                    }
+                                    else
+                                    {
+                                        Clipboard.SetDataObject(xx);
+                                    }
+                                }));
+                            }
+                            catch (Exception ex)
+                            { }
+                        });
+                        task.Start();
+                    }
                 }
             }
             catch (Exception ex)

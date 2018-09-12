@@ -8,6 +8,7 @@ using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Collections.Specialized;
 using System.Configuration;
 using System.IO;
 using System.Linq;
@@ -582,12 +583,35 @@ namespace MyExcelAddIn
                 {
                     Directory.CreateDirectory(savePathGetImage);
                 }
+                object xx = null;
+                string ctype = "";
                 bool hasPic = false;
                 for (int i = 1; i <= workSheet.Shapes.Count; i++)
                 {
                     var pic = workSheet.Shapes.Item(i);
                     if (pic != null && pic.Type == Microsoft.Office.Core.MsoShapeType.msoPicture)
                     {
+                        try
+                        {
+                            if (!hasPic)
+                            {
+                                Dispatcher.Invoke(new System.Action(() =>
+                                {
+                                    if (Clipboard.ContainsFileDropList())
+                                    {
+                                        ctype = "FileDrop";
+                                        xx = Clipboard.GetFileDropList();
+                                    }
+                                    else
+                                    {
+                                        xx = Clipboard.GetDataObject();
+                                    }
+                                }));
+                            }
+                        }
+                        catch (Exception ex)
+                        { }
+                        hasPic = true;
                         try
                         {
                             pic.Copy();
@@ -619,7 +643,6 @@ namespace MyExcelAddIn
                         {
                             CheckWordUtil.Log.TextLog.SaveError(ex.Message);
                         }
-                        hasPic = true;
                     }
                 }
                 if (hasPic)
@@ -628,6 +651,30 @@ namespace MyExcelAddIn
                     {
                         System.Windows.Forms.Clipboard.Clear();
                     }));
+                    if (xx != null)
+                    {
+                        Task task = new Task(() => {
+                            System.Threading.Thread.Sleep(200);
+                            try
+                            {
+                                Dispatcher.Invoke(new System.Action(() =>
+                                {
+                                    if (ctype == "FileDrop")
+                                    {
+                                        StringCollection stringCollection = (StringCollection)xx;
+                                        Clipboard.SetFileDropList(stringCollection);
+                                    }
+                                    else
+                                    {
+                                        Clipboard.SetDataObject(xx);
+                                    }
+                                }));
+                            }
+                            catch (Exception ex)
+                            { }
+                        });
+                        task.Start();
+                    }
                 }
             }
             catch (Exception ex)
