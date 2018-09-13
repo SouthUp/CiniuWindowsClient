@@ -432,20 +432,25 @@ namespace MyExcelAddIn
                 List<ImagesDetailInfo> ImagesDetailInfos = GetPicsFromExcel();
                 foreach (var item in ImagesDetailInfos)
                 {
-                    string hashPic = HashHelper.ComputeSHA1(item.ImgResultPath);
-                    if (!MyWordAddIn.HostSystemVar.CurrentImgsDictionary.ContainsKey(hashPic))
+                    var listResult = AutoExcutePicOCR(item.ImgResultPath, item.UnCheckWordExcelRange);
+                    if (listResult != null)
                     {
-                        var listResult = AutoExcutePicOCR(item.ImgResultPath, item.UnCheckWordExcelRange);
-                        if (listResult != null)
-                        {
-                            listUnCheckWordsImages.AddRange(listResult.ToList());
-                            MyWordAddIn.HostSystemVar.CurrentImgsDictionary.Add(hashPic, listResult.ToList());
-                        }
+                        listUnCheckWordsImages.AddRange(listResult.ToList());
                     }
-                    else
-                    {
-                        listUnCheckWordsImages.AddRange(MyWordAddIn.HostSystemVar.CurrentImgsDictionary[hashPic].ToList());
-                    }
+                    //string hashPic = HashHelper.ComputeSHA1(item.ImgResultPath);
+                    //if (!MyWordAddIn.HostSystemVar.CurrentImgsDictionary.ContainsKey(hashPic))
+                    //{
+                    //    var listResult = AutoExcutePicOCR(item.ImgResultPath, item.UnCheckWordExcelRange);
+                    //    if (listResult != null)
+                    //    {
+                    //        listUnCheckWordsImages.AddRange(listResult.ToList());
+                    //        MyWordAddIn.HostSystemVar.CurrentImgsDictionary.Add(hashPic, listResult.ToList());
+                    //    }
+                    //}
+                    //else
+                    //{
+                    //    listUnCheckWordsImages.AddRange(MyWordAddIn.HostSystemVar.CurrentImgsDictionary[hashPic].ToList());
+                    //}
                 }
                 foreach (var item in listUnCheckWordsImages.ToList())
                 {

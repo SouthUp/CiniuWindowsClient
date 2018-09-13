@@ -522,20 +522,25 @@ namespace MyWordAddIn
                         List<ImagesDetailInfo> ImagesDetailInfos = GetImagesFromWord();
                         foreach (var item in ImagesDetailInfos)
                         {
-                            string hashPic = HashHelper.ComputeSHA1(item.ImgResultPath);
-                            if (!HostSystemVar.CurrentImgsDictionary.ContainsKey(hashPic))
+                            var listResult = AutoExcutePicOCR(item.ImgResultPath, item.UnCheckWordRange);
+                            if (listResult != null)
                             {
-                                var listResult = AutoExcutePicOCR(item.ImgResultPath, item.UnCheckWordRange);
-                                if (listResult != null)
-                                {
-                                    listUnCheckWordsImages.AddRange(listResult.ToList());
-                                    HostSystemVar.CurrentImgsDictionary.Add(hashPic, listResult.ToList());
-                                }
+                                listUnCheckWordsImages.AddRange(listResult.ToList());
                             }
-                            else
-                            {
-                                listUnCheckWordsImages.AddRange(HostSystemVar.CurrentImgsDictionary[hashPic].ToList());
-                            }
+                            //string hashPic = HashHelper.ComputeSHA1(item.ImgResultPath);
+                            //if (!HostSystemVar.CurrentImgsDictionary.ContainsKey(hashPic))
+                            //{
+                            //    var listResult = AutoExcutePicOCR(item.ImgResultPath, item.UnCheckWordRange);
+                            //    if (listResult != null)
+                            //    {
+                            //        listUnCheckWordsImages.AddRange(listResult.ToList());
+                            //        HostSystemVar.CurrentImgsDictionary.Add(hashPic, listResult.ToList());
+                            //    }
+                            //}
+                            //else
+                            //{
+                            //    listUnCheckWordsImages.AddRange(HostSystemVar.CurrentImgsDictionary[hashPic].ToList());
+                            //}
                         }
                     }
                 }
